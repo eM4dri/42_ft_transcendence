@@ -1,0 +1,14 @@
+version: '3'
+services:
+  front:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+  back:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+  back:
+    build:
+      context: ./db
+      dockerfile: Dockerfile

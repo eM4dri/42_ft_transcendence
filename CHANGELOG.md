@@ -16,3 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 2023-06-20 - tomartin
 ### Added
 - New dev branch
+
+## 2023-06-20 - tomartin
+### Added
+- Init with docker
+- add img to branch struct
