@@ -18,3 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Init with docker
 - Add img to branch struct
 
+## 2023-07-11 - tomartin
+### Fix
+- Docker-compose.yml
+- Dockerfile frontend
