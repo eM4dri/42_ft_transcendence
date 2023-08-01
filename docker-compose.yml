@@ -1,9 +1,14 @@
 version: '3'
 services:
   front:
+    tty: true
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app/
+    ports:
+      - 4200:4200
   back:
     build:
       context: ./backend
