@@ -4,4 +4,6 @@ RUN apk update && apk add bash
 RUN apk add nginx
 RUN npm install -g @angular/cli
  
-CMD ["nginx", "-g", "daemon off;"]
+WORKDIR /app
+
+CMD npm run start
