@@ -7,7 +7,7 @@ const swagger_1 = require("@nestjs/swagger");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.useGlobalPipes(new common_1.ValidationPipe({
-        whitelist: true
+        whitelist: true,
     }));
     const options = new swagger_1.DocumentBuilder()
         .setTitle('Products')
@@ -21,7 +21,7 @@ async function bootstrap() {
             showRequestDuration: true,
         },
     });
-    await app.listen(3333);
+    await app.listen(3000);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

@@ -1,78 +1,59 @@
 import { Injectable } from '@nestjs/common';
-import { contains } from 'class-validator';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateChatDto } from './dto';
 
 @Injectable()
 export class ChatService {
-    constructor(private prisma: PrismaService){}
+  constructor(private prisma: PrismaService) {}
 
-   async  getChats(userId: number){
-        return await this.prisma.user.findMany({
-            // include: {
-            //     created: true,
-            //     users: true,
-            // }
-            select: {
-                email: true,
-                createdAt: true,
-                users1: {
-                    where: {
-                        id: userId
-                    },
-                }    
-            },
-
-        });
-        // return await this.prisma.chatUser.findMany({
-
-        //     // select: {
-        //     //     users: {
-        //             where: {
-        //                 userId: userId
-        //             },
-        //     //     }    
-        //     // },
-        // });
-        // const chats = await this.prisma.chatUser.findMany({
-        //     where:{
-        //         userId
-        //     }
-        // });
-        // const chatIds = []; 
-        // chats.forEach( function (index) {
-        //     chatIds.push(index.chatId);
-        // });
-        // const chatUsers = await this.prisma.chatUser.findMany({
-        //     where:{
-        //         chatId : { in: chatIds }  
-        //     }
-        // });
-
-        // const userIds = [];
-        // chatUsers.forEach( function (index) {
-        //     userIds.push(index.userId);
-        // });
-        
-        // const users = await this.prisma.user.findMany({
-        //     where: {
-        //        id: { in: userIds  },
-        //     },
-        //     select: {
-        //         id: true,
-        //         created: true,
-        //         users: true
-        //     },
-        // });
-
-        // return this.prisma.chat.findMany({
-        //     where: {
-        //        id: { in: chatIds  },
-        //     },
-        //     select: {
-        //         id: true,
-        //         created: true,
-        //         users: true
-        //     },
-        // });
+  async getChats(userId: number) {
+    const chats = await this.prisma.chatUser.findMany({
+      where: {
+        userId,
+      },
+    });
+    const chatIds = [];
+    chats.forEach(function (index) {
+      chatIds.push(index.chatId);
+    });
+    const chatUsers = await this.prisma.chatUser.findMany({
+      where: {
+        chatId: { in: chatIds },
+        NOT: { userId: userId },
+      },
+    });
+    const usersIds = [];
+    chatUsers.forEach(function (index) {
+      usersIds.push(index.userId);
+    });
+    const emailUsers = await this.prisma.user.findMany({
+      where: {
+        id: { in: usersIds },
+      },
+    });
+    const result = chatUsers.map((chatUser) => {
+      const userMails = emailUsers.filter((email) => email.id == chatUser.userId)[0];
+      return {
+        chatId: chatUser.chatId,
+        userId: chatUser.userId,
+        uersEmail: userMails ? userMails['email'] : null,
+      };
+    });
+    return result;
+  }
+  async new(dto: CreateChatDto) {
+    try {
+      const chat = await this.prisma.chat.create({
+        data: {
+          chatusers: {
+            create: [{ userId: dto.user1 }, { userId: dto.user2 }],
+          },
+        },
+      });
+      return chat;
+    } catch (error) {
+      //handle errors if needed
+      throw error;
     }
+  }
 }

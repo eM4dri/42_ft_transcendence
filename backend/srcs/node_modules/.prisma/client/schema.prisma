@@ -20,9 +20,7 @@ model User {
   firstName String?
   lastName String?
 
-  users1 Chat[] @relation("users1")
-  users2 Chat[] @relation("users2")
-
+  chatusers ChatUser[]
   @@map("users")
 }
 
@@ -30,27 +28,20 @@ model Chat {
   id Int @id @default(autoincrement())
   created DateTime @default(now())
 
-  user1_chat_link User @relation("users1",fields:[user1], references: [id])
-  user1 Int 
-  user2_chat_link User @relation("users2",fields:[user2], references: [id])
-  user2 Int
 
-  messages ChatMessage[]
+  chatusers ChatUser[]
   @@map("chats")
 }
 
-
-model ChatMessage {
+model ChatUser {
   id Int @id @default(autoincrement())
 
-  chatId Int
+  chat_chatUser_link Chat @relation(fields:[chatId], references: [id])
+  chatId Int 
+  user_chatUser_link User @relation(fields:[userId], references: [id])
+  userId Int 
 
-  createdAt DateTime @default(now())
-
-  message String
-
-  chat_chatmessage_link Chat @relation(fields:[chatId], references: [id])
-  
-
-  @@map("chat messages")
+  @@map("chat users")
 }
+
+

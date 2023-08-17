@@ -15,7 +15,7 @@ let MessageModule = exports.MessageModule = class MessageModule {
 exports.MessageModule = MessageModule = __decorate([
     (0, common_1.Module)({
         controllers: [message_controller_1.MessageController],
-        providers: [message_service_1.MessageService]
+        providers: [message_service_1.MessageService],
     })
 ], MessageModule);
 //# sourceMappingURL=message.module.js.map

@@ -1,15 +1,15 @@
 import { ChatService } from './chat.service';
+import { CreateChatDto } from './dto';
 export declare class ChatController {
     private chatService;
     constructor(chatService: ChatService);
     getChats(userId: number): Promise<{
-        email: string;
-        createdAt: Date;
-        users1: {
-            id: number;
-            created: Date;
-            user1: number;
-            user2: number;
-        }[];
+        chatId: number;
+        userId: number;
+        uersEmail: string;
     }[]>;
+    new(dto: CreateChatDto): Promise<{
+        id: number;
+        created: Date;
+    }>;
 }

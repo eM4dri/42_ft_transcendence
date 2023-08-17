@@ -1,21 +1,6 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { UserService } from './user.service';
-import {
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto';
 
 @Controller('user')
@@ -40,7 +25,7 @@ export class UserController {
     type: String,
     required: true,
     description: 'Mail of the user',
-    example: 'user1mail.com',
+    example: 'user1@mail.com',
   })
   @ApiResponse({
     status: 200,
@@ -61,28 +46,28 @@ export class UserController {
     examples: {
       example1: {
         value: {
-            "email": "user1@mail.com"
+          email: 'user1@mail.com',
         },
       },
       example2: {
         value: {
-            "email": "user2@mail.com",
-            "firstName": "Name2",
-            "lastName": "Last2"
+          email: 'user2@mail.com',
+          firstName: 'Name2',
+          lastName: 'Last2',
         },
       },
       example3: {
         value: {
-            "email": "user3@mail.com",
-            "firstName": "Name3"
+          email: 'user3@mail.com',
+          firstName: 'Name3',
         },
       },
       example4: {
         value: {
-            "email": "user4@mail.com",
-            "lastName": "Last4"
+          email: 'user4@mail.com',
+          lastName: 'Last4',
         },
-      },     
+      },
     },
   })
   @ApiResponse({
@@ -96,5 +81,4 @@ export class UserController {
   new(@Body() dto: CreateUserDto) {
     return this.userService.new(dto);
   }
-
 }

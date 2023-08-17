@@ -16,6 +16,7 @@ exports.ChatController = void 0;
 const common_1 = require("@nestjs/common");
 const chat_service_1 = require("./chat.service");
 const swagger_1 = require("@nestjs/swagger");
+const dto_1 = require("./dto");
 let ChatController = exports.ChatController = class ChatController {
     constructor(chatService) {
         this.chatService = chatService;
@@ -23,14 +24,30 @@ let ChatController = exports.ChatController = class ChatController {
     getChats(userId) {
         return this.chatService.getChats(userId);
     }
+    new(dto) {
+        return this.chatService.new(dto);
+    }
 };
 __decorate([
     (0, common_1.Get)(':userId'),
+    (0, swagger_1.ApiOperation)({
+        description: 'Get all users active chats',
+    }),
     __param(0, (0, common_1.Param)('userId', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], ChatController.prototype, "getChats", null);
+__decorate([
+    (0, common_1.Post)(),
+    (0, swagger_1.ApiOperation)({
+        description: 'Crea un chat',
+    }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [dto_1.CreateChatDto]),
+    __metadata("design:returntype", void 0)
+], ChatController.prototype, "new", null);
 exports.ChatController = ChatController = __decorate([
     (0, common_1.Controller)('chat'),
     (0, swagger_1.ApiTags)('chat'),

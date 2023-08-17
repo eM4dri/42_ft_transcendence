@@ -1,9 +1,10 @@
 .env
+.env*
 
 # backend
 # compiled output
-    /dist
-    /node_modules
+    backend/srcs/dist
+    backend/srcs/node_modules
 
     # Logs
     logs

@@ -26,7 +26,7 @@ export declare class UserService {
         email: string;
         firstName: string;
         lastName: string;
-    } | "New user">;
+    }>;
     update(): string;
     partialUpdate(): string;
     delete(): string;

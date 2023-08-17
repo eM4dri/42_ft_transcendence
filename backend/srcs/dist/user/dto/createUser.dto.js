@@ -21,7 +21,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         name: 'email',
         type: String,
-        required: true
+        required: true,
     }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "email", void 0);
@@ -31,7 +31,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         name: 'firstName',
         type: String,
-        required: false
+        required: false,
     }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "firstName", void 0);
@@ -41,7 +41,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         name: 'lastName',
         type: String,
-        required: false
+        required: false,
     }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "lastName", void 0);

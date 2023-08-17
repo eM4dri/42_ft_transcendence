@@ -23,18 +23,17 @@ let UserService = exports.UserService = class UserService {
     get(email) {
         return this.prisma.user.findUnique({
             where: {
-                email: email
-            }
+                email: email,
+            },
         });
     }
     async new(dto) {
-        console.log(dto.firstName);
         try {
             const user = await this.prisma.user.create({
                 data: {
                     email: dto.email,
                     firstName: dto.firstName,
-                    lastName: dto.lastName
+                    lastName: dto.lastName,
                 },
             });
             return user;
@@ -47,7 +46,6 @@ let UserService = exports.UserService = class UserService {
             }
             throw error;
         }
-        return 'New user';
     }
     update() {
         return 'Update user!';

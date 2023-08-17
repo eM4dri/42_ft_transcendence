@@ -26,5 +26,5 @@ export declare class UserController {
         email: string;
         firstName: string;
         lastName: string;
-    } | "New user">;
+    }>;
 }
