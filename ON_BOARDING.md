@@ -11,7 +11,7 @@ The best way to install Node.js on 42 mac pcs is through  Node Version Manager .
 1. Starting project directory `cd backend/srcs`
 2. Run nest installation to create necesary binaries to work `yarn install`
     1. This command create `dist` & `node_modules`, never commit them 
-3. Create necessary .env files:
+3. Create necessary .env files. `template.env` could be useful
     1. dev mode:            `.env` 
     2. standalone mode:     `.env.test`
 
