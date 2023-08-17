@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Backend uses `yarn` instead of npm
 
+### Fix
+- Binaries's directories removed (backend/srcs/dist & backend/srcs/node_modules)
+
 ## 2023-08-08 - pmedina
 ### Changed
 - Frontend Dockerfile starts angular project. npm run start runs ng serve --host 0.0.0.0
