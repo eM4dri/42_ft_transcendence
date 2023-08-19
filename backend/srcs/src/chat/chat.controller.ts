@@ -12,9 +12,10 @@ export class ChatController {
   @ApiOperation({
     description: 'Get all users active chats',
   })
-  getChats(@Param('userId', ParseIntPipe) userId: number) {
+  getChats(@Param('userId') userId: string) {
     // en realidad vamos a estar autenticados con el usuario no debe entrar por querystring
     return this.chatService.getChats(userId);
+
   }
 
   @Post()

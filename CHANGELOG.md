@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 2023-08-19 - emadriga
 ### Addded
-- New file `AKNOWLEDGED_PROBLEMS.md` to share information about time comsuming on already known problems  
+- New file `AKNOWLEDGED_PROBLEMS.md` to share information about time comsuming on already known problems
+
+### Changed
+- Migrate schemas and code to use UUID as postgres PK
 
 ## 2023-08-17 - emadriga
 ### Added

@@ -6,7 +6,7 @@ import { CreateChatDto } from './dto';
 export class ChatService {
   constructor(private prisma: PrismaService) {}
 
-  async getChats(userId: number) {
+  async getChats(userId: string) {
     const chats = await this.prisma.chatUser.findMany({
       where: {
         userId,
