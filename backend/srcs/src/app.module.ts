@@ -5,6 +5,8 @@ import { ChatModule } from './chat/chat.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -12,6 +14,8 @@ import { AppService } from './app.service';
       isGlobal: true,
     }),
     UserModule,
+    AuthModule,
+    PassportModule.register({ session: true }),
     ChatModule,
     PrismaModule,
   ],
