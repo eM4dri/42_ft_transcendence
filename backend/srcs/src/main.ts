@@ -1,10 +1,12 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import {
+  DocumentBuilder,
+  SwaggerModule,
+} from '@nestjs/swagger';
 import * as session from 'express-session';
 import * as passport from 'passport';
-
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,28 +15,32 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-  // app.setGlobalPrefix('api');
+  // ? I haven't find a way to resolve this pretty suitable env vars, so HARDCODED
   app.use(
     session({
       cookie: {
-        maxAge: 86400000,
+        maxAge: 86400000, // all day long
       },
-      secret: 'ZTU4NWYwN2NmZTZjNTEzYjE2OTEwZGQ2',
+      secret: 'The cake is a lie!',
       resave: false,
       saveUninitialized: false,
     }),
   );
-
   app.use(passport.initialize());
   app.use(passport.session());
 
+  // app.setGlobalPrefix('v1');
   const options = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Products')
     .setDescription('This is my description')
     .setVersion('1.0')
     .build();
 
-  const document = SwaggerModule.createDocument(app, options);
+  const document = SwaggerModule.createDocument(
+    app,
+    options,
+  );
 
   SwaggerModule.setup('swagger', app, document, {
     // explorer: true,

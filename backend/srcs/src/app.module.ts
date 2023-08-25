@@ -6,7 +6,6 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -15,7 +14,6 @@ import { PassportModule } from '@nestjs/passport';
     }),
     UserModule,
     AuthModule,
-    PassportModule.register({ session: true }),
     ChatModule,
     PrismaModule,
   ],

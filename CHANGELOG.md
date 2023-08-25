@@ -6,9 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## 2023-08-20 - emadriga
-### Addded
-
 ### Changed
+- Improve authentication adding a `jwt` layer [https://jwt.io/](https://jwt.io/) getting some ideas from.
+> https://github.com/nestjs/docs.nestjs.com/issues/75
+> https://medium.com/@nielsmeima/auth-in-nest-js-and-angular-463525b6e071
+> https://javascript.plainenglish.io/oauth2-in-nestjs-for-social-login-google-facebook-twitter-etc-8b405d570fd2
+> https://www.youtube.com/watch?v=GHTA143_b-s&t=5680s
+
 - Improve working with `.env` following [typescript-process-env-type](https://bobbyhadz.com/blog/typescript-process-env-type)
 - Prettier formats
 

@@ -1,4 +1,8 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -19,7 +23,6 @@ export class UserService {
   }
 
   async new(dto: CreateUserDto) {
-
     // save the new user in the db
     try {
       const user = await this.prisma.user.create({
@@ -31,9 +34,15 @@ export class UserService {
       });
       return user;
     } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError) {
+      if (
+        error instanceof
+        PrismaClientKnownRequestError
+      ) {
         if (error.code === 'P2002') {
-          throw new HttpException('Email already in use', HttpStatus.CONFLICT);
+          throw new HttpException(
+            'Email already in use',
+            HttpStatus.CONFLICT,
+          );
         }
       }
       throw error;
