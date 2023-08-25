@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { ChatService } from './chat.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateChatDto } from './dto';
 
 @Controller('chat')
@@ -15,7 +24,6 @@ export class ChatController {
   getChats(@Param('userId') userId: string) {
     // en realidad vamos a estar autenticados con el usuario no debe entrar por querystring
     return this.chatService.getChats(userId);
-
   }
 
   @Post()

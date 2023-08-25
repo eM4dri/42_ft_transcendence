@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 2023-08-20 - emadriga
 ### Addded
+
+### Changed
+- Improve working with `.env` following [typescript-process-env-type](https://bobbyhadz.com/blog/typescript-process-env-type)
+- Prettier formats
+
+## 2023-08-20 - emadriga
+### Addded
 - Implement oauth2 against 42API using `Passport` authentication middleware for Node.js, [https://www.passportjs.org/](https://www.passportjs.org/). Following these links
 > https://www.passportjs.org/packages/passport-42/
 > https://www.youtube.com/watch?v=vGafqCNCCSs

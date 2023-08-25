@@ -1,5 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty,  IsUUID } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsUUID,
+} from 'class-validator';
 
 export class CreateChatDto {
   @IsNotEmpty()

@@ -7,36 +7,43 @@ export class ChatService {
   constructor(private prisma: PrismaService) {}
 
   async getChats(userId: string) {
-    const chats = await this.prisma.chatUser.findMany({
-      where: {
-        userId,
-      },
-    });
+    const chats =
+      await this.prisma.chatUser.findMany({
+        where: {
+          userId,
+        },
+      });
     const chatIds = [];
     chats.forEach(function (index) {
       chatIds.push(index.chatId);
     });
-    const chatUsers = await this.prisma.chatUser.findMany({
-      where: {
-        chatId: { in: chatIds },
-        NOT: { userId: userId },
-      },
-    });
+    const chatUsers =
+      await this.prisma.chatUser.findMany({
+        where: {
+          chatId: { in: chatIds },
+          NOT: { userId: userId },
+        },
+      });
     const usersIds = [];
     chatUsers.forEach(function (index) {
       usersIds.push(index.userId);
     });
-    const emailUsers = await this.prisma.user.findMany({
-      where: {
-        id: { in: usersIds },
-      },
-    });
+    const emailUsers =
+      await this.prisma.user.findMany({
+        where: {
+          id: { in: usersIds },
+        },
+      });
     const result = chatUsers.map((chatUser) => {
-      const userMails = emailUsers.filter((email) => email.id == chatUser.userId)[0];
+      const userMails = emailUsers.filter(
+        (email) => email.id == chatUser.userId,
+      )[0];
       return {
         chatId: chatUser.chatId,
         userId: chatUser.userId,
-        uersEmail: userMails ? userMails['email'] : null,
+        uersEmail: userMails
+          ? userMails['email']
+          : null,
       };
     });
     return result;
@@ -46,7 +53,10 @@ export class ChatService {
       const chat = await this.prisma.chat.create({
         data: {
           chatusers: {
-            create: [{ userId: dto.user1 }, { userId: dto.user2 }],
+            create: [
+              { userId: dto.user1 },
+              { userId: dto.user2 },
+            ],
           },
         },
       });
