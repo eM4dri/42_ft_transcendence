@@ -74,7 +74,7 @@ services:
     image: adminer
     container_name: adminer
     networks: 
-      - dev_network
+      - docker_network
     restart: on-failure
     ports:
       - 8080:8080
