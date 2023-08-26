@@ -1,4 +1,4 @@
-# Aknoledged_problems
+# Aknowledged_problems
 To share information about time comsuming on already known problems
 
 
