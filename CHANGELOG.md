@@ -5,9 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 2023-08-20 - emadriga
+## 2023-08-27 - emadriga
 ### Changed
-- Improve authentication adding a `jwt` layer [https://jwt.io/](https://jwt.io/) getting some ideas from.
+- Use login to `42API` to create new users, changes on db schemas and dto related to handle this data.
+- `JWT` token issued with our db data (username and id)
+### Addded
+- Added some TODOs
+## 2023-08-25 - emadriga
+### Changed
+- Improve authentication adding a `JWT` layer [https://jwt.io/](https://jwt.io/) getting some ideas from.
 > https://github.com/nestjs/docs.nestjs.com/issues/75
 > https://medium.com/@nielsmeima/auth-in-nest-js-and-angular-463525b6e071
 > https://javascript.plainenglish.io/oauth2-in-nestjs-for-social-login-google-facebook-twitter-etc-8b405d570fd2
@@ -33,10 +39,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 2023-08-17 - emadriga
 ### Added
 - Added modules for `user` & `chat`
-- Added `prisma` an ORM to handle db migrations,  [https://www.prisma.io/](https://www.prisma.io/)
+- Added `Prisma` an ORM to handle db migrations,  [https://www.prisma.io/](https://www.prisma.io/)
 > inspired by freeCodeCamp.org [NestJs Course for Beginners - Create a REST API](https://www.youtube.com/watch?v=GHTA143_b-s&t=1750s)
 - Running Postgres DB on docker a container use `yarn db:restart`
-- Added `swagger` to document API exposing endpoint [https://swagger.io/](https://swagger.io/)
+- Added `Swagger` to document API exposing endpoint [https://swagger.io/](https://swagger.io/)
 - Two working modes `dev` (back development) or `standalone` (testing or front development)
 - Added `ON_BOARDING.md` to explain how to work, 1st steps, configuration
 - Added `dotenv-cli` to handle several env files (more info ON_BOARDING.md)

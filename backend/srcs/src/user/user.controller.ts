@@ -63,26 +63,20 @@ export class UserController {
     examples: {
       example1: {
         value: {
-          email: 'user1@mail.com',
+          id: 42,
+          username: 'marvin',
+          email: 'marvin@mail.com',
+          url: 'https://profile.intra.42.fr/users/marvin',
         },
       },
       example2: {
         value: {
-          email: 'user2@mail.com',
-          firstName: 'Name2',
-          lastName: 'Last2',
-        },
-      },
-      example3: {
-        value: {
-          email: 'user3@mail.com',
-          firstName: 'Name3',
-        },
-      },
-      example4: {
-        value: {
-          email: 'user4@mail.com',
-          lastName: 'Last4',
+          id: 43,
+          username: 'santana',
+          email: 'santana@mail.com',
+          url: 'https://profile.intra.42.fr/users/santana',
+          firstName: 'Eduardo',
+          lastName: 'Santana',
         },
       },
     },

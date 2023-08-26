@@ -6,7 +6,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 
 export type JwtPayload = {
-  sub: number;
+  sub: string;
   username: string;
 };
 
