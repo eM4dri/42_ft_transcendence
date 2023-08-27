@@ -62,7 +62,7 @@ export class FortyTwoStrategy extends PassportStrategy(
         newUser,
       );
     }
-    console.log(userdb);
+    // console.log(userdb);
     return cb(null, userdb);
   }
 }

@@ -17,6 +17,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "standalone:build": "dotenv -e .env.test docker compose build -d standalone-db portainer adminer nest-api",
     "standalone:start": "dotenv -e .env.test docker compose up -d standalone-db portainer adminer nest-api",
     "standalone:stop": "docker compose down -v",
     "standalone:clean": "docker system prune -af",

@@ -4,7 +4,7 @@ services:
   dev-db:
     image: postgres:15-alpine
     container_name: dev-db
-    ports: 
+    ports:
       - "${DB_PORT}:5432"
     environment:
       POSTGRES_USER: "${DB_USER}"
@@ -15,7 +15,7 @@ services:
     restart: on-failure
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks: 
+    networks:
       - dev_network
   pgadmin:
     image: dpage/pgadmin4
@@ -28,14 +28,14 @@ services:
       PGADMIN_DEFAULT_PASSWORD: pg_password
     volumes:
       - pgadmin_data:/var/lib/pgadmin
-    networks: 
+    networks:
       - dev_network
 
 
   standalone-db:
     image: postgres:15-alpine
     container_name: "${DB_HOST}"
-    networks: 
+    networks:
       - docker_network
     expose:
       - "${DB_PORT}"
@@ -57,12 +57,18 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: nest-api
-    networks: 
+    networks:
       - docker_network
     ports:
       - 3000:3000
     environment:
       DB_URL: "${DB_URL}"
+      FORTYTWO_CLIENT_ID: "${FORTYTWO_CLIENT_ID}"
+      FORTYTWO_CLIENT_SECRET: "${FORTYTWO_CLIENT_SECRET}"
+      FORTYTWO_CLIENT_URL: "${FORTYTWO_CLIENT_URL}"
+      FORTYTWO_CLIENT_URL_CALLBACK: "${FORTYTWO_CLIENT_URL_CALLBACK}"
+      JWT_SECRET: "${JWT_SECRET}"
+      JWT_EXPIRES_IN: "${JWT_EXPIRES_IN}"
     # env_file:
     #   - .env
     depends_on:
@@ -73,7 +79,7 @@ services:
   adminer:
     image: adminer
     container_name: adminer
-    networks: 
+    networks:
       - docker_network
     restart: on-failure
     ports:
@@ -82,7 +88,7 @@ services:
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer
-    networks: 
+    networks:
       - docker_network
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -90,7 +96,7 @@ services:
     restart: unless-stopped
     ports:
       - 9443:9443 # https
-      - 9000:9000 # http 
+      - 9000:9000 # http
 
 volumes:
   portainer_data:

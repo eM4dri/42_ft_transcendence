@@ -1,23 +1,37 @@
 # from https://www.youtube.com/watch?v=JsgdvPMMdGA
 # from https://notiz.dev/blog/prisma-migrate-deploy-with-docker
 # from https://notiz.dev/blog/dockerizing-nestjs-with-prisma-and-postgresql
-# TODO use multistages FROM build && FROM Prod 
+# TODO use multistages FROM build && FROM Prod
 
-FROM node:18-alpine
+FROM node:18-alpine as BUILDER
 
 WORKDIR /app
 
 COPY package.json yarn.lock ./
 COPY prisma ./prisma/
 
-RUN yarn install
+RUN yarn install --frozen-lockfile --ignore-scripts
 
 COPY . .
 
 RUN yarn prisma generate
 
 RUN yarn build
+RUN yarn install --production
+
+# -----------------------------------------------
+FROM node:18-alpine as PRODUCTION
+
+ENV NODE_ENV prod
+
+WORKDIR /app
+
+COPY --from=BUILDER app/package.json app/yarn.lock ./
+COPY --from=BUILDER app/prisma ./prisma
+COPY --from=BUILDER app/dist ./dist
+COPY --from=BUILDER app/node_modules ./node_modules
+
 
 EXPOSE 3000
-CMD ["yarn", "start:migrate:dev"]
 
+CMD ["yarn", "start:migrate:prod"]

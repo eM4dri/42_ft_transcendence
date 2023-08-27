@@ -18,7 +18,7 @@ declare global {
       PORTAINER_VOLUME_PATH: string;
       POSTGRES_VOLUME_PATH: string;
       PGADMIN_VOLUME_PATH: string;
-      ENV: 'test' | 'dev' | 'prod';
+      NODE_ENV: 'test' | 'dev' | 'prod';
     }
   }
 }
