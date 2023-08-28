@@ -1,80 +1,21 @@
-# TODO use ENV aliases
 version: '3.8'
 services:
-  dev-db:
+  db:
     image: postgres:15-alpine
-    container_name: dev-db
+    container_name: "${DB_HOST}"
+    networks:
+      - docker_network
+    # expose:
+    #   - "${DB_PORT}"
     ports:
       - "${DB_PORT}:5432"
     environment:
       POSTGRES_USER: "${DB_USER}"
       POSTGRES_PASSWORD: "${DB_PASSWORD}"
       POSTGRES_DB: "${DB_NAME}"
-    # env_file:
-    #   - .env
     restart: on-failure
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - dev_network
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin4_container
-    restart: always
-    ports:
-      - "8888:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: user@mail.com
-      PGADMIN_DEFAULT_PASSWORD: pg_password
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    networks:
-      - dev_network
-
-
-  standalone-db:
-    image: postgres:15-alpine
-    container_name: "${DB_HOST}"
-    networks:
-      - docker_network
-    expose:
-      - "${DB_PORT}"
-    environment:
-      POSTGRES_USER: "${DB_USER}"
-      POSTGRES_PASSWORD: "${DB_PASSWORD}"
-      POSTGRES_DB: "${DB_NAME}"
-    # env_file:
-    #   - .env
-    restart: on-failure
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  nest-api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: nest-api
-    networks:
-      - docker_network
-    ports:
-      - 3000:3000
-    environment:
-      DB_URL: "${DB_URL}"
-      FORTYTWO_CLIENT_ID: "${FORTYTWO_CLIENT_ID}"
-      FORTYTWO_CLIENT_SECRET: "${FORTYTWO_CLIENT_SECRET}"
-      FORTYTWO_CLIENT_URL: "${FORTYTWO_CLIENT_URL}"
-      FORTYTWO_CLIENT_URL_CALLBACK: "${FORTYTWO_CLIENT_URL_CALLBACK}"
-      JWT_SECRET: "${JWT_SECRET}"
-      JWT_EXPIRES_IN: "${JWT_EXPIRES_IN}"
-    # env_file:
-    #   - .env
-    depends_on:
-      standalone-db:
-        condition: service_healthy
-    restart: on-failure
+      - db_data:/var/lib/postgresql/data
 
   adminer:
     image: adminer
@@ -85,42 +26,16 @@ services:
     ports:
       - 8080:8080
 
-  portainer:
-    image: portainer/portainer-ce:latest
-    container_name: portainer
-    networks:
-      - docker_network
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
-    restart: unless-stopped
-    ports:
-      - 9443:9443 # https
-      - 9000:9000 # http
+
 
 volumes:
-  portainer_data:
+  db_data:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: "${PORTAINER_VOLUME_PATH}"
-  postgres_data:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: "${POSTGRES_VOLUME_PATH}"
-  pgadmin_data:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: "${PGADMIN_VOLUME_PATH}"
+      device: "${DB_VOLUME_PATH}"
 
 networks:
   docker_network:
     driver: bridge
-  dev_network:
-
-

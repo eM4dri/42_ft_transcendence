@@ -16,8 +16,7 @@ declare global {
       JWT_SECRET: string;
       JWT_EXPIRES_IN: number;
       PORTAINER_VOLUME_PATH: string;
-      POSTGRES_VOLUME_PATH: string;
-      PGADMIN_VOLUME_PATH: string;
+      DB_VOLUME_PATH: string;
       NODE_ENV: 'test' | 'dev' | 'prod';
     }
   }

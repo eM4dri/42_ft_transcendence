@@ -1,5 +1,5 @@
-dist
-node_modules
+/srcs/dist
+/srcs/node_modules
 certs
 compose
 docker_config
