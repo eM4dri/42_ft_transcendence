@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 2023-08-28 - emadriga
 ### Changed
 - Lighter docker image for backend module
+- Backend setup simplified (composes, env, package.json...) to work in `dev` and `standalone` modes, see ON_BOARDING.md
+- Modified ON_BOARDING.md acordingly
 
 ## 2023-08-27 - emadriga
 ### Changed
