@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-08-29 - emadriga
+### Added
+- Added chatUserMessages to db Schema
+- Added chatMessages logic to `chat.controller`(GET, PUT, POST & DELETE) including flow to db through service, and documented on swagger
+- Added `JWT` authorization to `chat.controller`, transform previous methods to get user from logged user.
+- Added deleteOn cascade relations to db schema
+
+### Changed
+- Improve readability of schemas, objects... (id->objectId user1/2->talker/listener)
+- Remove unnecessary dependencies
+- Added some TODOs
+
 ## 2023-08-28 - emadriga
 ### Changed
 - Lighter docker image for backend module

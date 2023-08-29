@@ -1,1 +1,2 @@
-export * from './createChat.dto';
+export * from './createChatMessage.dto';
+export * from './updateChatMessage.dto';

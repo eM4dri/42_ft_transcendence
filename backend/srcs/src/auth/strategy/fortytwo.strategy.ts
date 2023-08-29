@@ -14,9 +14,7 @@ export class FortyTwoStrategy extends PassportStrategy(
   Strategy,
   '42',
 ) {
-  constructor(
-    private userService: UserService,
-  ) {
+  constructor(private userService: UserService) {
     super({
       clientID: process.env.FORTYTWO_CLIENT_ID,
       clientSecret:
@@ -44,7 +42,7 @@ export class FortyTwoStrategy extends PassportStrategy(
     // };
     // console.log(user42);
     const userEmail = profile.emails[0].value;
-    let userdb : User = await this.userService.get(
+    let userdb: User = await this.userService.get(
       userEmail,
     );
     if (!userdb) {

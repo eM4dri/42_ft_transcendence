@@ -1,25 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
+  IsString,
   IsUUID,
 } from 'class-validator';
 
-export class CreateChatDto {
+export class UpdateChatMessageDto {
   @IsNotEmpty()
   @IsUUID()
   @ApiProperty({
-    name: 'user1',
+    name: 'chatMessageId',
     type: String,
     required: true,
   })
-  user1: string;
+  chatMessageId: string;
 
   @IsNotEmpty()
-  @IsUUID()
+  @IsString()
   @ApiProperty({
-    name: 'user2',
+    name: 'message',
     type: String,
     required: true,
   })
-  user2: string;
+  message: string;
 }

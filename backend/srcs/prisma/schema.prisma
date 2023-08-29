@@ -11,11 +11,11 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
+  userId String @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
-  id42 Int @unique
+  userId42 Int @unique
   login String @unique
   email String @unique
   url String @unique
@@ -24,28 +24,40 @@ model User {
   firstName String?
   lastName String?
 
-  chatusers ChatUser[]
+  chatUsers ChatUser[]
   @@map("users")
 }
 
 model Chat {
-  id String @id @default(uuid())
+  chatId String @id @default(uuid())
   created DateTime @default(now())
 
-
-  chatusers ChatUser[]
+  chatUsers ChatUser[]
   @@map("chats")
 }
 
 model ChatUser {
-  id String @id @default(uuid())
+  chatUserId String @id @default(uuid())
 
-  chat_chatUser_link Chat @relation(fields:[chatId], references: [id])
+  chat_chatUser_link Chat @relation(fields:[chatId], references: [chatId], onDelete: Cascade)
   chatId String 
-  user_chatUser_link User @relation(fields:[userId], references: [id])
+  user_chatUser_link User @relation(fields:[userId], references: [userId], onDelete: Cascade)
   userId String 
 
-  @@map("chat users")
+  chatUserMessages ChatUserMessage[]
+  @@map("chat_users")
 }
 
+model ChatUserMessage {
+  chatMessageId String @id @default(uuid())
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  message String
+
+  chatUser_chatUserMessage_link ChatUser @relation(fields:[chatUserId], references: [chatUserId], onDelete: Cascade)
+  chatUserId String 
+
+  @@map("chat_user_messages")
+}

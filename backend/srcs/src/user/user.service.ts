@@ -27,7 +27,7 @@ export class UserService {
     try {
       const user = await this.prisma.user.create({
         data: {
-          id42: dto.id,
+          userId42: dto.id,
           username: dto.username,
           login: dto.username,
           url: dto.url,
@@ -44,7 +44,7 @@ export class UserService {
       ) {
         if (error.code === 'P2002') {
           throw new HttpException(
-            'Email already in use',
+            'User already in use',
             HttpStatus.CONFLICT,
           );
         }
