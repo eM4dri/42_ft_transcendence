@@ -15,8 +15,6 @@ declare global {
       FORTYTWO_CLIENT_URL_CALLBACK: string;
       JWT_SECRET: string;
       JWT_EXPIRES_IN: number;
-      PORTAINER_VOLUME_PATH: string;
-      DB_VOLUME_PATH: string;
       NODE_ENV: 'test' | 'dev' | 'prod';
     }
   }

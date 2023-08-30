@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-08-30 - emadriga
+### Changed
+- Moved back's `docker-compose.yml` working flow to root's directory ./
+- Updated `ON_BOARDING.md` set up instructions
+
 ## 2023-08-29 - emadriga
 ### Added
 - Added chatUserMessages to db Schema
@@ -27,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Use login to `42API` to create new users, changes on db schemas and dto related to handle this data.
 - `JWT` token issued with our db data (username and id)
-### Addded
+### Added
 - Added some TODOs
 ## 2023-08-25 - emadriga
 ### Changed
@@ -41,14 +46,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Prettier formats
 
 ## 2023-08-20 - emadriga
-### Addded
+### Added
+- Moved back's `docker-compose.yml` working flow to root's directory ./
+
+## 2023-08-20 - emadriga
+### Added
 - Implement oauth2 against 42API using `Passport` authentication middleware for Node.js, [https://www.passportjs.org/](https://www.passportjs.org/). Following these links
 > https://www.passportjs.org/packages/passport-42/
 > https://www.youtube.com/watch?v=vGafqCNCCSs
 > https://github.com/ykoh42/42OAuth-NestJS/blob/master/src/login/session.serializer.ts
 
 ## 2023-08-19 - emadriga
-### Addded
+### Added
 - New file `AKNOWLEDGED_PROBLEMS.md` to share information about time comsuming on already known problems
 
 ### Changed

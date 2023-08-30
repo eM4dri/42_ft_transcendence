@@ -1,24 +1,79 @@
-version: '3'
+version: '3.8'
 services:
   front:
     tty: true
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    container_name: web
+    networks:
+      - docker_network
     volumes:
       - ./frontend/srcs:/app/
     ports:
       - 4200:4200
   back:
-    tty: true
+    # tty: true
     build:
       context: ./backend
       dockerfile: Dockerfile
-    volumes:
-      - ./backend/srcs:/app/
+    container_name: api
+    networks:
+      - docker_network
     ports:
       - 3000:3000
+    environment:
+      DB_URL: "${DB_URL}"
+      FORTYTWO_CLIENT_ID: "${FORTYTWO_CLIENT_ID}"
+      FORTYTWO_CLIENT_SECRET: "${FORTYTWO_CLIENT_SECRET}"
+      FORTYTWO_CLIENT_URL: "${FORTYTWO_CLIENT_URL}"
+      FORTYTWO_CLIENT_URL_CALLBACK: "${FORTYTWO_CLIENT_URL_CALLBACK}"
+      JWT_SECRET: "${JWT_SECRET}"
+      JWT_EXPIRES_IN: "${JWT_EXPIRES_IN}"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
   db:
-    build:
-      context: ./db
-      dockerfile: Dockerfile
+    image: postgres:15-alpine
+    container_name: "${DB_HOST}"
+    networks:
+      - docker_network
+    expose:
+      - "${DB_PORT}"
+    environment:
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_DB: "${DB_NAME}"
+    restart: on-failure
+    volumes:
+      - ${DB_VOLUME_PATH}:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  adminer:
+    image: adminer
+    container_name: adminer
+    networks:
+      - docker_network
+    restart: on-failure
+    ports:
+      - 8080:8080
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    networks:
+      - docker_network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PORTAINER_VOLUME_PATH}:/data
+    restart: unless-stopped
+    ports:
+      - 9000:9000 # http
+      # - 9443:9443 # https
+
+networks:
+  docker_network:
+    driver: bridge

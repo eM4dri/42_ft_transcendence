@@ -9,12 +9,12 @@ FROM node:18-alpine as BUILDER
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-COPY prisma ./prisma/
+COPY srcs/package.json srcs/yarn.lock ./
+COPY srcs/prisma ./prisma/
 
 RUN yarn install --frozen-lockfile --ignore-scripts
 
-COPY . .
+COPY srcs/. .
 
 RUN yarn prisma generate
 

@@ -1,7 +1,7 @@
-/srcs/dist
-/srcs/node_modules
-certs
-compose
-docker_config
-portainer*
-tls
+srcs/dist
+srcs/node_modules
+srcs/certs
+srcs/compose
+srcs/docker_config
+srcs/portainer*
+srcs/tls

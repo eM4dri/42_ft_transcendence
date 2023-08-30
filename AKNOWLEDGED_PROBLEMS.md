@@ -1,6 +1,9 @@
 # Aknowledged_problems
 To share information about time comsuming on already known problems
 
+- How PATH works in docker-compose.yml volumes 
+[Persistence of data in Docker](https://stackoverflow.com/questions/46907558/docker-compose-relative-paths-vs-docker-volume)
+
 - Extend Request object to avoid undefined, is better using a custom decorator like `get-user.decorator.ts` but this can be helpful https://blog.logrocket.com/extend-express-request-object-typescript/
 
 - `Express.js` (what `NestJS` uses under) cannot differentiate between types in a querystring, that makes imposible to work two getters with param [more](https://stackoverflow.com/questions/65495791/nestjs-cant-implement-mutiple-get-methods-in-same-controller), I'm not sure if any code can diferenciate from querystring between types, personalized getters must be handle with @Query (querystring) decorator

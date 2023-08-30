@@ -15,7 +15,10 @@ The best way to install Node.js on 42 mac pcs is through  Node Version Manager .
 4. Start your db running `yarn db:restart`
 5. Start your api in dev mode running `yarn start:dev`
 
-## Run backend as standalone
-1. Starting project directory `cd backend`
-2. Set up enviroment, template available on ../backend/template.env, use `cp template.env .env` and fill in .env file
-3. Run `docker compose up -d` 
+## Run EVERYTHING on docker
+1. Starting project directory at root `./`
+2. Set up enviroment, template available on ./(root), use `cp template.env .env` and fill in .env file
+3. Create the paths for your volumes `mkdir -p volumes/db volumes/portainer`
+3. Run `docker compose up -d` to start 
+4. Run `docker compose down -v` to stop
+5. Run `docker system prune -af` to clean
