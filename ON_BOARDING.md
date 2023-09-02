@@ -22,3 +22,10 @@ The best way to install Node.js on 42 mac pcs is through  Node Version Manager .
 3. Run `docker compose up -d` to start 
 4. Run `docker compose down -v` to stop
 5. Run `docker system prune -af` to clean
+
+## Services directions 
+ - Portainer 0.0.0.0:9000 Docker Manager
+ - Api 0.0.0.0:3000
+ - Adminer localhost:8080 DB Mamager
+ - Swagger 0.0.0.0:3000/swagge
+
