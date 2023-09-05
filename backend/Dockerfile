@@ -44,7 +44,3 @@ EXPOSE 3000
 
 # Define the start command
 CMD ["yarn", "start:migrate:prod"]
-
-# Optional: Add a HEALTHCHECK
-HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD ["yarn", "healthcheck"]
-
