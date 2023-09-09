@@ -39,35 +39,6 @@ services:
       interval: 15s
       timeout: 10s
       retries: 5
-  dev:
-    tty: true
-    build:
-      context: ./backend
-      dockerfile: dev-Dockerfile
-    container_name: api
-    networks:
-      - docker_network
-    ports:
-      - 3000:3000
-    environment:
-      DB_URL: "${DB_URL}"
-      FORTYTWO_CLIENT_ID: "${FORTYTWO_CLIENT_ID}"
-      FORTYTWO_CLIENT_SECRET: "${FORTYTWO_CLIENT_SECRET}"
-      FORTYTWO_CLIENT_URL: "${FORTYTWO_CLIENT_URL}"
-      FORTYTWO_CLIENT_URL_CALLBACK: "${FORTYTWO_CLIENT_URL_CALLBACK}"
-      JWT_SECRET: "${JWT_SECRET}"
-      JWT_EXPIRES_IN: "${JWT_EXPIRES_IN}"
-    depends_on:
-      db:
-        condition: service_healthy
-    restart: on-failure
-    healthcheck:
-      test: ["CMD-SHELL", "yarn", "healthcheck"]
-      interval: 15s
-      timeout: 10s
-      retries: 5
-    volumes:
-      - ./backend/srcs:/app/
   db:
     image: postgres:15-alpine
     container_name: "${DB_HOST}"
