@@ -1,0 +1,27 @@
+# Use a specific Node.js version and Alpine Linux version
+FROM node:18-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and yarn.lock
+COPY srcs/package.json srcs/yarn.lock ./
+
+# Copy Prisma schema
+COPY srcs/prisma ./prisma/
+
+
+# Copy the rest of the application code
+COPY srcs/. .
+
+# Install dependencies
+RUN yarn install 
+
+# Generate Prisma client and build the application
+#RUN yarn prisma generate
+#RUN yarn build
+CMD ["yarn", "start:migrate:dev"]
+# --------------------------------------- 
+# --------------------------------------- 
+# --------------------------------------- 
+# --------------------------------------- 
