@@ -26,9 +26,6 @@ exec:
 list-services:
 	docker-compose -f $(PRO_COMPOSE_FILE) ps --services
 
-dev-list-services:
-	docker-compose -f $(DEV_COMPOSE_FILE) ps --services
-
 dev-up: 
 	docker-compose -f $(DEV_COMPOSE_FILE) up -d
 	@echo "lista de servicios levantados"
@@ -46,6 +43,10 @@ dev-exec:
 dev-list-services:
 	docker-compose -f $(DEV_COMPOSE_FILE) ps --services
 
+prune:
+	docker system prune -af
+	docker volume prune -f
+
 help:
 	@echo "Uso del Makefile para gestionar Docker Compose:"
 	@echo "--------------------------------------------"
@@ -61,6 +62,6 @@ help:
 	@echo "make dev-exec service=<nombre del servicio> cmd=<comando> - Ejecuta un comando en un servicio específico."
 	@echo "make dev-list-services  - Lista los servicios definidos en el archivo docker-compose.yml."
 	@echo "make help           - Muestra este mensaje de ayuda (por defecto)."
-
+	@echo "make prune 				- Hace prune"
 .PHONY: up down logs exec list-services dev-up dev-down dev-logs dev-exec dev-list-services help
 
