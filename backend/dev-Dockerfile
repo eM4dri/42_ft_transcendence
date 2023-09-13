@@ -11,11 +11,12 @@ COPY srcs/package.json srcs/yarn.lock ./
 COPY srcs/prisma ./prisma/
 
 
+# Install dependencies
+RUN yarn install 
+
 # Copy the rest of the application code
 COPY srcs/. .
 
-# Install dependencies
-RUN yarn install 
 
 # Generate Prisma client and build the application
 #RUN yarn prisma generate
