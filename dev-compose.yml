@@ -28,8 +28,9 @@ services:
       interval: 15s
       timeout: 10s
       retries: 5
-        #volumes:
-        #  - ./backend/srcs/:/app/
+    volumes:
+      - ./backend/srcs:/app
+      - /app/node_modules
   db:
     image: postgres:15-alpine
     container_name: "${DB_HOST}"
