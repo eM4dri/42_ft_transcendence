@@ -18,7 +18,7 @@ COPY srcs/prisma ./prisma/
 COPY srcs/. .
 
 # Generate Prisma client and build the application
-RUN yarn prisma generate
+#RUN yarn prisma generate
 # RUN yarn build
 
 CMD ["yarn", "start:migrate:dev"]
