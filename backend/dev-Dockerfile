@@ -10,7 +10,6 @@ COPY srcs/package.json srcs/yarn.lock ./
 # Install dependencies
 RUN yarn install 
 
-# Install shelljs as a development dependency
 # Copy Prisma schema
 COPY srcs/prisma ./prisma/
 
@@ -18,7 +17,6 @@ COPY srcs/prisma ./prisma/
 COPY srcs/. .
 
 # Generate Prisma client and build the application
-#RUN yarn prisma generate
-# RUN yarn build
+RUN yarn prisma generate
 
 CMD ["yarn", "start:migrate:dev"]
