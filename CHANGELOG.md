@@ -7,6 +7,13 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## 2023-09-16  - tomartin
+
+## Change
+- backend/dev-compose
+- change in ON_BOARDING
+
+
 ## 2023-09-10 - emadriga
 
 ### Added
@@ -16,6 +23,7 @@ and this project adheres to
 
 ### Changed
 - Retrieved comments on Backend Multistage Dockerfile removed in previous commit
+
 
 ## 2023-09-09  - tomartin
 

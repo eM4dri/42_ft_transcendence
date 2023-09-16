@@ -29,4 +29,19 @@ The best way to install Node.js on 42 mac pcs is through  Node Version Manager .
  - Adminer localhost:8080 DB Mamager
  - Swagger 0.0.0.0:3000/swagge
 
+ # Back with docker in dev mode (by Tomartin :D)
+  I've managed to set up the backend in development mode in Docker with a 
+  Makefile that allows you to start everything with a single command, 
+  working on both 42's Macs and Linux. 
 
+ ## Here are the necessary configurations to make it work (primarily on 42's Macs):
+  1. Clone the repository to a location that is not "sgoinfre."
+  2. Configure the .env file correctly.
+  3. Add the path to the backend/srcs folder to the Docker client:
+     - Configuration -> Resources -> FILE SHARING
+     - Click on Apply & Restart.
+  
+  To start the development environment: make dev-up
+  To view the Node console: make dev-logs service=dev
+  For more useful commands, see: make help
+ 
