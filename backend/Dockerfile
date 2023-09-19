@@ -1,3 +1,9 @@
+# Lighter multistages container from:
+#   - https://www.youtube.com/watch?v=JsgdvPMMdGA 
+# Run prisma migrations on dockerfile from
+#   - https://notiz.dev/blog/prisma-migrate-deploy-with-docker
+#   - https://notiz.dev/blog/dockerizing-nestjs-with-prisma-and-postgresql
+
 # Use a specific Node.js version and Alpine Linux version
 FROM node:18-alpine as BUILDER
 

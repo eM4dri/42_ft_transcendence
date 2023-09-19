@@ -5,7 +5,7 @@ PRO_COMPOSE_FILE = docker-compose.yml
 DEV_COMPOSE_FILE = dev-compose.yml
 
 # Regla para iniciar los contenedores en segundo plano
-up:
+up: generate_front_enviroment
 	docker-compose -f $(PRO_COMPOSE_FILE) up -d
 	@echo "lista de servicios levantados"
 	docker-compose -f $(DEV_COMPOSE_FILE) ps --services
@@ -26,7 +26,10 @@ exec:
 list-services:
 	docker-compose -f $(PRO_COMPOSE_FILE) ps --services
 
-dev-up: 
+dev-list-services:
+	docker-compose -f $(DEV_COMPOSE_FILE) ps --services
+
+dev-up:
 	docker-compose -f $(DEV_COMPOSE_FILE) up -d
 	@echo "lista de servicios levantados"
 	@docker-compose -f $(DEV_COMPOSE_FILE) ps --services
@@ -63,5 +66,9 @@ help:
 	@echo "make dev-list-services  - Lista los servicios definidos en el archivo docker-compose.yml."
 	@echo "make help           - Muestra este mensaje de ayuda (por defecto)."
 	@echo "make prune 				- Hace prune"
-.PHONY: up down logs exec list-services dev-up dev-down dev-logs dev-exec dev-list-services help
+
+generate_front_enviroment:
+	bash generate-environment.sh
+
+.PHONY: up down logs exec list-services dev-up dev-down dev-logs dev-exec dev-list-services help gen_front_env
 

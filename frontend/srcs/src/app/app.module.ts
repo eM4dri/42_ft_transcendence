@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +9,14 @@ import { GameComponent } from './modules/game/game.component';
 import { HistoryComponent } from './modules/history/history.component';
 import { ChatComponent } from './modules/chat/chat.component';
 import { ProfileComponent } from './modules/profile/profile.component';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
+import { environment } from 'src/environments/environment';
+import { AuthInterceptor } from './core';
+import { MySocket } from './services/web-socket.service';
+
+const config: SocketIoConfig = { url: environment.apiUrl };
 
 @NgModule({
   declarations: [
@@ -22,9 +30,21 @@ import { ProfileComponent } from './modules/profile/profile.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    SocketIoModule.forRoot(config),
+    FormsModule,
+    ReactiveFormsModule,
+
   ],
-  providers: [],
+  providers: [
+    CookieService, 
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    MySocket
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

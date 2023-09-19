@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-09-19 - emadriga
+
+### Added
+- Athorization to http requets on front via cookies through httpinterceptors (no front's call implemented yet)
+- Authorization front<->back thorugh WS
+- 1st demo chat available, to make it work you need to send message through swagger to someone in other to create chat
+
+### Changed
+- Comment some unnecessary dependencies
+
+## 2023-09-17 - emadriga
+
+### Added
+
+- First implementation of '[`Socket.IO`](https://socket.io/)' to handle chats
+- Login in front through back
+- front now handles enviroment, run `generate-environment.sh`(included in make) to create necesary files from .env
+- login guard on front redirects to intra42
+
+### Changed
+- Added some .env variables
 
 ## 2023-09-16  - tomartin
 
@@ -23,7 +44,6 @@ and this project adheres to
 
 ### Changed
 - Retrieved comments on Backend Multistage Dockerfile removed in previous commit
-
 
 ## 2023-09-09  - tomartin
 

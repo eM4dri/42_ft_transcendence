@@ -16,6 +16,11 @@ declare global {
       JWT_SECRET: string;
       JWT_EXPIRES_IN: number;
       NODE_ENV: 'test' | 'dev' | 'prod';
+      HOST: string;
+      API_PORT: string;
+      API_URL: string;
+      WEB_PORT: string;
+      WEB_URL: string;
     }
   }
 }

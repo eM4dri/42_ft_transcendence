@@ -27,12 +27,12 @@ export class AuthController {
   @UseGuards(FortyTwoGuard)
   async redirect(
     @GetUser() user42: User,
-    // @GetUser('username42') email: string,
     @Res() res: Response,
   ) {
-    // console.log('email', email);
     const user: { accessToken: string } =
       this.jwtAuthService.login(user42);
-    return res.send(user);
+    // return res.send(user);
+    res.cookie('USER_TOKEN', user.accessToken);
+    res.redirect(process.env.WEB_URL);
   }
 }

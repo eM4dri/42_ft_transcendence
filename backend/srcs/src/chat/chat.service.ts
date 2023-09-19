@@ -14,6 +14,12 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 export class ChatService {
   constructor(private prisma: PrismaService) {}
 
+  async getChatUsers(chatId: string){
+    return await this.prisma.chatUser.findMany({
+      where: {  chatId   },
+    });
+  }
+
   async getChats(userId: string) {
     const chats =
       await this.prisma.chatUser.findMany({
@@ -50,6 +56,7 @@ export class ChatService {
       return {
         chatId: chatUser.chatId,
         userId: chatUser.userId,
+        chatUserId: chatUser.chatUserId,
         userEmail: userMails.email,
       };
     });
@@ -106,6 +113,25 @@ export class ChatService {
     });
     return chat;
   }
+
+  async getChatMessagesLighter(chatId: string) {
+    const chatUsers =
+      await this.prisma.chatUser.findMany({
+        where: { chatId },
+      });
+    const chatUsersIds = [];
+    chatUsers.forEach(function (index) {
+      chatUsersIds.push(index.chatUserId);
+    });
+    const messages =
+      await this.prisma.chatUserMessage.findMany({
+        where: {
+          chatUserId: { in: chatUsersIds },
+        },
+      });
+    return messages;
+  }
+
 
   async newChatMessage(
     talker: string,

@@ -1,1 +1,78 @@
 <p align="center">chat works!</p>
+
+<!-- app.component.html -->
+<button
+(click)="getChats()"
+>loadChats</button>
+<!-- <div class="input">
+  <input
+    placeholder="JWT TOKEN"
+    type="text"
+    [(ngModel)]="jwtToken"
+    (keyup.enter)="saveToken()"
+  />
+</div> -->
+<div class="chat-app">
+    <!-- Barra lateral con la lista de usuarios disponibles -->
+    <div class="sidebar">
+      <h2>Usuarios Disponibles</h2>
+      <ul>
+        <li *ngFor="let chat of chatsAvailables">
+          <a (click)="loadChat(chat)">{{ chat.userEmail }}</a>
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Ventana de chat -->
+    <div class="chat-window">
+      <div *ngIf="currentChat.chatId!='0'">
+        <h2>Chat con {{ currentChat.userEmail }}</h2>
+        <!-- Aquí se mostrarían los mensajes del chat -->
+        <!-- Por simplicidad, asumimos que hay un arreglo de mensajes llamado 'messages' -->
+          <div class="chat-messages">
+            <div *ngFor="let message of chatMessages">
+              <ng-container
+                *ngIf="message.chatUserId!=currentChat.chatUserId; then alignRight; else alignLeft"
+                >
+              </ng-container>
+              <ng-template #alignRight>
+                <p style="text-align: right;"  > {{ message.message }}</p>
+              </ng-template>
+              <ng-template #alignLeft>
+                <p> {{ message.message }}</p>
+              </ng-template>
+
+              <ng-template #content>content here...</ng-template>
+              <ng-template #other_content>other content here...</ng-template>
+            </div>
+          </div>
+  
+        <!-- Formulario para enviar mensajes -->
+        <!-- <form (submit)="sendMessage()"> -->
+          <!-- [(ngModel)]="inputValue" -->
+          <div class="input">
+            <input
+              placeholder="Escribe un mensaje"
+              type="text"
+              [(ngModel)]="inputValue"
+              (keyup.enter)="saveMessage()"
+              (keydown)="startTyping()"
+              (blur)="stopTyping()"
+            />
+          </div>
+          <!-- <input
+            placeholder="Escribe un mensaje"
+            type="text"
+            (keyup.enter)="saveMessage()"
+            (keydown)="startTyping()"
+            (blur)="stopTyping()"
+          /> -->
+          <!-- <button type="submit">Enviar</button> -->
+        <!-- </form> -->
+      </div>
+      <div *ngIf="currentChat.chatId=='0'">
+        <p>Selecciona un usuario para empezar a chatear.</p>
+      </div>
+    </div>
+  </div>
+  

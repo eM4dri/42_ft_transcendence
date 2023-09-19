@@ -1,5 +1,13 @@
-import { Component, Renderer2 } from '@angular/core';
-import { Router, ActivatedRoute, RouterStateSnapshot } from '@angular/router';
+import { 
+  Component, 
+  // Renderer2 
+} from '@angular/core';
+import { 
+  Router, 
+  // ActivatedRoute, 
+  // RouterStateSnapshot 
+} from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -13,9 +21,10 @@ export class AppComponent {
 
   constructor (
     private router:Router,
-    private route:ActivatedRoute,
-    private _renderer:Renderer2
-    ) {}
+    // private route:ActivatedRoute,
+    // private _renderer:Renderer2,
+    ) {
+    }
 
   darkMode: boolean = true;
 
@@ -24,7 +33,7 @@ export class AppComponent {
   }
 
   public goToLogin(): void {
-    window.location.href = "http://localhost:3000/callback";
+    window.location.href = environment.loginUrl;
   }
 
   public goToHome(): void {
