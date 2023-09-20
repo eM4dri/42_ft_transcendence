@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   front:
+    user: "${UID}:${GID}"
     tty: true
     build:
       context: ./frontend
@@ -13,6 +14,7 @@ services:
     ports:
       - 4200:4200
   back:
+    user: "${UID}:${GID}"
     #tty: true
     build:
       context: ./backend

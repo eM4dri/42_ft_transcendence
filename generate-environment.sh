@@ -1,7 +1,10 @@
 #!/bin/bash
 
 # Ruta al archivo .env
-ENV_FILE=".env"
+ENV_ORIGIN=".env"
+ENV_FILE=".env_copy"
+
+grep -o '^[^#]*' $ENV_ORIGIN |sed 's/[[:blank:]]*$//'  > $ENV_FILE
 
 # Verifica si el archivo .env existe
 if [ -f "$ENV_FILE" ]; then
@@ -28,6 +31,9 @@ if [ -f "$ENV_FILE" ]; then
   echo "};" >> "$ENV_TS_FILE"
 
   echo "environment.ts generado exitosamente."
+
+  rm $ENV_FILE
 else
   echo "El archivo .env no existe en la raíz del proyecto."
 fi
+

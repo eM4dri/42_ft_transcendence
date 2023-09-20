@@ -6,7 +6,7 @@ DEV_COMPOSE_FILE = dev-compose.yml
 
 # Regla para iniciar los contenedores en segundo plano
 up: generate_front_enviroment
-	docker-compose -f $(PRO_COMPOSE_FILE) up -d
+	UID=${UID} GID=${GID} docker-compose -f $(PRO_COMPOSE_FILE) up -d
 	@echo "lista de servicios levantados"
 	docker-compose -f $(DEV_COMPOSE_FILE) ps --services
 
@@ -30,7 +30,7 @@ dev-list-services:
 	docker-compose -f $(DEV_COMPOSE_FILE) ps --services
 
 dev-up:
-	docker-compose -f $(DEV_COMPOSE_FILE) up -d
+	UID=${UID} GID=${GID} docker-compose -f $(DEV_COMPOSE_FILE) up -d
 	@echo "lista de servicios levantados"
 	@docker-compose -f $(DEV_COMPOSE_FILE) ps --services
 
@@ -42,9 +42,6 @@ dev-logs:
 
 dev-exec:
 	docker-compose -f $(DEV_COMPOSE_FILE) exec $(service) $(cmd)
-
-dev-list-services:
-	docker-compose -f $(DEV_COMPOSE_FILE) ps --services
 
 prune:
 	docker system prune -af

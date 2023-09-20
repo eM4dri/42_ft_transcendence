@@ -2,6 +2,7 @@
 version: '3.8'
 services:
   dev:
+    user: "${UID}:${GID}"
     #    tty: true
     build:
       context: ./backend
@@ -11,14 +12,8 @@ services:
       - docker_network
     ports:
       - 3000:3000
-    environment:
-      DB_URL: "${DB_URL}"
-      FORTYTWO_CLIENT_ID: "${FORTYTWO_CLIENT_ID}"
-      FORTYTWO_CLIENT_SECRET: "${FORTYTWO_CLIENT_SECRET}"
-      FORTYTWO_CLIENT_URL: "${FORTYTWO_CLIENT_URL}"
-      FORTYTWO_CLIENT_URL_CALLBACK: "${FORTYTWO_CLIENT_URL_CALLBACK}"
-      JWT_SECRET: "${JWT_SECRET}"
-      JWT_EXPIRES_IN: "${JWT_EXPIRES_IN}"
+    env_file:
+      .env
     depends_on:
       db:
         condition: service_healthy
