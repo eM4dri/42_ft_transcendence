@@ -21,6 +21,7 @@ declare global {
       API_URL: string;
       WEB_PORT: string;
       WEB_URL: string;
+      FAKE_LOGIN_URL: string;
     }
   }
 }

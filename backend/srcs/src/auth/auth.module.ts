@@ -7,6 +7,7 @@ import {
 } from './strategy';
 import { AuthController } from './auth.controller';
 import { UserService } from '../user/user.service';
+import { FakeAuthService } from './fake.auth.service';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UserService } from '../user/user.service';
     FortyTwoStrategy,
     JwtStrategy,
     UserService,
+    FakeAuthService
   ],
   exports: [AuthService, JwtModule],
 })

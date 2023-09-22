@@ -7,6 +7,13 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## 2023-09-20 - emadriga
+### Added
+- Fake login to have a secondary testing account
+
+### Changed
+- Remove default front testers, until it actually test something
+
+## 2023-09-20 - emadriga
 
 ### Changed
 - Fix file permissions on running docker (back & front) on linux
