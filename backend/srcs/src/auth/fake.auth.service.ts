@@ -12,8 +12,8 @@ export class FakeAuthService {
     private userService: UserService,
     ) {}
 
-  async fakeLogin() {
-    let userdb: User = await this._getFakeUser();
+  async fakeLogin(username: string) {
+    let userdb: User = await this._getFakeUser(username);
     const payload: JwtPayload = {
       username: userdb.username,
       sub: userdb.userId,      
@@ -23,19 +23,27 @@ export class FakeAuthService {
     };
   }
 
-  private async _getFakeUser(): Promise<User> {
-    const userEmail: string = 'gisasa-3@student.42madrid.com';
+  private async _getFakeUser(username: string): Promise<User> {
+    const userEmail: string = `${username}@mail.com`;
+    const usersId42 : number[] = Array.from((await this.userService.all()).map(x=>x.userId42));
+    let min: number = 42;
+    for (let userId42 of usersId42) {
+        if (userId42 < min) {
+          min = userId42;
+        }
+    }
     let userdb: User = await this.userService.get(
       userEmail,
     );
     if (!userdb) {
+      const fakeUsername = `fake_${username}`;
       const newUser: CreateUserDto = {
-        id: 3,
-        username: 'gisasa-3',
+        id: min - 1 ,
+        username: fakeUsername,
         email: userEmail,
-        url: 'https://profile.intra.42.fr/users/gisasa-3',
-        firstName: 'gisasa-3',
-        lastName:'gisasa-3',
+        url: `https://profile.intra.42.fr/users/${fakeUsername}`,
+        firstName: fakeUsername,
+        lastName: fakeUsername,
       };
       userdb = await this.userService.new(
         newUser,

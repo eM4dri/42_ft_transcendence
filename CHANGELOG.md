@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 2023-09-20 - emadriga
+## 2023-09-25 - emadriga
+### Changed
+- Fake login accepts untill 42 fake users calling `http://localhost:3000${process.env.FAKE_LOGIN_URL}/${username}`
+
+## 2023-09-23 - emadriga
 ### Added
 - Fake login to have a secondary testing account
 

@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Param,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -38,12 +39,13 @@ export class AuthController {
     res.redirect(process.env.WEB_URL);
   }
 
-  @Get(process.env.FAKE_LOGIN_URL)
+  @Get(`${process.env.FAKE_LOGIN_URL}/:username`)
   async loginImpostor(
+    @Param('username') username: string,
     @Res() res: Response,
   ) {
     const user: { accessToken: string } =
-      await this.fakeAuthService.fakeLogin();
+      await this.fakeAuthService.fakeLogin(username);
     // return res.send(user);
     res.cookie('USER_TOKEN', user.accessToken);
     res.redirect(process.env.WEB_URL);
