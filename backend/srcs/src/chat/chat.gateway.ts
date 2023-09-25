@@ -1,6 +1,7 @@
 import {
     MessageBody,
     OnGatewayConnection,
+    OnGatewayDisconnect,
     SubscribeMessage,
     WebSocketGateway,
     WebSocketServer,
@@ -23,8 +24,7 @@ import { JwtPayload } from 'src/auth/strategy';
 
 @UseGuards(WsGuard)
 @Injectable()
-export class ChatsGateway implements OnGatewayConnection  {
-// export class ChatsGateway {
+export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect  {
     private initializationMap = new Map<string, string >();
     constructor(
         private readonly chatService: ChatService,
@@ -34,10 +34,19 @@ export class ChatsGateway implements OnGatewayConnection  {
     server: Server;
 
     async handleConnection(socket: Socket) {
-        const { token } = socket.handshake.auth;
-        // console.log(token);
+        // const { token } = socket.handshake.auth;
         const user = await this.authService.isAuthorized(socket);
         this.initializationMap.set(user.sub, socket.id);
+        this._loadConnectedUsers(user.sub, socket.id);
+        this._userConnects(user.sub, socket.id);
+        this._loadChats(user.sub);
+    }
+
+    async handleDisconnect(socket: Socket) {
+        // const { token } = socket.handshake.auth;
+        const user = await this.authService.isAuthorized(socket);
+        this.initializationMap.delete(user.sub);
+        this._userDisconnects(user.sub);
     }
 
     @SubscribeMessage('send_message')
@@ -53,27 +62,53 @@ export class ChatsGateway implements OnGatewayConnection  {
         this.loadChat(message.chatId);
     }
 
+    @SubscribeMessage('send_new_message')
+    async listenForNNewMessages(@GetUser() user: JwtPayload, @MessageBody() message: CreateChatMessageDto) {
+        const msg = await this.chatService.newChatMessage(
+                        user.sub,
+                        {
+                            listenerId: message.listenerId,
+                            message: message.message,
+                            chatId: undefined,
+                        }
+                    );
+        this._loadChats(user.sub);
+        this._loadChats(message.listenerId);
+        this.loadChat(msg.chatId);
+    }
+
     @SubscribeMessage('typing')
     listenFortypingMessages(@MessageBody() message: string) {
         console.log('someone is typing');
     }
 
-    @UseGuards(WsGuard)
-    @SubscribeMessage('get_chats')
-    async getChats(@GetUser() user: JwtPayload) {
-        const chats = await this.chatService.getChats(user.sub);
-        const socket = this.initializationMap.get(user.sub);
+    private async _loadConnectedUsers(userId: string,usersSocket: string) {
+        const usersId: string [] =  Array.from( this.initializationMap.keys() );
+        this.server.sockets.to(usersSocket).emit('users_connected', usersId.filter(id => id  != userId ));
+    }    
+    private async _userConnects(userId: string, usersSocket: string) {
+        const sockets: string [] =  Array.from( this.initializationMap.values() );
+        for (let socket of sockets.filter(ws => ws !== usersSocket)){
+            this.server.sockets.to(socket).emit('user_connects', userId);
+        }
+    }    
+
+    private async _userDisconnects(userId: string){
+        this.server.sockets.emit('user_disconnects', userId);
+    }
+
+    private async _loadChats(userId: string){
+        const chats = await this.chatService.getChats(userId);
+        const socket = this.initializationMap.get(userId);
         this.server.sockets.to(socket).emit('chats_availables', chats);
     }
     
     @SubscribeMessage('load_chat')
     async loadChat(@MessageBody() chatId: string) {
         const chat = await this.chatService.getChatMessagesLighter(chatId);
-        const chatUsers = await this.chatService.getChatUsers(chatId);
-        for(let chatUser of chatUsers){
-            const socket = this.initializationMap.get(chatUser.userId);
-            if (socket !== undefined)
-                this.server.sockets.to(socket).emit('chat_loaded', chat);
+        const sockets: string [] =  Array.from( this.initializationMap.values() );
+        for (let socket of sockets){
+            this.server.sockets.to(socket).emit(chatId, chat);
         }
     }
 

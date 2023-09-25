@@ -1,116 +1,144 @@
 import { Component } from '@angular/core';
-import { ApiService, AuthService, Chat, ChatMessages, ChatService } from 'src/app/services';
-import { SessionStorageConstants } from 'src/app/utils';
+import { ApiService, AuthService, Chat, ChatMessages, ChatService, ChatUser } from 'src/app/services';
+import { SessionStorageConstants, UriConstants } from 'src/app/utils';
 import { BaseComponent } from '../shared';
 
-
-
-
-
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+    selector: 'app-chat',
+    templateUrl: './chat.component.html',
+    styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent extends BaseComponent  {
-  constructor(
-    protected readonly api: ApiService,
-    protected readonly chatService: ChatService,
-    private readonly authService: AuthService
-  ) {
-    super(api);
-    this.chatService.userListening().subscribe(val => {
-      console.log('user listening here', val);
-        // if (typeof val === 'boolean') {
-        //   this.showTyping = false;
-        // } else {
-        //   this.showTyping = this.userData.id !== val.id;
-        // }
-    });
-    this.chatService.chatsAvailables().subscribe(val => {
-      this.chatsAvailables = val;
-    });
-    this.chatService.chatLoaded().subscribe(val => {
-      this.chatMessages = val;
-    });
+export class ChatComponent extends BaseComponent<ChatUser> {
+    counter=0;
+    inputValue = '';
+    jwtToken = '';
+    currentChat: Chat = {
+      chatId: 'none',
+      userId: '0',
+      chatUserId: '0',
+      username: '0'
+    };
+    private chatsMessages = new Map<string, ChatMessages[] >();
+    currentChatMessages:  ChatMessages[] = [];
+    chatsAvailables: Chat[] = [];
+    users: ChatUser[] = [];
+    conectedUsers = new Set<string>();
 
-
-  }
-  counter=0;
-  inputValue = '';
-  jwtToken = '';
-  currentChat: Chat = {
-    chatId: '0',
-    userId: '0',
-    chatUserId: '0',
-    userEmail: '0'
-  };
-  chatMessages : ChatMessages[] = [];
-  chatsAvailables: Chat[] = [];
-
-  public startChat(user: Chat):void{
-    console.log('starting chat', user.chatId, 'with', user.userId);
-    // this.currentChat = user;
-    // if (user.userId === '1') {
-    //   this.messages = this.messages1;
-    // } else {
-    //   this.messages = [];
-    // }
-    // console.log(this.messages);
-
-  }
-
-  public sendMessage(): void {
-    console.log('Message sent');
-  }
-
-  public saveToken(): void {
-    // const token : string =  this.cookieService.get(SessionStorageConstants.USER_TOKEN);
-    // console.log('token', token);
-    console.log('token info', this.authService.readFromCookie(SessionStorageConstants.USER_TOKEN));
-
-  }
-
-  public saveMessage() {
-    console.log('saveMessage', this.inputValue);
-  
-    if (this.inputValue) {
-      this.chatService.sendMessage(
-        {
-          chatId: this.currentChat.chatId,
-          message: this.inputValue,
-          listenerId: this.currentChat.chatUserId,
+    constructor(
+        protected readonly api: ApiService<ChatUser>,
+        protected readonly chatService: ChatService,
+        private readonly authService: AuthService
+      ) {
+        super(api);
+        this.chatService.userListening().subscribe(val => {
+            console.log('user listening here', val);
+            // if (typeof val === 'boolean') {
+            //   this.showTyping = false;
+            // } else {
+            //   this.showTyping = this.userData.id !== val.id;
+            // }
         });
-      this.inputValue = '';
+        this.chatService.usersConnected().subscribe(users => {
+            users.forEach(user =>{
+                this.conectedUsers.add(user);
+            });
+        });
+
+        this.chatService.userDisconnects().subscribe(user => {
+            this.conectedUsers.delete(user);        
+        });
+
+        this.chatService.userConnects().subscribe(user => {
+            this.conectedUsers.add(user);        
+        });
+
+        this.chatService.chatsAvailables().subscribe(chats => {
+            this.chatsAvailables = chats;
+            chats.forEach(chat => {
+                this.chatService.loadChat(chat.chatId);   
+                this.chatService.chatLoaded(chat.chatId).subscribe(messages => {
+                    this.chatsMessages.set(chat.chatId, messages);
+                    if (this.currentChat.chatId === 'new' && this.currentChat.userId === chat.userId) {
+                        this.currentChat = chat;
+                    }
+                    else if (this.currentChat.chatId === chat.chatId) {
+                        this.currentChatMessages = messages;
+                    }
+                });  
+            });
+        });
+
     }
-    this.stopTyping();
-  }
-  // deleteMessage(id: number){
-  //     console.log('deleteMessage');
-      // this.delete({url: `${UriConstants.MESSAGES}/${id}`});
-  //  }
-  public startTyping() {
-    console.log('startTyping');
-    this.counter++;
-    if (this.counter === 1)  this.chatService.sendTyping(this.inputValue);
-  }
-  public stopTyping() {
-    console.log('stopTyping');
-    this.counter = 0;
-    this.chatService.sendTyping(false);
-  }
 
-  public getChats(){    
-    this.chatService.getChats();
-  }
+    public sendMessage() {
+        console.log('saveMessage', this.inputValue)
 
-  public loadChat(chat: Chat){
-    this.chatService.loadChat(chat.chatId);
-    this.currentChat = chat;
-  }
+        if (this.inputValue) {
+            if (this.currentChat.chatId != 'new') {
+                this.chatService.sendMessage({
+                    chatId: this.currentChat.chatId,
+                    message: this.inputValue,
+                    listenerId: this.currentChat.chatUserId,
+                });
+            } else {
+                this.chatService.sendNewMessage({
+                    chatId: undefined,
+                    message: this.inputValue,
+                    listenerId: this.currentChat.userId,
+                });
+            }
+            this.inputValue = '';
+        }
+        this.stopTyping();
+    }
+
+    public startTyping() {
+        console.log('startTyping');
+        this.counter++;
+        if (this.counter === 1)  this.chatService.sendTyping(this.inputValue);
+    }
+
+    public stopTyping() {
+        console.log('stopTyping');
+        this.counter = 0;
+        this.chatService.sendTyping(false);
+    }
+
+    public async newChat() {
+      this.users = (await this.searchArrAsync({
+                url: `${UriConstants.USERS}/all`,
+            })).response.filter(
+                  (x) =>
+                      x.userId !==
+                      this.authService.readFromCookie(
+                          SessionStorageConstants.USER_TOKEN,
+                      ).sub,
+              );
+    }
+
+    public loadNewChat(user: ChatUser) {
+        if (this.currentChat.userId !== user.userId) {
+            const isChatAvailable = this.chatsAvailables.find(
+                (x) => x.userId === user.userId,
+            )
+            if (!isChatAvailable) {
+                this.currentChat.chatId = 'new'
+                this.currentChat.chatUserId = '0'
+                this.currentChat.userId = user.userId
+                this.currentChat.username = user.username
+                this.currentChatMessages = []
+                this.users = []
+            } else {
+                this.loadChat(isChatAvailable)
+            }
+        }
+    }
+
+    public loadChat(chat: Chat) {
+        const messages = this.chatsMessages.get(chat.chatId);
+        if (messages !== undefined )
+            this.currentChatMessages = messages;
+        // this.chatService.loadChat(chat.chatId)
+        this.currentChat = chat
+    }
 }
-
-
-
-
-

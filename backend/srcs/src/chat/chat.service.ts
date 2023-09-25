@@ -42,22 +42,22 @@ export class ChatService {
     chatUsers.forEach(function (index) {
       usersIds.push(index.userId);
     });
-    const emailUsers =
+    const users =
       await this.prisma.user.findMany({
         where: {
           userId: { in: usersIds },
         },
       });
     const result = chatUsers.map((chatUser) => {
-      const userMails = emailUsers.filter(
-        (emailUser) =>
-          emailUser.userId == chatUser.userId,
-      )[0];
+      const username = users.filter(
+        (user) =>
+          user.userId == chatUser.userId,
+      )[0].username;
       return {
         chatId: chatUser.chatId,
         userId: chatUser.userId,
         chatUserId: chatUser.chatUserId,
-        userEmail: userMails.email,
+        username: username,
       };
     });
     return result;
@@ -168,7 +168,10 @@ export class ChatService {
             message: dto.message,
           },
         });
-      return msg;
+      return {
+        chatId: chatId,
+        message: msg,
+      }
     } catch (error) {
       //handle errors if needed
       throw error;

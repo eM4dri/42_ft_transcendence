@@ -29,8 +29,8 @@ export class UserController {
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  all() {
-    return this.userService.all();
+  async all() {
+    return { response: await this.userService.all() };
   }
 
   @Get(':email')

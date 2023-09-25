@@ -7,8 +7,14 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## 2023-09-25 - emadriga
+### Added
+- Connected users handled through ws(webSockets)
+- Avoid unnecessary client gets through ws, when they should be subscribed at connection
+- New file NOTES.md to save quick thoughts about the project from other people working on the project.
+
 ### Changed
 - Fake login accepts several fake users(42 max), calling `http://localhost:3000${process.env.FAKE_LOGIN_URL}/${username}`
+- Little objects modifications with more sense.
 
 ## 2023-09-23 - emadriga
 ### Added
