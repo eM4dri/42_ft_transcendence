@@ -8,7 +8,7 @@ and this project adheres to
 
 ## 2023-09-25 - emadriga
 ### Changed
-- Fake login accepts untill 42 fake users calling `http://localhost:3000${process.env.FAKE_LOGIN_URL}/${username}`
+- Fake login accepts several fake users(42 max), calling `http://localhost:3000${process.env.FAKE_LOGIN_URL}/${username}`
 
 ## 2023-09-23 - emadriga
 ### Added
