@@ -20,7 +20,7 @@ export class ChatService {
     });
   }
 
-  async getChats(userId: string) {
+  async getChatsByUserId(userId: string) {
     const chats =
       await this.prisma.chatUser.findMany({
         where: { userId },
@@ -42,6 +42,32 @@ export class ChatService {
     chatUsers.forEach(function (index) {
       usersIds.push(index.userId);
     });
+    const users =
+      await this.prisma.user.findMany({
+        where: {
+          userId: { in: usersIds },
+        },
+      });
+    const result = chatUsers.map((chatUser) => {
+      const username = users.filter(
+        (user) =>
+          user.userId == chatUser.userId,
+      )[0].username;
+      return {
+        chatId: chatUser.chatId,
+        userId: chatUser.userId,
+        chatUserId: chatUser.chatUserId,
+        username: username,
+      };
+    });
+    return result;
+  }
+  async getChatUsersByChatId(chatId: string) {
+    const chatUsers =
+      await this.prisma.chatUser.findMany({
+        where: { chatId },
+      });
+    const usersIds = Array.from(chatUsers.map(x=>x.userId)) ;
     const users =
       await this.prisma.user.findMany({
         where: {

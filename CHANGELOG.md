@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-09-28 - emadriga
+### Changed
+- Functional chat containing websockets sharing minimal info ws to receptors only and just new info not old. Also displays connected users.
+
+## 2023-09-27 - emadriga
+### Changed
+- Broadcast when some users connects instead of looping through connected sockets
+- New note: handling ws ping to evaluate ws connections  
+
 ## 2023-09-25 - emadriga
 ### Added
 - Connected users handled through ws(webSockets)

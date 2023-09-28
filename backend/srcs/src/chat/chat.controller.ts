@@ -36,7 +36,7 @@ export class ChatController {
     description: 'Get all users active chats',
   })
   getAllChats(@GetUser('id') userId: string) {
-    return this.chatService.getChats(userId);
+    return this.chatService.getChatsByUserId(userId);
   }
 
   @Get(':uuid')

@@ -35,14 +35,9 @@ export type ChatMessage = {
 }
 
 export type ChatUser = {
-  // chatId: string,
   userId: string,
-  // chatUserId: string,
   username: string,
 }
-
-
-// id	content	userId	date	userFirstName	userLastName
 
 @Injectable({
   providedIn: 'root'
@@ -52,11 +47,6 @@ export class ChatService {
   constructor(
     private readonly mysocket: MySocket,
   ) { }
-
-
-  loadChat(chatId: string | false) {
-    this.mysocket.emit('load_chat', chatId);
-  }
 
   sendTyping(msg: string | false) {
     this.mysocket.emit('typing', msg);
@@ -88,6 +78,10 @@ export class ChatService {
 
   chatsAvailables() {
     return this.mysocket.fromEvent<Chat[]>('chats_availables').pipe(map((data) => data));
+  }
+
+  newChatAvailable() {
+    return this.mysocket.fromEvent<Chat>('new_chat_available').pipe(map((data) => data));
   }
 
   chatLoaded(chatId: string) {

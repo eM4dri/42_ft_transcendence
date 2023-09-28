@@ -7,4 +7,5 @@ mmartin-:
 > Don't use envfile use enviroments for security on docker composes
 > learn about vite.js or webpack -> seems to be not yet supported on angular, is a technology to deploy and develop faster because it precompile several files
 > they implement 2fa with QR, in case some inspiration is needed fballest- team also do this
-
+imurugar
+> We can handle polling on socket.io to configiure what a dexxconection should be account for -> we can play we time to experiences how it woks our app as user experience

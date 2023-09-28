@@ -11,7 +11,9 @@ import { BaseComponent } from '../shared';
 export class ChatComponent extends BaseComponent<ChatUser> {
     counter=0;
     inputValue = '';
-    jwtToken = '';
+    itsNewChat: boolean = false;
+    itsNewChatUserId: string = '';
+    itsNewChatUsername: string = '';
     currentChat: Chat = {
       chatId: 'none',
       userId: '0',
@@ -20,6 +22,7 @@ export class ChatComponent extends BaseComponent<ChatUser> {
     };
     private chatsMessages = new Map<string, ChatMessages[] >();
     currentChatMessages:  ChatMessages[] = [];
+    private _chatsAvailables = new Map<string, Chat >();
     chatsAvailables: Chat[] = [];
     users: ChatUser[] = [];
     conectedUsers = new Set<string>();
@@ -53,28 +56,54 @@ export class ChatComponent extends BaseComponent<ChatUser> {
         });
 
         this.chatService.chatsAvailables().subscribe(chats => {
-            this.chatsAvailables = chats;
             chats.forEach(chat => {
-                this.chatService.loadChat(chat.chatId);   
+                this._chatsAvailables.set(chat.chatId, chat);
                 this.chatService.chatLoaded(chat.chatId).subscribe(messages => {
-                    this.chatsMessages.set(chat.chatId, messages);
-                    if (this.currentChat.chatId === 'new' && this.currentChat.userId === chat.userId) {
-                        this.currentChat = chat;
-                    }
-                    else if (this.currentChat.chatId === chat.chatId) {
-                        this.currentChatMessages = messages;
-                    }
-                });  
+                    this._setChatMessages(chat.chatId, messages);                    
+                });
+                this._refreshChatMsgs(chat);
             });
+            this.chatsAvailables = Array.from(this._chatsAvailables.values()); 
+        });
+
+        this.chatService.newChatAvailable().subscribe(chat => {
+            if (!this._chatsAvailables.has(chat.chatId)){
+                this._chatsAvailables.set(chat.chatId, chat);
+                this.chatService.chatLoaded(chat.chatId).subscribe(messages => {
+                    this._setChatMessages(chat.chatId, messages);
+                });
+                this._refreshChatMsgs(chat);
+                this.chatsAvailables = Array.from(this._chatsAvailables.values()); 
+            }
         });
 
     }
 
-    public sendMessage() {
-        console.log('saveMessage', this.inputValue)
+    private _refreshChatMsgs(chat: Chat) {
+        if (this.itsNewChat === true && this.itsNewChatUserId === chat.userId) {
+            this.currentChat = chat;
+            this.loadChat(chat);
+        }
+    }
 
+    private _setChatMessages(chatId: string, messages: ChatMessages[]) {
+        let currentChatMsg: ChatMessages[] = this.chatsMessages.get(chatId) || [];
+        if (currentChatMsg?.length) {
+            messages.forEach(msg => {
+                if (currentChatMsg.find(x=>x.chatMessageId === msg.chatMessageId) === undefined) {
+                    currentChatMsg.push(msg);
+                }
+            });
+            this.chatsMessages.set(chatId, currentChatMsg);
+        } else {
+            this.chatsMessages.set(chatId, messages);
+            this.currentChatMessages = messages;
+        }
+    }
+
+    public sendMessage() {
         if (this.inputValue) {
-            if (this.currentChat.chatId != 'new') {
+            if (this.itsNewChat===false) {
                 this.chatService.sendMessage({
                     chatId: this.currentChat.chatId,
                     message: this.inputValue,
@@ -84,7 +113,7 @@ export class ChatComponent extends BaseComponent<ChatUser> {
                 this.chatService.sendNewMessage({
                     chatId: undefined,
                     message: this.inputValue,
-                    listenerId: this.currentChat.userId,
+                    listenerId: this.itsNewChatUserId,
                 });
             }
             this.inputValue = '';
@@ -117,28 +146,36 @@ export class ChatComponent extends BaseComponent<ChatUser> {
     }
 
     public loadNewChat(user: ChatUser) {
-        if (this.currentChat.userId !== user.userId) {
-            const isChatAvailable = this.chatsAvailables.find(
-                (x) => x.userId === user.userId,
-            )
-            if (!isChatAvailable) {
-                this.currentChat.chatId = 'new'
-                this.currentChat.chatUserId = '0'
-                this.currentChat.userId = user.userId
-                this.currentChat.username = user.username
-                this.currentChatMessages = []
-                this.users = []
-            } else {
-                this.loadChat(isChatAvailable)
-            }
+        const chat = this.chatsAvailables.find( x=> x.userId === user.userId ) || undefined;
+        if (chat === undefined) {
+            this.itsNewChat = true;
+            this.itsNewChatUserId = user.userId;
+            this.itsNewChatUsername = user.username;
+            this.currentChat = {
+                chatId: 'none',
+                userId: '0',
+                chatUserId: '0',
+                username: '0'
+                };
+        } else {
+            this.loadChat(chat)
         }
+        this.users = [];
     }
 
     public loadChat(chat: Chat) {
         const messages = this.chatsMessages.get(chat.chatId);
         if (messages !== undefined )
             this.currentChatMessages = messages;
-        // this.chatService.loadChat(chat.chatId)
-        this.currentChat = chat
+        this.currentChat = chat;
+        this._resetNewChat();
+    }
+
+    _resetNewChat(){
+        if (this.itsNewChat) {
+            this.itsNewChat = false;
+            this.itsNewChatUserId = '';
+            this.itsNewChatUsername = '';
+        }
     }
 }
