@@ -8,7 +8,7 @@ import { BaseComponent } from '../shared';
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent extends BaseComponent<ChatUser> {
+export class ChatComponent extends BaseComponent<ChatUser> {    
     counter=0;
     inputValue = '';
     itsNewChat: boolean = false;
@@ -21,7 +21,8 @@ export class ChatComponent extends BaseComponent<ChatUser> {
       username: '0'
     };
     private chatsMessages = new Map<string, ChatMessages[] >();
-    currentChatMessages:  ChatMessages[] = [];
+    currentChatMessages: any[]= [];
+    // currentChatMessages:  ChatMessages[] = [];
     private _chatsAvailables = new Map<string, Chat >();
     chatsAvailables: Chat[] = [];
     users: ChatUser[] = [];
@@ -30,7 +31,7 @@ export class ChatComponent extends BaseComponent<ChatUser> {
     constructor(
         protected readonly api: ApiService<ChatUser>,
         protected readonly chatService: ChatService,
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
       ) {
         super(api);
         this.chatService.userListening().subscribe(val => {
@@ -95,9 +96,12 @@ export class ChatComponent extends BaseComponent<ChatUser> {
                 }
             });
             this.chatsMessages.set(chatId, currentChatMsg);
+            if (this.currentChat.chatId === chatId) {
+                this.currentChatMessages = this._transform(currentChatMsg);
+            }
         } else {
             this.chatsMessages.set(chatId, messages);
-            this.currentChatMessages = messages;
+            this.currentChatMessages = this._transform(messages);
         }
     }
 
@@ -165,8 +169,11 @@ export class ChatComponent extends BaseComponent<ChatUser> {
 
     public loadChat(chat: Chat) {
         const messages = this.chatsMessages.get(chat.chatId);
-        if (messages !== undefined )
-            this.currentChatMessages = messages;
+        if (messages !== undefined ) {
+            this.currentChatMessages = this._transform(messages);
+            const messages2 =  this._transform(messages);
+            console.log(messages2, 'messages2');
+        }
         this.currentChat = chat;
         this._resetNewChat();
     }
@@ -178,4 +185,55 @@ export class ChatComponent extends BaseComponent<ChatUser> {
             this.itsNewChatUsername = '';
         }
     }
+
+    public toTimeLocale(date: string){
+        return new Date(date).toLocaleTimeString([],{ hour: "2-digit", minute: "2-digit", hour12: false  });
+    }
+
+    private _transform(items: any[]): any[] {
+        let groupedItems:any[] = [];
+    
+        items.forEach((item) => {
+          const fecha = new Date (
+            new Date(item.createdAt)
+            .toLocaleDateString()
+            ).getTime();
+    
+          if (!groupedItems[fecha]) {
+            groupedItems[fecha] = [];
+          }
+    
+          groupedItems[fecha].push(item);
+        });
+    
+        return groupedItems;
+    }
+
+    public toDayLocale(time: string):string {
+        const today: number = Date.now();
+        const daysTillToday = Math.round((today - Number(time)) / (1000 * 60 * 60 * 24));
+        if (daysTillToday >  7 ) {
+            if (new Date().getFullYear !== new Date().getFullYear) {
+                return new Date(Number(time)).toLocaleDateString(['es-ES'],{
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                });
+            } else {
+                return new Date(Number(time)).toLocaleDateString(['es-ES'],{
+                    day: "numeric",
+                    month: "long",
+                });
+            }
+        } else if (daysTillToday > 1 ){
+            return new Date(Number(time)).toLocaleDateString(['es-ES'],{
+                weekday: "long"
+            });
+        } else if (daysTillToday === 1 ){
+            return "ayer";
+        } else {
+            return "hoy";
+        }
+    }
+
 }
