@@ -25,12 +25,61 @@ model User {
   lastName String?
 
   chatUsers ChatUser[]
+  channelUsers ChannelUser[]
+
   @@map("users")
 }
 
+model Channel {
+  channelId String @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  createdBy String
+  channelName String
+  password String?
+
+  channelUsers ChannelUser[]
+  @@map("channels")
+}
+
+model ChannelUser {
+  channelUserId String @id @default(uuid())
+
+  channel_channelUser_link Channel @relation(fields:[channelId], references: [channelId], onDelete: Cascade)
+  channelId String
+  user_channelUser_link User @relation(fields:[userId], references: [userId], onDelete: Cascade)
+  userId String
+  @@unique([channelId, userId])
+
+  joinedAt DateTime @default(now())
+  isOwner Boolean @default(false)
+  isAdmin Boolean @default(false)
+  isBanned Boolean @default(false)
+  isMuted DateTime?
+  leaveAt DateTime?
+
+  channelUserMessages ChannelUserMessage[]
+  @@map("channel_users")
+}
+
+model ChannelUserMessage {
+  channelMessageId String @id @default(uuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  message String
+
+  channelUser_channelUserMessage_link ChannelUser @relation(fields:[channelUserId], references: [channelUserId], onDelete: Cascade)
+  channelUserId String
+
+  @@map("channel_messages")
+}
+
+
 model Chat {
   chatId String @id @default(uuid())
-  created DateTime @default(now())
+  createdAt DateTime @default(now())
 
   chatUsers ChatUser[]
   @@map("chats")
@@ -40,9 +89,9 @@ model ChatUser {
   chatUserId String @id @default(uuid())
 
   chat_chatUser_link Chat @relation(fields:[chatId], references: [chatId], onDelete: Cascade)
-  chatId String 
+  chatId String
   user_chatUser_link User @relation(fields:[userId], references: [userId], onDelete: Cascade)
-  userId String 
+  userId String
 
   chatUserMessages ChatUserMessage[]
   @@map("chat_users")
@@ -57,7 +106,7 @@ model ChatUserMessage {
   message String
 
   chatUser_chatUserMessage_link ChatUser @relation(fields:[chatUserId], references: [chatUserId], onDelete: Cascade)
-  chatUserId String 
+  chatUserId String
 
   @@map("chat_user_messages")
 }
