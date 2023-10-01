@@ -8,7 +8,7 @@ import { BaseComponent } from '../shared';
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent extends BaseComponent<ChatUser> {    
+export class ChatComponent extends BaseComponent<ChatUser> {
     counter=0;
     inputValue = '';
     itsNewChat: boolean = false;
@@ -49,22 +49,22 @@ export class ChatComponent extends BaseComponent<ChatUser> {
         });
 
         this.chatService.userDisconnects().subscribe(user => {
-            this.conectedUsers.delete(user);        
+            this.conectedUsers.delete(user);
         });
 
         this.chatService.userConnects().subscribe(user => {
-            this.conectedUsers.add(user);        
+            this.conectedUsers.add(user);
         });
 
         this.chatService.chatsAvailables().subscribe(chats => {
             chats.forEach(chat => {
                 this._chatsAvailables.set(chat.chatId, chat);
                 this.chatService.chatLoaded(chat.chatId).subscribe(messages => {
-                    this._setChatMessages(chat.chatId, messages);                    
+                    this._setChatMessages(chat.chatId, messages);
                 });
                 this._refreshChatMsgs(chat);
             });
-            this.chatsAvailables = Array.from(this._chatsAvailables.values()); 
+            this.chatsAvailables = Array.from(this._chatsAvailables.values());
         });
 
         this.chatService.newChatAvailable().subscribe(chat => {
@@ -74,7 +74,7 @@ export class ChatComponent extends BaseComponent<ChatUser> {
                     this._setChatMessages(chat.chatId, messages);
                 });
                 this._refreshChatMsgs(chat);
-                this.chatsAvailables = Array.from(this._chatsAvailables.values()); 
+                this.chatsAvailables = Array.from(this._chatsAvailables.values());
             }
         });
 
@@ -192,48 +192,50 @@ export class ChatComponent extends BaseComponent<ChatUser> {
 
     private _transform(items: any[]): any[] {
         let groupedItems:any[] = [];
-    
+
         items.forEach((item) => {
+            //parsing to avoid culture problems
+          const local = new Date(item.createdAt);
           const fecha = new Date (
-            new Date(item.createdAt)
-            .toLocaleDateString()
+                local.getFullYear(), local.getMonth(), local.getDate()
             ).getTime();
-    
           if (!groupedItems[fecha]) {
             groupedItems[fecha] = [];
           }
-    
+
           groupedItems[fecha].push(item);
         });
-    
+
         return groupedItems;
     }
 
     public toDayLocale(time: string):string {
+        let options: {} = {};
         const today: number = Date.now();
         const daysTillToday = Math.round((today - Number(time)) / (1000 * 60 * 60 * 24));
         if (daysTillToday >  7 ) {
-            if (new Date().getFullYear !== new Date().getFullYear) {
-                return new Date(Number(time)).toLocaleDateString(['es-ES'],{
+            if (new Date(time).getFullYear !== new Date().getFullYear) {
+                options = {
                     day: "numeric",
                     month: "long",
                     year: "numeric",
-                });
+                };
             } else {
-                return new Date(Number(time)).toLocaleDateString(['es-ES'],{
+                options = {
                     day: "numeric",
                     month: "long",
-                });
+                };
             }
         } else if (daysTillToday > 1 ){
-            return new Date(Number(time)).toLocaleDateString(['es-ES'],{
+            options = {
                 weekday: "long"
-            });
+            };
         } else if (daysTillToday === 1 ){
             return "ayer";
         } else {
             return "hoy";
         }
+        return new Date(Number(time)).toLocaleDateString([navigator.language], options);
     }
 
 }

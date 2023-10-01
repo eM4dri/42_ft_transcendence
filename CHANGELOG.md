@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-10-01 - emadriga
+### Fixed
+- Fix grouped date (month/day vs day/month) culture problems
+
 ## 2023-09-30 - emadriga
 ### Changed
 - Grouped chat by dates chat messages with time
@@ -17,7 +21,7 @@ and this project adheres to
 ## 2023-09-27 - emadriga
 ### Changed
 - Broadcast when some users connects instead of looping through connected sockets
-- New note: handling ws ping to evaluate ws connections  
+- New note: handling ws ping to evaluate ws connections
 
 ## 2023-09-25 - emadriga
 ### Added
