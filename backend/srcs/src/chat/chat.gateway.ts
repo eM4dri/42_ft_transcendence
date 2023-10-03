@@ -14,7 +14,7 @@ import {  WsGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtPayload } from 'src/auth/strategy';
-import { Chat, ChatUserMessage } from '@prisma/client';
+import { ChatUserMessage } from '@prisma/client';
 
     
 // https://www.makeuseof.com/build-real-time-chat-api-using-websockets-nestjs/

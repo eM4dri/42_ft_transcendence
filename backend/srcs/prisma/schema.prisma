@@ -34,8 +34,8 @@ model Channel {
   channelId String @id @default(uuid())
   createdAt DateTime @default(now())
 
+  channelName String @unique
   createdBy String
-  channelName String
   password String?
 
   channelUsers ChannelUser[]
@@ -49,13 +49,13 @@ model ChannelUser {
   channelId String
   user_channelUser_link User @relation(fields:[userId], references: [userId], onDelete: Cascade)
   userId String
-  @@unique([channelId, userId])
+  @@unique([channelId, userId, leaveAt])
 
   joinedAt DateTime @default(now())
   isOwner Boolean @default(false)
   isAdmin Boolean @default(false)
   isBanned Boolean @default(false)
-  isMuted DateTime?
+  mutedUntill DateTime?
   leaveAt DateTime?
 
   channelUserMessages ChannelUserMessage[]
