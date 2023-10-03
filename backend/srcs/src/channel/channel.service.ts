@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateChannelDto, JoinChannelDto } from './dto';
+import { CreateChannelDto, CreateChannelMessageDto, JoinChannelDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import * as argon from 'argon2';
 import { ChannelAdminService } from './admin/channel.admin.service';
@@ -142,4 +142,28 @@ export class ChannelService {
         }
     }
     
+    async newChatMessage(talker: string, dto: CreateChannelMessageDto) {
+        try {
+            const channelUserId = await this.prisma.channelUser.findFirstOrThrow({
+                where:{
+                    channelId: dto.channelId,
+                    userId: talker,
+                    leaveAt: null
+                }
+            });
+            const message = await this.prisma.channelUserMessage.create({
+                data: {
+                    channelUserId: channelUserId.channelUserId,
+                    message: dto.message
+                }
+            });
+            return message;
+        } catch (error) {
+            if (error.code === 'P2025') {
+                throw new UnauthorizedException();
+            }
+            throw (error);
+        }
+    }
+
 }

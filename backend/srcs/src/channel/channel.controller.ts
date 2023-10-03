@@ -4,8 +4,7 @@ import { GetUser } from 'src/auth/decorator';
 import { User } from '@prisma/client';
 import { JwtGuard } from 'src/auth/guard';
 import { ChannelService } from './channel.service';
-import { CreateChannelDto, JoinChannelDto } from './dto';
-
+import { CreateChannelDto, CreateChannelMessageDto, JoinChannelDto } from './dto';
 
 @Controller('channel')
 @ApiTags('channel')
@@ -71,6 +70,18 @@ export class ChannelController {
         channelUserId
       );
     }
-
+    @Post('/message')
+    @ApiOperation({
+      description: 'Manda un mensaje',
+    })
+    newChannelMessage(
+      @GetUser('id') talker: string,
+      @Body() dto: CreateChannelMessageDto,
+    ) {
+      return this.channelService.newChatMessage(
+        talker,
+        dto,
+      );
+    }
 
 }
