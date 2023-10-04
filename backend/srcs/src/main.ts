@@ -7,6 +7,7 @@ import {
 } from '@nestjs/swagger';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -41,6 +42,8 @@ async function bootstrap() {
     .setDescription('This is my description')
     .setVersion('1.0')
     .build();
+    
+  app.use(cookieParser());
 
   const document = SwaggerModule.createDocument(
     app,

@@ -7,8 +7,12 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## 2023-10-03 - emadriga
+### Changed
+- Change landing back page to get user tokens easier
+
+## 2023-10-03 - emadriga
 ### Added
-- New module `channel` 
+- New module `channel`
 
 ## 2023-10-01 - emadriga
 ### Fixed
