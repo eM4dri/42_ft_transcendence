@@ -22,12 +22,20 @@ export class ChannelController {
         return this.channelService.getAllChannels();
     }
  
+    @Get('/joined')
+    @ApiOperation({
+        description: 'Get all available channels for the user',
+    })
+    getJoinedChannels(@GetUser('id') userId: string) {
+      return this.channelService.getChannelsJoinedByUserId(userId);
+    }
+
     @Get('/availables')
     @ApiOperation({
         description: 'Get all available channels for the user',
     })
-    getAllChats(@GetUser('id') userId: string) {
-      return this.channelService.getChannelsByUserId(userId);
+    getAvailablesChannels(@GetUser('id') userId: string) {
+      return this.channelService.getChannelsAvailablesByUserId(userId);
     }
 
     @Post()

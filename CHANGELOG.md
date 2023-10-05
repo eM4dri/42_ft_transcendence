@@ -12,7 +12,7 @@ and this project adheres to
 
 ## 2023-10-03 - emadriga
 ### Added
-- New module `channel`
+- New module `channel` with 1st version of methods in API REST including channel workflows, not included administration roles 
 
 ## 2023-10-01 - emadriga
 ### Fixed

@@ -18,14 +18,46 @@ export class ChannelService {
         return this.prisma.channel.findMany();
     }
 
-    async getChannelsByUserId(userId: string){
-        const availableChannels: string[] = (await this.prisma.channelUser.findMany({
+    async getChannelsJoinedByUserId(userId: string){
+        const joinedChannels: string[] = (await this.prisma.channelUser.findMany({
             select: { channelId: true, },
-            where: { NOT: { isBanned: true } }
+            where: { 
+                AND: {
+                    userId: userId,
+                    leaveAt: null,
+                    NOT: { isBanned: true } },
+                }
         })).map(x=>x.channelId);
         return await this.prisma.channel.findMany({
             where: {
-                channelId: { in: availableChannels }
+                channelId: { in: joinedChannels }
+            }
+        });
+    }
+
+    async getChannelsAvailablesByUserId(userId: string){
+        const joinedChannels: string[] = (await this.prisma.channelUser.findMany({
+            select: { channelId: true, },
+            where: { 
+                AND: {
+                    userId: userId,
+                    leaveAt: null,
+                    NOT: { isBanned: true } },
+                }
+        })).map(x=>x.channelId);
+        const bannedChannels: string[] = (await this.prisma.channelUser.findMany({
+            select: { channelId: true, },
+            where: { 
+                AND: {
+                    userId: userId,
+                    isBanned: true,
+                }
+            }
+        })).map(x=>x.channelId);
+        const notAvailableChannels : string[] = joinedChannels.concat(bannedChannels);
+        return await this.prisma.channel.findMany({
+            where: {
+                channelId: { notIn: notAvailableChannels }
             }
         });
     }
