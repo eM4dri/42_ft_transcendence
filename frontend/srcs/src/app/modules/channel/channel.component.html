@@ -1,0 +1,89 @@
+<p align="center">channel works!</p>
+
+
+<button (click)="channelsToJoin()">channelsToJoin</button>
+<div *ngIf="channels.length" class="sidebar">
+    <h2>Usuarios disponibles</h2>
+    <ul>
+        <li *ngFor="let channel of channels">
+            <a (click)="joinChannel(channel)" >{{ channel.channelName }} 
+                <ng-container *ngIf=" channel.isLocked === true" >
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                    <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                    <path d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"/></svg>
+                    <input
+                        placeholder="Pass"
+                        type="text"
+                        [(ngModel)]="inputValuePass"
+                    />
+                </ng-container>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<div class="channel-app">
+    <!-- Barra lateral con la lista de usuarios disponibles -->
+    <div class="sidebar">
+        <h2>Channels disponibles</h2>
+        <ul>
+            <div *ngFor="let channel of joinedChannels " >
+                <a (click)="loadChannel(channel)">{{ channel.channelName }} ​</a>
+            </div>
+        </ul>
+    </div>
+
+        <!-- Ventana de channel -->
+        <div class="channel-window">
+                <ng-container
+                *ngIf="
+                    currentChannel.channelId === 'none';
+                    then noChatSelectedTemplate;
+                    else chatSelectedTemplate
+                "
+                >
+                </ng-container>
+                <ng-template #noChatSelectedTemplate>
+                    <div *ngIf="currentChannel.channelId === 'none'">
+                        <p>Selecciona un usuario para empezar a chatear.</p>
+                    </div>
+                </ng-template>
+                <ng-template #chatSelectedTemplate>
+                    <div>
+                        <h2>Channel {{ currentChannel.channelName }} 
+                        </h2>
+                        <!-- Aquí se mostrarían los mensajes del chat -->
+                        <ng-container *ngFor="let recipient of currentChannelMessages | keyvalue">
+                            <p style="text-align: center">{{ toDayLocale(recipient.key) }}</p>
+                           <div *ngFor="let value of recipient.value">
+                            <ng-container
+                            *ngIf="
+                                value.channelUserId === myChannelUserId;
+                                then alignRight;
+                                else alignLeft
+                            "
+                            >
+                            </ng-container>
+                            <ng-template #alignRight>
+                                <p style="text-align: right">
+                                   {{ getUsermane(value.channelUserId) }} {{ value.message }} ({{ toTimeLocale(value.createdAt) }})
+                                </p>
+                            </ng-template>
+                            <ng-template #alignLeft>
+                                <p>{{ getUsermane(value.channelUserId) }} {{ value.message }} ({{ toTimeLocale(value.createdAt) }})</p>
+                            </ng-template>
+                           </div>
+                        </ng-container>
+                        <div class="input">
+                            <input
+                                placeholder="Escribe un mensaje"
+                                type="text"
+                                [(ngModel)]="inputValue"
+                                (keyup.enter)="sendMessage()"
+                            />
+                        </div>
+                    </div>
+                </ng-template>
+        </div>
+</div>

@@ -9,5 +9,6 @@ export class UriConstants {
   public static readonly USERS = basePath + '/user';
   public static readonly CHAT = basePath + '/chat';
   public static readonly MESSAGES = basePath + '/chat/message';
+  public static readonly CHANNELS = basePath + '/channel';
 
 }

@@ -6,7 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 2023-10-03 - emadriga
+## 2023-10-09 - emadriga
+### Added
+- Demo front channels as chat joining them and talk through them.
+- Serializing responses with prisma following this `https://wanago.io/2023/06/12/api-nestjs-prisma-serializing/`
+
+## 2023-10-07 - emadriga
+### Added
+- Nginx to serve static images, user avatars and channels.
+
+## 2023-10-06 - emadriga
+### Added
+- New front navegation menú channel including routing
+
+### Changed
+- Manage webSocks on new module `events.gateway` instead of chats since we cannot have two modules on back handling sockets
+
+## 2023-10-04 - emadriga
 ### Changed
 - Change landing back page to get user tokens easier
 

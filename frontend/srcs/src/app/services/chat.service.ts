@@ -3,15 +3,6 @@ import { map } from 'rxjs/operators';
 import { MySocket } from './web-socket.service';
 
 
-export type Message = {
-  id: number,
-  content: string,
-  userId: number,
-  date: string,
-  userFirstName: string,
-  userLastName: string,
-}
-
 export type Chat = {
   chatId: string,
   userId: string,

@@ -15,6 +15,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
 import { AuthInterceptor } from './core';
 import { MySocket } from './services/web-socket.service';
+import { ChannelComponent } from './modules/channel/channel.component';
 
 const config: SocketIoConfig = { url: environment.apiUrl };
 
@@ -25,7 +26,8 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     GameComponent,
     HistoryComponent,
     ChatComponent,
-    ProfileComponent
+    ProfileComponent,
+    ChannelComponent
   ],
   imports: [
     BrowserModule,

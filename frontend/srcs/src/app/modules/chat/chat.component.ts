@@ -212,7 +212,7 @@ export class ChatComponent extends BaseComponent<ChatUser> {
     public toDayLocale(time: string):string {
         let options: {} = {};
         const today: number = Date.now();
-        const daysTillToday = Math.round((today - Number(time)) / (1000 * 60 * 60 * 24));
+        const daysTillToday = Math.abs((today - Number(time)) / (1000 * 60 * 60 * 24));
         if (daysTillToday >  7 ) {
             if (new Date(time).getFullYear !== new Date().getFullYear) {
                 options = {

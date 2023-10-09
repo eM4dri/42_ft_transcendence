@@ -56,6 +56,11 @@ export class AppComponent {
     this.selectedNavItem = 'chat';
     this.router.navigate(['/chat']);
   }
+
+  public openChannels(): void {
+    this.selectedNavItem = 'channel';
+    this.router.navigate(['/channel']);
+  }
   
   public toggleDropdown(): void {
     this.dropdownVisibility = !this.dropdownVisibility;

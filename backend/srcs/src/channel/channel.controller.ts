@@ -11,7 +11,7 @@ import { CreateChannelDto, CreateChannelMessageDto, JoinChannelDto } from './dto
 @ApiBearerAuth()
 @UseGuards(JwtGuard)
 export class ChannelController {
-    constructor(private channelService: ChannelService) {}
+  constructor(private channelService: ChannelService) {}
 
     @Get('/all')
     @ApiOperation({
@@ -34,8 +34,8 @@ export class ChannelController {
     @ApiOperation({
         description: 'Get all available channels for the user',
     })
-    getAvailablesChannels(@GetUser('id') userId: string) {
-      return this.channelService.getChannelsAvailablesByUserId(userId);
+    async getAvailablesChannels(@GetUser('id') userId: string) {
+      return { response: await this.channelService.getChannelsAvailablesByUserId(userId)};
     }
 
     @Post()
@@ -78,6 +78,31 @@ export class ChannelController {
         channelUserId
       );
     }
+
+    @Get(':uuid/users')
+    @ApiOperation({
+      description: 'Get channel users',
+    })
+    getChannelUsers(
+      @Param('uuid', new ParseUUIDPipe()) chatId: string,
+    ) {
+      return this.channelService.getChannelUsers(
+        chatId,
+      );
+    }
+
+    @Get(':uuid/messages')
+    @ApiOperation({
+      description: 'Get channel messages',
+    })
+    getChannelMessages(
+      @Param('uuid', new ParseUUIDPipe()) chatId: string,
+    ) {
+      return this.channelService.getChannelMessages(
+        chatId,
+      );
+    }
+
     @Post('/message')
     @ApiOperation({
       description: 'Manda un mensaje',
@@ -86,10 +111,9 @@ export class ChannelController {
       @GetUser('id') talker: string,
       @Body() dto: CreateChannelMessageDto,
     ) {
-      return this.channelService.newChatMessage(
+      return this.channelService.newChannelMessage(
         talker,
         dto,
       );
     }
-
 }
