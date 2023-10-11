@@ -11,23 +11,26 @@ datasource db {
 }
 
 model User {
-  userId String @id @default(uuid())
+  userId    String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
-  userId42 Int @unique
-  login String @unique
-  email String @unique
-  url String @unique
+  userId42 Int    @unique
+  login    String @unique
+  email    String @unique
+  url      String @unique
   username String @unique
 
   firstName String?
-  lastName String?
+  lastName  String?
 
-  chatUsers ChatUser[]
+  chatUsers  ChatUser[]
+  stats_user stats_user[]
+
   channelUsers ChannelUser[]
 
   @@map("users")
+  @@unique([userId, login])
 }
 
 model Channel {
@@ -82,6 +85,7 @@ model Chat {
   createdAt DateTime @default(now())
 
   chatUsers ChatUser[]
+
   @@map("chats")
 }
 
@@ -94,6 +98,7 @@ model ChatUser {
   userId String
 
   chatUserMessages ChatUserMessage[]
+
   @@map("chat_users")
 }
 
@@ -105,8 +110,23 @@ model ChatUserMessage {
 
   message String
 
-  chatUser_chatUserMessage_link ChatUser @relation(fields:[chatUserId], references: [chatUserId], onDelete: Cascade)
-  chatUserId String
+  chatUser_chatUserMessage_link ChatUser @relation(fields: [chatUserId], references: [chatUserId], onDelete: Cascade)
+  chatUserId                    String
 
   @@map("chat_user_messages")
+}
+
+model stats_user {
+  userId_link  User   @relation(fields: [userId, login], references: [userId, login], onDelete: Cascade)
+  userId       String @id 
+  login        String 
+  gamesWin     Int    @default(0)
+  gamesLose    Int    @default(0)
+  gamesDraw    Int    @default(0)
+  goalsFavor   Int    @default(0)
+  goalsAgainst Int    @default(0)
+  disconect    Int    @default(0)
+  points       Int    @default(0)
+
+  @@map("stats_user")
 }

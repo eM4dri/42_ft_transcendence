@@ -3,6 +3,7 @@
 # Define el archivo docker-compose.yml que se utilizará
 PRO_COMPOSE_FILE = docker-compose.yml
 DEV_COMPOSE_FILE = dev-compose.yml
+SCRIPTS_FOLDER = ./scripts/
 
 # Regla para iniciar los contenedores en segundo plano
 up: generate_front_enviroment
@@ -43,9 +44,12 @@ dev-logs:
 dev-exec:
 	docker-compose -f $(DEV_COMPOSE_FILE) exec $(service) $(cmd)
 
-prune:
+prune: down dev-down
 	docker system prune -af
 	docker volume prune -f
+
+generate_users:
+	bash generate_user.sh $(num)
 
 help:
 	@echo "Uso del Makefile para gestionar Docker Compose:"
@@ -63,9 +67,13 @@ help:
 	@echo "make dev-list-services  - Lista los servicios definidos en el archivo docker-compose.yml."
 	@echo "make help           - Muestra este mensaje de ayuda (por defecto)."
 	@echo "make prune 				- Hace prune"
+	@echo "--------------OTHERS---------------------------"
+	@echo "make generate_users num=<int> 				- Inserta n users"
+	@echo "generate_front_enviroment 						- Genera el env para el frontend"
 
 generate_front_enviroment:
 	bash generate-environment.sh
 
-.PHONY: up down logs exec list-services dev-up dev-down dev-logs dev-exec dev-list-services help gen_front_env
+.PHONY: up down logs exec list-services dev-up dev-down dev-logs dev-exec dev-list-services \
+				help gen_front_env generate_users
 

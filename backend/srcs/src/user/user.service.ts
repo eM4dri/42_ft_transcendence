@@ -1,15 +1,11 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
-import { CreateUserDto } from './dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { CreateUserDto } from "./dto";
+import { PrismaService } from "src/prisma/prisma.service";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
   all() {
     return this.prisma.user.findMany();
   }
@@ -34,6 +30,9 @@ export class UserService {
           email: dto.email,
           firstName: dto.firstName,
           lastName: dto.lastName,
+          stats_user: {
+            create: {},
+          },
         },
       });
       return user;
@@ -42,9 +41,9 @@ export class UserService {
         error instanceof
         PrismaClientKnownRequestError
       ) {
-        if (error.code === 'P2002') {
+        if (error.code === "P2002") {
           throw new HttpException(
-            'User already in use',
+            "User already in use",
             HttpStatus.CONFLICT,
           );
         }
@@ -54,14 +53,14 @@ export class UserService {
   }
 
   update() {
-    return 'Update user!';
+    return "Update user!";
   }
 
   partialUpdate() {
-    return 'Update user partially!';
+    return "Update user partially!";
   }
 
   delete() {
-    return 'Delete user!';
+    return "Delete user!";
   }
 }
