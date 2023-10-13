@@ -142,7 +142,7 @@ model historical_games {
   visitorGoals  Int      @default(0)
   winLocal      Boolean
   winVisitor    Boolean
-  Draw          Boolean
+  draw          Boolean
   pointsLocal   Int      @default(0)
   pointsVisitor Int      @default(0)
 }
