@@ -130,3 +130,19 @@ model stats_user {
 
   @@map("stats_user")
 }
+
+model historical_games {
+  gameId        String   @id @default(uuid())
+  gameDate      DateTime @default(now())
+  localId       String    
+  localName     String    
+  visitorId     String    
+  visitorName   String    
+  localGoals    Int      @default(0)
+  visitorGoals  Int      @default(0)
+  winLocal      Boolean
+  winVisitor    Boolean
+  Draw          Boolean
+  pointsLocal   Int      @default(0)
+  pointsVisitor Int      @default(0)
+}

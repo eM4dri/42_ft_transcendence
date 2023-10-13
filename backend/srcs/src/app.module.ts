@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { StatsModule } from './stats/stats.module';
 import { ChannelModule } from './channel/channel.module';
 import { EventsModule } from './events/events.module';
+import { HistoricGamesModule } from './historic_games/historic_games.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { EventsModule } from './events/events.module';
     PrismaModule,
     StatsModule,
     ChannelModule,
-    EventsModule
+    EventsModule,
+    HistoricGamesModule
   ],
   controllers: [AppController],
   providers: [AppService],
