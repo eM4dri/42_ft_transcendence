@@ -8,9 +8,9 @@ import {
   HttpCode,
   Query,
   ParseUUIDPipe,
-  DefaultValuePipe,
-  ParseIntPipe,
-  BadRequestException,
+  //DefaultValuePipe,
+  //ParseIntPipe,
+  //BadRequestException,
 } from '@nestjs/common';
 
 import { JwtGuard } from 'src/auth/guard';
