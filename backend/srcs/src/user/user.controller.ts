@@ -4,28 +4,30 @@ import {
   Get,
   Param,
   Post,
+  Query,
   UseGuards,
-} from '@nestjs/common';
-import { UserService } from './user.service';
+} from "@nestjs/common";
+import { UserService } from "./user.service";
 import {
   ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiResponse,
   ApiTags,
-} from '@nestjs/swagger';
-import { CreateUserDto } from './dto';
-import { JwtGuard } from 'src/auth/guard';
+} from "@nestjs/swagger";
+import { CreateUserDto } from "./dto";
+import { JwtGuard } from "src/auth/guard";
 
-@Controller('user')
-@ApiTags('user')
+@Controller("user")
+@ApiTags("user")
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
-  @Get('all')
+  @Get("all")
   @ApiOperation({
-    description: 'Get all users avaiable',
+    description: "Get all users avaiable",
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
@@ -33,63 +35,70 @@ export class UserController {
     return { response: await this.userService.all() };
   }
 
-  @Get(':email')
+  @Get(":email")
   @ApiOperation({
-    description: 'Get a user',
+    description: "Get a user",
   })
   @ApiParam({
-    name: 'email',
+    name: "email",
     type: String,
     required: true,
-    description: 'Mail of the user',
-    example: 'user1@mail.com',
+    description: "Mail of the user",
+    example: "user1@mail.com",
   })
   @ApiResponse({
     status: 200,
     description: `User returned correctly<br\>
                   User not found`,
   })
-  get(@Param('email') email: string) {
+  get(@Param("email") email: string) {
     return this.userService.get(email);
   }
 
   @Post()
   @ApiOperation({
-    description: 'Crea un usuario',
+    description: "Crea un usuario",
   })
   @ApiBody({
     type: CreateUserDto,
-    description: 'Crea un usuario CreateUserDto',
+    description: "Crea un usuario CreateUserDto",
     examples: {
       example1: {
         value: {
           id: 42,
-          username: 'marvin',
-          email: 'marvin@mail.com',
-          url: 'https://profile.intra.42.fr/users/marvin',
+          username: "marvin",
+          email: "marvin@mail.com",
+          url: "https://profile.intra.42.fr/users/marvin",
         },
       },
       example2: {
         value: {
           id: 43,
-          username: 'santana',
-          email: 'santana@mail.com',
-          url: 'https://profile.intra.42.fr/users/santana',
-          firstName: 'Eduardo',
-          lastName: 'Santana',
+          username: "santana",
+          email: "santana@mail.com",
+          url: "https://profile.intra.42.fr/users/santana",
+          firstName: "Eduardo",
+          lastName: "Santana",
         },
       },
     },
   })
   @ApiResponse({
     status: 201,
-    description: 'User created correctly',
+    description: "User created correctly",
   })
   @ApiResponse({
     status: 409,
-    description: 'Email already in use',
+    description: "Email already in use",
   })
   new(@Body() dto: CreateUserDto) {
     return this.userService.new(dto);
+  }
+
+  @Get("user")
+  @ApiOperation({ description: "Get user by id" })
+  @ApiQuery({ name: "id", required: false, type: String })
+  async get_user_by_id(@Query("id") id: string) {
+    return id;
   }
 }
