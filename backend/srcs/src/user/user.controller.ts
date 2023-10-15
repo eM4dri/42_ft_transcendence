@@ -95,10 +95,10 @@ export class UserController {
     return this.userService.new(dto);
   }
 
-  @Get("user")
-  @ApiOperation({ description: "Get user by id" })
-  @ApiQuery({ name: "id", required: false, type: String })
-  async get_user_by_id(@Query("id") id: string) {
-    return id;
-  }
+  //  @Get("user")
+  //  @ApiOperation({ description: "Get user by id" })
+  //  @ApiQuery({ name: "id", required: false, type: String })
+  //  async get_user_by_id(@Query("id") id: string) {
+  //    return id;
+  //  }
 }

@@ -9,9 +9,20 @@ export class HistoricGamesService {
   constructor(private prisma: PrismaService) { }
 
   async post_historic(dto: Historic_GameDto) {
+    const local_name = await this.prisma.user.findUnique({
+      where: {
+        userId: dto.localId,
+      }
+    });
+    const visitor_name = await this.prisma.user.findUnique({
+      where: {
+        userId: dto.visitorId,
+      }
+    })
+
     await this.prisma.historical_games.create({
       data: {
-        ...dto
+        ...dtoa
       }
     })
   }
