@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsBoolean,
-  IsString,
   IsNumber,
   IsUUID,
 } from 'class-validator'
@@ -32,14 +31,14 @@ export class Historic_GameDto {
   })
   localId: string
 
-  @IsNotEmpty()
-  @IsString()
-  @ApiProperty({
-    name: 'localName',
-    type: String,
-    required: true,
-  })
-  localName: string
+  // @IsNotEmpty()
+  // @IsString()
+  // @ApiProperty({
+  //   name: 'localName',
+  //   type: String,
+  //   required: true,
+  // })
+  // localName: string
 
   @IsNotEmpty()
   @IsUUID()
@@ -50,14 +49,14 @@ export class Historic_GameDto {
   })
   visitorId: string
 
-  @IsNotEmpty()
-  @IsString()
-  @ApiProperty({
-    name: 'visitorName',
-    type: String,
-    required: true,
-  })
-  visitorName: string
+  //  @IsNotEmpty()
+  //  @IsString()
+  //  @ApiProperty({
+  //    name: 'visitorName',
+  //    type: String,
+  //    required: true,
+  //  })
+  //  visitorName: string
 
   @IsNumber()
   @ApiProperty({

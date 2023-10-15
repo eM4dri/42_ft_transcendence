@@ -28,9 +28,9 @@ export class HistoricGamesController {
       exampleLocalWin: {
         value: {
           localId: '00000000-0000-0000-0000-000000000000',
-          localName: 'tommy',
+          //  localName: 'tommy',
           visitorId: '00000000-0000-0000-0000-000000000001',
-          visitorName: 'other',
+          //  visitorName: 'other',
           localGoals: 5,
           visitorGoals: 2,
           winLocal: true,
@@ -43,9 +43,9 @@ export class HistoricGamesController {
       exampleVisitorWin: {
         value: {
           localId: '00000000-0000-0000-0000-000000000000',
-          localName: 'tommy',
+          //  localName: 'tommy',
           visitorId: '00000000-0000-0000-0000-000000000001',
-          visitorName: 'other',
+          //  visitorName: 'other',
           localGoals: 1,
           visitorGoals: 5,
           winLocal: false,
@@ -58,9 +58,9 @@ export class HistoricGamesController {
       exampleVisitorDraw: {
         value: {
           localId: '00000000-0000-0000-0000-000000000000',
-          localName: 'tommy',
+          //  localName: 'tommy',
           visitorId: '00000000-0000-0000-0000-000000000001',
-          visitorName: 'other',
+          //  visitorName: 'other',
           localGoals: 5,
           visitorGoals: 5,
           winLocal: false,
