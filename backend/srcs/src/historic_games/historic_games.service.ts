@@ -33,4 +33,36 @@ export class HistoricGamesService {
       throw new NotFoundException('Some user not found');
     }
   }
+
+  async total_num_historic_by_user(userId: string): Promise<number> {
+    return this.prisma.historical_games.count({
+      where: {
+        OR: [
+          { localId: userId },
+          { visitorId: userId }
+        ]
+      }
+    })
+  }
+
+
+
+  async get_historic(userId: string, skip: number, take: number):
+    Promise<historical_games[]> {
+    if (await this.prisma.user.findUnique({ where: { userId: userId } }) === null) {
+      throw new NotFoundException('User not found')
+    }
+    return this.prisma.historical_games.findMany({
+      where: {
+        OR: [
+          { localId: userId },
+          { visitorId: userId }
+        ]
+      },
+      orderBy: { gameDate: 'desc' },
+      skip: skip,
+      take: take,
+    })
+  }
 }
+

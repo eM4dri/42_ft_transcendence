@@ -8,9 +8,6 @@ import {
   HttpCode,
   Query,
   ParseUUIDPipe,
-  //DefaultValuePipe,
-  //ParseIntPipe,
-  //BadRequestException,
 } from '@nestjs/common';
 
 import { JwtGuard } from 'src/auth/guard';
@@ -126,7 +123,11 @@ export class StatsController {
 
     if ((skip + take) > t) {
       skip = 0;
-      take = 10;
+      if (take > t) {
+        take = t;
+      } else {
+        take = 10;
+      }
     }
 
     return this.StatsService.get_rank_list(skip, take)

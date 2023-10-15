@@ -1,8 +1,10 @@
 import {
   Post,
+  Get,
   Body,
   Controller,
-  HttpCode
+  HttpCode,
+  Query
 } from '@nestjs/common';
 
 import {
@@ -10,6 +12,7 @@ import {
   ApiOperation,
   ApiBody,
   ApiTags,
+  ApiQuery
 } from '@nestjs/swagger'
 
 import { Historic_GameDto } from './dto';
@@ -69,5 +72,41 @@ export class HistoricGamesController {
   })
   async post_historic_game(@Body() dto: Historic_GameDto): Promise<historical_games> {
     return await this.HistoricGamesService.post_historic(dto);
+  }
+
+  @Get()
+  @ApiOperation({ description: "Get historic games by user" })
+  @ApiQuery({ name: 'userId', required: true, type: String })
+  @ApiQuery({ name: 'skip', required: false, type: Number })
+  @ApiQuery({ name: 'take', required: false, type: Number })
+  @HttpCode(200)
+  async get_historic_by_user(
+    @Query('userId') userId: string,
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
+  ): Promise<{ total: number, skip: number, take: number, result: historical_games[] }> {
+    const t: number = await this.HistoricGamesService.total_num_historic_by_user(userId);
+    if (isNaN(skip) || isNaN(take)) {
+      skip = 0;
+      take = 10;
+    }
+
+    if (skip < 0 || take < 0) {
+      skip = 0;
+      take = 10;
+    }
+
+    if ((skip + take) > t) {
+      skip = 0;
+      if (take > t) {
+        take = t;
+      } else {
+        take = 10;
+      }
+    }
+    return await this.HistoricGamesService.get_historic(userId, skip, take)
+      .then((result: historical_games[]) => {
+        return { total: t, skip: skip, take: take, result: result };
+      });
   }
 }
