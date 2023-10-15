@@ -31,15 +31,6 @@ export class Historic_GameDto {
   })
   localId: string
 
-  // @IsNotEmpty()
-  // @IsString()
-  // @ApiProperty({
-  //   name: 'localName',
-  //   type: String,
-  //   required: true,
-  // })
-  // localName: string
-
   @IsNotEmpty()
   @IsUUID()
   @ApiProperty({
@@ -48,15 +39,6 @@ export class Historic_GameDto {
     required: true,
   })
   visitorId: string
-
-  //  @IsNotEmpty()
-  //  @IsString()
-  //  @ApiProperty({
-  //    name: 'visitorName',
-  //    type: String,
-  //    required: true,
-  //  })
-  //  visitorName: string
 
   @IsNumber()
   @ApiProperty({

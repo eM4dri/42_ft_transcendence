@@ -1,39 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from "src/prisma/prisma.service";
 import { Historic_GameDto } from './dto';
-//import { HistoricGamesController } from './historic_games.controller';
-//import { historical_games } from "@prisma/client";
+import { historical_games } from "@prisma/client";
 
 @Injectable()
 export class HistoricGamesService {
   constructor(private prisma: PrismaService) { }
 
-  async post_historic(dto: Historic_GameDto) {
-    const local_name = await this.prisma.user.findUnique({
-      where: { userId: dto.localId },
-      select: { username: true }
-    }).then((name): string => {
-      return name.username;
-    });
-    const visitor_name = await this.prisma.user.findUnique({
-      where: { userId: dto.visitorId },
-      select: { username: true }
-    }).then((name): string => {
-      return name.username;
-    });
-    console.log(local_name);
-    console.log(visitor_name);
+  async post_historic(dto: Historic_GameDto): Promise<historical_games> {
+    try {
+      const local_name = await this.prisma.user.findUnique({
+        where: { userId: dto.localId },
+        select: { username: true }
+      }).then((name: { username: string }): string => {
+        return name.username;
+      });
+      const visitor_name = await this.prisma.user.findUnique({
+        where: { userId: dto.visitorId },
+        select: { username: true }
+      }).then((name: { username: string }): string => {
+        return name.username;
+      });
 
-    if (local_name === null || visitor_name === null) {
-      console.log("FAIL local or visitor name not found")
+      return await this.prisma.historical_games.create({
+        data: {
+          localName: local_name,
+          visitorName: visitor_name,
+          ...dto
+        }
+      })
+    } catch (error) {
+      throw new NotFoundException('Some user not found');
     }
-
-    await this.prisma.historical_games.create({
-      data: {
-        localName: local_name,
-        visitorName: visitor_name,
-        ...dto
-      }
-    })
   }
 }

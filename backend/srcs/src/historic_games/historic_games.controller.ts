@@ -14,6 +14,7 @@ import {
 
 import { Historic_GameDto } from './dto';
 import { HistoricGamesService } from './historic_games.service';
+import { historical_games } from "@prisma/client";
 @Controller('historic-games')
 @ApiTags('historic games')
 @ApiBearerAuth()
@@ -28,9 +29,7 @@ export class HistoricGamesController {
       exampleLocalWin: {
         value: {
           localId: '00000000-0000-0000-0000-000000000000',
-          //  localName: 'tommy',
           visitorId: '00000000-0000-0000-0000-000000000001',
-          //  visitorName: 'other',
           localGoals: 5,
           visitorGoals: 2,
           winLocal: true,
@@ -43,9 +42,7 @@ export class HistoricGamesController {
       exampleVisitorWin: {
         value: {
           localId: '00000000-0000-0000-0000-000000000000',
-          //  localName: 'tommy',
           visitorId: '00000000-0000-0000-0000-000000000001',
-          //  visitorName: 'other',
           localGoals: 1,
           visitorGoals: 5,
           winLocal: false,
@@ -58,9 +55,7 @@ export class HistoricGamesController {
       exampleVisitorDraw: {
         value: {
           localId: '00000000-0000-0000-0000-000000000000',
-          //  localName: 'tommy',
           visitorId: '00000000-0000-0000-0000-000000000001',
-          //  visitorName: 'other',
           localGoals: 5,
           visitorGoals: 5,
           winLocal: false,
@@ -72,7 +67,7 @@ export class HistoricGamesController {
       }
     }
   })
-  async post_historic_game(@Body() dto: Historic_GameDto) {
+  async post_historic_game(@Body() dto: Historic_GameDto): Promise<historical_games> {
     return await this.HistoricGamesService.post_historic(dto);
   }
 }
