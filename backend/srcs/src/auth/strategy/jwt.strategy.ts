@@ -8,6 +8,7 @@ import { Injectable } from '@nestjs/common';
 export type JwtPayload = {
   sub: string;
   username: string;
+  role: string;
 };
 
 @Injectable()

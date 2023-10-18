@@ -28,9 +28,16 @@ model User {
   stats_user stats_user[]
 
   channelUsers ChannelUser[]
+  
+  role    Role @default(ADMIN)
 
   @@map("users")
   @@unique([userId, login])
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model Channel {

@@ -10,13 +10,14 @@ export class FakeAuthService {
   constructor(
     private jwtService: JwtService,
     private userService: UserService,
-    ) {}
+  ) { }
 
   async fakeLogin(username: string) {
     let userdb: User = await this._getFakeUser(username);
     const payload: JwtPayload = {
       username: userdb.username,
-      sub: userdb.userId,      
+      sub: userdb.userId,
+      role: userdb.role,
     };
     return {
       accessToken: this.jwtService.sign(payload),
@@ -25,12 +26,12 @@ export class FakeAuthService {
 
   private async _getFakeUser(username: string): Promise<User> {
     const userEmail: string = `${username}@mail.com`;
-    const usersId42 : number[] = Array.from((await this.userService.all()).map(x=>x.userId42));
+    const usersId42: number[] = Array.from((await this.userService.all()).map(x => x.userId42));
     let min: number = 42;
     for (let userId42 of usersId42) {
-        if (userId42 < min) {
-          min = userId42;
-        }
+      if (userId42 < min) {
+        min = userId42;
+      }
     }
     let userdb: User = await this.userService.get(
       userEmail,
@@ -38,7 +39,7 @@ export class FakeAuthService {
     if (!userdb) {
       const fakeUsername = `fake_${username}`;
       const newUser: CreateUserDto = {
-        id: min - 1 ,
+        id: min - 1,
         username: fakeUsername,
         email: userEmail,
         url: `https://profile.intra.42.fr/users/${fakeUsername}`,
