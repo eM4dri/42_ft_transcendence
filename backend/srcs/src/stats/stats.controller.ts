@@ -22,6 +22,8 @@ import { StatsService } from './stats.service';
 import { Update_statsDto } from './dto';
 import { GetUser } from 'src/auth/decorator';
 import { stats_user } from "@prisma/client";
+import { Roles } from 'src/auth/decorator/roles.decorator';
+import { Role } from '../auth/role.enum';
 
 @Controller('stats')
 @ApiTags('stats')
@@ -31,6 +33,7 @@ import { stats_user } from "@prisma/client";
 export class StatsController {
   constructor(private StatsService: StatsService) { };
 
+  @Roles(Role.User)
   @Get()
   @ApiOperation({ description: 'Get stats from one user' })
   get(@GetUser('id') UserId: string) {
