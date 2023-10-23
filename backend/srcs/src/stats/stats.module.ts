@@ -1,10 +1,9 @@
-import { Module } from '@nestjs/common';
-import { StatsController } from './stats.controller'
-import { StatsService } from './stats.service'
-import { JwtService } from '@nestjs/jwt';
+import { Module } from "@nestjs/common";
+import { StatsController } from "./stats.controller";
+import { StatsService } from "./stats.service";
 
 @Module({
   controllers: [StatsController],
-  providers: [StatsService, JwtService],
+  providers: [StatsService],
 })
-export class StatsModule { }
+export class StatsModule {}

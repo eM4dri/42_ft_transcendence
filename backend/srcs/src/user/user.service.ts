@@ -2,10 +2,11 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { CreateUserDto } from "./dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { Role } from "../auth/role.enum";
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
   all() {
     return this.prisma.user.findMany();
   }
@@ -20,6 +21,18 @@ export class UserService {
 
   async new(dto: CreateUserDto) {
     // save the new user in the db
+    const owner_users: string[] = [
+      "emadriga",
+      "tomartin",
+      "carce-bo",
+      "jvacaris",
+      "pmedina-",
+    ];
+    let User_Role: Role;
+
+    if (owner_users.includes(dto.username)) {
+      User_Role = Role.Owner;
+    }
     try {
       const user = await this.prisma.user.create({
         data: {
@@ -30,6 +43,7 @@ export class UserService {
           email: dto.email,
           firstName: dto.firstName,
           lastName: dto.lastName,
+          role: User_Role,
           stats_user: {
             create: {},
           },
@@ -39,7 +53,7 @@ export class UserService {
     } catch (error) {
       if (
         error instanceof
-        PrismaClientKnownRequestError
+          PrismaClientKnownRequestError
       ) {
         if (error.code === "P2002") {
           throw new HttpException(

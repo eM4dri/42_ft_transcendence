@@ -29,7 +29,7 @@ model User {
 
   channelUsers ChannelUser[]
   
-  role    Role @default(ADMIN)
+  role    Role @default(USER)
 
   @@map("users")
   @@unique([userId, login])
@@ -38,6 +38,7 @@ model User {
 enum Role {
   USER
   ADMIN
+  OWNER
 }
 
 model Channel {
