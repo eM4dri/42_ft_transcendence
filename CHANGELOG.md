@@ -6,82 +6,128 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-10-23
+
+## Add
+
+- RoleGuard and Role decorator
+
 ## 2023-10-12 - emadriga
+
 ### Changed
+
 - Clearing migrations.
 
 ## 2023-10-09 - emadriga
+
 ### Added
+
 - Demo front channels as chat joining them and talk through them.
-- Serializing responses with prisma following this `https://wanago.io/2023/06/12/api-nestjs-prisma-serializing/`
+- Serializing responses with prisma following this
+  `https://wanago.io/2023/06/12/api-nestjs-prisma-serializing/`
 
 ## 2023-10-07 - emadriga
+
 ### Added
+
 - Nginx to serve static images, user avatars and channels.
 
 ## 2023-10-06 - emadriga
+
 ### Added
+
 - New front navegation menú channel including routing
 
 ### Changed
-- Manage webSocks on new module `events.gateway` instead of chats since we cannot have two modules on back handling sockets
+
+- Manage webSocks on new module `events.gateway` instead of chats since we
+  cannot have two modules on back handling sockets
 
 ## 2023-10-04 - emadriga
+
 ### Changed
+
 - Change landing back page to get user tokens easier
 
 ## 2023-10-03 - emadriga
+
 ### Added
-- New module `channel` with 1st version of methods in API REST including channel workflows, not included administration roles 
+
+- New module `channel` with 1st version of methods in API REST including channel
+  workflows, not included administration roles
 
 ## 2023-10-01 - emadriga
+
 ### Fixed
+
 - Fix grouped date (month/day vs day/month) culture problems
 
 ## 2023-09-30 - emadriga
+
 ### Changed
+
 - Grouped chat by dates chat messages with time
 
 ## 2023-09-28 - emadriga
+
 ### Changed
-- Functional chat containing websockets sharing minimal info ws to receptors only and just new info not old. Also displays connected users.
+
+- Functional chat containing websockets sharing minimal info ws to receptors
+  only and just new info not old. Also displays connected users.
 
 ## 2023-09-27 - emadriga
+
 ### Changed
-- Broadcast when some users connects instead of looping through connected sockets
+
+- Broadcast when some users connects instead of looping through connected
+  sockets
 - New note: handling ws ping to evaluate ws connections
 
 ## 2023-09-25 - emadriga
+
 ### Added
+
 - Connected users handled through ws(webSockets)
-- Avoid unnecessary client gets through ws, when they should be subscribed at connection
-- New file NOTES.md to save quick thoughts about the project from other people working on the project.
+- Avoid unnecessary client gets through ws, when they should be subscribed at
+  connection
+- New file NOTES.md to save quick thoughts about the project from other people
+  working on the project.
 
 ### Changed
-- Fake login accepts several fake users(42 max), calling `http://localhost:3000${process.env.FAKE_LOGIN_URL}/${username}`
+
+- Fake login accepts several fake users(42 max), calling
+  `http://localhost:3000${process.env.FAKE_LOGIN_URL}/${username}`
 - Little objects modifications with more sense.
 
 ## 2023-09-23 - emadriga
+
 ### Added
+
 - Fake login to have a secondary testing account
 
 ### Changed
+
 - Remove default front testers, until it actually test something
 
 ## 2023-09-20 - emadriga
 
 ### Changed
+
 - Fix file permissions on running docker (back & front) on linux
 - Change generate-enviroment.sh now omits comments
 
 ## 2023-09-19 - emadriga
 
 ### Added
-- Athorization to http requets on front via cookies through httpinterceptors (no front's call implemented yet)
+
+- Athorization to http requets on front via cookies through httpinterceptors (no
+  front's call implemented yet)
 - Authorization front<->back thorugh WS
-- 1st demo chat available, to make it work you need to send message through swagger to someone in other to create chat
+- 1st demo chat available, to make it work you need to send message through
+  swagger to someone in other to create chat
 
 ### Changed
+
 - Comment some unnecessary dependencies
 
 ## 2023-09-17 - emadriga
@@ -90,30 +136,37 @@ and this project adheres to
 
 - First implementation of '[`Socket.IO`](https://socket.io/)' to handle chats
 - Login in front through back
-- front now handles enviroment, run `generate-environment.sh`(included in make) to create necesary files from .env
+- front now handles enviroment, run `generate-environment.sh`(included in make)
+  to create necesary files from .env
 - login guard on front redirects to intra42
 
 ### Changed
+
 - Added some .env variables
 
-## 2023-09-16  - tomartin
+## 2023-09-16 - tomartin
 
 ## Change
+
 - backend/dev-compose
 - change in ON_BOARDING
-
 
 ## 2023-09-10 - emadriga
 
 ### Added
-- New branch `sandbox` to save some test or demos. Added demo of Angular chat using [`Socket.IO`](https://socket.io/), more on /Sandbox/chat-node-mysql/README.md
+
+- New branch `sandbox` to save some test or demos. Added demo of Angular chat
+  using [`Socket.IO`](https://socket.io/), more on
+  /Sandbox/chat-node-mysql/README.md
 - New file `TO_READ.md`
+
 > Interesting documents to read/watch with a brief explanation about it
 
 ### Changed
+
 - Retrieved comments on Backend Multistage Dockerfile removed in previous commit
 
-## 2023-09-09  - tomartin
+## 2023-09-09 - tomartin
 
 ## Added
 
@@ -309,4 +362,3 @@ and this project adheres to
 
 - Docker-compose.yml
 - Dockerfile frontend
-
