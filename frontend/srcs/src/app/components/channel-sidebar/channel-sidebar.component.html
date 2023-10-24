@@ -1,0 +1,34 @@
+
+<div class="sidebar">
+    <div class="chat-input">
+        <input
+            placeholder="Search"
+            type="text"
+            [(ngModel)]="searchChannel"
+            (focus)="channelsToJoin()"
+            (keyup)="filterChannels()"
+        />
+    </div>
+    <div class="chat-list">
+        <ng-container *ngIf="filteredChannels.length ; then newChat; else notNewChat"   >
+        </ng-container>
+        <ng-template #newChat>
+            <div *ngFor="let channel of filteredChannels" >
+                <app-channel-info
+                    [channel]="channel"
+                    (click)="joinChannel(channel)"
+                ></app-channel-info>
+            </div>
+        </ng-template>
+        <ng-template #notNewChat>
+            <div *ngFor="let channel of joinedChannels | keyvalue" >
+                <div [class.selected]="isCurrentChannel(channel.value)">
+                    <app-channel-info
+                        [channel]="channel.value"
+                        (click)="loadChannel(channel.value)"
+                     ></app-channel-info>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>

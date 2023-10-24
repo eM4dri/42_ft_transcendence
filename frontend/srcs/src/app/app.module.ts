@@ -15,7 +15,17 @@ import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
 import { AuthInterceptor } from './core';
 import { MySocket } from './services/web-socket.service';
-import { ChannelComponent } from './modules/channel/channel.component';
+import { ChatSidebarComponent } from './components/chat-sidebar/chat-sidebar.component';
+import { ChatWindowComponent } from './components/chat-window/chat-window.component';
+import { ChatUserInfoComponent } from './components/chat-user-info/chat-user-info.component';
+import { ChatWindowMessageComponent } from './components/chat-window-message/chat-window-message.component';
+import { NavbarComponent } from './modules/navbar/navbar.component';
+import { AvatarComponent } from './components/avatar/avatar.component';
+import { ChannelWindowComponent } from './components/channel-window/channel-window.component';
+import { ChannelWindowMessageComponent } from './components/channel-window-message/channel-window-message.component';
+import { ChannelSidebarComponent } from './components/channel-sidebar/channel-sidebar.component';
+import { ChannelInfoComponent } from './components/channel-info/channel-info.component';
+import { ChannelAvatarComponent } from './components/channel-avatar/channel-avatar.component';
 
 const config: SocketIoConfig = { url: environment.apiUrl };
 
@@ -27,7 +37,17 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     HistoryComponent,
     ChatComponent,
     ProfileComponent,
-    ChannelComponent
+    ChatSidebarComponent,
+    ChatWindowComponent,
+    ChatUserInfoComponent,
+    ChatWindowMessageComponent,
+    NavbarComponent,
+    AvatarComponent,
+    ChannelWindowComponent,
+    ChannelWindowMessageComponent,
+    ChannelSidebarComponent,
+    ChannelInfoComponent,
+    ChannelAvatarComponent
   ],
   imports: [
     BrowserModule,

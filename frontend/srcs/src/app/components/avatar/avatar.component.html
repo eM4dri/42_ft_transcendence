@@ -1,0 +1,13 @@
+<div class='avatar' 
+        [ngClass]=" 
+            isOnline(user.userId)
+            ? 'online' 
+            : 'offline'
+">
+    <img
+        src="{{ user.avatar }}"
+        alt="avatar"
+        onerror="https://api.dicebear.com/avatar.svg"
+    />
+</div>
+

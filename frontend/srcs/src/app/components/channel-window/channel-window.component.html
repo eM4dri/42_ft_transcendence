@@ -1,0 +1,45 @@
+<div>
+    <app-channel-info
+        [channel]="channel"
+    ></app-channel-info>
+    <div class="chat-container">
+        <div class="chat-messages">
+            <ng-container *ngFor="let channelMessage of channelMessages | keyvalue">
+                <div class="chat-grid">
+                    <p class="chat-day-group">{{ toDayLocale(channelMessage.key) }}</p>
+                </div>
+                <div *ngFor="let msg of channelMessage.value">
+                    <ng-container
+                        *ngIf="
+                        msg.channelUserId !== myChannelUserId;
+                        then notMine;
+                        else mine
+                        "
+                    > </ng-container>
+                    <ng-template #notMine>
+                        <app-channel-window-message
+                            [msg] = "msg"
+                            [channelUser] = "getChannelUser(msg.channelUserId)"
+                        ></app-channel-window-message>
+                    </ng-template>
+                    <ng-template #mine>
+                        <app-channel-window-message
+                            [msg] = "msg"
+                        ></app-channel-window-message>
+                    </ng-template>
+
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+<div class="chat-input">
+    <input
+    placeholder="Message"
+    type="text"
+    [(ngModel)]="inputValue"
+    (keyup.enter)="sendMessage()"
+    />
+    <!-- (keydown)="startTyping()"
+    (blur)="stopTyping()" -->
+</div>

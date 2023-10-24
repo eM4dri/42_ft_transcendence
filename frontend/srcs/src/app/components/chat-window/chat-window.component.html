@@ -1,0 +1,31 @@
+    <div>
+        <app-chat-user-info
+            [user]="user"
+        ></app-chat-user-info>
+        <div class="chat-container">
+            <div class="chat-messages">
+                <ng-container *ngFor="let chatMessage of chatMessages | keyvalue">
+                    <div class="chat-grid">
+                        <p class="chat-day-group">{{ toDayLocale(chatMessage.key) }}</p>
+                    </div>
+                    <div *ngFor="let msg of chatMessage.value">
+                        <app-chat-window-message
+                            [msg] = "msg"
+                            [clientChatUserId] = "chat!.chatUserId"
+                        ></app-chat-window-message>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="chat-input">
+        <input
+        placeholder="Message"
+        type="text"
+        [(ngModel)]="inputValue"
+        (keyup.enter)="sendMessage()"
+        (keydown)="startTyping()"
+        (blur)="stopTyping()"
+        />
+    </div>
+    

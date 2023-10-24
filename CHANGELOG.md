@@ -6,17 +6,48 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 2023-10-23
+## 2023-10-24 - emadriga
+### Changed
+- Decoupling user data from chat & channel backs
+- Cleaning Chat components
 
-## Add
-
+## 2023-10-23 - tomartin
+## Added
 - RoleGuard and Role decorator
+
+## 2023-10-18 - emadriga
+### Changed
+- Componetizing chat and improve look & feel
+
+## 2023-10-15 - emadriga
+### Changed
+- Improved front chat visualization, including heights using avatars at searching for new chats, and also filtering initial post as you focus the search input, this way you don't have several post asking for information. If needed could be handled on back with cache and partial paged searchs 
+
+## 2023-10-14 - emadriga
+### Changed
+- Moved navbar to a new component.
+- Navbar horizontal vertical <-> responsive
+- Improve font view organization
+
+## 2023-10-13 - emadriga
+### Changed
+- Improve chat desing
+
 
 ## 2023-10-12 - emadriga
 
 ### Changed
 
 - Clearing migrations.
+
+## 2023-10-11 - emadriga
+### Added
+- Using avatars from `https://www.dicebear.com/`
+- Serializing responses with prisma following this `https://wanago.io/2023/06/12/api-nestjs-prisma-serializing/`
+
+### Changed
+- Divide chats into components to being able to reuse.
+- Move front Dtos to proper filedirectory
 
 ## 2023-10-09 - emadriga
 

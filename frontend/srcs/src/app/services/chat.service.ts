@@ -1,34 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { MySocket } from './web-socket.service';
-
-
-export type Chat = {
-  chatId: string,
-  userId: string,
-  chatUserId: string,
-  username: string
-}
-
-export type ChatMessages = {
-  chatMessageId: string,
-  chatUserId: string,
-  username: string,
-  createdAt: string,
-  updatedAt: string,
-  message: string
-}
-
-export type ChatMessage = {
-  chatId?: string,
-  listenerId: string,
-  message: string,
-}
-
-export type ChatUser = {
-  userId: string,
-  username: string,
-}
+import { Chat, ChatMessage, ChatMessages } from '../models/chat/chat.model';
 
 @Injectable({
   providedIn: 'root'
@@ -53,18 +26,6 @@ export class ChatService {
 
   userListening() {
     return this.mysocket.fromEvent<string>('listening').pipe(map((data) => data));
-  }
-
-  usersConnected() {
-    return this.mysocket.fromEvent<string[]>('users_connected').pipe(map((data) => data));
-  }
-
-  userDisconnects() {
-    return this.mysocket.fromEvent<string>('user_disconnects').pipe(map((data) => data));
-  }
-
-  userConnects() {
-    return this.mysocket.fromEvent<string>('user_connects').pipe(map((data) => data));
   }
 
   chatsAvailables() {

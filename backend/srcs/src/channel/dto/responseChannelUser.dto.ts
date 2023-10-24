@@ -8,8 +8,6 @@ export class ResponseChannelUserDto implements ChannelUser {
     leaveAt: Date;
     channelId: string;
     
-    username: string;
-
     @Exclude()
     isAdmin: boolean;
     @Exclude()

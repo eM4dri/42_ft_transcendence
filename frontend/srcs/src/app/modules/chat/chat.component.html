@@ -1,148 +1,43 @@
-<p align="center">chat works!</p>
-
 <!-- app.component.html -->
-<button (click)="newChat()">newChat</button>
-<!-- <li *ngFor="let item of items; index as i; trackBy: trackByFn" -->
-<div *ngIf="users.length" class="sidebar">
-    <h2>Usuarios disponibles</h2>
-    <ul>
-        <li *ngFor="let user of users">
-            <a (click)="loadNewChat(user)" >{{ user.username }}
-                <ng-container
-                *ngIf="
-                    conectedUsers.has(user.userId);
-                    then isConnectedTemplate;
-                    else isDiconnectedTemplate
-                "
-                >
-                </ng-container>
-                <ng-template #isConnectedTemplate>🟢</ng-template>
-                <ng-template #isDiconnectedTemplate>🔴</ng-template>
-            </a>
-        </li>
-    </ul>
-</div>
 <div class="chat-app">
     <!-- Barra lateral con la lista de usuarios disponibles -->
-    <div class="sidebar">
-        <h2>Chats disponibles</h2>
-        <ul>
-            <div *ngFor="let chat of chatsAvailables " >
-                <a (click)="loadChat(chat)">{{ chat.username }}
-                <ng-container
-                    *ngIf="
-                        conectedUsers.has(chat.userId);
-                        then isConnectedTemplate;
-                        else isDiconnectedTemplate
-                    "
-                >
-                </ng-container>
-                <ng-template #isConnectedTemplate>🟢</ng-template>
-                <ng-template #isDiconnectedTemplate>🔴</ng-template>
-                ​</a>
-
-            </div>
-        </ul>
+    <div class="chat-sidebar">
+        <nav class="nav-tabs">
+            <a class="nav-tab" [class.active]="isChatTabSeleted()" (click)="showChatTab()">Chat</a>
+            <a class="nav-tab" [class.active]="!isChatTabSeleted()" (click)="showChannelTab()">Channels</a>
+        </nav>
+        <ng-container *ngIf="selectedTab; then channelTabSelected; else chatTabSelected"   >
+        </ng-container>
+        <ng-template #chatTabSelected>
+            <app-chat-sidebar
+                [chatsAvailables]="chatsAvailables"
+            ></app-chat-sidebar>
+        </ng-template>
+        <ng-template #channelTabSelected>
+            <app-channel-sidebar
+                [joinedChannels]="joinedChannels"
+            ></app-channel-sidebar>
+        </ng-template>
     </div>
-
     <!-- Ventana de chat -->
     <div class="chat-window">
-        <ng-container
-        *ngIf="
-            itsNewChat === true;
-            then newChatTemplate;
-            else oldChatTemplate
-        "
-        >
-        </ng-container>
-        <ng-template #newChatTemplate>
-            <div>
-                <h2>Chat con {{ itsNewChatUsername }} <ng-container
-                    *ngIf="
-                        conectedUsers.has(itsNewChatUserId);
-                        then isConnectedTemplate;
-                        else isDiconnectedTemplate
-                    "
-                >
-                </ng-container>
-                <ng-template #isConnectedTemplate>🟢</ng-template>
-                <ng-template #isDiconnectedTemplate>🔴</ng-template>
-                </h2>
-            
-                <div class="input">
-                    <input
-                        placeholder="Escribe un mensaje"
-                        type="text"
-                        [(ngModel)]="inputValue"
-                        (keyup.enter)="sendMessage()"
-                        (keydown)="startTyping()"
-                        (blur)="stopTyping()"
-                    />
-                </div>
+        <div [ngSwitch]="typeChat">
+            <div *ngSwitchCase="'NEW_CHAT'">
+                 <app-chat-window
+                    [user]="currentUser"
+                 ></app-chat-window> 
             </div>
-        </ng-template>
-        <ng-template #oldChatTemplate>
-
-            <ng-container
-            *ngIf="
-                currentChat.chatId === 'none';
-                then noChatSelectedTemplate;
-                else chatSelectedTemplate
-            "
-            >
-            </ng-container>
-            <ng-template #noChatSelectedTemplate>
-                <div *ngIf="currentChat.chatId === 'none'">
-                    <p>Selecciona un usuario para empezar a chatear.</p>
-                </div>
-            </ng-template>
-            <ng-template #chatSelectedTemplate>
-                <div>
-                    <h2>Chat con {{ currentChat.username }} <ng-container
-                        *ngIf="
-                            conectedUsers.has(currentChat.userId);
-                            then isConnectedTemplate;
-                             isDiconnectedTemplate
-                        "
-                    >
-                    </ng-container>
-                    <ng-template #isConnectedTemplate>🟢</ng-template>
-                    <ng-template #isDiconnectedTemplate>🔴</ng-template>
-                    </h2>
-                    <!-- Aquí se mostrarían los mensajes del chat -->
-                    <ng-container *ngFor="let recipient of currentChatMessages | keyvalue">
-                        <p style="text-align: center">{{ toDayLocale(recipient.key) }}</p>
-                       <div *ngFor="let value of recipient.value">
-                        <ng-container
-                        *ngIf="
-                            value.chatUserId != currentChat.chatUserId;
-                            then alignRight;
-                            else alignLeft
-                        "
-                        >
-                        </ng-container>
-                        <ng-template #alignRight>
-                            <p style="text-align: right">
-                                {{ value.message }} ({{ toTimeLocale(value.createdAt) }})
-                            </p>
-                        </ng-template>
-                        <ng-template #alignLeft>
-                            <p>{{ value.message }} ({{ toTimeLocale(value.createdAt) }})</p>
-                        </ng-template>
-                       </div>
-                    </ng-container>
-                        <div class="input">
-                        <input
-                            placeholder="Escribe un mensaje"
-                            type="text"
-                            [(ngModel)]="inputValue"
-                            (keyup.enter)="sendMessage()"
-                            (keydown)="startTyping()"
-                            (blur)="stopTyping()"
-                        />
-                    </div>
-                </div>
-            </ng-template>
-        </ng-template>
+            <div *ngSwitchCase="'CHAT'">
+                <app-chat-window
+                    [chat]="currentChat"
+                    [user]="currentUser"
+                ></app-chat-window>  
+            </div>
+            <div *ngSwitchCase="'CHANNEL'">
+                <app-channel-window
+                    [channel]="currentChannel"
+                ></app-channel-window>
+            </div>
+        </div>
     </div>
 </div>

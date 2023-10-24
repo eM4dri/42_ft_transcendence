@@ -13,8 +13,13 @@ export class UserService {
 
   get(email: string) {
     return this.prisma.user.findUnique({
-      where: {
-        email: email,
+      where: { email }, });
+  }
+  
+  getUsers(userIds: string[]) {
+    return this.prisma.user.findMany({
+      where: { 
+        userId: { in: userIds },
       },
     });
   }

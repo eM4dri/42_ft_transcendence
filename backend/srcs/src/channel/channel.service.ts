@@ -24,6 +24,14 @@ export class ChannelService {
             where: { channelId: channelId }
         }));
     }
+
+    async getChannelsUsersIds(channelsId: string[]){
+        return this.prisma.channelUser.findMany({
+            where: {
+                channelId : { in: channelsId },
+            },
+        });
+    }
     
     async getChannelsJoinedByUserId(userId: string){
         const joinedChannels: string[] = (await this.prisma.channelUser.findMany({
@@ -196,17 +204,7 @@ export class ChannelService {
             const channelUsers = await this.prisma.channelUser.findMany({
                 where: { channelId: channelId }
             });
-            const chanelUsersIds: string[] = channelUsers.map(x=>x.userId);
-            const users = await this.prisma.user.findMany({
-                where:{ userId: { in: chanelUsersIds } }
-            });
-            const result = plainToInstance(ResponseChannelUserDto, channelUsers);
-            result.forEach((channelUser)=> {
-                  channelUser.username = users.filter(
-                    (x) => x.userId == channelUser.userId,
-                  )[0].username;
-            });
-            return result;
+            return plainToInstance(ResponseChannelUserDto, channelUsers);
         } catch (error) {
             throw (error);
         }

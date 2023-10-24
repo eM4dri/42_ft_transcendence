@@ -18,6 +18,7 @@ import { JwtPayload } from 'src/auth/strategy';
 import { ChatUserMessage } from '@prisma/client';
 import { ChannelService } from 'src/channel/channel.service';
 import { CreateChannelMessageDto, JoinChannelDto, ResponseChannelDto, ResponseChannelUserDto } from 'src/channel/dto';
+import { UserService } from 'src/user/user.service';
 
    
 // https://www.makeuseof.com/build-real-time-chat-api-using-websockets-nestjs/
@@ -34,6 +35,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         private readonly chatService: ChatService,
         private readonly authService: AuthService,
         private readonly channelService: ChannelService,
+        private readonly userService: UserService,
     ){}
     @WebSocketServer( )
     server: Server;
@@ -92,7 +94,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
                             message: message.message,
                         }
                     );
-        console.log(`${message.channelId}_room`,' emmiting on ',`${message.channelId}_messages`,'this',   msg)
         this.server.to(`${message.channelId}_room`).emit(`${message.channelId}_messages`, [ msg ]);
     }
 
@@ -107,14 +108,11 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     }    
 
     private async _chatsAvailables(userId: string) {
-        const chats: {
-            chatId: string;
-            userId: string;
-            chatUserId: string;
-            username: string;
-        }[] = await this.chatService.getChatsByUserId(userId);
+        const chats = await this.chatService.getChatsByUserId(userId);
         const socket = this.socketsMap.get(userId);
         this.server.to(socket).emit('chats_availables', chats);
+        const usersIds = Array.from(chats.map(x=>x.userId));
+        this._usersToCache(socket, usersIds);
     }
 
     private async _channelsJoinedByUser(userId: string) {
@@ -125,15 +123,16 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
 
     @SubscribeMessage('join_channel')
     public async channelJoinedByUser(@GetUser() user: JwtPayload, @MessageBody() dto: JoinChannelDto, @ConnectedSocket() socket : Socket) {
-        console.log(JoinChannelDto, dto);
-        const channelUser1: ResponseChannelUserDto = await this.channelService.joinChannel(user.sub, dto);
+        const channelUser: ResponseChannelUserDto = await this.channelService.joinChannel(user.sub, dto);
         // const userId: string = user.sub;
-        const channels: ResponseChannelDto[] = [await this.channelService.getChannelByChannelId(channelUser1.channelId)];
+        const channels: ResponseChannelDto[] = [await this.channelService.getChannelByChannelId(channelUser.channelId)];
         // const socketId = this.socketsMap.get(userId);
         // Add channel into joined_channels ws for socket
         this.server.to(socket.id).emit('joined_channels', channels);
+        // load user data to show 
+        this._channelUsersToCache(socket.id, [dto.channelId]);
         // load users to its {channelId}_users ws for socket
-        const channelUser: ResponseChannelUserDto[] = (await this._loadChannelUsers(socket.id, dto.channelId)).filter(x=>x.userId === user.sub);
+       this._loadChannelUsers(socket.id, dto.channelId);
         // load messages to its {channelId}_users ws for socket
         this._loadChannelMessages(socket.id, dto.channelId);
         // join the socket to the room
@@ -143,16 +142,14 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     }
 
     private async _newChatAvailable(chatId: string, message: ChatUserMessage ){
-        const chats: {
-            chatId: string;
-            userId: string;
-            chatUserId: string;
-            username: string;
-        }[] = await this.chatService.getChatUsersByChatId(chatId);
+        const chats = await this.chatService.getChatUsersByChatId(chatId);
+        const usersIds = Array.from(chats).map(x=>x.userId);
+        const users = Array.from(await this.userService.getUsers(usersIds)).map(x=>x.userId);
         for (let chat of chats) {
             const socket  = this.socketsMap.get(chat.userId);
             if (socket !== undefined ) {
                 this.server.to(socket).emit('new_chat_available', chats.filter(x=>x.userId !== chat.userId)[0]); // we are only sending one.
+                this._usersToCache(socket, users.filter(x=>x !== chat.userId)); 
             }
         }
         this._updateUsersChatId(chatId, message);
@@ -172,11 +169,12 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     }
 
     private async _loadUserChannels(userId: string, socket: Socket) {
-        const channels = await this.channelService.getChannelsJoinedByUserId(userId);
-        channels.forEach(channel =>{
-            this._loadChannelUsers(socket.id ,channel.channelId);
-            this._loadChannelMessages(socket.id ,channel.channelId);
-            socket.join(`${channel.channelId}_room`);
+        const channelsId = Array.from(await this.channelService.getChannelsJoinedByUserId(userId)).map(x=>x.channelId).filter(x=>x);
+        this._channelUsersToCache(socket.id, channelsId);
+        channelsId.forEach(channelId =>{
+            this._loadChannelUsers(socket.id, channelId);
+            this._loadChannelMessages(socket.id, channelId);
+            socket.join(`${channelId}_room`);
         });
     }
 
@@ -200,4 +198,13 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         });
     }
 
+    private async _channelUsersToCache(socketId: string, channelsId: string[]) {
+        const channelsUsers = Array.from(await this.channelService.getChannelsUsersIds(channelsId)).map(x=>x.userId);
+        this._usersToCache(socketId, channelsUsers);
+    }
+
+    private async _usersToCache(socketId: string, usersId: string[]) {
+        const users = await this.userService.getUsers(usersId);
+        this.server.to(socketId).emit('users_to_cache', users);
+    }
 }

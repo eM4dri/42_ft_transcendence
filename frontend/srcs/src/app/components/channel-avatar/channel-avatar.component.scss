@@ -1,0 +1,40 @@
+.avatar {
+    padding: 5px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; // This value should be half of the width/height to create a perfect circle
+    overflow: hidden; // This ensures the image stays within the rounded boundaries
+    background-color: var(--bg-secondary);
+    &:hover {
+        transform: scale(1.1); // Scale the avatar on hover
+    }
+    img {
+      width: 100%;
+      height: 100%;
+    }
+}
+.avatar {
+    padding: 5px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; // This value should be half of the width/height to create a perfect circle
+    overflow: hidden; // This ensures the image stays within the rounded boundaries
+    background-color: var(--bg-secondary);
+    &:hover {
+        transform: scale(1.1); // Scale the avatar on hover
+    }
+    &.online {
+        border: 4px solid #4CAF50; // Green border for online users
+    }
+    &.offline {
+        filter: grayscale(100%); // Grayscale effect for offline users
+    }
+    &.away {
+        filter: opacity(75%); // Reduced opacity for away users
+    }
+    img {
+      width: 100%;
+      height: 100%;
+    }
+}
+  

@@ -1,44 +1,8 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { MySocket } from './web-socket.service';
+import { Channel, ChannelMessage, ChannelMessages, ChannelUsers, JoinChannelDto } from '../models';
 
-export type Channel = {
-  channelId: string,
-  channelName: string,
-  isLocked: true
-}
-
-export type ChannelUsers = {
-    userId: string;
-    channelUserId: string;
-    username: string;
-    joinedAt: Date;
-    leaveAt: Date;
-}
-
-export type ChannelMessages = {
-  channelMessageId: string,
-  channelUserId: string,
-  // username: string,
-  createdAt: string,
-  updatedAt: string,
-  message: string
-}
-
-export type ChannelMessage = {
-  channelId: string,
-  message: string,
-}
-
-export type ChannelUser = {
-  userId: string,
-  username: string,
-}
-
-export type JoinChannelDto = {
-  channelId: string,
-  password?: string,
-}
 
 @Injectable({
   providedIn: 'root'
@@ -63,18 +27,6 @@ export class ChannelService {
 
   userListening() {
     return this.mysocket.fromEvent<string>('listening').pipe(map((data) => data));
-  }
-
-  usersConnected() {
-    return this.mysocket.fromEvent<string[]>('users_connected').pipe(map((data) => data));
-  }
-
-  userDisconnects() {
-    return this.mysocket.fromEvent<string>('user_disconnects').pipe(map((data) => data));
-  }
-
-  userConnects() {
-    return this.mysocket.fromEvent<string>('user_connects').pipe(map((data) => data));
   }
 
   joinedChannels() {

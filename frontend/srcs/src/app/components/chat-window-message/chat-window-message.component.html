@@ -1,0 +1,38 @@
+<ng-container
+*ngIf="
+msg.chatUserId !== clientChatUserId;
+then alignRight;
+else alignLeft
+"
+>
+</ng-container>
+<ng-template #alignRight>
+    <div class="chat-grid right">
+        <div class="chat-message right" >
+            <div class="comic-bubble right">
+                <p class="msg">
+                    {{ msg.message }}
+                </p>
+                <p class="time">
+                    {{ toTimeLocale(msg.createdAt) }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+<ng-template #alignLeft>   
+<div class="chat-grid left">
+    <div class="chat-message left">
+        <div class="comic-bubble left">
+            <p class="msg">
+                {{ msg.message }}
+            </p>
+            <p class="time">
+                {{ toTimeLocale(msg.createdAt) }}
+            </p>
+        </div>
+    </div>
+</div>
+
+</ng-template>

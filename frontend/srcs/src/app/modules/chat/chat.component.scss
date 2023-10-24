@@ -1,0 +1,55 @@
+.chat-app {
+  // position: relative;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  // grid-template-columns: repeat(3 , 1fr);
+  gap:10px;
+  min-height: calc(100vh - 2rem);
+}
+.chat-sidebar {
+    grid-row: 1;
+}
+.chat-window {
+  position: relative;
+  grid-row: 1;
+}
+   
+//   button {
+//     background-color: #0074D9;
+//     color: #fff;
+//     border: none;
+//     border-radius: 3px;
+//     padding: 5px 10px;
+//     cursor: pointer;
+// }
+
+$primary-color: #FF6600;
+$tab-background: #555555;
+$tab-text-color: #FFFFFF;
+
+// Style for the navigation tabs
+.nav-tabs {
+  display: flex;
+  background-color: $tab-background;
+
+  overflow: hidden;
+
+  .nav-tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    color: $tab-text-color;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+
+    &.active {
+      background-color: $primary-color;
+      font-weight: bold;
+    }
+  }
+}

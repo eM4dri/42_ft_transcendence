@@ -6,7 +6,6 @@ import { HistoryComponent } from './modules/history/history.component';
 import { ChatComponent } from './modules/chat/chat.component';
 import { ProfileComponent } from './modules/profile/profile.component';
 import {  LoginGuard } from './guards';
-import { ChannelComponent } from './modules/channel/channel.component';
 
 const routes: Routes = [
   
@@ -16,7 +15,6 @@ const routes: Routes = [
   {path:"game", component:GameComponent,canActivate: [LoginGuard]},
   {path:"history", component:HistoryComponent, canActivate: [LoginGuard]},
   {path:"chat", component:ChatComponent, canActivate: [LoginGuard]},
-  {path:"channel", component:ChannelComponent, canActivate: [LoginGuard]},
   {path:"profile", component:ProfileComponent, canActivate: [LoginGuard]}
 ];
 

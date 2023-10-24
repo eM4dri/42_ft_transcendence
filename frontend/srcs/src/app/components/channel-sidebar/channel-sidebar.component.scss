@@ -1,0 +1,25 @@
+.chat-input {
+    background-color: #fff;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #ccc;
+    bottom: 0;
+}
+  
+input[type="text"] {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+  
+.chat-list {
+  display: grid;
+  gap: 1px;
+}
+
+.selected {
+  background-color: var(--bg-secondary);
+}

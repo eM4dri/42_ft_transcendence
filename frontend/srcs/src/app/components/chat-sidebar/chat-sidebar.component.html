@@ -1,0 +1,36 @@
+
+<div class="sidebar">
+    <div class="chat-input">
+        <input
+            placeholder="Search"
+            type="text"
+            [(ngModel)]="searchChat"
+            (focus)="createNewChat()"
+            (keyup)="filterUsers()"
+        />
+    </div>
+    <div class="chat-list">
+        <ng-container *ngIf="filteredUsers.length ; then newChat; else notNewChat"   >
+        </ng-container>
+        <ng-template #newChat>
+            <div *ngFor="let user of filteredUsers" >
+                <app-chat-user-info
+                    [user]="user"
+                    (click)="loadNewChat(user)"
+                >
+                </app-chat-user-info>
+            </div>
+        </ng-template>
+        <ng-template #notNewChat>
+            <div *ngFor="let user of currentUsers | keyvalue" >
+                <div [class.selected]="isCurrentChat(user.key)">
+                    <app-chat-user-info
+                        [user]="user.value"
+                        (click)="loadChat(user.key)"
+                    >
+                    </app-chat-user-info>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>
