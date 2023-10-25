@@ -14,21 +14,21 @@
         </ng-container>
         <ng-template #newChat>
             <div *ngFor="let user of filteredUsers" >
-                <app-chat-user-info
+                <app-chat-info
                     [user]="user"
                     (click)="loadNewChat(user)"
                 >
-                </app-chat-user-info>
+                </app-chat-info>
             </div>
         </ng-template>
         <ng-template #notNewChat>
             <div *ngFor="let user of currentUsers | keyvalue" >
                 <div [class.selected]="isCurrentChat(user.key)">
-                    <app-chat-user-info
+                    <app-chat-info
                         [user]="user.value"
                         (click)="loadChat(user.key)"
                     >
-                    </app-chat-user-info>
+                    </app-chat-info>
                 </div>
             </div>
         </ng-template>

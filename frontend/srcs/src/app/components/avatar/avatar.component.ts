@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { UsersCache } from 'src/app/cache';
 import { User } from 'src/app/models';
-import { CachedDataService } from 'src/app/services';
 
 @Component({
   selector: 'app-avatar',
@@ -11,10 +11,10 @@ export class AvatarComponent {
   @Input() user!: User;
 
   constructor(
-    private readonly cachedDataService: CachedDataService
+    private readonly cachedUsers: UsersCache
   ){ }
 
   isOnline(userId: string): boolean {
-    return this.cachedDataService.isUserConnected(this.user.userId);
+    return this.cachedUsers.isUserConnected(userId);
   }
 }

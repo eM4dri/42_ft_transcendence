@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Channel } from 'src/app/models';
-// import { ChannelComponent } from 'src/app/modules/channel/channel.component';
 import { ChatComponent } from 'src/app/modules/chat/chat.component';
 import { BaseComponent } from 'src/app/modules/shared';
 import { ApiService, ChannelService } from 'src/app/services';

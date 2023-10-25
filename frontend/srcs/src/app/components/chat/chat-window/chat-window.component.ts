@@ -1,13 +1,14 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChatsCache } from 'src/app/cache';
 import { Chat, ChatMessages, User } from 'src/app/models';
-import { CachedDataService, ChatService } from 'src/app/services';
+import { ChatService } from 'src/app/services';
 
 @Component({
   selector: 'app-chat-window',
   templateUrl: './chat-window.component.html',
   styleUrls: ['./chat-window.component.scss']
 })
-// export class ChatWindowComponent  {
+
 export class ChatWindowComponent implements OnInit, OnChanges {
   @Input() user!: User;
   @Input() chat?: Chat;
@@ -16,7 +17,7 @@ export class ChatWindowComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     if (this.chat !== undefined ) {
-      this.cachedService.getChatMessagesSub().subscribe(res=>{
+      this.cachedChats.getChatMessagesSub().subscribe(res=>{
         if (res.chatId === this.chat!.chatId) {
           let messages = res.chatMessages;
           for (let m of messages){
@@ -34,7 +35,7 @@ export class ChatWindowComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.chat !== undefined ) {
-      let messages = this.cachedService.getChatMessages(this.chat.chatId);
+      let messages = this.cachedChats.getChatMessages(this.chat.chatId);
       this.chatMessages.clear();
       for(let m of messages) {
         this.chatMessages.set(m[0], m[1]);
@@ -44,7 +45,7 @@ export class ChatWindowComponent implements OnInit, OnChanges {
 
   constructor(
     private readonly chatService: ChatService,
-    private readonly cachedService: CachedDataService
+    private readonly cachedChats: ChatsCache
     ) {   }
 
   counter=0;

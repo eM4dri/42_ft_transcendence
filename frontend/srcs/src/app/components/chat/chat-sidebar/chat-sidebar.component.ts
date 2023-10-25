@@ -1,8 +1,9 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { UsersCache } from 'src/app/cache';
 import { Chat, User } from 'src/app/models';
 import { ChatComponent } from 'src/app/modules/chat/chat.component';
 import { BaseComponent } from 'src/app/modules/shared';
-import { ApiService, AuthService, CachedDataService } from 'src/app/services';
+import { ApiService, AuthService } from 'src/app/services';
 import { SessionStorageConstants, UriConstants } from 'src/app/utils';
 
 @Component({
@@ -22,7 +23,8 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
     private readonly api: ApiService<User>,
     private readonly chatComponent: ChatComponent,
     private readonly authService: AuthService,
-    private readonly cachedService: CachedDataService,
+    private readonly cachedUsers: UsersCache,
+
     ) {
       super(api);
       this.filteredUsers = this.users;
@@ -32,7 +34,7 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
     this.chatsAvailables.forEach(chat =>{
       if (this.currentUsers.has(chat.userId) === false)
       {
-        const user: User | undefined = this.cachedService.getUser(chat.userId) ;
+        const user: User | undefined = this.cachedUsers.getUser(chat.userId) ;
         if (user !== undefined){
           this.currentUsers.set(chat.chatId, user);
         }
@@ -45,7 +47,7 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
     this.chatsAvailables.forEach(chat =>{
       if (this.currentUsers.has(chat.userId) === false)
       {
-        const user: User | undefined = this.cachedService.getUser(chat.userId) ;
+        const user: User | undefined = this.cachedUsers.getUser(chat.userId) ;
         if (user !== undefined){
           this.currentUsers.set(chat.chatId, user);
         }

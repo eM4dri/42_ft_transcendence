@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChannelsCache, UsersCache } from 'src/app/cache';
 import { Channel, ChannelMessages, ChannelUsersData } from 'src/app/models';
-import { AuthService, CachedDataService,  ChannelService } from 'src/app/services';
+import { AuthService, ChannelService } from 'src/app/services';
 import { SessionStorageConstants } from 'src/app/utils';
 
 @Component({
@@ -15,7 +16,7 @@ export class ChannelWindowComponent implements OnInit, OnChanges {
   myChannelUserId: string = '';
 
   ngOnInit(): void {
-    this.cachedService.getChannelMessagesSub().subscribe(res=>{
+    this.cachedChannels.getChannelMessagesSub().subscribe(res=>{
       if (res.channelId === this.channel.channelId) {
         let messages = res.channelMessages;
         for (let m of messages){
@@ -28,11 +29,11 @@ export class ChannelWindowComponent implements OnInit, OnChanges {
         }
       }
     });
-    this.cachedService.getChannelUsersSub().subscribe(res=>{
+    this.cachedChannels.getChannelUsersSub().subscribe(res=>{
       if (res.channelId === this.channel.channelId) {
         let channelUsers = res.channelUsers;
         for (let c of channelUsers){
-          const user = this.cachedService.getUser(c.userId);
+          const user = this.cachedUsers.getUser(c.userId);
           const channelUsersData: ChannelUsersData = {
             channelUserId: c.channelUserId,
             leaveAt: c.leaveAt,
@@ -47,15 +48,15 @@ export class ChannelWindowComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    let messages = this.cachedService.getChannelMessages(this.channel.channelId);
-    let channelUsers = this.cachedService.getChannelUsers(this.channel.channelId);
+    let messages = this.cachedChannels.getChannelMessages(this.channel.channelId);
+    let channelUsers = this.cachedChannels.getChannelUsers(this.channel.channelId);
     this.channelMessages.clear();
     for(let m of messages) {
       this.channelMessages.set(m[0], m[1]);
     }
     this.channelUsers.clear();
     for (let c of channelUsers) {
-      const user = this.cachedService.getUser(c.userId);
+      const user = this.cachedUsers.getUser(c.userId);
       const channelUsersData: ChannelUsersData = {
         channelUserId: c.channelUserId,
         leaveAt: c.leaveAt,
@@ -72,7 +73,8 @@ export class ChannelWindowComponent implements OnInit, OnChanges {
 
   constructor(
     private readonly channelService: ChannelService,
-    private readonly cachedService: CachedDataService,
+    private readonly cachedChannels: ChannelsCache,
+    private readonly cachedUsers: UsersCache,
     private readonly authService: AuthService
     ) {  
 

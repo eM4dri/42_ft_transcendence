@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { CachedDataService, ChatService } from 'src/app/services';
 import { Channel, Chat, User } from 'src/app/models';
+import { ChannelsCache, ChatsCache, UsersCache } from 'src/app/cache';
 
 export enum EnumChatSidebarSelectedTab {
     CHAT_TAB,
@@ -45,19 +45,17 @@ export class ChatComponent  {
         isLocked: true
     };
     constructor(
-        private readonly chatService: ChatService,
-        private readonly cachedDataService: CachedDataService,
+        private readonly cachedChats: ChatsCache,
+        private readonly cachedChannels: ChannelsCache,
+        private readonly cachedUsers: UsersCache,
       ) {
-        this.chatsAvailables = this.cachedDataService.getChatsAvailables();
-        this.cachedDataService.getChatsAvailablesSub().subscribe((data) => {
+        this.chatsAvailables = this.cachedChats.getChatsAvailables();
+        this.cachedChats.getChatsAvailablesSub().subscribe((data) => {
             this.chatsAvailables = data;
         });
-        this.joinedChannels = this.cachedDataService.getJoinedChannels();
-        this.cachedDataService.getJoinedChannelsSub().subscribe((data) => {
+        this.joinedChannels = this.cachedChannels.getJoinedChannels();
+        this.cachedChannels.getJoinedChannelsSub().subscribe((data) => {
             this.joinedChannels = data;
-        });
-        this.chatService.userListening().subscribe(val => {
-            console.log('user listening here', val);
         });
     }
 
@@ -73,7 +71,7 @@ export class ChatComponent  {
 
     public loadChat(chat: Chat) {
         this.typeChat = EnumChatWindowTypeSeleted.CHAT
-        const user = this.cachedDataService.getUser(chat.userId); 
+        const user = this.cachedUsers.getUser(chat.userId); 
         if (user !== undefined) {
             this.currentUser = user;
         }

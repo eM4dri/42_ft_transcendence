@@ -25,10 +25,6 @@ export class ChannelService {
     this.mysocket.emit('send_channel_message', msg);
   }
 
-  userListening() {
-    return this.mysocket.fromEvent<string>('listening').pipe(map((data) => data));
-  }
-
   joinedChannels() {
     return this.mysocket.fromEvent<Channel[]>('joined_channels').pipe(map((data) => data));
   }

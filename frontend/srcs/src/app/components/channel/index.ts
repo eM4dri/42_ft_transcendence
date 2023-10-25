@@ -1,0 +1,5 @@
+export * from './channel-avatar/channel-avatar.component'
+export * from './channel-info/channel-info.component'
+export * from './channel-sidebar/channel-sidebar.component'
+export * from './channel-window/channel-window.component'
+export * from './channel-window-message/channel-window-message.component'

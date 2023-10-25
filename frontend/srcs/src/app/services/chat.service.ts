@@ -24,10 +24,6 @@ export class ChatService {
     this.mysocket.emit('send_new_message', msg);
   }
 
-  userListening() {
-    return this.mysocket.fromEvent<string>('listening').pipe(map((data) => data));
-  }
-
   chatsAvailables() {
     return this.mysocket.fromEvent<Chat[]>('chats_availables').pipe(map((data) => data));
   }
