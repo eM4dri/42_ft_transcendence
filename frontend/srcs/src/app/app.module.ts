@@ -12,6 +12,7 @@ import { AuthInterceptor } from './core';
 import { MySocket } from './services/web-socket.service';
 import { ChannelsCache, ChatsCache, UsersCache } from './cache';
 import { AvatarComponent, ChannelAvatarComponent, ChannelInfoComponent, ChannelSidebarComponent, ChannelWindowComponent, ChannelWindowMessageComponent, ChatInfoComponent, ChatSidebarComponent, ChatWindowComponent, ChatWindowMessageComponent } from './components';
+import { DateMutations } from './utils';
 
 const config: SocketIoConfig = { url: environment.apiUrl };
 
@@ -54,7 +55,8 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     MySocket,
     UsersCache,
     ChatsCache,
-    ChannelsCache
+    ChannelsCache,
+    DateMutations
   ],
   bootstrap: [AppComponent]
 })

@@ -2,11 +2,8 @@ import { Injectable } from '@angular/core';
 import { Channel, ChannelMessages, ChannelUsers } from '../models';
 import { Subject } from 'rxjs';
 import { ChannelService } from '../services';
+import { DateMutations } from '../utils';
 
-interface MyCreatedAtObject {
-  createdAt: string;
-  // Otras propiedades que pueda tener su objeto
-}
 @Injectable({
   providedIn: 'root'
 })
@@ -17,6 +14,7 @@ export class ChannelsCache {
 
   constructor(
     private readonly channelService: ChannelService,
+    private readonly dateMutations: DateMutations
   ){
     this.channelService.joinedChannels().subscribe(channels => {
       channels.forEach(channel => {
@@ -59,7 +57,7 @@ export class ChannelsCache {
     } else {
         this._channelsMessages.set(channelId, messages);
     }
-    this.updateChannelMessagesSub(channelId, this._toDateMap(messages));
+    this.updateChannelMessagesSub(channelId, this.dateMutations.toDateMap(messages));
   }
 
   getJoinedChannels():Map< string, Channel >{
@@ -77,7 +75,7 @@ export class ChannelsCache {
   getChannelMessages(channelId:string){
     const messages = this._channelsMessages.get(channelId);
     if ( messages !== undefined ) {
-      return this._toDateMap(messages);
+      return this.dateMutations.toDateMap(messages);
     }
     return [];
   }
@@ -121,26 +119,6 @@ export class ChannelsCache {
   }  
   async updateChannelMessagesSub(channelId:string, channelMessages: Map<number, ChannelMessages[]>) {
     this.sendChannelMessagesSub(channelId, channelMessages);
-  }
-
-  private _toDateMap<T extends MyCreatedAtObject>(items: T[]): Map<number,T[]> {
-    let groupedItems: Map<number,T[]> = new Map<number,T[]>();
-    items.forEach((item) => {
-        //parsing to avoid culture problems
-      const local = new Date(item.createdAt);
-      const fecha = new Date (
-            local.getFullYear(), local.getMonth(), local.getDate()
-        ).getTime();
-      if (!groupedItems.has(fecha)) {
-        groupedItems.set(fecha, []);
-      }
-      const currentItem = groupedItems.get(fecha);
-      if (currentItem !== undefined) {
-        currentItem?.push(item);
-        groupedItems.set(fecha, currentItem);
-      }
-    });
-    return groupedItems;
   }
 
 }

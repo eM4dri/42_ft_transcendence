@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { ChannelsCache, UsersCache } from 'src/app/cache';
 import { Channel, ChannelMessages, ChannelUsersData } from 'src/app/models';
 import { AuthService, ChannelService } from 'src/app/services';
-import { SessionStorageConstants } from 'src/app/utils';
+import { DateMutations, SessionStorageConstants } from 'src/app/utils';
 
 @Component({
   selector: 'app-channel-window',
@@ -75,7 +75,8 @@ export class ChannelWindowComponent implements OnInit, OnChanges {
     private readonly channelService: ChannelService,
     private readonly cachedChannels: ChannelsCache,
     private readonly cachedUsers: UsersCache,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly dateMutations: DateMutations
     ) {  
 
      }
@@ -84,32 +85,7 @@ export class ChannelWindowComponent implements OnInit, OnChanges {
   inputValue: string = ''; 
 
   public toDayLocale(time: number):string {
-    let options: {} = {};
-    const today: number = Date.now();
-    const daysTillToday = Math.abs((today - time) / (1000 * 60 * 60 * 24));
-    if (daysTillToday >  7 ) {
-        if (new Date(time).getFullYear !== new Date().getFullYear) {
-            options = {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-            };
-        } else {
-            options = {
-                day: "numeric",
-                month: "long",
-            };
-        }
-    } else if (daysTillToday > 1 ){
-        options = {
-            weekday: "long"
-        };
-    } else if (daysTillToday === 1 ){
-        return "yesterday";
-    } else {
-        return "today";
-    }
-    return new Date(time).toLocaleDateString([navigator.language], options);
+    return this.dateMutations.toDayLocale(time);
   }
 
   public sendMessage() {

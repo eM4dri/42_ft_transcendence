@@ -9,6 +9,7 @@ and this project adheres to
 ## 2023-10-25 - emadriga
 ### Changed
 - Reorganize front modules, components & services 
+- Front date.mutations.ts to centralize date mutations
 
 ## 2023-10-24 - emadriga
 ### Changed

@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { ChatsCache } from 'src/app/cache';
 import { Chat, ChatMessages, User } from 'src/app/models';
 import { ChatService } from 'src/app/services';
+import { DateMutations } from 'src/app/utils';
 
 @Component({
   selector: 'app-chat-window',
@@ -45,7 +46,8 @@ export class ChatWindowComponent implements OnInit, OnChanges {
 
   constructor(
     private readonly chatService: ChatService,
-    private readonly cachedChats: ChatsCache
+    private readonly cachedChats: ChatsCache,
+    private readonly dateMutations: DateMutations
     ) {   }
 
   counter=0;
@@ -53,34 +55,8 @@ export class ChatWindowComponent implements OnInit, OnChanges {
  
 
   public toDayLocale(time: number):string {
-    let options: {} = {};
-    const today: number = Date.now();
-    const daysTillToday = Math.abs((today - time) / (1000 * 60 * 60 * 24));
-    if (daysTillToday >  7 ) {
-        if (new Date(time).getFullYear !== new Date().getFullYear) {
-            options = {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-            };
-        } else {
-            options = {
-                day: "numeric",
-                month: "long",
-            };
-        }
-    } else if (daysTillToday > 1 ){
-        options = {
-            weekday: "long"
-        };
-    } else if (daysTillToday === 1 ){
-        return "yesterday";
-    } else {
-        return "today";
-    }
-    return new Date(time).toLocaleDateString([navigator.language], options);
+    return this.dateMutations.toDayLocale(time);
   }
-
 
   public sendMessage() {
     if (this.inputValue) {

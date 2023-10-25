@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ChannelMessages, ChannelUsersData } from 'src/app/models';
+import { DateMutations } from 'src/app/utils';
 
 @Component({
   selector: 'app-channel-window-message',
@@ -9,9 +10,13 @@ import { ChannelMessages, ChannelUsersData } from 'src/app/models';
 export class ChannelWindowMessageComponent {
   @Input() msg!: ChannelMessages;
   @Input() channelUser?: ChannelUsersData;
+  constructor(
+    private readonly dateMutations : DateMutations
+  )
+  {}
 
   public toTimeLocale(date: string){
-    return new Date(date).toLocaleTimeString([],{ hour: "2-digit", minute: "2-digit", hour12: false  });
+    return this.dateMutations.toTimeLocale(date);
   }
 
 }
