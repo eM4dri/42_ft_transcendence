@@ -13,6 +13,8 @@ import { MySocket } from './services/web-socket.service';
 import { ChannelsCache, ChatsCache, UsersCache } from './cache';
 import { AvatarComponent, ChannelAvatarComponent, ChannelInfoComponent, ChannelSidebarComponent, ChannelWindowComponent, ChannelWindowMessageComponent, ChatInfoComponent, ChatSidebarComponent, ChatWindowComponent, ChatWindowMessageComponent } from './components';
 import { DateMutations } from './utils';
+import { ChannelManagementComponent } from './components/channel/channel-management/channel-management.component';
+
 
 const config: SocketIoConfig = { url: environment.apiUrl };
 
@@ -34,7 +36,8 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     ChannelWindowMessageComponent,
     ChannelSidebarComponent,
     ChannelInfoComponent,
-    ChannelAvatarComponent
+    ChannelAvatarComponent,
+    ChannelManagementComponent
   ],
   imports: [
     BrowserModule,

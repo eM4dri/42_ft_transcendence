@@ -11,6 +11,7 @@ export class EnumChatWindowTypeSeleted {
     public static readonly NEW_CHAT = 'NEW_CHAT';
     public static readonly CHAT = 'CHAT';
     public static readonly CHANNEL = 'CHANNEL';
+    public static readonly MANAGE_CHANNEL = 'MANAGE_CHANNEL'
 }
 
 @Component({

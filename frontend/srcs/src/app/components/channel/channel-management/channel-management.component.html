@@ -1,0 +1,11 @@
+<form class="form" [formGroup]="formGroup" (submit)="saveChannel()">
+  <span class="input-span">
+    <label for="channelName" class="label">Channel name</label>
+    <input type="text" formControlName="channelName" placeholder="ChannelName"/>
+  </span>
+  <span class="input-span">
+    <label for="password" class="label">Password</label>
+    <input type="password" formControlName="password" placeholder="Password"/>
+  </span>
+  <input class="submit" type="submit" [disabled]="formGroup.invalid" value="Save">
+</form>
