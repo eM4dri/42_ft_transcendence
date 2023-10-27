@@ -46,7 +46,7 @@ export class ChannelManagementComponent extends BaseComponent {
       }).subscribe({
         next: () => {
           console.log('SUCCESS!');
-          this.alertConfiguration('SUCCESS', "Changes saved sucessfully");
+          this.alertConfiguration('SUCCESS', "Changes applied sucessfully");
           this.openAlert();
           this.loading = false;
         },
@@ -54,7 +54,7 @@ export class ChannelManagementComponent extends BaseComponent {
           console.log('ERROR!');
           this.alertConfiguration('ERROR', error);
           this.openAlert();
-          this.loading = false;
+          this.loading = true;
         }
       });
     }

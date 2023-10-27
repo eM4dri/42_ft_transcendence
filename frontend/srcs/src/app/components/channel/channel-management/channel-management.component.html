@@ -9,3 +9,10 @@
   </span>
   <input class="submit" type="submit" [disabled]="formGroup.invalid" value="Save">
 </form>
+<app-alert
+[open]="alertConfig.open"
+[singleMessage]="alertConfig.singleMessage"
+[severity]="alertConfig.severity"
+(eventCloseToast)="closeAlert()"
+>
+</app-alert>

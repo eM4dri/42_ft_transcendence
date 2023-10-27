@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ChatComponent, GameComponent, HistoryComponent, HomeComponent, NavbarComponent, ProfileComponent } from './modules';
+import { ChatComponent, GameComponent, HistoryComponent, HomeComponent, NavbarComponent, ProfileComponent, SharedAlertModule } from './modules';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
@@ -14,6 +14,7 @@ import { ChannelsCache, ChatsCache, UsersCache } from './cache';
 import { AvatarComponent, ChannelAvatarComponent, ChannelInfoComponent, ChannelSidebarComponent, ChannelWindowComponent, ChannelWindowMessageComponent, ChatInfoComponent, ChatSidebarComponent, ChatWindowComponent, ChatWindowMessageComponent } from './components';
 import { DateMutations } from './utils';
 import { ChannelManagementComponent } from './components/channel/channel-management/channel-management.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 const config: SocketIoConfig = { url: environment.apiUrl };
@@ -46,7 +47,8 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     SocketIoModule.forRoot(config),
     FormsModule,
     ReactiveFormsModule,
-
+    SharedAlertModule,
+    BrowserAnimationsModule
   ],
   providers: [
     CookieService, 
