@@ -12,7 +12,8 @@ and this project adheres to
 - Alerts Module to handle errors
 
 ### Changed
-- Update front packages 
+- Upgrade back packages, fixing some vulnerabilities  
+- Update front packages
 
 ## 2023-10-25 - emadriga
 ### Changed
