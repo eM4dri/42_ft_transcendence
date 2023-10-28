@@ -3,7 +3,7 @@ import { User } from "../user/user.model";
 export type Channel = {
     channelId: string,
     channelName: string,
-    isLocked: true
+    isLocked: boolean,
     avatar?: string
   }
   

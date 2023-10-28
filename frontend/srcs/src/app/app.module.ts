@@ -15,6 +15,7 @@ import { AvatarComponent, ChannelAvatarComponent, ChannelInfoComponent, ChannelS
 import { DateMutations } from './utils';
 import { ChannelManagementComponent } from './components/channel/channel-management/channel-management.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TableModule } from 'primeng/table';
 
 
 const config: SocketIoConfig = { url: environment.apiUrl };
@@ -48,7 +49,8 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     FormsModule,
     ReactiveFormsModule,
     SharedAlertModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    TableModule
   ],
   providers: [
     CookieService, 

@@ -64,6 +64,10 @@ export class ChannelsCache {
     return this._joinedChannelsMap
   }
 
+  addJoinedChannel(channel: Channel){
+    this._joinedChannelsMap.set(channel.channelId, channel);
+  }
+
   getChannelsMessages(){
     return this._channelsMessages;
   }

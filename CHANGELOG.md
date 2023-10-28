@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-10-28 - emadriga
+## Added
+- Post call to add new channels using next response to update cached channels
+### Changed
+- Remove unused chanel.service  ws subscription to new_channels_available (we use GET for that)
+- Adjust channel.post response to work with front
+
 ## 2023-10-27 - emadriga
 ## Added
 - PrimeNG utilities to use alerts and some components

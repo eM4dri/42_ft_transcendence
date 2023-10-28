@@ -1,20 +1,30 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Channel } from 'src/app/models';
+import { ChannelsCache } from 'src/app/cache';
 import { BaseComponent } from 'src/app/modules';
 import { ApiService } from 'src/app/services';
 import { UriConstants } from 'src/app/utils';
+
+type Get = {}
+type Post ={
+  channelId: string;
+  createdAt: Date;
+  createdBy: string;
+  channelName: string;
+}
 
 @Component({
   selector: 'app-channel-management',
   templateUrl: './channel-management.component.html',
   styleUrls: ['./channel-management.component.scss']
 })
-export class ChannelManagementComponent extends BaseComponent {
+export class ChannelManagementComponent extends BaseComponent<Get,Post> {
   constructor(
-    private readonly api: ApiService,
-    private readonly fb: FormBuilder
-
+    private readonly api: ApiService<Get,Post>,
+    private readonly fb: FormBuilder,
+    private readonly cachedChannels: ChannelsCache
   ) {
     super(api);
     this.formGroup = this.fb.group({
@@ -22,21 +32,17 @@ export class ChannelManagementComponent extends BaseComponent {
       password: [''],
     });
   }
+  // users:Users[];
 
   saveChannel(){
     if (this.isFormValid()) {
-      // const formData = new FormData();
       const { channelName, password } = this.formGroup.value;
-      // formData.append('channelName', channelName);
-      // formData.append('password', password);
-      // console.log('edu was  here!', formData);
       const data  = {
         channelName: channelName,
         password: password
       }
       const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
-      // const headers = { 'Content-Type': 'application/json', 'My-Custom-Header': 'foobar' };
       this.createService({
         url: `${UriConstants.CHANNELS}`,
         data: data,
@@ -44,8 +50,15 @@ export class ChannelManagementComponent extends BaseComponent {
           headers
         }
       }).subscribe({
-        next: () => {
-          console.log('SUCCESS!');
+        next: (res) => {
+          const { channelId, createdAt, createdBy, channelName } = res.response;
+          const newChannel:Channel ={
+            channelId: channelId,
+            channelName: channelName,
+            isLocked: password === '',
+            avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${channelName}`,
+          } 
+          this.cachedChannels.addJoinedChannel(newChannel)
           this.alertConfiguration('SUCCESS', "Changes applied sucessfully");
           this.openAlert();
           this.loading = false;
@@ -55,11 +68,8 @@ export class ChannelManagementComponent extends BaseComponent {
           this.alertConfiguration('ERROR', error);
           this.openAlert();
           this.loading = true;
-        }
+        },
       });
     }
   }
-
-
-
 }

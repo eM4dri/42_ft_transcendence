@@ -85,7 +85,7 @@ export class ChatComponent  {
         console.log('loadChannel',channel)
     }
     
-    selectedTab : number = EnumChatSidebarSelectedTab.CHAT_TAB;
+    selectedTab : number = EnumChatSidebarSelectedTab.CHANNEL_TAB;
 
     showChatTab() {
       this.selectedTab = EnumChatSidebarSelectedTab.CHAT_TAB;

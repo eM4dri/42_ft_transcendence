@@ -107,10 +107,7 @@ export class ChannelService {
                     password: dto.password 
                 }, creator);
             }
-            return {  
-                channel:channel,
-                channelUser:channelUser,
-            };
+            return plainToInstance(ResponseChannelDto, channel);
         } catch (error) {
             if (
                 error instanceof

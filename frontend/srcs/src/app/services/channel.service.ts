@@ -29,9 +29,6 @@ export class ChannelService {
     return this.mysocket.fromEvent<Channel[]>('joined_channels').pipe(map((data) => data));
   }
 
-  newChannelAvailable() {
-    return this.mysocket.fromEvent<Channel>('new_channel_available').pipe(map((data) => data));
-  }
 
   channelUsersLoaded(channelId: string) {
     return this.mysocket.fromEvent<ChannelUsers[]>(`${channelId}_users`).pipe(map((data) => data));

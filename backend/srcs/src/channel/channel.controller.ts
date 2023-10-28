@@ -39,14 +39,16 @@ export class ChannelController {
     }
 
     @Post()
-    newChannel(
+    async newChannel(
       @GetUser('id') creator: string,
       @Body() dto: CreateChannelDto,
     ) {
-      return this.channelService.newChannel(
-        creator,
-        dto,
-      );
+      return {
+        response: await this.channelService.newChannel(
+            creator,
+            dto,
+          )
+      };
     }
 
     @Delete('/:uuid')
