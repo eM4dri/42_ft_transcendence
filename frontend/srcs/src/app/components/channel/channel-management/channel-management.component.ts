@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Channel } from 'src/app/models';
 import { ChannelsCache } from 'src/app/cache';
@@ -21,6 +21,7 @@ type Post ={
   styleUrls: ['./channel-management.component.scss']
 })
 export class ChannelManagementComponent extends BaseComponent<Get,Post> {
+  @Input() channel!: Channel;
   constructor(
     private readonly api: ApiService<Get,Post>,
     private readonly fb: FormBuilder,
@@ -32,7 +33,6 @@ export class ChannelManagementComponent extends BaseComponent<Get,Post> {
       password: [''],
     });
   }
-  // users:Users[];
 
   saveChannel(){
     if (this.isFormValid()) {

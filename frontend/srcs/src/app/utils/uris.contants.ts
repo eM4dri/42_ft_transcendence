@@ -10,6 +10,7 @@ export class UriConstants {
   public static readonly CHAT = basePath + '/chat';
   public static readonly MESSAGES = basePath + '/chat/message';
   public static readonly CHANNELS = basePath + '/channel';
+  public static readonly MANAGE_CHANNELS = basePath + '/channel/admin';
   public static readonly RAMDON_AVATAR = 'https://api.dicebear.com/7.x/bottts/svg?seed=';
 
 }

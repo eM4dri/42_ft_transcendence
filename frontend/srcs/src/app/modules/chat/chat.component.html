@@ -38,10 +38,11 @@
                     [channel]="currentChannel"
                 ></app-channel-window>
             </div>
-            <!-- <div *ngSwitchCase="'MANAGE_CHANNEL'">
-            </div> -->
+            <div *ngSwitchCase="'MANAGE_CHANNEL'">
+                <app-channel-management
+                    [channel]="currentChannel"
+                ></app-channel-management>
+            </div>
         </div>
-        <!-- <app-channel-management> 
-        </app-channel-management> -->
     </div>
 </div>

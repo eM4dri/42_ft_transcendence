@@ -9,6 +9,7 @@ and this project adheres to
 ## 2023-10-29 - emadriga
 ## Added
 - New `GET` Channels Users to administrate
+- Management channel component
 ### Changed
 - Remove uneeded back dependencies
 

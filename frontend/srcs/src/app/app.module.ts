@@ -11,9 +11,8 @@ import { environment } from 'src/environments/environment';
 import { AuthInterceptor } from './core';
 import { MySocket } from './services/web-socket.service';
 import { ChannelsCache, ChatsCache, UsersCache } from './cache';
-import { AvatarComponent, ChannelAvatarComponent, ChannelInfoComponent, ChannelSidebarComponent, ChannelWindowComponent, ChannelWindowMessageComponent, ChatInfoComponent, ChatSidebarComponent, ChatWindowComponent, ChatWindowMessageComponent } from './components';
+import { AvatarComponent, ChannelAvatarComponent, ChannelInfoComponent, ChannelManagementComponent, ChannelManagementUsersComponent, ChannelSidebarComponent, ChannelWindowComponent, ChannelWindowMessageComponent, ChatInfoComponent, ChatSidebarComponent, ChatWindowComponent, ChatWindowMessageComponent } from './components';
 import { DateMutations } from './utils';
-import { ChannelManagementComponent } from './components/channel/channel-management/channel-management.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TableModule } from 'primeng/table';
 
@@ -39,7 +38,8 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     ChannelSidebarComponent,
     ChannelInfoComponent,
     ChannelAvatarComponent,
-    ChannelManagementComponent
+    ChannelManagementComponent,
+    ChannelManagementUsersComponent,
   ],
   imports: [
     BrowserModule,

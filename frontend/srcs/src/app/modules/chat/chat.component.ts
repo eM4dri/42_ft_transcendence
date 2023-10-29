@@ -98,4 +98,9 @@ export class ChatComponent  {
     isChatTabSeleted(){
         return  (this.selectedTab === EnumChatSidebarSelectedTab.CHAT_TAB);
     }
+
+    public  manageChannel(channel: Channel){
+        this.currentChannel = channel;
+        this.typeChat = EnumChatWindowTypeSeleted.MANAGE_CHANNEL;
+    }
 }

@@ -17,8 +17,7 @@
                 <app-chat-info
                     [user]="user"
                     (click)="loadNewChat(user)"
-                >
-                </app-chat-info>
+                ></app-chat-info>
             </div>
         </ng-template>
         <ng-template #notNewChat>
@@ -27,8 +26,7 @@
                     <app-chat-info
                         [user]="user.value"
                         (click)="loadChat(user.key)"
-                    >
-                    </app-chat-info>
+                    ></app-chat-info>
                 </div>
             </div>
         </ng-template>
