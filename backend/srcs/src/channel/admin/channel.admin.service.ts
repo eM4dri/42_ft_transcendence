@@ -16,6 +16,17 @@ export class ChannelAdminService {
         private prisma: PrismaService
     ){
     }
+    async getChannelUsers(channelId: string) {
+        try {
+            return await this.prisma.channelUser.findMany({
+                where: { channelId: channelId }
+            });
+        } catch (error) {
+            throw (error);
+        }
+    }
+
+
     async demoteChannelUser(channelUserId: string, channelAdmin: string) {
         try {
             //! Web owners & moderators can demote ann promote users

@@ -4,7 +4,6 @@ import {
   Get,
   Param,
   Post,
-  Query,
   UseGuards,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
@@ -13,7 +12,6 @@ import {
   ApiBody,
   ApiOperation,
   ApiParam,
-  ApiQuery,
   ApiResponse,
   ApiTags,
 } from "@nestjs/swagger";

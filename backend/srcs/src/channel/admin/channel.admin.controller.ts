@@ -1,9 +1,8 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/decorator';
-import { User } from '@prisma/client';
 import { JwtGuard } from 'src/auth/guard';
-import { CreateChannelDto, MuteChannelUserDto, CreateChannelPassDto, JoinChannelDto } from '../dto';
+import { MuteChannelUserDto, CreateChannelPassDto } from '../dto';
 import { ChannelAdminService } from './channel.admin.service';
 
 
@@ -13,6 +12,16 @@ import { ChannelAdminService } from './channel.admin.service';
 @UseGuards(JwtGuard)
 export class ChannelAdminController {
     constructor(private channelAdminService: ChannelAdminService) {}
+
+    @Get(':uuid/users')
+    @ApiOperation({
+      description: 'Get channel users',
+    })
+    async getChannelUsers(
+      @Param('uuid', new ParseUUIDPipe()) chatId: string,
+    ) {
+      return { response: await this.channelAdminService.getChannelUsers(chatId) };
+    }
 
     @Patch('/demote/:uuid')
     demote(

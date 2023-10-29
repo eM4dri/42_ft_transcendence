@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-10-29 - emadriga
+## Added
+- New `GET` Channels Users to administrate
+### Changed
+- Remove uneeded back dependencies
+
 ## 2023-10-28 - emadriga
 ## Added
 - Post call to add new channels using next response to update cached channels
