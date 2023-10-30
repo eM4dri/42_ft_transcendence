@@ -151,7 +151,7 @@ export class ChannelAdminService {
         }
     }
 
-    private async _havePermisionRightsOverChannelUser(userId: string, channelUserId: string) {
+    private async _havePermisionRightsOverChannelUser(userId: string, channelUserId: string) {        
         const channelUser: ChannelUser = (await this.prisma.channelUser.findUniqueOrThrow({
             where: { channelUserId: channelUserId, }
         }));
@@ -164,10 +164,10 @@ export class ChannelAdminService {
         });
         // It's a made up role because ADMINS can do one thing and OWNERS these thing and one more but depens on being in a superior hierarchy
         // let's say that is the role of the issuer(posible admin) compared with the receptor 
-        if ( !channelUser.isOwner && !channelUser.isAdmin && ( possibleAdmin.isAdmin || possibleAdmin.isOwner )){
-            return ChannelRol.ADMIN;
-        } else if ( !channelUser.isOwner && possibleAdmin.isOwner ){
+        if ( !channelUser.isOwner && possibleAdmin.isOwner ){
             return ChannelRol.OWNER;
+        } else if ( !channelUser.isOwner && !channelUser.isAdmin && ( possibleAdmin.isAdmin || possibleAdmin.isOwner )){
+            return ChannelRol.ADMIN;
         } else {
             return ChannelRol.USER
         }

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-    IsDate,
+    IsDateString,
     IsNotEmpty,
     IsUUID,
 } from 'class-validator';
@@ -9,14 +9,14 @@ export class MuteChannelUserDto {
     @IsNotEmpty()
     @IsUUID()
     @ApiProperty({
-        name: 'channelName',
+        name: 'channelUserId',
         type: String,
         required: true,
     })
     channelUserId: string;
     
     @IsNotEmpty()
-    @IsDate()
+    @IsDateString()
     @ApiProperty({
         name: 'mutedUntill',
         type: Date,

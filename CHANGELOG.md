@@ -6,22 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-10-30 - emadriga
+### Fixed
+- Minor fixes channel permsions and Date class validators
+
 ## 2023-10-29 - emadriga
-## Added
+### Added
 - New `GET` Channels Users to administrate
 - Management channel component
 ### Changed
 - Remove uneeded back dependencies
 
 ## 2023-10-28 - emadriga
-## Added
+### Added
 - Post call to add new channels using next response to update cached channels
 ### Changed
 - Remove unused chanel.service  ws subscription to new_channels_available (we use GET for that)
 - Adjust channel.post response to work with front
 
 ## 2023-10-27 - emadriga
-## Added
+### Added
 - PrimeNG utilities to use alerts and some components
 - Alerts Module to handle errors
 
@@ -40,7 +44,7 @@ and this project adheres to
 - Cleaning Chat components
 
 ## 2023-10-23 - tomartin
-## Added
+### Added
 - RoleGuard and Role decorator
 
 ## 2023-10-18 - emadriga
