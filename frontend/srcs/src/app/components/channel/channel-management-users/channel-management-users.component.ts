@@ -5,13 +5,13 @@ import { BaseComponent } from 'src/app/modules';
 import { ApiService } from 'src/app/services';
 import { UriConstants } from 'src/app/utils';
 
-
-interface ChannelUsersAdmin extends ChannelUsersData {
+export interface ChannelUsersAdmin extends ChannelUsersData {
   isOwner: boolean,
   isAdmin: boolean,
   isBanned: boolean,
-  mutedUntil: Date,
+  mutedUntill: Date,
 }
+
 
 @Component({
   selector: 'app-channel-management-users',
@@ -26,9 +26,11 @@ export class ChannelManagementUsersComponent extends BaseComponent<ChannelUsersA
   ){
     super(api);
   }
-
   
   channelUsers: ChannelUsersAdmin[] = [];
+  checked: boolean = true;
+  sidebarVisible: boolean = false;
+
 
   async ngOnInit(): Promise<void> {
     const channelUsers = (await this.searchArrAsync({
@@ -41,5 +43,25 @@ export class ChannelManagementUsersComponent extends BaseComponent<ChannelUsersA
       }
     }
     console.log('this.channelUsers', channelUsers);
-}
+  }
+
+  getStatus(user: ChannelUsersAdmin) {
+    let result: string = 'USER';
+    if (user.isAdmin) {
+      result = 'ADMIN';
+    } else if (user.isBanned)  {
+      result = 'BANNED';
+    }
+    return result;
+  }
+
+  getSeverity(user: ChannelUsersAdmin) {
+    let result: string = 'info';
+    if (user.isAdmin) {
+      result = 'success';
+    } else if (user.isBanned)  {
+      result = 'danger';
+    }
+    return result;
+  }
 }

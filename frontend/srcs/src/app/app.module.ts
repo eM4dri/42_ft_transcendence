@@ -11,11 +11,11 @@ import { environment } from 'src/environments/environment';
 import { AuthInterceptor } from './core';
 import { MySocket } from './services/web-socket.service';
 import { ChannelsCache, ChatsCache, UsersCache } from './cache';
-import { AvatarComponent, ChannelAvatarComponent, ChannelInfoComponent, ChannelManagementComponent, ChannelManagementUsersComponent, ChannelSidebarComponent, ChannelWindowComponent, ChannelWindowMessageComponent, ChatInfoComponent, ChatSidebarComponent, ChatWindowComponent, ChatWindowMessageComponent } from './components';
+import { AvatarComponent, ChannelAvatarComponent, ChannelInfoComponent, ChannelManagementActionsComponent, ChannelManagementComponent, ChannelManagementUsersComponent, ChannelSidebarComponent, ChannelWindowComponent, ChannelWindowMessageComponent, ChatInfoComponent, ChatSidebarComponent, ChatWindowComponent, ChatWindowMessageComponent } from './components';
 import { DateMutations } from './utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TableModule } from 'primeng/table';
-
+import { TagModule } from 'primeng/tag';
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 const config: SocketIoConfig = { url: environment.apiUrl };
 
@@ -40,6 +40,7 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     ChannelAvatarComponent,
     ChannelManagementComponent,
     ChannelManagementUsersComponent,
+    ChannelManagementActionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,7 +51,8 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     ReactiveFormsModule,
     SharedAlertModule,
     BrowserAnimationsModule,
-    TableModule
+    TagModule,
+    SplitButtonModule,
   ],
   providers: [
     CookieService, 

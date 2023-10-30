@@ -7,6 +7,12 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## 2023-10-30 - emadriga
+### Added
+- Added front `PATCH` & `PUT` calls
+- New Game Icon
+- Manage all channel administration
+- Added NgPrime icons
+
 ### Fixed
 - Minor fixes channel permsions and Date class validators
 

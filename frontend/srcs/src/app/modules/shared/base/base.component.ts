@@ -46,7 +46,6 @@ export class BaseComponent<GET = {}, POST = {}, PUT = {}, PATCH = {}, DELETE = {
     return this.apiService.getService(params);
   }
 
-
   public create(payload: ApiModel.ReqParams) {
     return this.createService(payload).subscribe({
       next: () => {
@@ -72,6 +71,60 @@ export class BaseComponent<GET = {}, POST = {}, PUT = {}, PATCH = {}, DELETE = {
       params: payload.params,
     };
     return this.apiService.postService(params);
+  }
+  
+  public patch(payload: ApiModel.ReqParams) {
+    return this.patchService(payload).subscribe({
+      next: () => {
+        this.openAlert();
+      },
+
+      error: err => {
+        this.alertConfiguration('ERROR', err);
+        this.openAlert();
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  }
+
+  public patchService(payload: ApiModel.ReqParams) {
+    this.loading = true;
+    const params = {
+      url: payload.url,
+      data: payload.data,
+      params: payload.params,
+    };
+    return this.apiService.patchService(params);
+  }
+
+  public put(payload: ApiModel.ReqParams) {
+    return this.putService(payload).subscribe({
+      next: () => {
+        this.openAlert();
+      },
+
+      error: err => {
+        this.alertConfiguration('ERROR', err);
+        this.openAlert();
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  }
+
+  public putService(payload: ApiModel.ReqParams) {
+    this.loading = true;
+    const params = {
+      url: payload.url,
+      data: payload.data,
+      params: payload.params,
+    };
+    return this.apiService.patchService(params);
   }
 
   public read(payload: ApiModel.ReqParams) {

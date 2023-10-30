@@ -23,7 +23,7 @@ export namespace AlertModel {
   }
   export enum AlertMessage {
     ERROR = 'Error',
-    SUCCESS = 'Éxito'
+    SUCCESS = 'Success'
   }
 
   export enum AlertType {
