@@ -4,7 +4,7 @@ import { Chat, User } from 'src/app/models';
 import { ChatComponent } from 'src/app/modules/chat/chat.component';
 import { BaseComponent } from 'src/app/modules/shared';
 import { ApiService, AuthService } from 'src/app/services';
-import { SessionStorageConstants, UriConstants } from 'src/app/utils';
+import { UriConstants } from 'src/app/utils';
 
 @Component({
   selector: 'app-chat-sidebar',
@@ -63,10 +63,7 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
                      url: `${UriConstants.USERS}/all`,
                   })).response.filter(
                     (x) =>
-                        x.userId !==
-                        this.authService.readFromCookie(
-                            SessionStorageConstants.USER_TOKEN,
-                        ).sub,
+                        x.userId !== this.cachedUsers.getMyUserId()
                 ).map(user =>{
                   return {
                       avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${user.username}`,

@@ -6,6 +6,7 @@ import { UserService } from '../services';
   providedIn: 'root'
 })
 export class UsersCache {
+  private _myUserId = '';
   private _conectedUsers = new Set<string>();
   private _cachedUsers = new Map<string, User>();
 
@@ -51,6 +52,14 @@ export class UsersCache {
 
   getUserImage(userId: string): string {
     return this._cachedUsers.get(userId)?.avatar || "https://api.dicebear.com/avatar.svg"; 
+  }
+
+  setMyUserId(userId: string){
+    this._myUserId = userId;
+  }
+
+  getMyUserId():string {
+    return this._myUserId;
   }
 
 }

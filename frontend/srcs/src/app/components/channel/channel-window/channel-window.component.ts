@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { ChannelsCache, UsersCache } from 'src/app/cache';
 import { Channel, ChannelMessages, ChannelUsersData } from 'src/app/models';
 import { AuthService, ChannelService } from 'src/app/services';
-import { DateMutations, SessionStorageConstants } from 'src/app/utils';
+import { DateMutations } from 'src/app/utils';
 
 @Component({
   selector: 'app-channel-window',
@@ -66,9 +66,10 @@ export class ChannelWindowComponent implements OnInit, OnChanges {
       };
       this.channelUsers.set(c.channelUserId, channelUsersData);
     }
-    this.myChannelUserId = channelUsers.find(x => x.userId === this.authService.readFromCookie(
-        SessionStorageConstants.USER_TOKEN,
-    ).sub && x.leaveAt === null)?.channelUserId || '';
+    this.myChannelUserId = channelUsers.find(x => 
+          x.userId === this.cachedUsers.getMyUserId() 
+          && x.leaveAt === null
+      )?.channelUserId || '';
   }
 
   constructor(

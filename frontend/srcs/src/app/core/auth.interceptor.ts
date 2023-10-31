@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SessionStorageConstants } from '../utils';
+import { CookieConstants } from '../utils';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({ providedIn: 'root' })
@@ -18,7 +18,7 @@ export class AuthInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    let token: string = this.cookieService.get(SessionStorageConstants.USER_TOKEN);  
+    let token: string = this.cookieService.get(CookieConstants.USER_TOKEN);  
     // sessionStorage.getItem(SessionStorageConstants.USER_TOKEN);
     if (token) {
       // if (!req.url.toString().includes('refresh')) {
