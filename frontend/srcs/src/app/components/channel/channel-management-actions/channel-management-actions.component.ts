@@ -1,21 +1,19 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { ChannelUsersAdmin } from '../channel-management-users/channel-management-users.component';
+import { ChannelManagementUsersComponent, ChannelUsersToAdmin } from '../channel-management-users/channel-management-users.component';
 import { BaseComponent } from 'src/app/modules';
 import { ApiService } from 'src/app/services';
 import { UriConstants } from 'src/app/utils';
-import { HttpHeaders } from '@angular/common/http';
-
-type Get = {}
-type Patch ={}
+import { UsersCache } from 'src/app/cache';
 
 @Component({
   selector: 'app-channel-management-actions',
   templateUrl: './channel-management-actions.component.html',
   styleUrls: ['./channel-management-actions.component.scss']
 })
-export class ChannelManagementActionsComponent extends BaseComponent<Get, Patch> implements OnInit{
- @Input() userChannel!: ChannelUsersAdmin;
+export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},ChannelUsersToAdmin> implements OnInit {
+    @Input() userChannel!: ChannelUsersToAdmin;
 
     items: MenuItem[]=[];
     readonly promoteItem: MenuItem =  {
@@ -72,29 +70,25 @@ export class ChannelManagementActionsComponent extends BaseComponent<Get, Patch>
         ]
     };
     ngOnInit(): void {
-        let isMuted:boolean = false;
-        if (this.userChannel.mutedUntill !== null){
-            if (new Date(this.userChannel.mutedUntill).getTime() > Date.now()) {
-                isMuted = true;
-            }
-        }
         this.items.push(this.userChannel.isAdmin ? this.demoteItem : this.promoteItem);
-        this.items.push(isMuted ? this.unmuteItem : this.muteItem);
+        this.items.push(this.parent.isMuted(this.userChannel) ? this.unmuteItem : this.muteItem);
         this.items.push(this.userChannel.isBanned ? this.unbanItem : this.banItem);
     }
 
     constructor(
-        private readonly api: ApiService<Get,Patch>,
+        private readonly api: ApiService<{},{},{},ChannelUsersToAdmin>,
+        private readonly cachedUsers: UsersCache,
+        private readonly parent: ChannelManagementUsersComponent
     ) {
         super(api);
     }
 
     patchUser(method: string){
-        this.patchService({
+        this.apiService.patchService({
             url: `${UriConstants.MANAGE_CHANNELS}/${method}/${this.userChannel.channelUserId}`,
         }).subscribe({
             next: (res) => {
-                this.processSuccess();
+                this.parent.updateChannelUser(res.response);
             },
             error: error => {
                 this.processError(error);
@@ -117,7 +111,7 @@ export class ChannelManagementActionsComponent extends BaseComponent<Get, Patch>
             }
         }).subscribe({
             next: (res) => {
-                this.processSuccess();
+                this.parent.updateChannelUser(res.response);
             },
             error: error => {
                 this.processError(error);
@@ -125,15 +119,18 @@ export class ChannelManagementActionsComponent extends BaseComponent<Get, Patch>
         });
     }
  
-    processSuccess(){
-        this.alertConfiguration('SUCCESS', "Changes applied sucessfully");
-        this.openAlert();
-        this.loading = false;
-    }
     processError(error: any){
-        console.log('ERROR!',error);
+        // console.log('ERROR!',error);
         this.alertConfiguration('ERROR', error);
         this.openAlert();
         this.loading = true;
     }
+
+    disableActions(){
+        return ( this.userChannel.userId === this.cachedUsers.getMyUserId() ||
+            this.userChannel.leaveAt !== null);
+    }
+
+
+
 }

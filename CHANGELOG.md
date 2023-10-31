@@ -10,6 +10,7 @@ and this project adheres to
 ### Changed
 - session.storage.ts remane into `cookie.constants.ts`
 - cache currentClientUserId to avoid calcs
+- channel management users improvements
 
 ## 2023-10-30 - emadriga
 ### Added

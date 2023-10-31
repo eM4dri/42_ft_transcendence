@@ -1,18 +1,27 @@
-<div *ngIf="channelUsers.length">
-    <div *ngFor="let user of channelUsers" >
-        <div *ngIf="user.user" class="row">
-            <!-- <div *ngIf="user.isOwner">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
-                 </svg>
-            </div> -->
-            <app-chat-info
-                [user]="user.user"
-            ></app-chat-info>
-            <p-tag [value]="getStatus(user)" [severity]="getSeverity(user)"></p-tag>
+<div *ngIf="channelUsers.size">
+    <div *ngFor="let u of channelUsers | keyvalue" >
+        <div *ngIf="u.value.user" class="row">
             <app-channel-management-actions
-                [userChannel]="user"
-            ></app-channel-management-actions>
+                [userChannel]="u.value"
+             ></app-channel-management-actions>
+            <app-chat-info
+                [user]="u.value.user"
+            ></app-chat-info>
+            <ng-container *ngIf="u.value.isOwner; then isOwner; else notOwner"   >
+            </ng-container>
+            <ng-template #isOwner>
+                <p-tag [value]="u.value.status" [style]="{ 'background': 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}"></p-tag>
+            </ng-template>
+            <ng-template #notOwner>
+                <ng-container *ngIf="u.value.status==='MUTED'; then isMuted; else notMuted"   >
+                </ng-container>
+                <ng-template #isMuted>
+                    <p-tag [value]="u.value.status" [pTooltip]="getTimeMuted(u.value)" [severity]="getSeverity(u.value)"></p-tag>
+                </ng-template>
+                <ng-template #notMuted>
+                    <p-tag [value]="u.value.status" [severity]="getSeverity(u.value)"></p-tag>
+                </ng-template>
+            </ng-template>
         </div>
     </div>
 </div>

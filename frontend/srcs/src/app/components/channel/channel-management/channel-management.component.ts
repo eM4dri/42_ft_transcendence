@@ -7,23 +7,15 @@ import { BaseComponent } from 'src/app/modules';
 import { ApiService } from 'src/app/services';
 import { UriConstants } from 'src/app/utils';
 
-type Get = {}
-type Post ={
-  channelId: string;
-  createdAt: Date;
-  createdBy: string;
-  channelName: string;
-}
-
 @Component({
   selector: 'app-channel-management',
   templateUrl: './channel-management.component.html',
   styleUrls: ['./channel-management.component.scss']
 })
-export class ChannelManagementComponent extends BaseComponent<Get,Post> {
+export class ChannelManagementComponent extends BaseComponent<{},Channel> {
   @Input() channel!: Channel;
   constructor(
-    private readonly api: ApiService<Get,Post>,
+    private readonly api: ApiService<{},Channel>,
     private readonly fb: FormBuilder,
     private readonly cachedChannels: ChannelsCache
   ) {
@@ -51,13 +43,8 @@ export class ChannelManagementComponent extends BaseComponent<Get,Post> {
         }
       }).subscribe({
         next: (res) => {
-          const { channelId, createdAt, createdBy, channelName } = res.response;
-          const newChannel:Channel ={
-            channelId: channelId,
-            channelName: channelName,
-            isLocked: password === '',
-            avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${channelName}`,
-          } 
+          let newChannel: Channel = res.response;
+          newChannel.avatar =  `https://api.dicebear.com/7.x/bottts/svg?seed=${channelName}`;
           this.cachedChannels.addJoinedChannel(newChannel)
           this.alertConfiguration('SUCCESS', "Changes applied sucessfully");
           this.openAlert();

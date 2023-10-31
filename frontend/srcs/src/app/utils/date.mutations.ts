@@ -57,4 +57,21 @@ export class DateMutations {
         });
         return groupedItems;
     }
+
+    public timeLeft(date: Date){
+        const diferencia = new Date(date).getTime() - Date.now();
+        const days = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+        let result: string = '';
+
+        result += (days) ? `${days} days `: '';
+        result += (hours) ? `${hours} hours `: '';
+        result += (minutes) ? `${minutes} minutes `: '';
+        result += (seconds) ? `${seconds} seconds `: '';
+        
+        return result;
+    }
 }

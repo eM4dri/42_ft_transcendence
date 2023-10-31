@@ -1,5 +1,5 @@
 
-<p-splitButton label="user" icon="pi pi-search" [model]="items"></p-splitButton>
+<p-splitButton label="actions" [disabled]="disableActions()" [model]="items"></p-splitButton>
 <app-alert
     [open]="alertConfig.open"
     [singleMessage]="alertConfig.singleMessage"
