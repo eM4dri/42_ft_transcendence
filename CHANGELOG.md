@@ -11,6 +11,7 @@ and this project adheres to
 - session.storage.ts remane into `cookie.constants.ts`
 - cache currentClientUserId to avoid calcs
 - channel management users improvements
+- wrapped API Rest channel admin responses  
 
 ## 2023-10-30 - emadriga
 ### Added

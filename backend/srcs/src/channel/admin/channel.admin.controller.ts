@@ -24,91 +24,91 @@ export class ChannelAdminController {
     }
 
     @Patch('/demote/:uuid')
-    demote(
+    async demote(
       @GetUser('id') channelAdmin: string,
       @Param('uuid', new ParseUUIDPipe()) channelUserId: string,
     ) {
-      return this.channelAdminService.demoteChannelUser(
+      return { response: await this.channelAdminService.demoteChannelUser(
         channelUserId,
         channelAdmin,
-      );
+      )};
     }
 
     @Patch('/promote/:uuid')
-    promote(
+    async promote(
       @GetUser('id') channelAdmin: string,
       @Param('uuid', new ParseUUIDPipe()) channelUserId: string,
     ) {
-      return this.channelAdminService.promoteChannelUser(
+      return { response: await this.channelAdminService.promoteChannelUser(
         channelUserId,
         channelAdmin,
-      );
+      )};
     }
 
     @Patch('/ban/:uuid')
-    ban(
+    async ban(
       @GetUser('id') channelAdmin: string,
       @Param('uuid', new ParseUUIDPipe()) channelUserId: string,
     ) {
-      return this.channelAdminService.banChannelUser(
+      return { response: await this.channelAdminService.banChannelUser(
         channelUserId,
         channelAdmin,
-      );
+      )};
     }
 
     @Patch('/unban/:uuid')
-    unBan(
+    async unBan(
       @GetUser('id') channelAdmin: string,
       @Param('uuid', new ParseUUIDPipe()) channelUserId: string,
     ) {
-      return this.channelAdminService.unBanChannelUser(
+      return { response: await this.channelAdminService.unBanChannelUser(
         channelUserId,
         channelAdmin,
-      );
+      )};
     }
 
     @Patch('/mute')
-    mute(
+    async mute(
       @GetUser('id') channelAdmin: string,
       @Body() dto: MuteChannelUserDto
     ) {
-      return this.channelAdminService.muteChannelUser(
+      return { response : await this.channelAdminService.muteChannelUser(
         dto,
         channelAdmin,
-      );
+      )};
     }
 
     @Patch('/unmute/:uuid')
-    unMute(
+    async unMute(
       @GetUser('id') channelAdmin: string,
       @Param('uuid', new ParseUUIDPipe()) channelUserId: string,
     ) {
-      return this.channelAdminService.unMuteChannelUser(
+      return { response: await this.channelAdminService.unMuteChannelUser(
         channelUserId,
         channelAdmin,
-      );
+      )};
     }
 
     @Patch('/kick/:uuid')
-    kick(
+    async kick(
       @GetUser('id') channelAdmin: string,
       @Param('uuid', new ParseUUIDPipe()) channelUserId: string,
     ) {
-      return this.channelAdminService.kickChannelUser(
+      return { response: await this.channelAdminService.kickChannelUser(
         channelUserId,
         channelAdmin,
-      );
+      )};
     }
 
     @Patch('/pass')
-    setChannelPass(
+    async setChannelPass(
       @GetUser('id') channelOwner: string,
       @Body() dto: CreateChannelPassDto
     ) {
-      return this.channelAdminService.setChannelPass(
+      return { response: await this.channelAdminService.setChannelPass(
         dto,
         channelOwner,
-      );
+      )};
     }
 
 }
