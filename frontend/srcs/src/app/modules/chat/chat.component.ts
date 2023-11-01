@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Channel, Chat, User } from 'src/app/models';
 import { ChannelsCache, ChatsCache, UsersCache } from 'src/app/cache';
+import { UserService } from 'src/app/services';
 
 export enum EnumChatSidebarSelectedTab {
     CHAT_TAB,
@@ -45,11 +46,14 @@ export class ChatComponent  {
         avatar: '',
         isLocked: true
     };
+
     constructor(
+        private readonly userService: UserService,
         private readonly cachedChats: ChatsCache,
         private readonly cachedChannels: ChannelsCache,
         private readonly cachedUsers: UsersCache,
       ) {
+        this.userService.clientReady();
         this.chatsAvailables = this.cachedChats.getChatsAvailables();
         this.cachedChats.getChatsAvailablesSub().subscribe((data) => {
             this.chatsAvailables = data;

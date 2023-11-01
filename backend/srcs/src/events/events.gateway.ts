@@ -41,15 +41,10 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     server: Server;
 
     async handleConnection(socket: Socket) {
-        // const { token } = socket.handshake.auth;
         const user = await this.authService.isAuthorized(socket);
-        this._usersConnected(user.sub, socket.id);
         socket.broadcast.emit('user_connects', user.sub);
         this.socketsMap.set(user.sub, socket.id);
-        this._chatsAvailables(user.sub);
-        this._channelsJoinedByUser(user.sub);
-        this._loadUserChats(user.sub);
-        this._loadUserChannels(user.sub, socket);  
+        // const { token } = socket.handshake.auth;
     }
 
     async handleDisconnect(socket: Socket) {
@@ -57,6 +52,15 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         const user = await this.authService.isAuthorized(socket);
         this.socketsMap.delete(user.sub);
         this.server.sockets.emit('user_disconnects', user.sub);
+    }
+
+    @SubscribeMessage('client_ready')
+    clientReadyForData(@GetUser() user: JwtPayload ,@ConnectedSocket() socket : Socket) {
+        this._usersConnected(user.sub, socket.id);
+        this._chatsAvailables(user.sub);
+        this._channelsJoinedByUser(user.sub);
+        this._loadUserChats(user.sub);
+        this._loadUserChannels(user.sub, socket);  
     }
 
     @SubscribeMessage('send_message')

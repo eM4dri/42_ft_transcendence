@@ -3,7 +3,7 @@ import { UsersCache } from 'src/app/cache';
 import { Chat, User } from 'src/app/models';
 import { ChatComponent } from 'src/app/modules/chat/chat.component';
 import { BaseComponent } from 'src/app/modules/shared';
-import { ApiService, AuthService } from 'src/app/services';
+import { ApiService } from 'src/app/services';
 import { UriConstants } from 'src/app/utils';
 
 @Component({
@@ -22,7 +22,6 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
   constructor (
     private readonly api: ApiService<User>,
     private readonly chatComponent: ChatComponent,
-    private readonly authService: AuthService,
     private readonly cachedUsers: UsersCache,
 
     ) {

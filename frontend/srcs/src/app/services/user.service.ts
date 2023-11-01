@@ -12,6 +12,10 @@ export class UserService {
     private readonly mysocket: MySocket,
   ) { }
 
+  clientReady() {
+    this.mysocket.emit('client_ready');
+  }
+
   usersConnected() {
     return this.mysocket.fromEvent<string[]>('users_connected').pipe(map((data) => data));
   }
