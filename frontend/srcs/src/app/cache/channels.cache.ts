@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Channel, ChannelMessages, ChannelUsers } from '../models';
+import { Channel, ChannelMessages, ChannelUsers, ChannelUsersExtended } from '../models';
 import { Subject } from 'rxjs';
 import { ChannelService } from '../services';
 import { DateMutations } from '../utils';
@@ -11,6 +11,7 @@ export class ChannelsCache {
   private _joinedChannelsMap = new Map<string, Channel>();
   private _channelsMessages = new Map<string, ChannelMessages[]>();
   private _channelsUsers = new Map<string, ChannelUsers[]>();
+  private _myChannelsUser = new Map<string, ChannelUsersExtended>();
 
   constructor(
     private readonly channelService: ChannelService,
@@ -20,13 +21,25 @@ export class ChannelsCache {
       channels.forEach(channel => {
           channel.avatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${channel.channelName}`;  
           this._joinedChannelsMap.set(channel.channelId, channel);
+          this.channelService.myChannelUserLoaded(channel.channelId).subscribe( user => {
+              this._myChannelsUser.set(channel.channelId, user);
+              this.updatemyChannelUserSub(channel.channelId, user);
+          });
           this.channelService.channelUsersLoaded(channel.channelId).subscribe( users => {
               this._setChannelUsers(channel.channelId, users);
-            });
-            this.channelService.channelMessagesLoaded(channel.channelId).subscribe(messages => {
-                this._setChannelMessages(channel.channelId, messages);
           });
+          this.channelService.channelMessagesLoaded(channel.channelId).subscribe(messages => {
+              this._setChannelMessages(channel.channelId, messages);
+          });          
+          this.channelService.loadChannelSubscriptions(channel.channelId);
       });
+    });
+    this.channelService.leaveChannel().subscribe(channelId => {
+      this._joinedChannelsMap.delete(channelId);
+      this._channelsUsers.delete(channelId);
+      this._channelsMessages.delete(channelId);
+      this._myChannelsUser.delete(channelId);
+      this.updateresetChannelSub(channelId);
     });
   }
 
@@ -61,7 +74,7 @@ export class ChannelsCache {
   }
 
   getJoinedChannels():Map< string, Channel >{
-    return this._joinedChannelsMap
+    return this._joinedChannelsMap;
   }
 
   addJoinedChannel(channel: Channel){
@@ -90,6 +103,10 @@ export class ChannelsCache {
       return users;
     }
     return [];
+  }
+
+  getMyChannelUser(channelId: string): ChannelUsersExtended | undefined {
+      return this._myChannelsUser.get(channelId);
   }
 
   private joinedChannelsSub = new Subject<Map< string, Channel >>();
@@ -123,6 +140,28 @@ export class ChannelsCache {
   }  
   async updateChannelMessagesSub(channelId:string, channelMessages: Map<number, ChannelMessages[]>) {
     this.sendChannelMessagesSub(channelId, channelMessages);
+  }
+
+  private myChannelUserSub = new Subject< {channelId:string, myChannelUser: ChannelUsersExtended} >();
+  sendmyChannelUserSub(channelId:string, myChannelUser: ChannelUsersExtended) {
+      this.myChannelUserSub.next({channelId, myChannelUser});
+  }
+  getmyChannelUserSub() {
+    return this.myChannelUserSub.asObservable();
+  }  
+  async updatemyChannelUserSub(channelId:string, myChannelUser: ChannelUsersExtended) {
+    this.sendmyChannelUserSub(channelId, myChannelUser);
+  }
+
+  private resetChannelSub = new Subject<{channelId:string}> ();
+  sendresetChannelSub(channelId:string) {
+      this.resetChannelSub.next({channelId});
+  }
+  getresetChannelSub() {
+    return this.resetChannelSub.asObservable();
+  }  
+  async updateresetChannelSub(channelId: string) {
+    this.sendresetChannelSub(channelId);
   }
 
 }

@@ -1,16 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UsersCache } from 'src/app/cache';
-import { Channel, ChannelUsersData } from 'src/app/models';
+import { Channel, ChannelUsersExtended, User } from 'src/app/models';
 import { BaseComponent } from 'src/app/modules';
 import { ApiService } from 'src/app/services';
 import { DateMutations, UriConstants } from 'src/app/utils';
 
-export interface ChannelUsersToAdmin extends ChannelUsersData {
-  isOwner: boolean,
-  isAdmin: boolean,
-  isBanned: boolean,
-  mutedUntill: Date,
-  status?: string,
+
+export interface ChannelUsersToAdmin extends ChannelUsersExtended {
+  user?: User;
+  status?: string;
 }
 
 @Component({

@@ -1,26 +1,9 @@
-
 .channel-info {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.channel-info>div {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
 .channelname {
     font-size: 24px;
     margin-left: 20px;
-}
-
-.channelicons {
-    width: 30px;
-    height: 30px;
-    align-items: end;
-    &:hover {
-        transform: scale(1.1); // Scale the avatar on hover
-    }
 }

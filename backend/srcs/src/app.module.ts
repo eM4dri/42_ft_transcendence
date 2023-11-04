@@ -12,6 +12,7 @@ import { StatsModule } from './stats/stats.module';
 import { ChannelModule } from './channel/channel.module';
 import { EventsModule } from './events/events.module';
 import { HistoricGamesModule } from './historic_games/historic_games.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { HistoricGamesModule } from './historic_games/historic_games.module';
     StatsModule,
     ChannelModule,
     EventsModule,
-    HistoricGamesModule
+    HistoricGamesModule,
+    EventEmitterModule.forRoot()
   ],
   controllers: [AppController],
   providers: [AppService],

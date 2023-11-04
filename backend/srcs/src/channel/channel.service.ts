@@ -5,11 +5,13 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import * as argon from 'argon2';
 import { ChannelAdminService } from './admin/channel.admin.service';
 import { plainToInstance } from 'class-transformer';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class ChannelService {
     constructor(
         private prisma: PrismaService,
+        private eventEmitter: EventEmitter2,
         private channelAdminService: ChannelAdminService
     ){
     }
@@ -159,12 +161,27 @@ export class ChannelService {
                     throw new UnauthorizedException();
                 }
             }
-            const channelUser = await this.prisma.channelUser.create({
-                data: {
+            const oldChannelUser = (await this.prisma.channelUser.findFirst({
+                where: {
                     channelId: dto.channelId,
-                    userId: userId
+                    userId: userId,
+                    NOT: { leaveAt: null },
                 },
-            });
+            }));
+            let channelUser;
+            if (oldChannelUser !== null){
+                channelUser = await this.prisma.channelUser.update({
+                    where: { channelUserId: oldChannelUser.channelUserId, },
+                    data: { leaveAt: null },
+                });
+            } else {
+                channelUser = await this.prisma.channelUser.create({
+                    data: {
+                        channelId: dto.channelId,
+                        userId: userId
+                    },
+                });
+             }
             this.channelAdminService.reOwningChannel(channelUser.channelId);           
             return plainToInstance(ResponseChannelUserDto , channelUser);
         } catch (error) {
@@ -190,6 +207,7 @@ export class ChannelService {
                 data: { leaveAt: new Date( Date.now() ) }
             });
             this.channelAdminService.reOwningChannel(channelUser.channelId);
+            this.eventEmitter.emit('channel_user_leaves', channelUser);
             return channelUser;
         } catch (error) {
             throw (error);
@@ -202,6 +220,20 @@ export class ChannelService {
                 where: { channelId: channelId }
             });
             return plainToInstance(ResponseChannelUserDto, channelUsers);
+        } catch (error) {
+            throw (error);
+        }
+    }
+
+    async getMyChannelUser(channelId: string, userId: string) {
+        try {
+            return await this.prisma.channelUser.findFirstOrThrow({
+                where: { 
+                    channelId: channelId,
+                    userId: userId,
+                    leaveAt: null
+                 }
+            });
         } catch (error) {
             throw (error);
         }

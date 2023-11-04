@@ -1,8 +1,13 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ChannelsCache, UsersCache } from 'src/app/cache';
-import { Channel, ChannelMessages, ChannelUsersData } from 'src/app/models';
-import { AuthService, ChannelService } from 'src/app/services';
+import { Channel, ChannelMessages, ChannelUsers, ChannelUsersExtended, User } from 'src/app/models';
+import { ChannelService } from 'src/app/services';
 import { DateMutations } from 'src/app/utils';
+
+export interface ChannelUsersData extends ChannelUsers {
+  user?: User;
+}
+
 
 @Component({
   selector: 'app-channel-window',
@@ -13,7 +18,7 @@ export class ChannelWindowComponent implements OnInit, OnChanges {
   @Input() channel!: Channel;
   channelMessages: Map<number,ChannelMessages[]> = new Map<number,ChannelMessages[]>();
   channelUsers: Map<string,ChannelUsersData> = new Map<string,ChannelUsersData>();
-  myChannelUserId: string = '';
+  myChannelUser!: ChannelUsersExtended;
 
   ngOnInit(): void {
     this.cachedChannels.getChannelMessagesSub().subscribe(res=>{
@@ -45,6 +50,11 @@ export class ChannelWindowComponent implements OnInit, OnChanges {
         }
       }
     });
+    this.cachedChannels.getmyChannelUserSub().subscribe(res=>{
+      if (res.channelId === this.channel.channelId) {
+        this.myChannelUser = res.myChannelUser;
+      }
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -65,18 +75,18 @@ export class ChannelWindowComponent implements OnInit, OnChanges {
         user: user
       };
       this.channelUsers.set(c.channelUserId, channelUsersData);
+      const  myChannelUser =  this.cachedChannels.getMyChannelUser(this.channel.channelId);
+      if (myChannelUser !== undefined)  {
+        this.myChannelUser = myChannelUser;
+      }
     }
-    this.myChannelUserId = channelUsers.find(x => 
-          x.userId === this.cachedUsers.getMyUserId() 
-          && x.leaveAt === null
-      )?.channelUserId || '';
+
   }
 
   constructor(
     private readonly channelService: ChannelService,
     private readonly cachedChannels: ChannelsCache,
     private readonly cachedUsers: UsersCache,
-    private readonly authService: AuthService,
     private readonly dateMutations: DateMutations
     ) {  
 
@@ -106,5 +116,21 @@ export class ChannelWindowComponent implements OnInit, OnChanges {
               joinedAt: new Date(),
               leaveAt: new Date(),
         };
+  }
+
+  public getInputPlaceHolder() {
+    return "Enter message"
+  }
+
+  isMuted(): boolean {
+    if (this.myChannelUser !== undefined)
+    {
+      if (this.myChannelUser.mutedUntill !== null){
+          if (new Date(this.myChannelUser.mutedUntill).getTime() > Date.now()) {
+              return true;
+          }
+      }
+    }
+    return false;
   }
 }

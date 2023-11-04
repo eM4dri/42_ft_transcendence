@@ -1,0 +1,19 @@
+.channel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .channelicons {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.2rem;
+    align-items: end;
+  }
+  .channelicon {
+    width: 30px;
+    height: 30px;
+    &:hover {
+        transform: scale(1.1);
+    }
+  }

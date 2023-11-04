@@ -86,10 +86,23 @@ export class ChannelController {
       description: 'Get channel users',
     })
     getChannelUsers(
-      @Param('uuid', new ParseUUIDPipe()) chatId: string,
+      @Param('uuid', new ParseUUIDPipe()) channelId: string,
     ) {
       return this.channelService.getChannelUsers(
-        chatId,
+        channelId,
+      );
+    }
+
+    @Get(':uuid/myuser')
+    @ApiOperation({
+      description: 'Get channel users',
+    })
+    getMyUserChannel(
+      @GetUser('id') userId: string,
+      @Param('uuid', new ParseUUIDPipe()) channelId: string,
+    ) {
+      return this.channelService.getMyChannelUser(
+        channelId, userId
       );
     }
 
@@ -98,10 +111,10 @@ export class ChannelController {
       description: 'Get channel messages',
     })
     getChannelMessages(
-      @Param('uuid', new ParseUUIDPipe()) chatId: string,
+      @Param('uuid', new ParseUUIDPipe()) channelId: string,
     ) {
       return this.channelService.getChannelMessages(
-        chatId,
+        channelId,
       );
     }
 

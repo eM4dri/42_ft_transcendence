@@ -19,6 +19,8 @@ import { ChatUserMessage } from '@prisma/client';
 import { ChannelService } from 'src/channel/channel.service';
 import { CreateChannelMessageDto, JoinChannelDto, ResponseChannelDto, ResponseChannelUserDto } from 'src/channel/dto';
 import { UserService } from 'src/user/user.service';
+import { ChannelUser } from '@prisma/client';
+import { OnEvent } from '@nestjs/event-emitter';
 
    
 // https://www.makeuseof.com/build-real-time-chat-api-using-websockets-nestjs/
@@ -30,7 +32,8 @@ import { UserService } from 'src/user/user.service';
 @UseGuards(WsGuard)
 @Injectable()
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  {
-    private socketsMap = new Map<string, string >();
+    private socketsIdMap = new Map<string, string >();
+    private socketsMap = new Map<string, Socket >();
     constructor(
         private readonly chatService: ChatService,
         private readonly authService: AuthService,
@@ -41,17 +44,31 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     server: Server;
 
     async handleConnection(socket: Socket) {
-        const user = await this.authService.isAuthorized(socket);
-        socket.broadcast.emit('user_connects', user.sub);
-        this.socketsMap.set(user.sub, socket.id);
+        try {
+            const user = await this.authService.isAuthorized(socket);
+            // this.eventsService.handleConnection(user.sub, socket.id);
+            socket.broadcast.emit('user_connects', user.sub);
+            this.socketsIdMap.set(user.sub, socket.id);
+            this.socketsMap.set(user.sub, socket);
+        } catch (error) {
+            // TODO handle WS errors conections
+            console.log('TODO handle WS errors conections')
+        }
+
         // const { token } = socket.handshake.auth;
     }
 
     async handleDisconnect(socket: Socket) {
-        // const { token } = socket.handshake.auth;
-        const user = await this.authService.isAuthorized(socket);
-        this.socketsMap.delete(user.sub);
-        this.server.sockets.emit('user_disconnects', user.sub);
+        // const { token } = socket.handshake.auth; 
+        try {
+            const user = await this.authService.isAuthorized(socket);
+            this.socketsIdMap.delete(user.sub);
+            this.socketsMap.delete(user.sub);
+            this.server.sockets.emit('user_disconnects', user.sub);
+        } catch (error) {
+            // TODO handle WS errors conections
+            console.log('TODO handle WS errors conections')
+        }
     }
 
     @SubscribeMessage('client_ready')
@@ -60,7 +77,11 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         this._chatsAvailables(user.sub);
         this._channelsJoinedByUser(user.sub);
         this._loadUserChats(user.sub);
-        this._loadUserChannels(user.sub, socket);  
+    }
+
+    @SubscribeMessage('susbcribe_channel')
+    subscribeChannel(@GetUser() user: JwtPayload , @ConnectedSocket() socket : Socket, @MessageBody() channelId: string) {
+        this._loadUserChannel(channelId, user.sub, socket);
     }
 
     @SubscribeMessage('send_message')
@@ -107,13 +128,13 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     }
 
     private async _usersConnected(userId: string,usersSocket: string) {
-        const usersId: string [] =  Array.from( this.socketsMap.keys() );
+        const usersId: string [] =  Array.from( this.socketsIdMap.keys() );
         this.server.to(usersSocket).emit('users_connected', usersId);
     }    
 
     private async _chatsAvailables(userId: string) {
         const chats = await this.chatService.getChatsByUserId(userId);
-        const socket = this.socketsMap.get(userId);
+        const socket = this.socketsIdMap.get(userId);
         this.server.to(socket).emit('chats_availables', chats);
         const usersIds = Array.from(chats.map(x=>x.userId));
         this._usersToCache(socket, usersIds);
@@ -121,7 +142,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
 
     private async _channelsJoinedByUser(userId: string) {
         const channels: ResponseChannelDto[] = await this.channelService.getChannelsJoinedByUserId(userId);
-        const socket = this.socketsMap.get(userId);
+        const socket = this.socketsIdMap.get(userId);
         this.server.to(socket).emit('joined_channels', channels);
     }
 
@@ -150,7 +171,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         const usersIds = Array.from(chats).map(x=>x.userId);
         const users = Array.from(await this.userService.getUsers(usersIds)).map(x=>x.userId);
         for (let chat of chats) {
-            const socket  = this.socketsMap.get(chat.userId);
+            const socket  = this.socketsIdMap.get(chat.userId);
             if (socket !== undefined ) {
                 this.server.to(socket).emit('new_chat_available', chats.filter(x=>x.userId !== chat.userId)[0]); // we are only sending one.
                 this._usersToCache(socket, users.filter(x=>x !== chat.userId)); 
@@ -168,24 +189,40 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     
     private async _loadUserChatId(userId: string, chatId: string) {
         const chat = await this.chatService.getChatMessagesLighter(chatId);
-        const socket: string = this.socketsMap.get(userId);
+        const socket: string = this.socketsIdMap.get(userId);
         this.server.to(socket).emit(chatId, chat);
     }
 
-    private async _loadUserChannels(userId: string, socket: Socket) {
-        const channelsId = Array.from(await this.channelService.getChannelsJoinedByUserId(userId)).map(x=>x.channelId).filter(x=>x);
-        this._channelUsersToCache(socket.id, channelsId);
-        channelsId.forEach(channelId =>{
-            this._loadChannelUsers(socket.id, channelId);
-            this._loadChannelMessages(socket.id, channelId);
-            socket.join(`${channelId}_room`);
-        });
+    private async _loadUserChannel(channelId: string, userId:string, socket: Socket) {
+        this._channelUsersToCache(socket.id, [channelId]);
+        this._loadMyChannelUser(socket.id, channelId, userId);
+        this._loadChannelUsers(socket.id, channelId);
+        this._loadChannelMessages(socket.id, channelId);
+        socket.join(`${channelId}_room`);
+    }
+    
+    @OnEvent('udate_channel_user')
+    async updateChannelUser(channelUser: ChannelUser){
+        const socket: string = this.socketsIdMap.get(channelUser.userId);
+        this.server.to(socket).emit(`${channelUser.channelId}_myuser`, channelUser);
+    }
+
+    @OnEvent('channel_user_leaves')
+    async channelUserLeaves(channelUser: ChannelUser){
+        const socketId: string = this.socketsIdMap.get(channelUser.userId);
+        const socket: Socket = this.socketsMap.get(channelUser.userId);
+        socket.leave(`${channelUser.channelId}_room`);
+        this.server.to(socketId).emit('channel_user_leaves', channelUser.channelId);
+    }
+
+    private async _loadMyChannelUser(socketId: string, channelId: string, userId: string,){
+        const myChannelUser = await this.channelService.getMyChannelUser(channelId, userId);
+        this.server.to(socketId).emit(`${channelId}_myuser`, myChannelUser);
     }
 
     private async _loadChannelUsers(socketId: string, channelId: string){
         const channelUsers = await this.channelService.getChannelUsers(channelId);
         this.server.to(socketId).emit(`${channelId}_users`, channelUsers);
-        return channelUsers;
     }
 
     private async _loadChannelMessages(socketId: string, channelId: string){
@@ -197,7 +234,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         const usersId: string[] = Array.from(((await this.chatService.getChatUsers(chatId)).map(x=>x.userId)));
         const messages: ChatUserMessage[] = [ message ];
         usersId.forEach(userId => {
-            const socket: string = this.socketsMap.get(userId);
+            const socket: string = this.socketsIdMap.get(userId);
             this.server.to(socket).emit(chatId, messages);
         });
     }

@@ -16,6 +16,10 @@ response: {
     data: T[],
 }
 ~~~
-- [] Review postChat message to yourself -> disable or create your own chat
+- [x] Review postChat message to yourself -> disable or create your own chat
 - [] Review redirections through different pc
-- [] Review gitHub Securitty alerts Dependabot remove @babel from back yanrlock
+- [x] Review gitHub Securitty alerts Dependabot remove @babel from back yanrlock
+- [] Look in [wanago.io](https://wanago.io/2021/01/25/api-nestjs-chat-websockets/) handling auth with wsexceptions
+- [] Toast alerts informing status's updates to user
+- [] In channel Management as actions is a click button, make a workflow to see users profile
+- [] Send messages (channel/chat) workflow is soved using WS to comunicate to back, instead it should be an API Rest `POST` and the service should save on db and emit to clients -> look how is developed ban/unban or mute/unmute, to try this reefactory

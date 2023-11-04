@@ -13,7 +13,11 @@ export class WsGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     // 💡 We're assigning the payload to the request object here
     // so that we can access it in our route handlers
-    request['user'] = this.authService.isAuthorized(request); 
+    try {
+      request['user'] = this.authService.isAuthorized(request); 
+    } catch (error) {
+      return false;
+    }
     return true;
   }
 }

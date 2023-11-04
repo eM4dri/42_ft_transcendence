@@ -1,4 +1,4 @@
-import { User } from "../user/user.model";
+
 
 export type Channel = {
     channelId: string,
@@ -14,8 +14,11 @@ export type Channel = {
       leaveAt: Date;
   }
 
-  export interface ChannelUsersData extends ChannelUsers {
-    user?: User;
+  export interface ChannelUsersExtended extends ChannelUsers {
+    isOwner: boolean,
+    isAdmin: boolean,
+    isBanned: boolean,
+    mutedUntill: Date,
   }
   
   export type ChannelMessages = {

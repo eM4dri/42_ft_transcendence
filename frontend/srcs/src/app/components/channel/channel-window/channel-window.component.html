@@ -1,7 +1,7 @@
 <div>
-    <app-channel-info
+    <app-channel-header
         [channel]="channel"
-    ></app-channel-info>
+    ></app-channel-header>
     <div class="chat-container">
         <div class="chat-messages">
             <ng-container *ngFor="let channelMessage of channelMessages | keyvalue">
@@ -11,7 +11,7 @@
                 <div *ngFor="let msg of channelMessage.value">
                     <ng-container
                         *ngIf="
-                        msg.channelUserId !== myChannelUserId;
+                        msg.channelUserId !== myChannelUser.channelUserId;
                         then notMine;
                         else mine
                         "
@@ -34,12 +34,24 @@
     </div>
 </div>
 <div class="chat-input">
-    <input
-    placeholder="Message"
-    type="text"
-    [(ngModel)]="inputValue"
-    (keyup.enter)="sendMessage()"
-    />
+    <ng-container
+        *ngIf="isMuted(); then muted; else notMuted"
+    ></ng-container>
+    <ng-template #muted>
+        <input
+        placeholder='Muted (channel writing disabled)'
+        type="text"
+        disabled
+        />
+    </ng-template>
+    <ng-template #notMuted>
+        <input
+        placeholder='Enter message'
+        type="text"
+        [(ngModel)]="inputValue"
+        (keyup.enter)="sendMessage()"
+        />
     <!-- (keydown)="startTyping()"
     (blur)="stopTyping()" -->
+    </ng-template>    
 </div>

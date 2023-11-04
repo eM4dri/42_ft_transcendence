@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { ChannelMessages, ChannelUsersData } from 'src/app/models';
+import { ChannelMessages } from 'src/app/models';
 import { DateMutations } from 'src/app/utils';
+import { ChannelUsersData } from '../channel-window/channel-window.component';
 
 @Component({
   selector: 'app-channel-window-message',

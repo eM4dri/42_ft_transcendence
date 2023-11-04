@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import {  MuteChannelUserDto, CreateChannelPassDto } from '../dto';
 import { ChannelUser } from '@prisma/client';
 import * as argon from 'argon2';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 export enum ChannelRol {
     USER,
@@ -13,7 +14,8 @@ export enum ChannelRol {
 @Injectable()
 export class ChannelAdminService {
     constructor(
-        private prisma: PrismaService
+        private prisma: PrismaService, 
+        private eventEmitter: EventEmitter2
     ){
     }
     async getChannelUsers(channelId: string) {
@@ -66,8 +68,12 @@ export class ChannelAdminService {
             }
             const channelUser = await this.prisma.channelUser.update({
                 where: { channelUserId: channelUserId, },
-                data: { isBanned: true }
+                data: { 
+                        isBanned: true,
+                        leaveAt: new Date(Date.now()),
+                    }
             });
+            this.eventEmitter.emit('channel_user_leaves', channelUser);
             return channelUser;
         } catch (error) {
             throw (error);
@@ -98,6 +104,7 @@ export class ChannelAdminService {
                 where: { channelUserId: dto.channelUserId, },
                 data: { mutedUntill: dto.mutedUntill }
             });
+            this.eventEmitter.emit('udate_channel_user', channelUser);
             return channelUser;
         } catch (error) {
             throw (error);
@@ -113,6 +120,7 @@ export class ChannelAdminService {
                 where: { channelUserId: channelUserId, },
                 data: { mutedUntill: null }
             });
+            this.eventEmitter.emit('udate_channel_user', channelUser);
             return channelUser;
         } catch (error) {
             throw (error);

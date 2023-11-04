@@ -62,6 +62,17 @@ export class ChatComponent  {
         this.cachedChannels.getJoinedChannelsSub().subscribe((data) => {
             this.joinedChannels = data;
         });
+        this.cachedChannels.getresetChannelSub().subscribe((data) => {
+            if (this.currentChannel.channelId === data.channelId ){
+                this.currentChannel = {
+                    channelId: 'none',
+                    channelName: '0',
+                    avatar: '',
+                    isLocked: true
+                };
+                this.typeChat = EnumChatWindowTypeSeleted.NONE
+            }
+        });
     }
 
     public loadNewChat(user: User) {
@@ -86,7 +97,6 @@ export class ChatComponent  {
     public loadChannel(channel: Channel){
         this.typeChat = EnumChatWindowTypeSeleted.CHANNEL
         this.currentChannel = channel;
-        console.log('loadChannel',channel)
     }
     
     selectedTab : number = EnumChatSidebarSelectedTab.CHANNEL_TAB;

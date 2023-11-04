@@ -128,7 +128,7 @@ export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},Ch
 
     disableActions(){
         return ( this.userChannel.userId === this.cachedUsers.getMyUserId() ||
-            this.userChannel.leaveAt !== null);
+            (this.userChannel.leaveAt !== null && !this.userChannel.isBanned));
     }
 
 

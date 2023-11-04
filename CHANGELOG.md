@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-11-04 - emadriga
+### Added
+- Leave channel front workflow
+
+## 2023-11-03 - emadriga
+### Added
+- Ban/unban channel front workflow
+
+## 2023-11-02 - emadriga
+### Added
+- Muted user get muted vía websocket
+- Use eventemitter2 to avoid circular references unsing a publish subscribe arquitecture
+
+### Changed
+- try catching ws.guard TODO look in wanago.io handling auth with wsexceptions
+- fix some typos channel instead of chat
+
 ## 2023-11-01 - emadriga
 ### Added
 - client call ws to comunicate he's trully ready
