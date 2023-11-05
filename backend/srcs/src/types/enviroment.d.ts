@@ -1,4 +1,4 @@
-export {};
+export { };
 
 declare global {
   namespace NodeJS {
@@ -15,6 +15,8 @@ declare global {
       FORTYTWO_CLIENT_URL_CALLBACK: string;
       JWT_SECRET: string;
       JWT_EXPIRES_IN: number;
+      JWT_REFRESH: string;
+      JWT_REFRESH_EXPIRE: number;
       NODE_ENV: 'test' | 'dev' | 'prod';
       HOST: string;
       API_PORT: string;
