@@ -22,6 +22,7 @@ import { CreateChannelMessageDto, JoinChannelDto, ResponseChannelDto, ResponseCh
 import { UserService } from 'src/user/user.service';
 import { ChannelUser } from '@prisma/client';
 import { OnEvent } from '@nestjs/event-emitter';
+import { ProfileImagesService } from 'src/profile_images/profile_images.service';
 
    
 // https://www.makeuseof.com/build-real-time-chat-api-using-websockets-nestjs/
@@ -41,6 +42,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         private readonly channelService: ChannelService,
         private readonly blockService: BlockService,
         private readonly userService: UserService,
+        private readonly profileImagesService: ProfileImagesService,
     ){}
     @WebSocketServer( )
     server: Server;
@@ -257,6 +259,9 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
 
     private async _usersToCache(socketId: string, usersId: string[]) {
         const users = await this.userService.getUsers(usersId);
+        users.forEach((user) => {
+            user.avatar = this.profileImagesService.getProfileImageUrl(user.userId);
+        });
         this.server.to(socketId).emit('users_to_cache', users);
     }
 }

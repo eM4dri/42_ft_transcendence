@@ -12,7 +12,7 @@ if [ -f "$ENV_FILE" ]; then
 
   # Extrae las variables de entorno del archivo .env
   while IFS= read -r line; do
-    export "$line"
+    [ "$line" ] && export "$line"
   done < "$ENV_FILE"
 
   mkdir -p frontend/srcs/src/environments
