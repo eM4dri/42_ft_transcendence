@@ -9,6 +9,7 @@ import {
     } from '@nestjs/websockets';
     import { Server, Socket } from 'socket.io';
 import { ChatService } from 'src/chat/chat.service';
+import { BlockService } from 'src/block/block.service';
 import { Injectable, UseGuards } from '@nestjs/common';
 import { CreateChatMessageDto } from 'src/chat/dto';
 import {  WsGuard } from 'src/auth/guard';
@@ -38,6 +39,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         private readonly chatService: ChatService,
         private readonly authService: AuthService,
         private readonly channelService: ChannelService,
+        private readonly blockService: BlockService,
         private readonly userService: UserService,
     ){}
     @WebSocketServer( )
@@ -74,6 +76,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     @SubscribeMessage('client_ready')
     clientReadyForData(@GetUser() user: JwtPayload ,@ConnectedSocket() socket : Socket) {
         this._usersConnected(user.sub, socket.id);
+        this._usersBlocked(user.sub);
         this._chatsAvailables(user.sub);
         this._channelsJoinedByUser(user.sub);
         this._loadUserChats(user.sub);
@@ -130,7 +133,15 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     private async _usersConnected(userId: string,usersSocket: string) {
         const usersId: string [] =  Array.from( this.socketsIdMap.keys() );
         this.server.to(usersSocket).emit('users_connected', usersId);
-    }    
+    }
+
+    private async _usersBlocked(userId: string) {
+        const blocked_user_array : {
+            userId_blocked : string 
+        } [] = await this.blockService.getBlockedList(userId);
+        const socket = this.socketsIdMap.get(userId);
+        this.server.to(socket).emit('users_blocked', blocked_user_array);
+    }
 
     private async _chatsAvailables(userId: string) {
         const chats = await this.chatService.getChatsByUserId(userId);

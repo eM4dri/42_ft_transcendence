@@ -5,7 +5,9 @@ import { ChatService } from 'src/chat/chat.service';
 import { ChannelService } from 'src/channel/channel.service';
 import { JwtService } from '@nestjs/jwt';
 import { ChannelAdminService } from 'src/channel/admin/channel.admin.service';
+import { BlockService } from 'src/block/block.service';
 import { UserService } from 'src/user/user.service';
+import { ProfileImagesService, RandomStringService } from 'src/profile_images/profile_images.service';
 
 @Module({
   providers: [
@@ -15,7 +17,10 @@ import { UserService } from 'src/user/user.service';
     JwtService,
     ChannelService,
     ChannelAdminService,
-    UserService
+    BlockService,
+    UserService,
+    ProfileImagesService,
+    RandomStringService
   ],
 })
 export class EventsModule {}

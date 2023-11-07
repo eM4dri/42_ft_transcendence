@@ -24,8 +24,17 @@ model User {
   firstName String?
   lastName  String?
 
-  chatUsers  ChatUser[]
+  profileImage ProfileImage[]
+  chatUsers ChatUser[]
   stats_user stats_user[]
+
+  // Esto no son campos, son relaciones que necesita el prisma para poderse montar su visualizador.
+  // De verdad, no imagiinarse esto como un campo que tiene contenido, sino como una "puerta" que te lleva
+  // a la tabla BannedList.
+  banning_users BannedList[] @relation("banning_user")
+  banned_user BannedList[] @relation("banned_user")
+  blocker BlockedList[] @relation("blocker")
+  blockedUsers BlockedList[] @relation("blocked")
 
   channelUsers ChannelUser[]
   
@@ -40,6 +49,46 @@ enum Role {
   ADMIN
   OWNER
 }
+
+model ProfileImage {
+  imageId String @id @default(uuid())
+  userId_link User @relation(fields:[userId], references: [userId], onDelete: Cascade)
+  userId String @unique
+
+  isUsingDefaultUrl Boolean
+  imageSeed String
+
+  imageExtension String?
+
+  @@map("profile_images")
+}
+
+model BannedList {
+  banListId String @id @default(uuid())
+  
+  banning_user User @relation("banning_user", fields:[userId_banning], references: [userId], onDelete: Cascade)
+  userId_banning String 
+
+  banned_user User @relation("banned_user", fields:[userId_banned], references: [userId], onDelete: Cascade)
+  userId_banned String 
+
+  @@map("banned_list")
+}
+
+model BlockedList {
+  BlockedListId String @id @default(uuid())
+  
+  blocker User @relation("blocker", fields:[userId_blocker], references: [userId], onDelete: Cascade)
+  userId_blocker String
+
+  blocked User @relation("blocked", fields:[userId_blocked], references: [userId], onDelete: Cascade)
+  userId_blocked String
+
+  // Aseguramos que no puedan haber entradas iguales
+  @@unique([userId_blocker, userId_blocked], name: "block_pair")
+  @@map("blocked_list")
+}
+
 
 model Channel {
   channelId String @id @default(uuid())

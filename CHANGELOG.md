@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-11-05 - carce-bo
+## Added
+- Profile Images module
+- Block Module
+
+## changes
+- template.env
+- directories block, profile_images in backend/srcs/src/
+- docker-compose.yml, adds an nginx service serving static images.
+- Any module that uses the ProfileImageService MUST also include the RandomStringService.
+- Need ThunderClient for testing file upload. body MUST contain a file.
+
 ## 2023-11-05 - tomartin
 ## Added
 - Refresh Token

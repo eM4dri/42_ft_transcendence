@@ -1,5 +1,6 @@
 version: '3.8'
 services:
+
   front:
     user: "${UID}:${GID}"
     tty: true
@@ -13,6 +14,7 @@ services:
       - ./frontend/srcs:/app/
     ports:
       - 4200:4200
+
   back:
     user: "${UID}:${GID}"
     #tty: true
@@ -26,7 +28,6 @@ services:
       - 3000:3000
     env_file:
       .env
-
     depends_on:
       db:
         condition: service_healthy
@@ -36,6 +37,7 @@ services:
       interval: 15s
       timeout: 10s
       retries: 5
+
   db:
     image: postgres:15-alpine
     container_name: "${DB_HOST}"
@@ -55,6 +57,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
   adminer:
     image: adminer
     container_name: adminer
@@ -63,6 +66,7 @@ services:
     restart: on-failure
     ports:
       - 8080:8080
+
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer
@@ -75,6 +79,15 @@ services:
     ports:
       - 9000:9000 # http
       # - 9443:9443 # https
+
+  nginx:
+    user: "${UID}:${GID}"
+    image: nginx:latest
+    volumes:
+      - ./static_images/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./backend/srcs/static_images:/usr/share/nginx/html/static_images
+    ports:
+      - "8081:8081" 
 
 networks:
   docker_network:

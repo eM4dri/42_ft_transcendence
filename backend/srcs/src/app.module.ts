@@ -12,6 +12,8 @@ import { StatsModule } from './stats/stats.module';
 import { ChannelModule } from './channel/channel.module';
 import { EventsModule } from './events/events.module';
 import { HistoricGamesModule } from './historic_games/historic_games.module';
+import { BlockModule } from './block/block.module';
+import { ProfileImagesModule } from './profile_images/profile_images.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
@@ -27,6 +29,8 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     ChannelModule,
     EventsModule,
     HistoricGamesModule,
+    BlockModule,
+    ProfileImagesModule,
     EventEmitterModule.forRoot()
   ],
   controllers: [AppController],

@@ -3,6 +3,9 @@ import {
   ExecutionContext,
 } from '@nestjs/common';
 
+// Este decorador sirve para extraer el objeto user del usuario que
+// hace una petición. Forma de uso:
+// foo(@GetUser('id'))
 export const GetUser = createParamDecorator(
   (
     data: string | undefined,

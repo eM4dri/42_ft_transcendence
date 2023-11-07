@@ -21,6 +21,8 @@ declare global {
       HOST: string;
       API_PORT: string;
       API_URL: string;
+      STATIC_IMAGES_PORT: string;
+      STATIC_IMAGES_URL: string;
       WEB_PORT: string;
       WEB_URL: string;
       FAKE_LOGIN_URL: string;

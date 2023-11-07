@@ -1,12 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { CreateUserDto } from "./dto";
 import { PrismaService } from "src/prisma/prisma.service";
+import { ProfileImagesService } from "src/profile_images/profile_images.service";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Role } from "../auth/role.enum";
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService,
+              private readonly profile_images_service: ProfileImagesService) { }
   all() {
     return this.prisma.user.findMany();
   }
@@ -55,6 +57,7 @@ export class UserService {
           },
         },
       });
+      await this.profile_images_service.createProfileImage(user.userId);
       return user;
     } catch (error) {
       if (

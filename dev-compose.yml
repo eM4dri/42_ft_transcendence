@@ -53,6 +53,15 @@ services:
     restart: on-failure
     ports:
       - 8080:8080
+  nginx:
+    user: "${UID}:${GID}"
+    image: nginx:latest
+    container_name: nginx_images
+    volumes:
+      - ./static_images/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./backend/srcs/static_images:/usr/share/nginx/html/static_images
+    ports:
+      - "8081:8081" 
 
 networks:
   docker_network:
