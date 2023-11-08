@@ -24,7 +24,7 @@ import { ChannelUser } from '@prisma/client';
 import { OnEvent } from '@nestjs/event-emitter';
 import { ProfileImagesService } from 'src/profile_images/profile_images.service';
 
-   
+
 // https://www.makeuseof.com/build-real-time-chat-api-using-websockets-nestjs/
 @WebSocketGateway({
     cors: true,
@@ -63,7 +63,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     }
 
     async handleDisconnect(socket: Socket) {
-        // const { token } = socket.handshake.auth; 
+        // const { token } = socket.handshake.auth;
         try {
             const user = await this.authService.isAuthorized(socket);
             this.socketsIdMap.delete(user.sub);
@@ -139,7 +139,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
 
     private async _usersBlocked(userId: string) {
         const blocked_user_array : {
-            userId_blocked : string 
+            userId_blocked : string
         } [] = await this.blockService.getBlockedList(userId);
         const socket = this.socketsIdMap.get(userId);
         this.server.to(socket).emit('users_blocked', blocked_user_array);
@@ -167,7 +167,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         // const socketId = this.socketsMap.get(userId);
         // Add channel into joined_channels ws for socket
         this.server.to(socket.id).emit('joined_channels', channels);
-        // load user data to show 
+        // load user data to show
         this._channelUsersToCache(socket.id, [dto.channelId]);
         // load users to its {channelId}_users ws for socket
        this._loadChannelUsers(socket.id, dto.channelId);
@@ -187,19 +187,19 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
             const socket  = this.socketsIdMap.get(chat.userId);
             if (socket !== undefined ) {
                 this.server.to(socket).emit('new_chat_available', chats.filter(x=>x.userId !== chat.userId)[0]); // we are only sending one.
-                this._usersToCache(socket, users.filter(x=>x !== chat.userId)); 
+                this._usersToCache(socket, users.filter(x=>x !== chat.userId));
             }
         }
         this._updateUsersChatId(chatId, message);
     }
-    
+
     private async _loadUserChats(userId: string) {
         const chats = await this.chatService.getChatsByUserId(userId);
         chats.forEach(chat =>{
             this._loadUserChatId(userId ,chat.chatId);
         });
     }
-    
+
     private async _loadUserChatId(userId: string, chatId: string) {
         const chat = await this.chatService.getChatMessagesLighter(chatId);
         const socket: string = this.socketsIdMap.get(userId);
@@ -213,7 +213,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         this._loadChannelMessages(socket.id, channelId);
         socket.join(`${channelId}_room`);
     }
-    
+
     @OnEvent('udate_channel_user')
     async updateChannelUser(channelUser: ChannelUser){
         const socket: string = this.socketsIdMap.get(channelUser.userId);
@@ -259,9 +259,10 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
 
     private async _usersToCache(socketId: string, usersId: string[]) {
         const users = await this.userService.getUsers(usersId);
-        users.forEach((user) => {
-            user.avatar = this.profileImagesService.getProfileImageUrl(user.userId);
-        });
+        for (const user of users) {
+            const res = await this.profileImagesService.getProfileImageUrl(user.userId)
+            user.avatar = res.imageUrl;
+        }
         this.server.to(socketId).emit('users_to_cache', users);
     }
 }

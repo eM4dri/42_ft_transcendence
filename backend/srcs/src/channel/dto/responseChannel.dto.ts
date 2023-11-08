@@ -6,6 +6,7 @@ export class ResponseChannelDto implements Channel {
     createdAt: Date;
     createdBy: string;
     channelName: string;
+    avatar: string;
 
     @Exclude()
     password: string;

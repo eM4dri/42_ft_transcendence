@@ -24,6 +24,8 @@ model User {
   firstName String?
   lastName  String?
 
+  avatar String?
+
   profileImage ProfileImage[]
   chatUsers ChatUser[]
   stats_user stats_user[]
@@ -37,7 +39,7 @@ model User {
   blockedUsers BlockedList[] @relation("blocked")
 
   channelUsers ChannelUser[]
-  
+
   role    Role @default(USER)
 
   @@map("users")
@@ -65,19 +67,19 @@ model ProfileImage {
 
 model BannedList {
   banListId String @id @default(uuid())
-  
+
   banning_user User @relation("banning_user", fields:[userId_banning], references: [userId], onDelete: Cascade)
-  userId_banning String 
+  userId_banning String
 
   banned_user User @relation("banned_user", fields:[userId_banned], references: [userId], onDelete: Cascade)
-  userId_banned String 
+  userId_banned String
 
   @@map("banned_list")
 }
 
 model BlockedList {
   BlockedListId String @id @default(uuid())
-  
+
   blocker User @relation("blocker", fields:[userId_blocker], references: [userId], onDelete: Cascade)
   userId_blocker String
 
@@ -97,6 +99,7 @@ model Channel {
   channelName String @unique
   createdBy String
   password String?
+  avatar String?
 
   channelUsers ChannelUser[]
   @@map("channels")
@@ -175,8 +178,8 @@ model ChatUserMessage {
 
 model stats_user {
   userId_link  User   @relation(fields: [userId, login], references: [userId, login], onDelete: Cascade)
-  userId       String @id 
-  login        String 
+  userId       String @id
+  login        String
   gamesWin     Int    @default(0)
   gamesLose    Int    @default(0)
   gamesDraw    Int    @default(0)
@@ -191,10 +194,10 @@ model stats_user {
 model historical_games {
   gameId        String   @id @default(uuid())
   gameDate      DateTime @default(now())
-  localId       String    
-  localName     String    
-  visitorId     String    
-  visitorName   String    
+  localId       String
+  localName     String
+  visitorId     String
+  visitorName   String
   localGoals    Int      @default(0)
   visitorGoals  Int      @default(0)
   winLocal      Boolean
