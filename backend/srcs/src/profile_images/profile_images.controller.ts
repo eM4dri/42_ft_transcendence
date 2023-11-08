@@ -33,14 +33,14 @@ export class ProfileImagesController {
 
 
     // see https://stackoverflow.com/questions/73824060/how-can-i-validate-a-file-type-using-nestjs-pipes-and-filetypevalidator
-    @Post('users/upload')
+    @Post('users/upload_file')
     @ApiConsumes('multipart/form-data')
     @ApiBody({
       description: 'profile image',
       type: FileUploadDto,
     })
     @UseInterceptors(FileInterceptor('file'))
-    UploadProfileImage( @GetUser('id') userId: string,
+    UploadUserProfileImageAsFile( @GetUser('id') userId: string,
                         @UploadedFile(
                           new ParseFilePipe({
                             validators: [
@@ -49,7 +49,13 @@ export class ProfileImagesController {
                             ],
                           }),
                         ) file: Express.Multer.File) {
-      return this.ProfileImagesService.uploadProfileImage(userId, file);
+      return this.ProfileImagesService.uploadProfileImageAsFile(userId, file, "user");
+    }
+
+
+    @Post('users/upload_url')
+    UploadUserProfileImageAsUrl( @GetUser('id') userId: string, url: string) {
+      return this.ProfileImagesService.uploadProfileImageAsUrl(userId, url, "user");
     }
 
     @Post('channels/upload_as_file')
@@ -59,7 +65,7 @@ export class ProfileImagesController {
       type: FileUploadDto,
     })
     @UseInterceptors(FileInterceptor('file'))
-    UploadProfileImageAsFile( @Param('uuid', new ParseUUIDPipe()) channelId: string,
+    UploadChannelProfileImageAsFile( @Param('uuid', new ParseUUIDPipe()) channelId: string,
                               @UploadedFile(
                                 new ParseFilePipe({
                                   validators: [
@@ -68,27 +74,12 @@ export class ProfileImagesController {
                                   ],
                                 }),
                               ) file: Express.Multer.File) {
-      return this.ProfileImagesService.uploadProfileImageAsFile(channelId, file);
+      return this.ProfileImagesService.uploadProfileImageAsFile(channelId, file, "channel");
     }
 
     @Post('channels/upload_as_url')
-    UploadProfileImageAsUrl( @Param('uuid', new ParseUUIDPipe()) channelId: string, url: string) {
-      return this.ProfileImagesService.uploadProfileImageAsUrl(channelId, url);
-    }
-
-    @Patch('users/roll')
-    rollProfileImage( @GetUser('id') userId: string) {
-      return this.ProfileImagesService.rollProfileImage(userId);
-    }
-
-    @Get('users/get')
-    getProfileImage(@GetUser('id') userId: string) {
-      return this.ProfileImagesService.getProfileImageUrl(userId);
-    }
-
-    @Delete('users/delete')
-    deleteProfileImage(@GetUser('id') userId: string) {
-      return this.ProfileImagesService.deleteProfileImage(userId);
+    UploadChannelProfileImageAsUrl( @Param('uuid', new ParseUUIDPipe()) channelId: string, url: string) {
+      return this.ProfileImagesService.uploadProfileImageAsUrl(channelId, url, "channel");
     }
 
 }

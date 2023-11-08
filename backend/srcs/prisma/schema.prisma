@@ -26,7 +26,6 @@ model User {
 
   avatar String?
 
-  profileImage ProfileImage[]
   chatUsers ChatUser[]
   stats_user stats_user[]
 
@@ -50,19 +49,6 @@ enum Role {
   USER
   ADMIN
   OWNER
-}
-
-model ProfileImage {
-  imageId String @id @default(uuid())
-  userId_link User @relation(fields:[userId], references: [userId], onDelete: Cascade)
-  userId String @unique
-
-  isUsingDefaultUrl Boolean
-  imageSeed String
-
-  imageExtension String?
-
-  @@map("profile_images")
 }
 
 model BannedList {

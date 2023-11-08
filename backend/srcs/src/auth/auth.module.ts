@@ -9,7 +9,6 @@ import {
 import { AuthController } from './auth.controller';
 import { UserService } from '../user/user.service';
 import { FakeAuthService } from './fake.auth.service';
-import { ProfileImagesService, RandomStringService } from 'src/profile_images/profile_images.service';
 
 @Module({
   imports: [
@@ -30,8 +29,6 @@ import { ProfileImagesService, RandomStringService } from 'src/profile_images/pr
     FortyTwoStrategy,
     JwtStrategy,
     UserService,
-    ProfileImagesService,
-    RandomStringService,
     FakeAuthService,
     RefreshTokenStrategy
   ],
