@@ -9,7 +9,7 @@ export class ProfileImagesService {
     constructor(private prisma: PrismaService)
     {}
 
-    private default_url: string  = "https://api.dicebear.com/7.x/bottts/svg"
+    // private default_url: string  = "https://api.dicebear.com/7.x/bottts/svg?seed=72634127497"
     private static_images_path: string = "/app/static_images"
     private mimeExtensionMap: { [key: string]: string } = {
         'image/jpeg': 'jpg',
@@ -42,6 +42,7 @@ export class ProfileImagesService {
     }
 
     async uploadProfileImageAsFile(Id: string, file : Express.Multer.File, type: string )
+    : Promise<{ imageUrl : string }>
     {
         try {
             // El mimetype está wardeado por el FileTypeValidator del controller.
@@ -56,7 +57,7 @@ export class ProfileImagesService {
                         channelId: Id
                     },
                     data: {
-                        avatar : `${process.env.STATIC_IMAGES_URL}/static_images/${Id}.${file_extension}`
+                        avatar : `${process.env.STATIC_IMAGES_URL}/static_images/${type}/${Id}.${file_extension}`
                     }
                 });
             } else {
@@ -65,7 +66,7 @@ export class ProfileImagesService {
                         userId: Id
                     },
                     data: {
-                        avatar : `${process.env.STATIC_IMAGES_URL}/static_images/${Id}.${file_extension}`
+                        avatar : `${process.env.STATIC_IMAGES_URL}/static_images/${type}/${Id}.${file_extension}`
                     }
                 });
             }
@@ -75,7 +76,9 @@ export class ProfileImagesService {
         }
     }
 
-    async uploadProfileImageAsUrl(Id: string, url: string, type: string) {
+    async uploadProfileImageAsUrl(Id: string, url: string, type: string)
+    : Promise<{ imageUrl : string }>
+    {
         this.clearOppositeExtensionImages(type, Id);
         try {
             var response;
