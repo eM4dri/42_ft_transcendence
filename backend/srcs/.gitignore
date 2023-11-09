@@ -38,3 +38,6 @@ lerna-debug.log*
 #volumes
 volumes/db/*
 volumes/portainer/*
+
+static_images/user
+static_images/channel
