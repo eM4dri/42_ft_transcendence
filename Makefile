@@ -5,11 +5,19 @@ PRO_COMPOSE_FILE = docker-compose.yml
 DEV_COMPOSE_FILE = dev-compose.yml
 SCRIPTS_FOLDER = ./scripts/
 
+# En linux, estos parametros son necesarios porque lo dice Google.
+# En cualquier otro SO, se expanden a nada, lo cual no nos importa
+UNAME := $(shell uname)
+ifeq ($(UNAME), Linux)
+UID := $(shell id -u)
+GID := $(shell id -g)
+endif
+
 # Regla para iniciar los contenedores en segundo plano
 up: generate_front_enviroment
 	UID=${UID} GID=${GID} docker-compose -f $(PRO_COMPOSE_FILE) up -d
 	@echo "lista de servicios levantados"
-	docker-compose -f $(DEV_COMPOSE_FILE) ps --services
+	@docker-compose -f $(DEV_COMPOSE_FILE) ps --services
 
 # Regla para detener y eliminar todos los contenedores
 down:

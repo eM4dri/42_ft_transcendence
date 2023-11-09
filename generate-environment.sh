@@ -1,19 +1,18 @@
 #!/bin/bash
 
 # Ruta al archivo .env
-ENV_ORIGIN=".env"
-ENV_FILE=".env_copy"
-
-grep -o '^[^#]*' $ENV_ORIGIN |sed 's/[[:blank:]]*$//'  > $ENV_FILE
+ENV=".env"
 
 # Verifica si el archivo .env existe
-if [ -f "$ENV_FILE" ]; then
-  echo "Generando environment.ts a partir de $ENV_FILE"
+if [ -f "$ENV" ]; then
+  echo "Generando environment.ts a partir de $ENV"
 
   # Extrae las variables de entorno del archivo .env
+  # Quitamos antes del read lineas con comentarios o en blanco.
+  sed -e 's/[[:blank:]]*#.*// ; /^[[:blank:]]*$/d' "$ENV" |\
   while IFS= read -r line; do
-    [ "$line" ] && export "$line"
-  done < "$ENV_FILE"
+    export "$line"
+  done
 
   mkdir -p frontend/srcs/src/environments
 
@@ -31,8 +30,6 @@ if [ -f "$ENV_FILE" ]; then
   echo "};" >> "$ENV_TS_FILE"
 
   echo "environment.ts generado exitosamente."
-
-  rm $ENV_FILE
 else
   echo "El archivo .env no existe en la raíz del proyecto."
 fi
