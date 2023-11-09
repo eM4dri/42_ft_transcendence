@@ -136,11 +136,9 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     }
 
     private async _usersBlocked(userId: string) {
-        const blocked_user_array : {
-            userId_blocked : string
-        } [] = await this.blockService.getBlockedList(userId);
+        const users_blocked = await this.blockService.getBlockedList(userId);
         const socket = this.socketsIdMap.get(userId);
-        this.server.to(socket).emit('users_blocked', blocked_user_array);
+        this.server.to(socket).emit('users_blocked', users_blocked);
     }
 
     private async _chatsAvailables(userId: string) {

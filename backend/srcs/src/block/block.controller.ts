@@ -5,7 +5,8 @@ import { Controller,
          Delete,
          HttpCode,
          Param,
-         ParseUUIDPipe
+         ParseUUIDPipe,
+         Body
 } from '@nestjs/common';
 import {
     ApiBearerAuth,
@@ -17,6 +18,7 @@ import {
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 import { BlockService } from './block.service';
+import { BlockedUserDto } from './dto/blockedUser.dto';
 
 // El modulo de silenciados se utilizara, almenos de momento,
 // para poder devolver en un login una lista de los silenciados
@@ -30,28 +32,36 @@ export class BlockController {
     constructor(private BlockService: BlockService){};
 
     @Get()
-    @ApiOperation({ description: 'Get blocked list from one user' })
+    @ApiOperation({
+        description: 'Get blocked list from one user'
+    })
     get(@GetUser('id') UserId: string) {
       return this.BlockService.getBlockedList(UserId);
     };
 
     @Post('/:uuid')
-    @ApiOperation({ description: 'Block a user' })
+    @ApiBody({
+        description: 'Block a user',
+        type: BlockedUserDto
+    })
     @HttpCode(200)
     blockUser(
         @GetUser('id') userId_blocker: string,
-        @Param('id_blocked', new ParseUUIDPipe()) userId_blocked: string
+        @Body() dto : BlockedUserDto
     ) {
-        return this.BlockService.blockUser(userId_blocker, userId_blocked);
+        return this.BlockService.blockUser(userId_blocker, dto.userId_blocked);
     }
 
     @Delete('/:uuid')
-    @ApiOperation({ description: 'Unblock a user' })
+    @ApiBody({
+        description: 'Block a user',
+        type: BlockedUserDto
+    })
     @HttpCode(200)
     unblockUser(
         @GetUser('id') userId_blocker: string,
-        @Param('id_blocked', new ParseUUIDPipe()) userId_blocked: string
+        @Body() dto : BlockedUserDto
     ) {
-        return this.BlockService.unblockUser(userId_blocker, userId_blocked);
+        return this.BlockService.unblockUser(userId_blocker, dto.userId_blocked);
     }
 }

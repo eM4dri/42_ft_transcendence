@@ -9,10 +9,10 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 @Injectable()
 export class BlockService {
     constructor(private prisma: PrismaService) {}
-    
+
     async getBlockedList(userId_blocker: string)
-    : Promise< { userId_blocked : string }[]> {
-        
+    : Promise< string []> {
+
         const response = await this.prisma.blockedList.findMany({
             where: {
                 userId_blocker: userId_blocker
@@ -21,8 +21,7 @@ export class BlockService {
                 userId_blocked: true
             }
         })
-
-        return response;
+        return response.map((item) => item.userId_blocked);
     }
 
     async blockUser(userId_blocker: string, userId_blocked: string)
@@ -37,7 +36,7 @@ export class BlockService {
             return response;
         } catch (error) {
             // Podemos tener un error si el usuario vuelve a banear a alguien
-            // que ya tiene silenciado. El cliente no deberia enterarse, pero es 
+            // que ya tiene silenciado. El cliente no deberia enterarse, pero es
             // bueno responder que no se ha insertado nada porque el usuario
             // ya estaba silenciado.
             if (error instanceof PrismaClientKnownRequestError) {
