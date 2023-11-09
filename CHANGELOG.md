@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-11-09 - carce-bo
+## Added
+- Profile Images:
+  - Module generalized for Channels and Users.
+  - New field to channel and user, avatar.
+  - Eliminated model ProfileImages from prisma.
+  - Eliminated dependencies on ProfileImagesService everywhere.
+  - Eliminated dependencies on RandomStringService everywhere.
+  - ProfileImages has only 2*2 endpoints: one for url, one for images. (repeated twice because of users/image diffs)
+  - static_images nginx docker now has 2 directories.
+  - Added dto's to support new endpoints
+- Block List:
+  - Added dto's
+  - getBlockList now returns string[] with all id's the requesting user has blocked.
+- generate_environment.sh:
+  - fixed a bug where empty lines would make export give an error.
+
+## changes
+- backend/srcs/src/(block/profile_images)/*
+- backed/src/src/channel/dto/responseChannel.dto.ts
+- schema.prisma
+- static_images/nginx_conf
+- Lots of files related to now not having to import ProfileImageService anywhere.
+- generate_environment.sh
+
+
 ## 2023-11-05 - carce-bo
 ## Added
 - Profile Images module
@@ -52,7 +78,7 @@ and this project adheres to
 - session.storage.ts remane into `cookie.constants.ts`
 - cache currentClientUserId to avoid calcs
 - channel management users improvements
-- wrapped API Rest channel admin responses  
+- wrapped API Rest channel admin responses
 
 ## 2023-10-30 - emadriga
 ### Added
@@ -84,12 +110,12 @@ and this project adheres to
 - Alerts Module to handle errors
 
 ### Changed
-- Upgrade back packages, fixing some vulnerabilities  
+- Upgrade back packages, fixing some vulnerabilities
 - Update front packages
 
 ## 2023-10-25 - emadriga
 ### Changed
-- Reorganize front modules, components & services 
+- Reorganize front modules, components & services
 - Front date.mutations.ts to centralize date mutations
 
 ## 2023-10-24 - emadriga
@@ -107,7 +133,7 @@ and this project adheres to
 
 ## 2023-10-15 - emadriga
 ### Changed
-- Improved front chat visualization, including heights using avatars at searching for new chats, and also filtering initial post as you focus the search input, this way you don't have several post asking for information. If needed could be handled on back with cache and partial paged searchs 
+- Improved front chat visualization, including heights using avatars at searching for new chats, and also filtering initial post as you focus the search input, this way you don't have several post asking for information. If needed could be handled on back with cache and partial paged searchs
 
 ## 2023-10-14 - emadriga
 ### Changed
