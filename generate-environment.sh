@@ -7,12 +7,7 @@ ENV=".env"
 if [ -f "$ENV" ]; then
   echo "Generando environment.ts a partir de $ENV"
 
-  # Extrae las variables de entorno del archivo .env
-  # Quitamos antes del read lineas con comentarios o en blanco.
-  sed -e 's/[[:blank:]]*#.*// ; /^[[:blank:]]*$/d' "$ENV" |\
-  while IFS= read -r line; do
-    export "$line"
-  done
+  . $ENV
 
   mkdir -p frontend/srcs/src/environments
 
