@@ -18,10 +18,7 @@ export class AuthService {
       sub: user.userId,
       role: user.role,
     };
-    return {
-      Tokens: this.getTokens(payload),
-      //accessToken: this.jwtService.sign(payload),
-    };
+    return this.getTokens(payload);
   }
 
   async isAuthorized(request: any) {
@@ -32,7 +29,7 @@ export class AuthService {
     try {
       const payload = await this.jwtService.verifyAsync(
         token,
-        { secret: process.env.JWT_SECRET },
+        { secret: process.env.JWT_REFRESH },
       );
       return payload;
     } catch {
@@ -40,7 +37,7 @@ export class AuthService {
     }
   }
 
-  getTokens(payload: JwtPayload): [refreshToken: string, accessToken: string] {
+  getTokens(payload: JwtPayload): { accessToken: string, refreshToken: string} {
     const accessToken = this.jwtService.sign(payload);
     const refreshToken = this.jwtService.sign({
       sub: payload.sub,
@@ -48,25 +45,14 @@ export class AuthService {
       expiresIn: process.env.JWT_REFRESH_EXPIRE,
       secret: process.env.JWT_REFRESH
     });
-    return [accessToken, refreshToken];
+    return { accessToken, refreshToken};
   }
 
-  async refreshToken(refreshToken: string) {
-    if (!refreshToken) {
-      throw new ForbiddenException("Access Denied");
-    }
+  async refreshToken(userId: string) {
 
-    const decode: JwtPayload = this.jwtService.verify(refreshToken, {
-      secret: process.env.JWT_REFRESH
-    });
 
     const user = await this.prisma.user.findUnique({
-      where: { userId: decode.sub },
-      select: {
-        username: true,
-        role: true,
-        userId: true,
-      },
+      where: { userId }
     });
 
     const payload: JwtPayload = {
@@ -74,9 +60,6 @@ export class AuthService {
       sub: user.userId,
       role: user.role,
     };
-
-    const newToken = this.jwtService.sign(payload);
-    if (!newToken) throw new ForbiddenException("Access Denied");
-    return newToken;
+    return this.getTokens(payload);
   }
 }

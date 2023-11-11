@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import  jwtDecode  from 'jwt-decode'
 import { AuthModel } from '../models/core/auth.model';
 import { CookieService } from 'ngx-cookie-service';
+import { CookieConstants } from '../utils';
+import { Role } from '../models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
+  isLogin = false;
+  // roleAs: string = 'USER';
   constructor(
     private readonly cookieService : CookieService
   ) { }
@@ -27,4 +30,18 @@ export class AuthService {
   private getTokenData(token: string): AuthModel.UserTokenData {
     return  token ? jwtDecode(token): AuthModel.userTokenData;
   }
+
+
+  isLoggedIn() {
+    return (this.readFromCookie(CookieConstants.REFRESH_TOKEN).sub !== '')
+  }
+
+  getRole() {
+    return this.readFromCookie(CookieConstants.USER_TOKEN).role;
+  }
+
+  haveAdminRights() {
+    return this.getRole() !== Role.User;
+  }
+  
 }

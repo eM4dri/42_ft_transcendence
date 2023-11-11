@@ -4,12 +4,14 @@ import { JwtPayload } from './strategy';
 import { User } from '@prisma/client';
 import { UserService } from 'src/user/user.service';
 import { CreateUserDto } from 'src/user/dto';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class FakeAuthService {
   constructor(
     private jwtService: JwtService,
     private userService: UserService,
+    private authService: AuthService
   ) { }
 
   async fakeLogin(username: string) {
@@ -19,9 +21,7 @@ export class FakeAuthService {
       sub: userdb.userId,
       role: userdb.role,
     };
-    return {
-      accessToken: this.jwtService.sign(payload),
-    };
+    return this.authService.getTokens(payload);
   }
 
   private async _getFakeUser(username: string): Promise<User> {

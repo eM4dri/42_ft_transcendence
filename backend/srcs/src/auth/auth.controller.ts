@@ -1,13 +1,12 @@
 import { Controller, Get, Param, Res, Req, UseGuards } from "@nestjs/common";
 import { Response } from "express";
-import { FortyTwoGuard } from "./guard";
+import { FortyTwoGuard, RefreshGuard } from "./guard";
 import { AuthService } from "./auth.service";
 import { ApiExcludeController } from "@nestjs/swagger";
 import { GetUser } from "./decorator";
 import { User } from "@prisma/client";
 import { FakeAuthService } from "./fake.auth.service";
-import { Request } from 'express';
-import { RefreshGuard } from "./guard/refresh.guard";
+import { TokenConstants } from "src/utils";
 
 @ApiExcludeController()
 @Controller()
@@ -28,10 +27,9 @@ export class AuthController {
     @GetUser() user42: User,
     @Res() res: Response,
   ) {
-    const user: { Tokens: [string, string] } = this.authService.login(user42);
-    // return res.send(user);
-    res.cookie("USER_TOKEN", user.Tokens[0]);
-    res.cookie("REFRESH_TOKEN", user.Tokens[1]);
+    const { accessToken, refreshToken } = this.authService.login(user42);
+    res.cookie(TokenConstants.USER_TOKEN, accessToken);
+    res.cookie(TokenConstants.REFRESH_TOKEN, refreshToken);
     res.redirect(process.env.WEB_URL);
   }
 
@@ -40,20 +38,20 @@ export class AuthController {
     @Param("username") username: string,
     @Res() res: Response,
   ) {
-    const user: { accessToken: string } = await this.fakeAuthService.fakeLogin(
-      username,
-    );
-    // return res.send(user);
-    res.cookie("USER_TOKEN", user.accessToken);
+    const { accessToken, refreshToken } = await this.fakeAuthService.fakeLogin(username);
+    res.cookie(TokenConstants.USER_TOKEN, accessToken);
+    res.cookie(TokenConstants.REFRESH_TOKEN, refreshToken);
     res.redirect(process.env.WEB_URL);
   }
 
   @Get('refresh')
   @UseGuards(RefreshGuard)
-  async refresh(@Req() req: Request, @Res() res: Response): Promise<void> {
-    res.cookie("USER_TOKEN", null);
-    const token: string = await this.authService.refreshToken(req.cookies['REFRESH_TOKEN']);
-    res.cookie("USER_TOKEN", token);
-    res.redirect('/swagger');
+  async refresh(@GetUser('sub') userId): Promise<{accessToken, refreshToken}> {
+    const { accessToken, refreshToken } = await this.authService.refreshToken(userId);
+    const response = {
+      accessToken: accessToken,
+      refreshToken: refreshToken 
+    };
+    return response;
   }
 }

@@ -4,3 +4,4 @@ export * from './core/auth.model';
 export * from './chat/chat.model';
 export * from './channel/channel.model';
 export * from './user/user.model'
+export * from './core/role.model'

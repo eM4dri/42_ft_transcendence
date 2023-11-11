@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-11-11 - emadriga
+### Added
+- Refreshing front tokens following [Refreh token Angular 16](https://www.youtube.com/watch?v=aolGFrOPkVk) using our workflow ws & rest, TODO expire through ws on permisions updated
+- Front Guard handling login routes from Angular Role-Based Routing Access with Angular Guard(https://medium.com/echohub/angular-role-based-routing-access-with-angular-guard-dbecaf6cd685)
+- Dynamic navbar depending isAdmin
+- New module administration
+- Refresh token for fakeAuth login
+
+## Changed
+- Remove mocked front images
 
 ## 2023-11-09 - carce-bo
 ## Added
@@ -39,7 +49,6 @@ and this project adheres to
 - Lots of files related to now not having to import ProfileImageService anywhere.
 - generate_environment.sh
 
-
 ## 2023-11-05 - carce-bo
 ## Added
 - Profile Images module
@@ -58,7 +67,7 @@ and this project adheres to
 - Refresh Token Guard
 
 ## changes
-- tempalte.env
+- template.env
 
 ## 2023-11-04 - emadriga
 ### Added

@@ -81,7 +81,8 @@ export class ChannelService {
             return {
                 channelId: channel.channelId,
                 channelName: channel.channelName,
-                isLocked: channel.password !== null
+                isLocked: channel.password !== null,
+                avatar: channel.avatar
             };
         });
         return result;

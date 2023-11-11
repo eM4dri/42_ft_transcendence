@@ -6,6 +6,12 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ApiModel } from '../models';
+import { UriConstants } from '../utils';
+
+export interface IResponseRefreshToken {
+	accessToken: string;
+	refreshToken: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -87,5 +93,13 @@ export class ApiService<GET = {}, POST = {}, PUT = {}, PATCH = {}, DELETE = {}> 
   handleError(error: HttpErrorResponse) {
     return throwError(() => error.error.response || 'Ocurrió un error');
   }
+
+
+  refreshToken() {
+		// return this.http.get<IResponseRefreshToken>(UriConstants.AUTH_REFRESH).pipe(delay(5000));
+		const result = this.http.get<IResponseRefreshToken>(UriConstants.AUTH_REFRESH);
+    console.log('result',result);
+    return result;
+	}
 
 }

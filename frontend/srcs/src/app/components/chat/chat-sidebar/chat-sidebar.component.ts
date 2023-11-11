@@ -63,13 +63,7 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
                   })).response.filter(
                     (x) =>
                         x.userId !== this.cachedUsers.getMyUserId()
-                ).map(user =>{
-                  return {
-                      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${user.username}`,
-                      userId: user.userId,
-                      username: user.username,
-                  };
-                });
+                );
     this.filteredUsers = this.users;
   }
  

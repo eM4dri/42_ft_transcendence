@@ -11,6 +11,6 @@ export class MySocket extends Socket {
         private cookieSevice: CookieService
     ) {
         super({ url: environment.apiUrl, options: {} });
-        this.ioSocket['auth'] = { token: this.cookieSevice.get(CookieConstants.USER_TOKEN) };
+        this.ioSocket['auth'] = { token: this.cookieSevice.get(CookieConstants.REFRESH_TOKEN) };
     }
 }

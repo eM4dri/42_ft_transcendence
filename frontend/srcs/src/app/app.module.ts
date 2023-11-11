@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+// import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ChatComponent, GameComponent, HistoryComponent, HomeComponent, NavbarComponent, ProfileComponent, SharedAlertModule } from './modules';
+import { AdministrationComponent, ChatComponent, GameComponent, HistoryComponent, HomeComponent, NavbarComponent, ProfileComponent, SharedAlertModule } from './modules';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
-import { AuthInterceptor } from './core';
+// import { AuthInterceptor } from './core';
+import { ApiInterceptor, ErrorApiInterceptor } from './core';
 import { MySocket } from './services/web-socket.service';
 import { ChannelsCache, ChatsCache, UsersCache } from './cache';
 import { AvatarComponent, ChannelAvatarComponent, ChannelHeaderComponent, ChannelInfoComponent, ChannelManagementActionsComponent, ChannelManagementComponent, ChannelManagementUsersComponent, ChannelSidebarComponent, ChannelWindowComponent, ChannelWindowMessageComponent, ChatInfoComponent, ChatSidebarComponent, ChatWindowComponent, ChatWindowMessageComponent } from './components';
@@ -42,6 +44,7 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     ChannelManagementUsersComponent,
     ChannelManagementActionsComponent,
     ChannelHeaderComponent,
+    AdministrationComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,12 +59,13 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     SplitButtonModule,
   ],
   providers: [
-    CookieService, 
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
+    CookieService,
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: AuthInterceptor,
+    //   multi: true,
+    // },
+    provideHttpClient(withInterceptors([ApiInterceptor, ErrorApiInterceptor])),
     MySocket,
     UsersCache,
     ChatsCache,

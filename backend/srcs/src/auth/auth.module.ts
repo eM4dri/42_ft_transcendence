@@ -1,10 +1,10 @@
 import { AuthService } from './auth.service';
-import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import {
   FortyTwoStrategy,
   JwtStrategy,
+  RefreshTokenStrategy,
 } from './strategy';
 import { AuthController } from './auth.controller';
 import { UserService } from '../user/user.service';
@@ -30,6 +30,7 @@ import { FakeAuthService } from './fake.auth.service';
     JwtStrategy,
     UserService,
     FakeAuthService,
+    RefreshTokenStrategy,
     RefreshTokenStrategy
   ],
   exports: [AuthService, JwtModule],

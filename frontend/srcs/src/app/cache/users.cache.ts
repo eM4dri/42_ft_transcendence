@@ -27,7 +27,6 @@ export class UsersCache {
 
     this.userService.usersToCache().subscribe(users => {
       users.forEach(user =>{
-        user.avatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${user.username}`;
         if (this._cachedUsers.has(user.userId) === false) {
           this._cachedUsers.set(user.userId, user);
         }

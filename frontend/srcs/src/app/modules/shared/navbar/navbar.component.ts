@@ -5,6 +5,7 @@ import {
   Router, 
 } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
+import { AuthService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -14,8 +15,9 @@ import { environment } from 'src/environments/environment';
 })
 export class NavbarComponent {
   constructor (
-    private router:Router,
-    public readonly appComponent :AppComponent
+    private readonly router:Router,
+    public readonly appComponent: AppComponent,
+    private readonly authService: AuthService
     ) {   }
     
   title: string = 'Clash of Pong';
@@ -50,6 +52,11 @@ export class NavbarComponent {
     this.selectedNavItem = 'chat';
     this.router.navigate(['/chat']);
   }
+  
+  public openAdministration(): void {
+    this.selectedNavItem = 'administration';
+    this.router.navigate(['/administration']);
+  }
  
   public toggleDropdown(): void {
     this.dropdownVisibility = !this.dropdownVisibility;
@@ -61,6 +68,10 @@ export class NavbarComponent {
 
   public changeVisibility(): void {
     this.appComponent.darkMode = !this.appComponent.darkMode;
+  }
+
+  public isAdmin() {
+    return this.authService.haveAdminRights();
   }
 
 }

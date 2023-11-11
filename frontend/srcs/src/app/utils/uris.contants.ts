@@ -6,6 +6,8 @@ const apiVersion = '';
 // const apiVersion = '/api/v1';
 const basePath = environment.apiUrl + apiVersion;
 export class UriConstants {
+  public static readonly AUTH_REFRESH = basePath + '/refresh';
+  // public static readonly AUTH_REFRESH = basePath + '/auth/refresh';
   public static readonly USERS = basePath + '/user';
   public static readonly CHAT = basePath + '/chat';
   public static readonly MESSAGES = basePath + '/chat/message';

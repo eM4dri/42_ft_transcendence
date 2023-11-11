@@ -19,7 +19,6 @@ export class ChannelsCache {
   ){
     this.channelService.joinedChannels().subscribe(channels => {
       channels.forEach(channel => {
-          channel.avatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${channel.channelName}`;  
           this._joinedChannelsMap.set(channel.channelId, channel);
           this.channelService.myChannelUserLoaded(channel.channelId).subscribe( user => {
               this._myChannelsUser.set(channel.channelId, user);
