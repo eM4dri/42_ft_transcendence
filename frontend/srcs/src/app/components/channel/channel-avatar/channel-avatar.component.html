@@ -2,7 +2,8 @@
     <img
         src="{{ channel.avatar }}"
         alt="avatar"
-        onerror="https://api.dicebear.com/avatar.svg"
+        (error)="handleImageError($event)"
     />
 </div>
+
 

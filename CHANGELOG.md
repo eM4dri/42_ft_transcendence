@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-11-12 - emadriga
+### Changed
+- Cleaning workflow avatar workflow with constants, creating avatars at new user or channel, using default svg images
+
+### Fixed
+- Fix onerror avatar fallback when image cannot be shown using default static_images, should be a front local img path to be more sure better
+
 ## 2023-11-11 - emadriga
 ### Added
 - Refreshing front tokens following [Refreh token Angular 16](https://www.youtube.com/watch?v=aolGFrOPkVk) using our workflow ws & rest, TODO expire through ws on permisions updated

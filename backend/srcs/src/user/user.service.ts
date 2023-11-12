@@ -3,6 +3,7 @@ import { CreateUserDto } from "./dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Role } from "../auth/role.enum";
+import { AvatarConstants } from "src/utils/avatar.contants";
 
 @Injectable()
 export class UserService {
@@ -53,6 +54,7 @@ export class UserService {
           stats_user: {
             create: {},
           },
+          avatar: `${AvatarConstants.USER}${dto.username}`
         },
       });
       return user;

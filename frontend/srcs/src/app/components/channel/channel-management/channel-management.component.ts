@@ -44,7 +44,6 @@ export class ChannelManagementComponent extends BaseComponent<{},Channel> {
       }).subscribe({
         next: (res) => {
           let newChannel: Channel = res.response;
-          newChannel.avatar =  `https://api.dicebear.com/7.x/bottts/svg?seed=${channelName}`;
           this.cachedChannels.addJoinedChannel(newChannel)
           this.alertConfiguration('SUCCESS', "Changes applied sucessfully");
           this.openAlert();

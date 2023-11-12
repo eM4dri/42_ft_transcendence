@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Channel } from 'src/app/models';
+import { UriConstants } from 'src/app/utils';
 
 @Component({
   selector: 'app-channel-avatar',
@@ -9,5 +10,8 @@ import { Channel } from 'src/app/models';
 export class ChannelAvatarComponent {
   @Input() channel!: Channel;
 
+  handleImageError(event: any){
+    event.target.src =  UriConstants.CHANNEL_AVATAR_DEFAULT;
+  }
 }
 

@@ -7,7 +7,6 @@
     <img
         src="{{ user.avatar }}"
         alt="avatar"
-        onerror="https://api.dicebear.com/avatar.svg"
+        (error)="handleImageError($event)"
     />
 </div>
-

@@ -6,6 +6,7 @@ import * as argon from 'argon2';
 import { ChannelAdminService } from './admin/channel.admin.service';
 import { plainToInstance } from 'class-transformer';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { AvatarConstants } from 'src/utils/avatar.contants';
 
 @Injectable()
 export class ChannelService {
@@ -94,6 +95,7 @@ export class ChannelService {
                 data: {
                   channelName: dto.channelName,
                   createdBy: creator,
+                  avatar: `${AvatarConstants.CHANNEL}${dto.channelName}`
                 },
             });
             const channelUser = await this.prisma.channelUser.create({

@@ -22,6 +22,7 @@ if [ -f "$ENV" ]; then
   echo "  apiUrl: '$HOST:$API_PORT'," >> "$ENV_TS_FILE"
   echo "  webUrl: '$HOST:$WEB_PORT'," >> "$ENV_TS_FILE"
   echo "  loginUrl: '$HOST:$API_PORT$FORTYTWO_CLIENT_URL'," >> "$ENV_TS_FILE"
+  echo "  staticImagesUrl: '$STATIC_IMAGES_URL'," >> "$ENV_TS_FILE"
   echo "};" >> "$ENV_TS_FILE"
 
   echo "environment.ts generado exitosamente."
