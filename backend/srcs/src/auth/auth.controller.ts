@@ -24,24 +24,28 @@ export class AuthController {
   @Get(process.env.FORTYTWO_CLIENT_URL_CALLBACK)
   @UseGuards(FortyTwoGuard)
   redirect(
+    @Req() req: Request,
     @GetUser() user42: User,
     @Res() res: Response,
   ) {
     const { accessToken, refreshToken } = this.authService.login(user42);
     res.cookie(TokenConstants.USER_TOKEN, accessToken);
     res.cookie(TokenConstants.REFRESH_TOKEN, refreshToken);
-    res.redirect(process.env.WEB_URL);
+    const hostName = new URL(`http://${req.headers['host']}`).hostname;
+    res.redirect(`http://${hostName}:${process.env.WEB_PORT}`);
   }
 
   @Get(`${process.env.FAKE_LOGIN_URL}/:username`)
   async loginImpostor(
+    @Req() req: Request,
     @Param("username") username: string,
     @Res() res: Response,
   ) {
     const { accessToken, refreshToken } = await this.fakeAuthService.fakeLogin(username);
     res.cookie(TokenConstants.USER_TOKEN, accessToken);
     res.cookie(TokenConstants.REFRESH_TOKEN, refreshToken);
-    res.redirect(process.env.WEB_URL);
+    const hostName = new URL(`http://${req.headers['host']}`).hostname;
+    res.redirect(`http://${hostName}:${process.env.WEB_PORT}`);
   }
 
   @Get('refresh')

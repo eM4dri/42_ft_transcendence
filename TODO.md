@@ -17,7 +17,8 @@ response: {
 }
 ~~~
 - [] Review postChat message to yourself -> disable or create your own chat
-- [] Review redirections through different pc
+- [x] Review redirections through different pc
+> Just use your ip `ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}'` on .env host & APIs callback
 - [x] Review gitHub Securitty alerts Dependabot remove @babel from back yanrlock
 - [] Look in [wanago.io](https://wanago.io/2021/01/25/api-nestjs-chat-websockets/) handling auth with wsexceptions
 - [] Toast alerts informing status's updates to user

@@ -7,6 +7,9 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## 2023-11-12 - emadriga
+### Added
+- Solved redirections from diferent 42 host 
+
 ### Changed
 - Cleaning workflow avatar workflow with constants, creating avatars at new user or channel, using default svg images
 

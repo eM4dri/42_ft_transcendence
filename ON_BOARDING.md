@@ -45,3 +45,6 @@ The best way to install Node.js on 42 mac pcs is through  Node Version Manager .
   To view the Node console: make dev-logs service=dev
   For more useful commands, see: make help
  
+ ## Prepare eviroment to accept several connections from pcs on 42
+ 1. Set .env HOST as your internal ip `ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}'` Example:(HOST=http://10.11.17.2)
+ 2. Set diferent callbacks for 42 api
