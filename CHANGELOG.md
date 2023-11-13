@@ -9,6 +9,7 @@ and this project adheres to
 ## 2023-11-13 - emadriga
 ### Changed
 - Updated to Angular 17
+- Using `npm ci --legacy-peer-deps` following [Stop using “npm install” in your CI/CD pipeline](https://blog.bitsrc.io/stop-using-npm-install-in-your-ci-cd-pipeline-ba0378bbebfb) 
 
 ## 2023-11-12 - emadriga
 ### Added
