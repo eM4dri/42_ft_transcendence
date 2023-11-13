@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import  jwtDecode  from 'jwt-decode'
+
+import { jwtDecode } from 'jwt-decode';
 import { AuthModel } from '../models/core/auth.model';
 import { CookieService } from 'ngx-cookie-service';
 import { CookieConstants } from '../utils';
 import { Role } from '../models';
+
 
 @Injectable({
   providedIn: 'root'
