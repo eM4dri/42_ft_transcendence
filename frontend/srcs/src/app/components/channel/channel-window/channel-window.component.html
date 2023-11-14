@@ -2,11 +2,11 @@
     <app-channel-header
         [channel]="channel"
     ></app-channel-header>
-    <div class="chat-container">
-        <div class="chat-messages">
+    <div #channelContainer class="channel-container">
+        <div class="channel-messages">
             <ng-container *ngFor="let channelMessage of channelMessages | keyvalue">
-                <div class="chat-grid">
-                    <p class="chat-day-group">{{ toDayLocale(channelMessage.key) }}</p>
+                <div class="channel-grid">
+                    <p class="channel-day-group">{{ toDayLocale(channelMessage.key) }}</p>
                 </div>
                 <div *ngFor="let msg of channelMessage.value">
                     <ng-container
@@ -33,7 +33,7 @@
         </div>
     </div>
 </div>
-<div class="chat-input">
+<div class="channel-input">
     <ng-container
         *ngIf="isMuted(); then muted; else notMuted"
     ></ng-container>

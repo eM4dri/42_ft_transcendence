@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ChatsCache } from 'src/app/cache';
 import { Chat, ChatMessages, User } from 'src/app/models';
 import { ChatService } from 'src/app/services';
@@ -10,9 +10,10 @@ import { DateMutations } from 'src/app/utils';
   styleUrls: ['./chat-window.component.scss']
 })
 
-export class ChatWindowComponent implements OnInit, OnChanges {
+export class ChatWindowComponent implements OnInit, OnChanges, AfterViewChecked {
   @Input() user!: User;
   @Input() chat?: Chat;
+  @ViewChild('chatContainer') private chatContainer!: ElementRef;
 
   chatMessages: Map<number,ChatMessages[]> = new Map<number,ChatMessages[]>();
 
@@ -42,6 +43,10 @@ export class ChatWindowComponent implements OnInit, OnChanges {
         this.chatMessages.set(m[0], m[1]);
       }
     }
+  }
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
   }
 
   constructor(
@@ -89,6 +94,12 @@ export class ChatWindowComponent implements OnInit, OnChanges {
     console.log('stopTyping');
     this.counter = 0;
     this.chatService.sendTyping(false);
+  }
+
+  private scrollToBottom(): void {
+    try {
+      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+    } catch(err) { }
   }
 
 }

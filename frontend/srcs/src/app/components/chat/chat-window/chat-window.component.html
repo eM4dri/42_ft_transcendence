@@ -2,7 +2,7 @@
         <app-chat-info
             [user]="user"
         ></app-chat-info>
-        <div class="chat-container">
+        <div #chatContainer class="chat-container">
             <div class="chat-messages">
                 <ng-container *ngFor="let chatMessage of chatMessages | keyvalue">
                     <div class="chat-grid">

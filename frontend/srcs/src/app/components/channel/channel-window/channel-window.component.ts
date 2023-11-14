@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ChannelsCache, UsersCache } from 'src/app/cache';
 import { Channel, ChannelMessages, ChannelUsers, ChannelUsersExtended, User } from 'src/app/models';
 import { ChannelService } from 'src/app/services';
@@ -14,8 +14,10 @@ export interface ChannelUsersData extends ChannelUsers {
   templateUrl: './channel-window.component.html',
   styleUrls: ['./channel-window.component.scss']
 })
-export class ChannelWindowComponent implements OnInit, OnChanges {
+export class ChannelWindowComponent implements OnInit, OnChanges, AfterViewChecked {
   @Input() channel!: Channel;
+  @ViewChild('channelContainer') private channelContainer!: ElementRef;
+
   channelMessages: Map<number,ChannelMessages[]> = new Map<number,ChannelMessages[]>();
   channelUsers: Map<string,ChannelUsersData> = new Map<string,ChannelUsersData>();
   myChannelUser!: ChannelUsersExtended;
@@ -83,6 +85,10 @@ export class ChannelWindowComponent implements OnInit, OnChanges {
 
   }
 
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
   constructor(
     private readonly channelService: ChannelService,
     private readonly cachedChannels: ChannelsCache,
@@ -132,5 +138,11 @@ export class ChannelWindowComponent implements OnInit, OnChanges {
       }
     }
     return false;
+  }
+
+  private scrollToBottom(): void {
+    try {
+      this.channelContainer.nativeElement.scrollTop = this.channelContainer.nativeElement.scrollHeight;
+    } catch(err) { }
   }
 }

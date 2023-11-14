@@ -1,10 +1,10 @@
-.chat-grid {
+.channel-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-areas:
         "a b c"
 }
-.chat-day-group {
+.channel-day-group {
     background-color: #f2f2f2;
     padding: 8px 16px;
     margin: 0;
@@ -16,11 +16,10 @@
     justify-self: center;
 }
 
-.chat-container {
+.channel-container {
   // max-width: 400px;
   // background-color: #fff;
   grid-auto-rows: min-content; /* Altura automática basada en el contenido */
-  height: calc(100vh - 10rem ); /* Usa 100vh para ocupar todo el alto visible */
   overflow-y: auto; /* Agrega desplazamiento vertical cuando los mensajes exceden la altura del contenedor */
   margin: 0 auto;
   border: 1px solid #ccc;
@@ -28,13 +27,13 @@
   // overflow: hidden;
 }
 
-.chat-messages {
+.channel-messages {
   // max-height: 300px;
   overflow-y: scroll;
   padding: 10px;
 }
 
-.chat-input {
+.channel-input {
   background-color: #fff;
   padding: 10px;
   display: flex;
@@ -49,4 +48,17 @@ input[type="text"] {
   border: 1px solid #ccc;
   border-radius: 3px;
   margin-right: 10px;
+}
+
+/* Small screens */
+@media only screen and (max-width: 600px) {
+  .channel-container {
+    height: calc(100vh - 14rem ); /* Usa 100vh para ocupar todo el alto visible */
+  }
+}
+/* Large screens */
+@media only screen and (min-width: 600px) {
+  .channel-container {
+    height: calc(100vh - 10rem ); /* Usa 100vh para ocupar todo el alto visible */
+  }
 }

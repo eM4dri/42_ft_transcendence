@@ -18,6 +18,8 @@ input[type="text"] {
 .chat-list {
   display: grid;
   gap: 1px;
+  overflow-y: auto;
+  max-height: calc(100vh - 7rem );
 }
 
 .selected {

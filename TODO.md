@@ -23,7 +23,7 @@ response: {
 - [] Look in [wanago.io](https://wanago.io/2021/01/25/api-nestjs-chat-websockets/) handling auth with wsexceptions
 - [] Toast alerts informing status's updates to user
 - [] In channel Management as actions is a click button, make a workflow to see users profile
-- [] Send messages (channel/chat) workflow is soved using WS to comunicate to back, instead it should be an API Rest `POST` and the service should save on db and emit to clients -> look how is developed ban/unban or mute/unmute, to try this reefactory
+- [] Send messages (channel/chat) workflow is soved using WS to comunicate to back, instead it should be an API Rest `POST` and the service should save on db and emit to clients -> look how is developed ban/unban or mute/unmute, to try this refactory
 - [] Endpoints to promote/demote to moderators
 - [x] jwt_guard should check on which token is calling, review validate with authguards
 - [] Use db scripts to create owners(team menbers), better than if looking up on code for some username (remove that conditional, and create that script to populate db, data scripts should be the latest to aply, also this scripts should be conditional in order to be able ro run serveal times)

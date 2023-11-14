@@ -10,25 +10,26 @@
         />
     </div>
     <div class="chat-list">
-        <ng-container *ngIf="filteredUsers.length ; then newChat; else notNewChat"   >
-        </ng-container>
-        <ng-template #newChat>
-            <div *ngFor="let user of filteredUsers" >
-                <app-chat-info
-                    [user]="user"
-                    (click)="loadNewChat(user)"
-                ></app-chat-info>
-            </div>
-        </ng-template>
-        <ng-template #notNewChat>
-            <div *ngFor="let user of currentUsers | keyvalue" >
-                <div [class.selected]="isCurrentChat(user.key)">
+        @if (filteredUsers.length) {
+            @for (user of filteredUsers; track user.userId) {
+                <div>
                     <app-chat-info
-                        [user]="user.value"
-                        (click)="loadChat(user.key)"
+                        [user]="user"
+                        (click)="loadNewChat(user)"
                     ></app-chat-info>
                 </div>
-            </div>
-        </ng-template>
+            } 
+        } @else {
+            @for (user of currentUsers; track user[0]) {
+                <div [class.selected]="isCurrentChat(user[0])">
+                    <app-chat-info
+                        [user]="user[1]"
+                        (click)="loadChat(user[0])"
+                    ></app-chat-info>
+                </div>
+            } @empty {
+                Empty list of chats
+            }
+        }
     </div>
 </div>

@@ -21,7 +21,6 @@
   // max-width: 400px;
   // background-color: #fff;
   grid-auto-rows: min-content; /* Altura automática basada en el contenido */
-  height: calc(100vh - 10rem ); /* Usa 100vh para ocupar todo el alto visible */
   overflow-y: auto; /* Agrega desplazamiento vertical cuando los mensajes exceden la altura del contenedor */
   margin: 0 auto;
   border: 1px solid #ccc;
@@ -51,4 +50,17 @@ input[type="text"] {
   border: 1px solid #ccc;
   border-radius: 3px;
   margin-right: 10px;
+}
+
+/* Small screens */
+@media only screen and (max-width: 600px) {
+  .chat-container {
+    height: calc(100vh - 14rem ); /* Usa 100vh para ocupar todo el alto visible */
+  }
+}
+/* Large screens */
+@media only screen and (min-width: 600px) {
+  .chat-container {
+    height: calc(100vh - 10rem ); /* Usa 100vh para ocupar todo el alto visible */
+  }
 }
