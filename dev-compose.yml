@@ -54,7 +54,6 @@ services:
     ports:
       - 8080:8080
   nginx:
-    user: "${UID}:${GID}"
     image: nginx:latest
     container_name: nginx_images
     volumes:

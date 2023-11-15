@@ -81,7 +81,6 @@ services:
       # - 9443:9443 # https
 
   nginx:
-    user: "${UID}:${GID}"
     image: nginx:latest
     volumes:
       - ./static_images/nginx/nginx.conf:/etc/nginx/nginx.conf
