@@ -55,6 +55,7 @@ export class FortyTwoStrategy extends PassportStrategy(
         firstName: profile.name.givenName,
         lastName:
           profile.name.familyName.split(' ')[0],
+        twofa: false,
       };
       userdb = await this.userService.new(
         newUser,

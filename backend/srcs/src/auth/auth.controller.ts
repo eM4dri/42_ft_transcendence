@@ -23,12 +23,12 @@ export class AuthController {
 
   @Get(process.env.FORTYTWO_CLIENT_URL_CALLBACK)
   @UseGuards(FortyTwoGuard)
-  redirect(
+  async redirect(
     @Req() req: Request,
     @GetUser() user42: User,
     @Res() res: Response,
   ) {
-    const { accessToken, refreshToken } = this.authService.login(user42);
+    const { accessToken, refreshToken } = await this.authService.login(user42);
     res.cookie(TokenConstants.USER_TOKEN, accessToken);
     res.cookie(TokenConstants.REFRESH_TOKEN, refreshToken);
     const hostName = new URL(`http://${req.headers['host']}`).hostname;
@@ -50,11 +50,11 @@ export class AuthController {
 
   @Get('refresh')
   @UseGuards(RefreshGuard)
-  async refresh(@GetUser('sub') userId): Promise<{accessToken, refreshToken}> {
+  async refresh(@GetUser('sub') userId): Promise<{ accessToken, refreshToken }> {
     const { accessToken, refreshToken } = await this.authService.refreshToken(userId);
     const response = {
       accessToken: accessToken,
-      refreshToken: refreshToken 
+      refreshToken: refreshToken
     };
     return response;
   }
