@@ -28,7 +28,7 @@ export class AuthController {
     @GetUser() user42: User,
     @Res() res: Response,
   ) {
-    const { accessToken, refreshToken } = this.authService.login(user42);
+    const { accessToken2, refresh2Token } = this.authService.login(user42);
     res.cookie(TokenConstants.USER_TOKEN, accessToken);
     res.cookie(TokenConstants.REFRESH_TOKEN, refreshToken);
     const hostName = new URL(`http://${req.headers['host']}`).hostname;
