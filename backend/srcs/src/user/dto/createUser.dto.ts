@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsString,
   IsUrl,
+  IsBoolean,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -62,4 +63,12 @@ export class CreateUserDto {
     required: false,
   })
   lastName?: string;
+
+  @IsBoolean()
+  @ApiProperty({
+    name: 'twofa',
+    type: Boolean,
+    required: false,
+  })
+  twofa: boolean;
 }

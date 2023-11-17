@@ -3,6 +3,7 @@ import { CreateUserDto } from "./dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Role } from "../auth/role.enum";
+import { TwoFA } from "../auth/auth.2fa"
 import { AvatarConstants } from "src/utils/avatar.contants";
 
 @Injectable()
@@ -51,6 +52,8 @@ export class UserService {
           firstName: dto.firstName,
           lastName: dto.lastName,
           role: User_Role,
+          twofa: dto.twofa,
+          twofa_code: "",
           stats_user: {
             create: {},
           },
@@ -61,7 +64,7 @@ export class UserService {
     } catch (error) {
       if (
         error instanceof
-          PrismaClientKnownRequestError
+        PrismaClientKnownRequestError
       ) {
         if (error.code === "P2002") {
           throw new HttpException(

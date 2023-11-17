@@ -29,6 +29,9 @@ model User {
   chatUsers ChatUser[]
   stats_user stats_user[]
 
+  twofa       Boolean @default(false)
+  twofa_code  String
+
   // Esto no son campos, son relaciones que necesita el prisma para poderse montar su visualizador.
   // De verdad, no imagiinarse esto como un campo que tiene contenido, sino como una "puerta" que te lleva
   // a la tabla BannedList.

@@ -45,6 +45,7 @@ export class FakeAuthService {
         url: `https://profile.intra.42.fr/users/${fakeUsername}`,
         firstName: fakeUsername,
         lastName: fakeUsername,
+        twofa: false,
       };
       userdb = await this.userService.new(
         newUser,

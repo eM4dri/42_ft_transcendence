@@ -12,12 +12,13 @@ import { PrismaService } from "../prisma/prisma.service";
 export class AuthService {
   constructor(private jwtService: JwtService, private prisma: PrismaService) { }
 
-  login(user: User) {
+  async login(user: User) {
     const payload: JwtPayload = {
       username: user.username,
       sub: user.userId,
       role: user.role,
     };
+
     return this.getTokens(payload);
   }
 
@@ -37,7 +38,7 @@ export class AuthService {
     }
   }
 
-  getTokens(payload: JwtPayload): { accessToken: string, refreshToken: string} {
+  getTokens(payload: JwtPayload): { accessToken: string, refreshToken: string } {
     const accessToken = this.jwtService.sign(payload);
     const refreshToken = this.jwtService.sign({
       sub: payload.sub,
@@ -45,7 +46,7 @@ export class AuthService {
       expiresIn: process.env.JWT_REFRESH_EXPIRE,
       secret: process.env.JWT_REFRESH
     });
-    return { accessToken, refreshToken};
+    return { accessToken, refreshToken };
   }
 
   async refreshToken(userId: string) {
