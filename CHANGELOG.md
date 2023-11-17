@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-11-16 - tomartin
+### Added
+- 2fa back authorization 
+- New bbdd User columns
+- New tfa controller
+- Added qrcode & speakeasy to handle tfa with a QR
+
 ## 2023-11-14 - emadriga
 ### Changed
 - Improve look & feel chat/channels
