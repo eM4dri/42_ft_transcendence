@@ -52,6 +52,18 @@ dev-logs:
 dev-exec:
 	docker-compose -f $(DEV_COMPOSE_FILE) exec $(service) $(cmd)
 
+front-up:
+	docker-compose -f $(PRO_COMPOSE_FILE) up -d front 
+
+front-down:
+	docker-compose -f $(PRO_COMPOSE_FILE) down
+
+front-logs:
+	docker-compose -f $(PRO_COMPOSE_FILE) logs -f front
+
+front-in:
+	docker-compose -f $(PRO_COMPOSE_FILE) exec front sh
+
 prune: down dev-down
 	docker system prune -af
 	docker volume prune -f
@@ -75,6 +87,10 @@ help:
 	@echo "make dev-list-services  - Lista los servicios definidos en el archivo docker-compose.yml."
 	@echo "make help           - Muestra este mensaje de ayuda (por defecto)."
 	@echo "make prune 				- Hace prune"
+	@echo "--------------DEV---------------------------"
+	@echo "make front-up 				- Levanta front"
+	@echo "make front-down 			- Detiene front"
+	@echo "make front-logs 			- Muestra los logs del servicio front"
 	@echo "--------------OTHERS---------------------------"
 	@echo "make generate_users num=<int> 				- Inserta n users"
 	@echo "generate_front_enviroment 						- Genera el env para el frontend"
@@ -83,5 +99,5 @@ generate_front_enviroment:
 	bash generate-environment.sh
 
 .PHONY: up down logs exec list-services dev-up dev-down dev-logs dev-exec dev-list-services \
-				help gen_front_env generate_users
+				help gen_front_env generate_users front-up front-down front-logs front-in
 
