@@ -56,7 +56,7 @@ front-up:
 	docker-compose -f $(PRO_COMPOSE_FILE) up -d front 
 
 front-down:
-	docker-compose -f $(PRO_COMPOSE_FILE) down
+	docker-compose -f $(PRO_COMPOSE_FILE) stop front
 
 front-logs:
 	docker-compose -f $(PRO_COMPOSE_FILE) logs -f front
