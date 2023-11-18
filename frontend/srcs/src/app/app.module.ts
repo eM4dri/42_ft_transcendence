@@ -18,6 +18,8 @@ import { DateMutations } from './utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TagModule } from 'primeng/tag';
 import { SplitButtonModule } from 'primeng/splitbutton';
+// app.module.ts
+
 
 const config: SocketIoConfig = { url: environment.apiUrl };
 
@@ -26,7 +28,7 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     AppComponent,
     HomeComponent,
     GameComponent,
-    HistoryComponent,
+    // HistoryComponent,
     ChatComponent,
     ProfileComponent,
     ChatSidebarComponent,
