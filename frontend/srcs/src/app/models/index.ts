@@ -5,3 +5,5 @@ export * from './chat/chat.model';
 export * from './channel/channel.model';
 export * from './user/user.model'
 export * from './core/role.model'
+export * from './game/paddle.model'
+export * from './game/game.model'

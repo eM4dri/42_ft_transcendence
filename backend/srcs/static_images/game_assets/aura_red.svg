@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="150 275 450 1350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <linearGradient id="gradient-0-0" gradientUnits="userSpaceOnUse" x1="400" y1="-175" x2="400" y2="725" gradientTransform="matrix(0, -1, 0.2222222222, 0, 188.888888888888, 1350)" xlink:href="#gradient-0"/>
+    <linearGradient id="gradient-0" bx:pinned="true">
+      <title>linesgrad</title>
+      <stop offset="0" style="stop-color: rgba(255, 51, 51, 0);"/>
+      <stop offset="0.5" style="stop-color: rgb(255, 51, 51);"/>
+      <stop offset="1" style="stop-color: rgba(255, 51, 51, 0);"/>
+    </linearGradient>
+    <linearGradient id="gradient-0-2" gradientUnits="userSpaceOnUse" x1="250" y1="500" x2="250" y2="800" gradientTransform="matrix(0, -0.66666666, 0.66666666, 0, -33.349242, 816.672172)" xlink:href="#gradient-0"/>
+    <linearGradient id="gradient-0-1" gradientUnits="userSpaceOnUse" x1="250" y1="1100" x2="250" y2="1400" gradientTransform="matrix(0, -0.66666666, 0.6666666666, 0, -434.934747, 1416.987764)" xlink:href="#gradient-0"/>
+    <radialGradient id="gradient-2-1" gradientUnits="userSpaceOnUse" cx="325" cy="1400" r="175" xlink:href="#gradient-2"/>
+    <linearGradient id="gradient-2" bx:pinned="true">
+      <title>curvegrad</title>
+      <stop offset="0" style="stop-color: rgba(255, 51, 51, 0.44);"/>
+      <stop offset="0.13" style="stop-color: rgba(255, 51, 51, 0.44);"/>
+      <stop offset="0.4286" style="stop-color: rgb(255, 51, 51);"/>
+      <stop offset="1" style="stop-color: rgba(255, 51, 51, 0);"/>
+    </linearGradient>
+    <radialGradient id="gradient-2-0" gradientUnits="userSpaceOnUse" cx="325" cy="500" r="175" xlink:href="#gradient-2"/>
+    <radialGradient id="gradient-1-0" gradientUnits="userSpaceOnUse" cx="250" cy="1100" r="100" gradientTransform="matrix(1, 0, 0, 1, 150, 0)" xlink:href="#gradient-1"/>
+    <linearGradient id="gradient-1" bx:pinned="true">
+      <title>linestipgrad</title>
+      <stop offset="0" style="stop-color: rgb(255, 51, 51);"/>
+      <stop offset="1" style="stop-color: rgba(255, 51, 51, 0);"/>
+    </linearGradient>
+    <radialGradient gradientUnits="userSpaceOnUse" cx="250" cy="800" r="100" id="gradient-1-1" gradientTransform="matrix(1, 0, 0, 1, 150, 0)" xlink:href="#gradient-1"/>
+  </defs>
+  <rect x="150" y="500" width="200" height="900" style="fill: url('#gradient-0-0'); stroke-width: 0px; stroke: rgba(0, 0, 0, 0);" transform="matrix(1, 0, 0, 1, 1.1368683772161603e-13, 0)"/>
+  <rect x="300" y="500" width="200" height="300" style="fill: url('#gradient-0-2'); stroke-width: 0px; stroke: rgba(0, 0, 0, 0);" transform="matrix(1, 0, 0, 1, 1.1368683772161603e-13, 0)"/>
+  <rect x="300" y="1100" width="200" height="300" style="fill: url('#gradient-0-1'); stroke-width: 0px; stroke: rgba(0, 0, 0, 0);" transform="matrix(1, 0, 0, 1, 1.1368683772161603e-13, 0)"/>
+  <path d="M 500 1400 Q 500 1446.89 476.555 1487.5 Q 453.11 1528.107 412.5 1551.553 Q 371.894 1575 325 1575 Q 278.112 1575 237.503 1551.555 Q 196.893 1528.11 173.447 1487.5 Q 150 1446.892 150 1400" style="fill: url('#gradient-2-1'); stroke-width: 0px; stroke: rgba(0, 0, 0, 0);" transform="matrix(1, 0, 0, 1, 1.1368683772161603e-13, 0)"/>
+  <path d="M 150 500 Q 150 453.109 173.441 412.5 Q 196.886 371.89 237.5 348.444 Q 278.104 325 325 325 Q 371.888 325 412.5 348.443 Q 453.107 371.889 476.553 412.5 Q 500 453.108 500 500" style="fill: url('#gradient-2-0'); stroke-width: 0px; stroke: rgba(0, 0, 0, 0);" transform="matrix(1, 0, 0, 1, 1.1368683772161603e-13, 0)"/>
+  <path d="M 300 1100 C 300 1082.137 304.466 1065.471 313.397 1050 C 322.328 1034.531 334.529 1022.33 350 1013.398 C 365.469 1004.466 382.135 1000 400 1000 C 417.862 1000 434.529 1004.466 450 1013.397 C 465.469 1022.328 477.67 1034.529 486.602 1050 C 495.534 1065.47 500 1082.137 500 1100" style="fill: url('#gradient-1-0'); stroke-width: 0px; stroke: rgba(0, 0, 0, 0);" transform="matrix(1, 0, 0, 1, 1.1368683772161603e-13, 0)"/>
+  <path d="M 500 800 C 500 817.863 495.531 834.53 486.604 850 C 477.673 865.471 465.47 877.672 450 886.604 C 434.53 895.535 417.863 900 400 900 C 382.135 900 365.468 895.535 350 886.606 C 334.527 877.674 322.327 865.472 313.394 850 C 304.461 834.531 300 817.864 300 800" style="fill: url('#gradient-1-1'); stroke-width: 0px; stroke: rgba(0, 0, 0, 0);" transform="matrix(1, 0, 0, 1, 1.1368683772161603e-13, 0)"/>
+</svg>

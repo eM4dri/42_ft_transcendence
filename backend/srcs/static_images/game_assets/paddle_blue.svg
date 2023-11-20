@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="50 275 450 1350" xmlns="http://www.w3.org/2000/svg">
+  <path style="fill: rgba(216, 216, 216, 0); fill-opacity: 0; stroke-width: 20px; stroke-linecap: round; stroke: rgb(221, 221, 255);" d="M 250 1100 L 250 1400 A 75 75 0 0 0 400 1400 L 400 500 C 400 442.265 337.5 406.181 287.5 435.048 C 264.295 448.446 250 473.205 250 500 L 250 800"/>
+</svg>

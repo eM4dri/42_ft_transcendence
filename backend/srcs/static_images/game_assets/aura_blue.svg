@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="50 275 450 1350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <linearGradient id="gradient-0-0" gradientUnits="userSpaceOnUse" x1="400" y1="500" x2="400" y2="1400" gradientTransform="matrix(0, -1, 0.2222222222, 0, 188.888888888888, 1350)" xlink:href="#gradient-0"/>
+    <linearGradient id="gradient-0" bx:pinned="true">
+      <title>linesgrad</title>
+      <stop offset="0" style="stop-color: rgba(51, 51, 255, 0);"/>
+      <stop offset="0.5" style="stop-color: rgb(51, 51, 255);"/>
+      <stop offset="1" style="stop-color: rgba(51, 51, 255, 0);"/>
+    </linearGradient>
+    <linearGradient id="gradient-0-2" gradientUnits="userSpaceOnUse" x1="250" y1="500" x2="250" y2="800" gradientTransform="matrix(0, -1, 0.6666666666666, 0, -183.33333333333333, 900)" xlink:href="#gradient-0"/>
+    <linearGradient id="gradient-0-1" gradientUnits="userSpaceOnUse" x1="250" y1="1100" x2="250" y2="1400" gradientTransform="matrix(0, -1, 0.666666666666666, 0, -583.33333333333333, 1500)" xlink:href="#gradient-0"/>
+    <radialGradient id="gradient-2-1" gradientUnits="userSpaceOnUse" cx="325" cy="1400" r="175" xlink:href="#gradient-2"/>
+    <linearGradient id="gradient-2" bx:pinned="true">
+      <title>curvegrad</title>
+      <stop offset="0" style="stop-color: rgba(51, 51, 255, 0.44);"/>
+      <stop offset="0.13" style="stop-color: rgba(51, 51, 255, 0.44);"/>
+      <stop offset="0.42857142857" style="stop-color: rgb(51, 51, 255);"/>
+      <stop offset="1" style="stop-color: rgba(51, 51, 255, 0);"/>
+    </linearGradient>
+    <radialGradient id="gradient-2-0" gradientUnits="userSpaceOnUse" cx="325" cy="500" r="175" xlink:href="#gradient-2"/>
+    <radialGradient id="gradient-1-0" gradientUnits="userSpaceOnUse" cx="250" cy="1100" r="100" xlink:href="#gradient-1"/>
+    <linearGradient id="gradient-1" bx:pinned="true">
+      <title>linestipgrad</title>
+      <stop offset="0" style="stop-color: rgb(51, 51, 255);"/>
+      <stop offset="1" style="stop-color: rgba(51, 51, 255, 0);"/>
+    </linearGradient>
+    <radialGradient gradientUnits="userSpaceOnUse" cx="250" cy="800" r="100" id="gradient-1-1" xlink:href="#gradient-1"/>
+  </defs>
+  <rect x="300" y="500" width="200" height="900" style="fill: url('#gradient-0-0'); stroke: rgba(0, 0, 0, 0); stroke-width: 0px;"/>
+  <rect x="150" y="500" width="200" height="300" style="fill: url('#gradient-0-2'); stroke: rgba(0, 0, 0, 0); stroke-width: 0px;"/>
+  <rect x="150" y="1100" width="200" height="300" style="fill: url('#gradient-0-1'); stroke: rgba(0, 0, 0, 0); stroke-width: 0px;"/>
+  <path d="M 500 1400 Q 500 1446.89 476.555 1487.5 Q 453.11 1528.107 412.5 1551.553 Q 371.894 1575 325 1575 Q 278.112 1575 237.503 1551.555 Q 196.893 1528.11 173.447 1487.5 Q 150 1446.892 150 1400" style="fill: url('#gradient-2-1'); stroke: rgba(0, 0, 0, 0); stroke-width: 0px;" bx:shape="spiral 325.003 1400 175.003 175.003 90 270 1@65ded29e"/>
+  <path d="M 150 500 Q 150 453.109 173.441 412.5 Q 196.886 371.89 237.5 348.444 Q 278.104 325 324.996 324.998 Q 371.888 325 412.5 348.443 Q 453.107 371.889 476.553 412.5 Q 500 453.108 500 500" style="fill: url('#gradient-2-0'); stroke: rgba(0, 0, 0, 0); stroke-width: 0px;" bx:shape="spiral 324.996 500 175.004 175.004 270 450 1@add2b1af"/>
+  <path style="fill: rgba(216, 216, 216, 0); stroke: rgba(0, 0, 0, 0); stroke-width: 0px;" d="M 250 1100 L 250 1400 A 75 75 0 0 0 400 1400 L 400 500 C 400 473.205 385.705 448.446 362.5 435.048 C 312.5 406.181 250 442.265 250 500 L 250 800"/>
+  <path d="M 150 1100 Q 150 1073.206 163.397 1050 Q 176.794 1026.796 200 1013.398 Q 223.203 1000 250 1000 Q 276.793 1000 300 1013.397 Q 323.204 1026.794 336.602 1050 Q 350 1073.205 350 1100" style="fill: url('#gradient-1-0'); stroke: rgba(0, 0, 0, 0); stroke-width: 0px;" bx:shape="spiral 249.998 1100 100.002 100.002 270 450 1@5987fa54"/>
+  <path d="M 350.005 800 Q 350 826.795 336.609 850 Q 323.212 873.206 300 886.604 Q 276.802 900 250 900 Q 223.21 900 200 886.606 Q 176.798 873.208 163.399 850 Q 150 826.796 150 800" style="fill: url('#gradient-1-1'); stroke: rgba(0, 0, 0, 0);" bx:shape="spiral 250.006 800 100.006 100.006 90 270 1@f2de260f"/>
+</svg>

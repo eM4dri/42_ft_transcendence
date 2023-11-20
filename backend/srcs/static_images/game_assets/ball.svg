@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <radialGradient id="gradient-1-0" gradientUnits="userSpaceOnUse" cx="250" cy="250" r="250" xlink:href="#gradient-1"/>
+    <linearGradient id="gradient-1" bx:pinned="true">
+      <stop offset="0" style="stop-color: rgba(240, 224, 0, 0);"/>
+      <stop offset="0.55" style="stop-color: rgba(240, 224, 0, 0.8);"/>
+      <stop offset="0.6" style="stop-color: rgba(240, 224, 0, 0.8);"/>
+      <stop offset="0.65" style="stop-color: rgba(240, 224, 0, 0.8);"/>
+      <stop offset="1" style="stop-color: rgba(240, 224, 0, 0);"/>
+    </linearGradient>
+  </defs>
+  <ellipse style="stroke-width: 0px; stroke: rgba(0, 0, 0, 0); fill: url('#gradient-1-0');" cx="250" cy="250" rx="250" ry="250"/>
+  <path d="M 310.995 100.009 C 335.467 111.398 355.576 128.418 371.321 151.072 C 387.067 173.724 396.34 198.974 399.14 226.822 C 401.941 254.668 397.894 281.383 386.998 306.963 C 376.103 332.544 359.819 353.563 338.147 370.022 C 316.475 386.482 292.319 396.175 265.677 399.102 C 239.036 402.029 213.479 397.798 189.007 386.409 C 164.535 375.02 144.425 358 128.679 335.346 C 112.933 312.691 103.659 287.44 100.859 259.593 C 98.059 231.744 102.106 205.029 113.001 179.447 C 123.897 153.866 140.182 132.845 161.854 116.386 C 170.356 109.93 179.406 104.468 189.005 100" style="fill: rgba(255, 255, 255, 0); stroke-width: 80px; stroke-linecap: round; stroke: rgb(255, 255, 238); opacity: 0.8;"/>
+</svg>

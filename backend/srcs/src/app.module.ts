@@ -15,6 +15,7 @@ import { HistoricGamesModule } from './historic_games/historic_games.module';
 import { BlockModule } from './block/block.module';
 import { ProfileImagesModule } from './profile_images/profile_images.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { GameModule } from './game/game.module';
 import { TfaModule } from './tfa/tfa.module';
 
 @Module({
@@ -33,6 +34,7 @@ import { TfaModule } from './tfa/tfa.module';
     BlockModule,
     ProfileImagesModule,
     EventEmitterModule.forRoot(),
+    GameModule,
     TfaModule
   ],
   controllers: [AppController],

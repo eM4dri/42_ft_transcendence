@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-11-18 - jvacaris
+### Added
+- Games can now be played normally from the page, except for multiplayer, including current score and assets.
+
 ## 2023-11-18 - tomartin
 ### Added
 - install and POC Bootstrap
@@ -17,6 +21,14 @@ and this project adheres to
 - New tfa controller
 - Added qrcode & speakeasy to handle tfa with a QR
 
+## 2023-11-15 - jvacaris
+### Added
+- Prepared the images of the frontend for the game. They are visible but have no purpose yet.
+- A path in the cgi for the retrieval of the game assets.
+
+### Fixed
+- Unmessed up the key logging for the game that I broke yesterday.
+
 ## 2023-11-14 - emadriga
 ### Changed
 - Improve look & feel chat/channels
@@ -26,6 +38,11 @@ and this project adheres to
 ### Changed
 - Updated to Angular 17
 - Using `npm ci --legacy-peer-deps` following [Stop using “npm install” in your CI/CD pipeline](https://blog.bitsrc.io/stop-using-npm-install-in-your-ci-cd-pipeline-ba0378bbebfb) 
+
+## 2023-11-13 - jvacaris
+### Added
+- Client can now send keypress updates to the server (unidentified sender for now).
+- Rudimentary game simulation in the server's console. Client is only sending info for now. Red paddle's static.
 
 ## 2023-11-12 - emadriga
 ### Added

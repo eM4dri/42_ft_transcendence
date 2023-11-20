@@ -8,7 +8,7 @@ The best way to install Node.js on 42 mac pcs is through  Node Version Manager .
 
 # Back
 ## Develop on backend
-0. Having `Node.js`[Above](#Instaling Node.js on 42) and `yarn` [Homebrew](https://brew.sh/) instaled is required
+0. Having `Node.js`[Above](#Instaling Node.js on 42) and `yarn` [Homebrew](https://brew.sh/) installed is required
 1. Starting project directory `cd backend/srcs`
 2. Run nest installation to create necesary binaries to work `yarn install`
 3. Set up enviroment, template available on ../backend/template.env, use `cp ../template.env .env` and fill in .env file
