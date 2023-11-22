@@ -104,7 +104,7 @@ export class ChannelAdminService {
                 where: { channelUserId: dto.channelUserId, },
                 data: { mutedUntill: dto.mutedUntill }
             });
-            this.eventEmitter.emit('udate_channel_user', channelUser);
+            this.eventEmitter.emit('update_channel_user', channelUser);
             return channelUser;
         } catch (error) {
             throw (error);
@@ -120,7 +120,7 @@ export class ChannelAdminService {
                 where: { channelUserId: channelUserId, },
                 data: { mutedUntill: null }
             });
-            this.eventEmitter.emit('udate_channel_user', channelUser);
+            this.eventEmitter.emit('update_channel_user', channelUser);
             return channelUser;
         } catch (error) {
             throw (error);

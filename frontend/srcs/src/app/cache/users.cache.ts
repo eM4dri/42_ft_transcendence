@@ -27,11 +27,15 @@ export class UsersCache {
 
     this.userService.usersToCache().subscribe(users => {
       users.forEach(user =>{
-        if (this._cachedUsers.has(user.userId) === false) {
-          this._cachedUsers.set(user.userId, user);
-        }
+        this._setCachedUser(user);
       });
     });
+  }
+
+  public  _setCachedUser(user: User) {
+    if (this._cachedUsers.has(user.userId) === false) {
+      this._cachedUsers.set(user.userId, user);
+    }
   }
 
   getConnectedUsers(){

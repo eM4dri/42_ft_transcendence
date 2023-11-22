@@ -9,10 +9,14 @@ import {
   UpdateChatMessageDto,
 } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class ChatService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private eventEmitter: EventEmitter2
+    ) {}
 
   async getChatUsers(chatId: string){
     return await this.prisma.chatUser.findMany({
@@ -142,6 +146,7 @@ export class ChatService {
     dto: CreateChatMessageDto,
   ) {
     try {
+      let isNewChat:Boolean = false;
       let chatId = dto.chatId
         ? dto.chatId
         : await this.getCurrentChatId(
@@ -155,27 +160,27 @@ export class ChatService {
             dto.listenerId,
           )
         ).chatId;
+        isNewChat = true;
       }
       const currentChat =
-        await this.prisma.chatUser.findFirst({
-          where: {
-            AND: {
-              userId: talker,
-              chatId: await chatId,
-            },
-          },
-        });
+      await this.prisma.chatUser.findMany({
+        where: {
+            chatId: await chatId,
+        },
+      });
       const msg =
         await this.prisma.chatUserMessage.create({
           data: {
-            chatUserId: currentChat.chatUserId,
+            chatUserId: currentChat.find(x=>x.userId===talker).chatUserId,
             message: dto.message,
           },
         });
-      return {
-        chatId: chatId,
-        message: msg,
-      }
+        this.eventEmitter.emit(isNewChat? 'newChat': 'updateChat', chatId, msg);
+        return {
+          chatId: chatId,
+          message: msg,
+          chatUserIdListener: currentChat.find(x=>x.userId===dto.listenerId)? currentChat.find(x=>x.userId===dto.listenerId).chatUserId : undefined
+        }
     } catch (error) {
       //handle errors if needed
       throw error;

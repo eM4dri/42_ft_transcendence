@@ -146,7 +146,7 @@ export class GameService {
 				{
 					if (value.bluepaddle.y - value.bluepaddle.radius <= value.ball.y + value.ball.radius && value.bluepaddle.y + value.bluepaddle.radius >= value.ball.y - value.ball.radius)
 					{
-						console.log("🔷 BOUNCE BLUE 🔷")
+						// console.log("🔷 BOUNCE BLUE 🔷")
 						value.ball.direction = 1;
 						value.ball.passedLimit = false;
 					}
@@ -159,7 +159,7 @@ export class GameService {
 				{
 					if (value.redpaddle.y - value.redpaddle.radius <= value.ball.y + value.ball.radius && value.redpaddle.y + value.redpaddle.radius >= value.ball.y - value.ball.radius)
 					{
-						console.log("♦️ BOUNCE RED ♦️")		//?		Ball touched the paddle
+						// console.log("♦️ BOUNCE RED ♦️")		//?		Ball touched the paddle
 						value.ball.direction = -1;
 						value.ball.passedLimit = false;
 					}
@@ -171,7 +171,7 @@ export class GameService {
 				else if (value.ball.x - ball_radius <= 0)	//?	Red scored on blue's side
 				{
 					//!		Send GOAL signal
-					console.log("❤️❤️❤️ GOAAAALLLL ❤️❤️❤️")
+					// console.log("❤️❤️❤️ GOAAAALLLL ❤️❤️❤️")
 					value.status = gameStatus.goalanimation;
 					value.redscore += 1;
 					value.waitEnd = current_time + 2000;
@@ -187,7 +187,7 @@ export class GameService {
 				else if (value.ball.x + ball_radius >= 200)	//?	Blue scored on red's side
 				{
 					//!		Send GOAL signal
-					console.log("💙💙💙 GOAAAALLLL 💙💙💙")
+					// console.log("💙💙💙 GOAAAALLLL 💙💙💙")
 					value.status = gameStatus.goalanimation;
 					value.bluescore += 1;
 					value.waitEnd = current_time + 2000;
@@ -211,12 +211,12 @@ export class GameService {
 			}
 			if (value.gametime <= 0)	//?		Game ended from timeout.
 			{
-				console.log("🏁 🏁 TIME'S UP: Game Ended 🏁 🏁")
+				// console.log("🏁 🏁 TIME'S UP: Game Ended 🏁 🏁")
 				value.status = gameStatus.postgame;
 			}
-			console.log("🟦", value.bluepaddle.y, "(", value.bluepaddle.direction, ")   |   🟥", value.redpaddle.y, "(", value.redpaddle.direction, ")")
-			console.log("🟠", value.ball.x, value.ball.y, value.ball.angle, value.ball.direction)
-			console.log("GAME STATUS:", value.status, " |  Time Left:", Math.round(value.gametime / 1000))
+			// console.log("🟦", value.bluepaddle.y, "(", value.bluepaddle.direction, ")   |   🟥", value.redpaddle.y, "(", value.redpaddle.direction, ")")
+			// console.log("🟠", value.ball.x, value.ball.y, value.ball.angle, value.ball.direction)
+			// console.log("GAME STATUS:", value.status, " |  Time Left:", Math.round(value.gametime / 1000))
 			server.emit('statusUpdate', value)	//?		Sending the status of the game to the clients to update their info.
 		});
 		return (allgames)

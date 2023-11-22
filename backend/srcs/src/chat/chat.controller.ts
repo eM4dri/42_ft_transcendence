@@ -78,14 +78,14 @@ export class ChatController {
       },
     },
   })
-  newMessage(
+  async newMessage(
     @GetUser('id') talker: string,
     @Body() dto: CreateChatMessageDto,
   ) {
-    return this.chatService.newChatMessage(
-      talker,
-      dto,
-    );
+    return { response: await this.chatService.newChatMessage(
+                  talker,
+                  dto,
+            )};
   }
 
   @Put('/message')

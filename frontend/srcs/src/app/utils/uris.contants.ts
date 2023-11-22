@@ -11,8 +11,8 @@ export class UriConstants {
   // public static readonly AUTH_REFRESH = basePath + '/auth/refresh';
   public static readonly USERS = apiBasePath + '/user';
   public static readonly CHAT = apiBasePath + '/chat';
-  public static readonly MESSAGES = apiBasePath + '/chat/message';
-  public static readonly CHANNELS = apiBasePath + '/channel';
+  public static readonly MESSAGE = apiBasePath + '/chat/message';
+  public static readonly CHANNEL = apiBasePath + '/channel';
   public static readonly MANAGE_CHANNELS = apiBasePath + '/channel/admin';
   public static readonly RAMDON_AVATAR = 'https://api.dicebear.com/7.x/bottts/svg?seed=';
   public static readonly USER_AVATAR_DEFAULT = staticImgBase + '/user/default.svg';

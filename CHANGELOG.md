@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## 2023-11-21 - emadriga
+### Changed
+- Chat now uses POST to save data and emits to WS
+
+### Fixed
+- Improve some strange workflows in backend
+- Fix creating new chats workflows
+
+## 2023-11-18 - emadriga
+### Added
+- new file BUGS.md to acknowledge BUGS for the team
+
+### Changed
+- Schedule WS in new chats info in order to handle in front properly
+- Updating chat workflow to use REST instead of WS 
+
 ## 2023-11-18 - jvacaris
 ### Added
 - Games can now be played normally from the page, except for multiplayer, including current score and assets.

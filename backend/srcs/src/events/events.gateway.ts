@@ -11,7 +11,6 @@ import {
 import { ChatService } from 'src/chat/chat.service';
 import { BlockService } from 'src/block/block.service';
 import { Injectable, UseGuards } from '@nestjs/common';
-import { CreateChatMessageDto } from 'src/chat/dto';
 import {  WsGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 import { AuthService } from 'src/auth/auth.service';
@@ -48,7 +47,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     async handleConnection(socket: Socket) {
         try {
             const user = await this.authService.isAuthorized(socket);
-            // this.eventsService.handleConnection(user.sub, socket.id);
             socket.broadcast.emit('user_connects', user.sub);
             this.socketsIdMap.set(user.sub, socket.id);
             this.socketsMap.set(user.sub, socket);
@@ -87,32 +85,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         this._loadUserChannel(channelId, user.sub, socket);
     }
 
-    @SubscribeMessage('send_message')
-    async listenForMessages(@GetUser() user: JwtPayload, @MessageBody() message: CreateChatMessageDto) {
-        const msg = await this.chatService.newChatMessage(
-                        user.sub,
-                        {
-                            listenerId: message.listenerId,
-                            chatId: message.chatId,
-                            message: message.message,
-                        }
-                    );
-        this._updateUsersChatId(message.chatId, msg.message);
-    }
-
-    @SubscribeMessage('send_new_message')
-    async listenForNewMessages(@GetUser() user: JwtPayload, @MessageBody() message: CreateChatMessageDto) {
-        const msg = await this.chatService.newChatMessage(
-                        user.sub,
-                        {
-                            listenerId: message.listenerId,
-                            message: message.message,
-                            chatId: undefined,
-                        }
-                    );
-        this._newChatAvailable(msg.chatId,  msg.message);
-    }
-
     @SubscribeMessage('send_channel_message')
     async listenForChannelMessages(@GetUser() user: JwtPayload, @MessageBody() message: CreateChannelMessageDto) {
         const msg = await this.channelService.newChannelMessage(
@@ -131,7 +103,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     }
 
     private async _usersConnected(userId: string,usersSocket: string) {
-        const usersId: string [] =  Array.from( this.socketsIdMap.keys() );
+        const usersId: string [] =  Array.from( this.socketsIdMap.keys() ).filter(x=>x !== userId);
         this.server.to(usersSocket).emit('users_connected', usersId);
     }
 
@@ -175,18 +147,20 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         this.server.to(`${dto.channelId}_room`).emit(`${dto.channelId}_users`, channelUser );
     }
 
+    @OnEvent('newChat')
     private async _newChatAvailable(chatId: string, message: ChatUserMessage ){
         const chats = await this.chatService.getChatUsersByChatId(chatId);
         const usersIds = Array.from(chats).map(x=>x.userId);
-        const users = Array.from(await this.userService.getUsers(usersIds)).map(x=>x.userId);
         for (let chat of chats) {
             const socket  = this.socketsIdMap.get(chat.userId);
             if (socket !== undefined ) {
-                this.server.to(socket).emit('new_chat_available', chats.filter(x=>x.userId !== chat.userId)[0]); // we are only sending one.
-                this._usersToCache(socket, users.filter(x=>x !== chat.userId));
+                this._usersToCache(socket, usersIds.filter(x=>x !== chat.userId)).then( () => {
+                    this.server.to(socket).emit('new_chat_available', chats.filter(x=>x.userId !== chat.userId)[0]); // we are only sending one.
+                }).finally( () => {
+                    this._updateUsersChatId(chatId, message)
+                });
             }
         }
-        this._updateUsersChatId(chatId, message);
     }
 
     private async _loadUserChats(userId: string) {
@@ -210,7 +184,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         socket.join(`${channelId}_room`);
     }
 
-    @OnEvent('udate_channel_user')
+    @OnEvent('update_channel_user')
     async updateChannelUser(channelUser: ChannelUser){
         const socket: string = this.socketsIdMap.get(channelUser.userId);
         this.server.to(socket).emit(`${channelUser.channelId}_myuser`, channelUser);
@@ -239,6 +213,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         this.server.to(socketId).emit(`${channelId}_messages`, channelMessages);
     }
 
+    @OnEvent('updateChat')
     private async _updateUsersChatId(chatId: string , message: ChatUserMessage ){
         const usersId: string[] = Array.from(((await this.chatService.getChatUsers(chatId)).map(x=>x.userId)));
         const messages: ChatUserMessage[] = [ message ];

@@ -28,7 +28,7 @@ export class ChannelHeaderComponent extends BaseComponent {
 
   leaveChannel() {
     const channelUserId: string = this.cachedChannels.getMyChannelUser(this.channel.channelId)!.channelUserId;
-    this.patch({ url: `${UriConstants.CHANNELS}/leave/${channelUserId}`});
+    this.patch({ url: `${UriConstants.CHANNEL}/leave/${channelUserId}`});
   }
 
 }

@@ -41,7 +41,6 @@ export class ChannelManagementUsersComponent extends BaseComponent<ChannelUsersT
         this.channelUsers.set(u.channelUserId, u);
       }
     }
-    console.log('this.channelUsers', channelUsers);
   }
 
   private _getStatus(user: ChannelUsersToAdmin) {

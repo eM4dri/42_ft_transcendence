@@ -36,7 +36,7 @@ export class ChannelManagementComponent extends BaseComponent<{},Channel> {
       const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
       this.createService({
-        url: `${UriConstants.CHANNELS}`,
+        url: `${UriConstants.CHANNEL}`,
         data: data,
         params: {
           headers

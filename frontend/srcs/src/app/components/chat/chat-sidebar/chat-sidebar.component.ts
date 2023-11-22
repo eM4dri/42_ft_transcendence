@@ -13,7 +13,6 @@ import { UriConstants } from 'src/app/utils';
 })
 export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit, OnChanges {
   @Input() chatsAvailables!: Chat[];
-  @Input() conectedUsers!: Set<string>;
 
   currentUsers: Map<string, User> = new Map<string, User>();
   users: User[] = [];
@@ -37,6 +36,7 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
         if (user !== undefined){
           this.currentUsers.set(chat.chatId, user);
         }
+        this.removeNewChat(chat.userId);
       }
     });
   }
@@ -46,10 +46,11 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
     this.chatsAvailables.forEach(chat =>{
       if (this.currentUsers.has(chat.userId) === false)
       {
-        const user: User | undefined = this.cachedUsers.getUser(chat.userId) ;
+        const user: User | undefined = this.cachedUsers.getUser(chat.userId);
         if (user !== undefined){
           this.currentUsers.set(chat.chatId, user);
         }
+        this.removeNewChat(chat.userId);
       }
     });
 
@@ -65,6 +66,9 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
                         x.userId !== this.cachedUsers.getMyUserId()
                 );
     this.filteredUsers = this.users;
+    this.users.forEach( user => {
+      this.cachedUsers._setCachedUser(user);
+    });
   }
  
 
@@ -83,16 +87,26 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
     if ( chat!==undefined ) {
       this.chatComponent.loadChat(chat);
     }
+    this.currentUsers.delete('new');
   }
   
   loadNewChat(user: User) {
-
+    if (this.chatsAvailables.find( x=> x.userId === user.userId) === undefined){
+      this.currentUsers.set('new', user);
+    }
     this.chatComponent.loadNewChat(user);
     this.filteredUsers = this.users = [];
   }
 
   isCurrentChat(chatId: string){
-    return this.chatComponent.currentChat.chatId === chatId;
+    return this.chatComponent.currentChat.chatId === chatId || chatId === 'new';
+  }
+
+  removeNewChat(userId: string){
+    const newChatUserId = this.currentUsers.get('new')?.userId;
+    if (newChatUserId === userId){
+      this.currentUsers.delete('new');
+    }
   }
 
 }

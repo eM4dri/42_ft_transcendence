@@ -19,25 +19,26 @@ export class ChatsCache {
   ){
     this.chatService.chatsAvailables().subscribe(chats => {
       chats.forEach(chat => {
-          this._chatsAvailablesMap.set(chat.chatId, chat);
-          this.chatService.chatLoaded(chat.chatId).subscribe(messages => {
-              this._setChatMessages(chat.chatId, messages);
-          });
+        this._setChat(chat);
       });
       this.updateChatsAvailablesSub();
     });
     this.chatService.newChatAvailable().subscribe(chat => {
-      if (!this._chatsAvailablesMap.has(chat.chatId)){
-          this._chatsAvailablesMap.set(chat.chatId, chat);
-          this.chatService.chatLoaded(chat.chatId).subscribe(messages => {
-              this._setChatMessages(chat.chatId, messages);
-          });
-          this.updateChatsAvailablesSub();
-      }
+      this._setChat(chat);
     });
   }
 
-  private _setChatMessages(chatId: string, messages: ChatMessages[]) {
+  public  _setChat(chat: Chat) {
+    if (!this._chatsAvailablesMap.has(chat.chatId)){
+      this._chatsAvailablesMap.set(chat.chatId, chat);
+      this.chatService.chatLoaded(chat.chatId).subscribe(messages => {
+        this._setChatMessages(chat.chatId, messages);
+      });
+      this.updateChatsAvailablesSub();
+    }
+  }
+
+  public _setChatMessages(chatId: string, messages: ChatMessages[]) {
     let currentChatMsg: ChatMessages[] = this._chatsMessages.get(chatId) || [];
     if (currentChatMsg?.length) {
         messages.forEach(msg => {
@@ -48,7 +49,7 @@ export class ChatsCache {
         this._chatsMessages.set(chatId, currentChatMsg);
     } else {
         this._chatsMessages.set(chatId, messages);
-    }
+    } 
     this.updateChatMessagesSub(chatId, this.dateMutations.toDateMap(messages));
   }
 
@@ -88,7 +89,7 @@ export class ChatsCache {
   }  
   async updateChatMessagesSub(chatId:string, chatMessages: Map<number, ChatMessages[]>) {
     this.sendChatMessagesSub(chatId, chatMessages);
-  }  
+  }
 
 }
 

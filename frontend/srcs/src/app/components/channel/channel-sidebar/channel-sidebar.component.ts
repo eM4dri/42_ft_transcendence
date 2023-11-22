@@ -41,7 +41,7 @@ export class ChannelSidebarComponent extends BaseComponent<Channel> implements O
 
   public async channelsToJoin() {
     this.channels =(await this.searchArrAsync({
-      url: `${UriConstants.CHANNELS}/availables`,
+      url: `${UriConstants.CHANNEL}/availables`,
           })).response;
     this.filteredChannels = this.channels;
   }

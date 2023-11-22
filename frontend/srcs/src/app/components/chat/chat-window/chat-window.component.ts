@@ -1,8 +1,15 @@
 import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { ChatsCache } from 'src/app/cache';
+import { ChatsCache, UsersCache } from 'src/app/cache';
 import { Chat, ChatMessages, User } from 'src/app/models';
-import { ChatService } from 'src/app/services';
-import { DateMutations } from 'src/app/utils';
+import { BaseComponent, ChatComponent } from 'src/app/modules';
+import { ApiService, ChatService } from 'src/app/services';
+import { DateMutations, UriConstants } from 'src/app/utils';
+
+export interface PostMessage  {
+  chatId: string,
+  message: ChatMessages,
+  chatUserIdListener?: string
+}
 
 @Component({
   selector: 'app-chat-window',
@@ -10,7 +17,7 @@ import { DateMutations } from 'src/app/utils';
   styleUrls: ['./chat-window.component.scss']
 })
 
-export class ChatWindowComponent implements OnInit, OnChanges, AfterViewChecked {
+export class ChatWindowComponent extends BaseComponent<{},PostMessage> implements OnInit, OnChanges, AfterViewChecked {
   @Input() user!: User;
   @Input() chat?: Chat;
   @ViewChild('chatContainer') private chatContainer!: ElementRef;
@@ -21,11 +28,15 @@ export class ChatWindowComponent implements OnInit, OnChanges, AfterViewChecked 
     if (this.chat !== undefined ) {
       this.cachedChats.getChatMessagesSub().subscribe(res=>{
         if (res.chatId === this.chat!.chatId) {
-          let messages = res.chatMessages;
-          for (let m of messages){
-            let dayMessages = this.chatMessages.get(m[0]);
+          const messages = res.chatMessages;
+          for (const m of messages){
+            const dayMessages = this.chatMessages.get(m[0]);
             if (dayMessages !== undefined){
-              this.chatMessages.set(m[0], dayMessages?.concat(m[1]));
+              for (const dm of m[1]){   // iter through subscribed messages received
+                if (dayMessages.find(x=>x.chatMessageId !== dm.chatMessageId)){ // avoid duplicates checking if I haven't got msg earlier
+                  this.chatMessages.set(m[0], dayMessages?.concat(m[1]));
+                }
+              } 
             } else {
               this.chatMessages.set(m[0], m[1]);
             }
@@ -50,15 +61,19 @@ export class ChatWindowComponent implements OnInit, OnChanges, AfterViewChecked 
   }
 
   constructor(
+    private readonly api: ApiService<{},PostMessage>,
     private readonly chatService: ChatService,
     private readonly cachedChats: ChatsCache,
-    private readonly dateMutations: DateMutations
-    ) {   }
+    private readonly dateMutations: DateMutations,
+    private readonly cachedUsers: UsersCache,
+    private readonly chatComponent: ChatComponent
+    ) { 
+      super(api);
+    }
 
   counter=0;
   inputValue: string = '';
  
-
   public toDayLocale(time: number):string {
     return this.dateMutations.toDayLocale(time);
   }
@@ -66,16 +81,39 @@ export class ChatWindowComponent implements OnInit, OnChanges, AfterViewChecked 
   public sendMessage() {
     if (this.inputValue) {
         if (this.chat !== undefined) {
-            this.chatService.sendMessage({
-                chatId: this.chat.chatId,
-                message: this.inputValue,
-                listenerId: this.chat.chatUserId,
-            });
+          this.createService({
+            url: `${UriConstants.MESSAGE}`,
+            data: { chatId: this.chat.chatId, message: this.inputValue, listenerId: this.chat.chatUserId }
+          }).subscribe({
+            next: data => {
+            //  console.log(data.response);
+            },
+            error: error => {
+              this.alertConfiguration('ERROR', error);
+              this.openAlert();
+              this.loading = false;
+            },
+          });
         } else {
-            this.chatService.sendNewMessage({
-                chatId: undefined,
-                message: this.inputValue,
-                listenerId: this.user.userId,
+            this.createService({
+              url: `${UriConstants.MESSAGE}`,
+              data: { listenerId: this.user.userId, message: this.inputValue }
+            }).subscribe({
+              next: data => {
+                const { chatId, message, chatUserIdListener }  = data.response;
+                const chat = {
+                  chatId: chatId,
+                  userId: this.user.userId,
+                  chatUserId: chatUserIdListener || 'unknown',
+                }
+                this.cachedUsers._setCachedUser(this.user);
+                this.chatComponent.loadChat(chat);
+              },
+              error: error => {
+                this.alertConfiguration('ERROR', error);
+                this.openAlert();
+                this.loading = false;
+              },
             });
         }
         this.inputValue = '';

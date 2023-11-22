@@ -13,7 +13,7 @@ export class ChatService {
   ) { }
 
   sendTyping(msg: string | false) {
-    this.mysocket.emit('typing', msg);
+    // this.mysocket.emit('typing', msg);
   }
 
   sendMessage(msg: ChatMessage | false) {
