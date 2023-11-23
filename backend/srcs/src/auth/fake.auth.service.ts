@@ -53,7 +53,9 @@ export class FakeAuthService {
   async tfaNeeded(username: string): Promise<string>{
     const userEmail: string = `${username}@mail.com`;
     const user = await this.userService.getByEmail(userEmail);
-    return user.twofa ? user.userId : undefined;
+    return user ? (
+      user.twofa? user.userId : undefined
+      ) : undefined;
   }
 
 }
