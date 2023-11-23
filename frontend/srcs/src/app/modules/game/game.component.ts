@@ -1,11 +1,16 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { MySocket } from '../../services/web-socket.service';
-import { GameService } from 'src/app/services';
+import { AuthService, GameService } from 'src/app/services';
 import { interval } from 'rxjs'
 import { take } from 'rxjs/operators';
 import { Ball, Paddle, Game } from './game.classes';
+import { UsersCache } from 'src/app/cache/users.cache'
+import { User } from 'src/app/models';
+import { CookieConstants } from 'src/app/utils';
 
 let gcomp: GameComponent;
+
+let myUserId: string;
 
 var blue_paddleauraimg = new Image();
 var blue_paddleimg = new Image();
@@ -65,8 +70,8 @@ export class GameComponent implements AfterViewInit
 	*/
 		
 
-	gameClass = new Game(100000);
-
+	gameClass = new Game();
+	
 	@ViewChild('canvasEl') canvasEl!: ElementRef;
 	@ViewChild('blue_paddle') blue_paddle!: ElementRef;
 	@ViewChild('blue_paddle_aura') blue_paddleaura!: ElementRef;
@@ -75,13 +80,19 @@ export class GameComponent implements AfterViewInit
 	@ViewChild('ball') ball!: ElementRef;
 	@ViewChild('ball_aura') ballaura!: ElementRef;
 
+	//matchmaking
 	/** Canvas 2d context */
 	private context!: CanvasRenderingContext2D;
-
+	htmlstatus = 0
 	constructor(
 		private readonly gameService: GameService,
+		private readonly auth: AuthService,
 		) { 
-			
+			myUserId = this.auth.readFromCookie(CookieConstants.USER_TOKEN).sub
+			console.log("~~ YOUR USER ~~")
+			console.log(myUserId)
+			console.log("~~ ~~~~ ~~~~ ~~")
+
 			gcomp = this;
 			this.gameService.listeningToHelloSignal().subscribe(paddle => {
 				console.log('paddle is', paddle);
@@ -92,40 +103,43 @@ export class GameComponent implements AfterViewInit
 			});
 			
 			this.gameService.listeningToStatusUpdate().subscribe(game => {
+				if (game.status == 6)		//!		Not working.  [TODO]: Does the back emit a last Game with the status updated?? 
+					this.htmlstatus = 3;
+				else
+					this.htmlstatus = 2;
 				this.gameClass = game;
 				this.drawComponents();
 			});
 		}
-
 	ngAfterViewInit()
 	{
+		
 		const aux = (
 			this.canvasEl.nativeElement as HTMLCanvasElement
 		).getContext('2d');
-
 		if (aux)
 			this.context = aux;
+			this.startPeriodicExecution();
+		}
 		
-		var thegame = new Game(100000)
-//		this.drawBluePaddle();
-//		this.drawRedPaddle();
-//		this.drawBall();
-		this.startPeriodicExecution();
-	}
-/*
-	onResize()
-	{
-		const canvasElement = this.canvasEl.nativeElement;
-		const computedStyles = getComputedStyle(canvasElement);
-		const computedWidth = computedStyles.width;
-		const computedHeight = computedStyles.height;
-		console.log(computedWidth, computedHeight)
-	//	canvasElement.height = (+computedWidth / 2).toString();
-	}*/
+		sendKeypress(msg: number) {
+			this.gameService.sendKeyPress(msg);
+			
+		}
 
-	sendKeypress(msg: number) {
-		this.gameService.sendKeyPress(msg);
-		
+
+	playbutton() {
+		this.htmlstatus = 1;
+		this.gameService.playbutton();
+	}
+	
+	cancelmatchmaking() {
+		this.htmlstatus = 0;
+		this.gameService.cancelmatchmaking();
+	}
+
+	gameover() {
+
 	}
 
 	/**
@@ -141,17 +155,24 @@ export class GameComponent implements AfterViewInit
 		this.context.drawImage(backgroundimg, 0, 0, 2000, 1000);
 
 		this.context.font = "600px monospace";
-		// let score: string = this.gameClass.bluescore.toString().concat(" - ").concat(this.gameClass.redscore.toString())
-		// this.context.fillStyle = `rgb(255,255,0, 0.5)`
-		// this.context.fillText(score, 910, 60);
-
 
 		this.context.fillStyle = `rgb(50, 50, 255, 0.2)`
 		this.context.fillText(this.gameClass.bluescore.toString(), 200, 700);
-
+		
 		this.context.fillStyle = `rgb(255, 50, 50, 0.2)`
 		this.context.fillText(this.gameClass.redscore.toString(), 1200, 700);
+		
+		this.context.font = "100px monospace";
 
+		this.context.fillStyle = `rgb(255, 255, 255, 1)`
+		// if (this.gameClass.gametime < 10000)
+		// 	this.context.fillText(((this.gameClass.gametime / 1000).toFixed(1)).toString(), 910, 70);
+		// else
+		// 	this.context.fillText(((this.gameClass.gametime / 1000).toFixed(0)).toString(), 940, 70);
+		if (this.gameClass.gametime > 0)
+			this.context.fillText(((this.gameClass.gametime / 1000).toFixed(this.gameClass.gametime <= 9950 ? 1 : 0)).toString(), this.gameClass.gametime < 99500 && this.gameClass.gametime > 9950 ? 940 : 910, 70);
+		else
+			this.context.fillText("0", 970, 70);
 		//	Auras
 		this.context.drawImage(blue_paddleauraimg, 0, this.gameClass.bluepaddle.y * 10 - 100, 66.67, 200)
 		this.context.drawImage(red_paddleauraimg, 1933.33, this.gameClass.redpaddle.y * 10 - 100, 66.67, 200)

@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Server } from 'http'
+//import { Server } from 'http'
 import { Historic_GameDto } from '../historic_games/dto';
 import { HistoricGamesController } from '../historic_games/historic_games.controller'
-import { historical_games } from '@prisma/client';
+import { HistoricGamesService } from '../historic_games/historic_games.service'
+import { PrismaService } from "../prisma/prisma.service";
+import { Server, Socket } from 'socket.io';
+import { WsResponse, WebSocketServer } from '@nestjs/websockets';
+// import { historical_games } from '@prisma/client';
 
 
 var ball_radius: number = 5;
@@ -30,7 +34,7 @@ export class Ball
 	y: number = 50;			//	↑ 0  |  100 ↓
 	speed: number = 1;		
 	angle: number = 60;		// -90 ↑  |  0 ⭤  |  90 ↓ (0's direction gets decided by the parameter below. Don't let the angle be >= 90 || <= -90)
-	direction: number = 1;	//  -1 ←  |  1 →
+	direction: number = -1;	//  -1 ←  |  1 →
 	radius: number = 5;		// 5% of the field.
 	passedLimit: boolean = false;
 }
@@ -45,15 +49,21 @@ export class Paddle
 export class Game
 {
 	id: number;
+	blueid: string;
+	redid: string;
+	room: string;
 	ball: Ball;
 	redpaddle: Paddle;
 	redscore: number = 0;
 	bluepaddle: Paddle;
 	bluescore: number = 0;
-	gametime: number = 12000;	// Time in ms
-	constructor(newid: number)
+	gametime: number = 120000;	// Time in ms
+	constructor(newid: number, _blueid: string, _redid: string, _room: string)
 	{
 		this.id = newid;
+		this.blueid = _blueid;
+		this.redid = _redid;
+		this.room = _room;
 		this.redpaddle = new Paddle;
 		this.bluepaddle = new Paddle;
 		this.ball = new Ball;
@@ -63,31 +73,33 @@ export class Game
 	blueserve: boolean = false; //?		true: blue's serving  |  false: red's serving
 }
 
-var allgames = new Map<number, Game>();
-
-//!		Start new match event
-{
-	let newuid = Math.round(/*Math.random()*/1 * 100000);
-	allgames.set(newuid, new Game(newuid))
-}
-
 @Injectable()
 export class GameService {
-	
+	allgames = new Map<number, Game>();
+	constructor(private readonly historicGamesService: HistoricGamesService){
+		// this.allgames.set(new, new Game(newuid))
+	}
+
+	public	createMatch(blueid: string, redid: string, room: string)
+	{
+		let newuid = Math.round(Math.random() * 100000);
+		this.allgames.set(newuid, new Game(newuid, blueid, redid, room))
+	}
+
 	public  mainLoop(server: Server): Map<number, Game>
 	{
 		let current_time: number = Date.now();
-		allgames.forEach((value: Game, key: number) =>
+		this.allgames.forEach((value: Game, key: number) =>
 		{
 			if (value.waitEnd >= current_time)		//?		Waiting for something. Wait hasn't ended yet.
 			{
-				if (value.status != 0 && value.status != 1 && value.status != 4)
+				if (value.status != gameStatus.none && value.status != gameStatus.pregame && value.status != gameStatus.postgame)
 				{
 					if (value.bluepaddle.y + value.bluepaddle.direction >= paddle_radius && value.bluepaddle.y + value.bluepaddle.direction <= 100 - paddle_radius)
 						value.bluepaddle.y += value.bluepaddle.direction;
 					if (value.redpaddle.y + value.redpaddle.direction >= paddle_radius && value.redpaddle.y + value.redpaddle.direction <= 100 - paddle_radius)
 						value.redpaddle.y += value.redpaddle.direction;
-					server.emit('statusUpdate', value)
+					server.to(value.room).emit('statusUpdate', value)
 				}
 				return ;
 			}
@@ -111,25 +123,26 @@ export class GameService {
 				else if (value.status == gameStatus.postgame)	//?		Game ended.
 				{
 					value.status = gameStatus.gameout;
-					let historicClass: HistoricGamesController;
+					// const historicService: HistoricGamesService = new HistoricGamesService(new PrismaService);
 
 					const newHistoricGame: Historic_GameDto = {
-						localId: "7ccbceb0-5ab7-48bf-b766-01437e4a9aac",
-						visitorId: "c7392593-c0b5-4e6c-9edd-44887282d8b5",
+						localId: value.blueid,
+						visitorId: value.redid,
 						localGoals: value.bluescore,
 						visitorGoals: value.redscore,
 						winLocal: value.bluescore > value.redscore,
 						winVisitor: value.bluescore < value.redscore,
 						draw: value.bluescore == value.redscore,
-						pointsLocal: 50 * value.bluescore > value.redscore ? 1 : 0 + 20 * value.bluescore == value.redscore ? 1 : 0 + value.bluescore,
-						pointsVisitor: 50 * value.redscore > value.bluescore ? 1 : 0 + 20 * value.redscore == value.bluescore ? 1 : 0 + value.bluescore
+						pointsLocal: 50 * (value.bluescore > value.redscore ? 1 : 0) + 20 * (value.bluescore == value.redscore ? 1 : 0) + value.bluescore,
+						pointsVisitor: 50 * (value.redscore > value.bluescore ? 1 : 0) + 20 * (value.redscore == value.bluescore ? 1 : 0) + value.redscore
 					}
 
-				//! vvv  Not working for now  vvv
-//					historicClass.post_historic_game(newHistoricGame)
-				//! ^^^                       ^^^
+				this.historicGamesService.post_historic(newHistoricGame);
+
 					//?		see POST /historic-games in localhost:3000
 					//?		backend/srcs/src/historic_games/historic_games.controller.ts -> L74
+					this.allgames.delete(key);
+					return;
 				}
 			}
 			if (value.status == gameStatus.game)	//?		Ongoing game
@@ -149,6 +162,7 @@ export class GameService {
 						// console.log("🔷 BOUNCE BLUE 🔷")
 						value.ball.direction = 1;
 						value.ball.passedLimit = false;
+						value.ball.angle = 50 * ((value.ball.y - value.bluepaddle.y) / (value.bluepaddle.radius))
 					}
 					else
 					{
@@ -162,6 +176,7 @@ export class GameService {
 						// console.log("♦️ BOUNCE RED ♦️")		//?		Ball touched the paddle
 						value.ball.direction = -1;
 						value.ball.passedLimit = false;
+						value.ball.angle = 50 * ((value.ball.y - value.redpaddle.y) / (value.redpaddle.radius))
 					}
 					else		//?		The ball didn't touch the paddle so scoring is now unavoidable.
 					{
@@ -211,14 +226,26 @@ export class GameService {
 			}
 			if (value.gametime <= 0)	//?		Game ended from timeout.
 			{
-				// console.log("🏁 🏁 TIME'S UP: Game Ended 🏁 🏁")
+				// console.log("🏁 🏁 TIME'S UP: Game Ended 🏁 🏁");
 				value.status = gameStatus.postgame;
 			}
 			// console.log("🟦", value.bluepaddle.y, "(", value.bluepaddle.direction, ")   |   🟥", value.redpaddle.y, "(", value.redpaddle.direction, ")")
 			// console.log("🟠", value.ball.x, value.ball.y, value.ball.angle, value.ball.direction)
 			// console.log("GAME STATUS:", value.status, " |  Time Left:", Math.round(value.gametime / 1000))
-			server.emit('statusUpdate', value)	//?		Sending the status of the game to the clients to update their info.
+////			if (value.status != gameStatus.gameout)
+			server.to(value.room).emit('statusUpdate', value)	//?		Sending the status of the game to the clients to update their info.
 		});
-		return (allgames)
+		return (this.allgames)
 	}
 }
+
+// /goinfre/jvacaris/TRANSCENDENCE/backend/srcs/src/game/game.service.ts:80
+//     allgames.forEach((value: Game, key: number) =>
+//            ^
+// TypeError: Cannot read properties of undefined (reading 'post_historic_game')
+//     at /goinfre/jvacaris/TRANSCENDENCE/backend/srcs/src/game/game.service.ts:129:20
+//     at Map.forEach (<anonymous>)
+//     at GameService.mainLoop (/goinfre/jvacaris/TRANSCENDENCE/backend/srcs/src/game/game.service.ts:80:12)
+//     at Timeout._onTimeout (/goinfre/jvacaris/TRANSCENDENCE/backend/srcs/src/game/game.gateway.ts:38:37)
+//     at listOnTimeout (node:internal/timers:573:17)
+//     at processTimers (node:internal/timers:514:7)

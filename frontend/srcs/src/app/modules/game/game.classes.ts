@@ -7,6 +7,7 @@ enum gameStatus
 	goalanimation,	//*	3
 	postgame,		//*	4
 	disconnect_hold,//*	5
+	gameout,		//*	6
 	game = 42		//*	42
 }
 
@@ -16,7 +17,7 @@ export class Ball
 	y: number = 50;			//	↑ 0  |  100 ↓
 	speed: number = 1;		
 	angle: number = 60;		// -90 ↑  |  0 ⭤  |  90 ↓ (0's direction gets decided by the parameter below. Don't let the angle be >= 90 || <= -90)
-	direction: number = 1;	//  -1 ←  |  1 →
+	direction: number = -1;	//  -1 ←  |  1 →
 	radius: number = 5;		// 5% of the field.
 	passedLimit: boolean = false;
 }
@@ -36,10 +37,10 @@ export class Game
 	redscore: number = 0;
 	bluepaddle: Paddle;
 	bluescore: number = 0;
-	gametime: number = 12000;	// Time in ms
-	constructor(newid: number)
+	gametime: number = 120000;	// Time in ms
+	constructor()
 	{
-		this.id = newid;
+		this.id = 0;
 		this.redpaddle = new Paddle;
 		this.bluepaddle = new Paddle;
 		this.ball = new Ball;

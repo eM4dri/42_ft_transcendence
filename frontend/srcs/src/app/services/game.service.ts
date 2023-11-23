@@ -17,6 +17,14 @@ export class GameService {
     this.mysocket.emit('keypressed', msg);
   }
 
+  playbutton() {
+    this.mysocket.emit('matchmaking')
+  }
+
+  cancelmatchmaking() {
+    this.mysocket.emit('cancelmatchmaking')
+  }
+
   listeningToHelloSignal() {
     return this.mysocket.fromEvent<Paddle>('HelloSignal').pipe(map((data) => data));
   }

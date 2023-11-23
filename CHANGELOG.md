@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-11-22 - jvacaris
+### Added
+- Game ends well, posts the result to our API and allows clients to start another match.
+- Multiple games supported.
+
+### To do
+- Check if a player is already in a match before accessing the matchmaking.
+
 
 ## 2023-11-21 - emadriga
 ### Changed
@@ -14,6 +22,13 @@ and this project adheres to
 ### Fixed
 - Improve some strange workflows in backend
 - Fix creating new chats workflows
+
+## 2023-11-21 - jvacaris
+### Added
+- Basic matchmaking system. The system supports the creation of multiple games, but the game itself does not.
+- Games can now be played by two people.
+
+Started the room system to allow multiple games.
 
 ## 2023-11-18 - emadriga
 ### Added
