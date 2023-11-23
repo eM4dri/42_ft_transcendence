@@ -3,7 +3,6 @@ import { CreateUserDto } from "./dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Role } from "../auth/role.enum";
-import { TwoFA } from "../auth/auth.2fa"
 import { AvatarConstants } from "src/utils/avatar.contants";
 import { PatchUserDto } from "./dto/patchUser.dto";
 
@@ -12,17 +11,17 @@ import { PatchUserDto } from "./dto/patchUser.dto";
 export class UserService {
   constructor(private prisma: PrismaService) { }
 
+  all() {
+    return this.prisma.user.findMany();
+  }
+
   getByUserId(userId: string) {
     return this.prisma.user.findUnique({
       where: { userId },
     });
   }
 
-  all() {
-    return this.prisma.user.findMany();
-  }
-
-  get(email: string) {
+  getByEmail(email: string) {
     return this.prisma.user.findUnique({
       where: { email },
     });

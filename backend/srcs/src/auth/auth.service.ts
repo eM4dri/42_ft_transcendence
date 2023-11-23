@@ -1,16 +1,18 @@
 import {
-  ForbiddenException,
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { JwtPayload } from "./strategy";
 import { User } from "@prisma/client";
-import { PrismaService } from "../prisma/prisma.service";
+import { UserService } from "src/user/user.service";
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService, private prisma: PrismaService) { }
+  constructor(
+    private jwtService: JwtService, 
+    private userService: UserService
+    ) { }
 
   async login(user: User) {
     const payload: JwtPayload = {
@@ -50,11 +52,7 @@ export class AuthService {
   }
 
   async refreshToken(userId: string) {
-
-
-    const user = await this.prisma.user.findUnique({
-      where: { userId }
-    });
+    const user = await this.userService.getByUserId(userId);
 
     const payload: JwtPayload = {
       username: user.username,
@@ -63,4 +61,10 @@ export class AuthService {
     };
     return this.getTokens(payload);
   }
+
+  async tfaNeeded(userId: string){
+    return (await this.userService.getByUserId(userId)).twofa; 
+  }
+
+
 }

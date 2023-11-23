@@ -1,0 +1,25 @@
+<button (click)="login()"> 
+    LOGIN
+</button>
+
+@if(tfaId!=='')
+{
+    <br>
+    <br>
+    <input
+        placeholder="Search"
+        type="text"
+        [(ngModel)]="tfaToken"
+    />
+}
+
+<app-alert
+    [open]="alertConfig.open"
+    [singleMessage]="alertConfig.singleMessage"
+    [severity]="alertConfig.severity"
+    (eventCloseToast)="closeAlert()"
+    >
+</app-alert>
+
+
+

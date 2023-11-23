@@ -74,4 +74,8 @@ export class NavbarComponent {
     return this.authService.haveAdminRights();
   }
 
+  public logOut() {
+    return this.authService.logOut();
+  }
+
 }

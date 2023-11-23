@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './strategy';
 import { User } from '@prisma/client';
 import { UserService } from 'src/user/user.service';
@@ -9,7 +8,6 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class FakeAuthService {
   constructor(
-    private jwtService: JwtService,
     private userService: UserService,
     private authService: AuthService
   ) { }
@@ -33,9 +31,7 @@ export class FakeAuthService {
         min = userId42;
       }
     }
-    let userdb: User = await this.userService.get(
-      userEmail,
-    );
+    let userdb: User = await this.userService.getByEmail(userEmail);
     if (!userdb) {
       const fakeUsername = `fake_${username}`;
       const newUser: CreateUserDto = {
@@ -53,4 +49,11 @@ export class FakeAuthService {
     }
     return userdb;
   }
+
+  async tfaNeeded(username: string): Promise<string>{
+    const userEmail: string = `${username}@mail.com`;
+    const user = await this.userService.getByEmail(userEmail);
+    return user.twofa ? user.userId : undefined;
+  }
+
 }

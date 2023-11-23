@@ -19,4 +19,5 @@ export class UriConstants {
   public static readonly USER_AVATAR_DEFAULT = staticImgBase + '/user/default.svg';
   public static readonly CHANNEL_AVATAR_DEFAULT = staticImgBase + '/channel/default.svg';
   public static readonly TFA = apiBasePath + '/tfa/qrcode';
+  public static readonly VALID_TFA = apiBasePath + '/login/tfa/validate';
 }

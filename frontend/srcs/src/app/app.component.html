@@ -1,24 +1,8 @@
 <body [ngClass]="{'light': !darkMode, 'dark': darkMode}">
-  <!-- <div *ngIf="isRootComponent">
-    <button (click)="goToLogin()">LOGIN</button>
-    <button (click)="goToHome()">HOME</button>
-  </div> -->
-  <!-- <div *ngIf="!isRootComponent"> -->
-    <!-- <div align="center">
-        <h1>CLASH OF PONG</h1>
-    </div>
-    <div class="user-icon" (click)="toggleDropdown()">
-        <svg (click)="diHola()" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-3.31 0-6.43-1.28-8.75-3.59-.15-.15-.23-.35-.23-.56s.08-.41.23-.56c2.31-2.31 5.43-3.59 8.75-3.59 3.31 0 6.43 1.28 8.75 3.59.15.15.23.35.23.56s-.08.41-.23.56c-2.31 2.31-5.43 3.59-8.75 3.59zm0-16c4.42 0 8 3.58 8 8s-3.58 8-8 8-8-3.58-8-8 3.58-8 8-8zm6 14c-2.67-1.99-6-3-6-3s-3.33 1.01-6 3a7.956 7.956 0 0 0-3 6c1 1 2.21 1.8 3.53 2.38.52-.3 1.1-.5 1.74-.59.25-.05.52-.09.78-.13 1.5-.29 3.09-.46 4.75-.46s3.25.17 4.75.46c.26.04.53.08.78.13.64.09 1.22.29 1.74.59 1.32-.58 2.53-1.38 3.53-2.38a7.956 7.956 0 0 0-3-6z"/>
-        </svg>
-    </div> -->
-    <!-- Contenido del desplegable -->
-    <!-- <div *ngIf="dropdownVisibility" class="dropdown-content">
-        <a (click)="goToProfile()">Profile</a>
-    </div> -->
-  <!-- </div> -->
-  <app-navbar class="navbar">
-  </app-navbar>
+  @if(isLoggedIn()){
+    <app-navbar class="navbar">
+    </app-navbar>
+  }
   <main>
       <router-outlet></router-outlet>  
   </main>

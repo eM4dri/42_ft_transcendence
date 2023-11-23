@@ -33,16 +33,8 @@ export class FortyTwoStrategy extends PassportStrategy(
     cb: VerifyCallBack,
   ): Promise<any> {
     request.session.accessToken = accessToken;
-    // const user42 = {
-    //   id: profile.id,
-    //   username: profile.username,
-    //   email: profile.emails[0].value,
-    //   url: profile.profileUrl,
-    //   provider: profile.provider,
-    // };
-    // console.log(user42);
     const userEmail = profile.emails[0].value;
-    let userdb: User = await this.userService.get(
+    let userdb: User = await this.userService.getByEmail(
       userEmail,
     );
     if (!userdb) {
@@ -61,7 +53,6 @@ export class FortyTwoStrategy extends PassportStrategy(
         newUser,
       );
     }
-    // console.log(userdb);
     return cb(null, userdb);
   }
 }

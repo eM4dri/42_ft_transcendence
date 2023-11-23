@@ -11,3 +11,7 @@ imurugar
 > We can handle polling on socket.io to configiure what a dexxconection should be account for -> we can play we time to experiences how it woks our app as user experience
 
 Holly bible about nestJS with several other tools https://wanago.io/2023/06/12/api-nestjs-prisma-serializing/ 
+
+To get svg https://www.svgrepo.com/svg/125642/robot
+
+

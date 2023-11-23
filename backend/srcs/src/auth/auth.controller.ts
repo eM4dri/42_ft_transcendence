@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Res, Req, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, Res, Req, UseGuards, Post, Body, HttpStatus } from "@nestjs/common";
 import { Response } from "express";
 import { FortyTwoGuard, RefreshGuard } from "./guard";
 import { AuthService } from "./auth.service";
@@ -7,6 +7,8 @@ import { GetUser } from "./decorator";
 import { User } from "@prisma/client";
 import { FakeAuthService } from "./fake.auth.service";
 import { TokenConstants } from "src/utils";
+import { ValidateDto } from "src/tfa/dto";
+import { TfaService } from "src/tfa/tfa.service";
 
 @ApiExcludeController()
 @Controller()
@@ -14,6 +16,7 @@ export class AuthController {
   constructor(
     private authService: AuthService,
     private fakeAuthService: FakeAuthService,
+    private tfaService: TfaService
   ) { }
   @Get(process.env.FORTYTWO_CLIENT_URL)
   @UseGuards(FortyTwoGuard)
@@ -28,9 +31,14 @@ export class AuthController {
     @GetUser() user42: User,
     @Res() res: Response,
   ) {
-    const { accessToken, refreshToken } = await this.authService.login(user42);
-    res.cookie(TokenConstants.USER_TOKEN, accessToken);
-    res.cookie(TokenConstants.REFRESH_TOKEN, refreshToken);
+    const needTfa: boolean = await this.authService.tfaNeeded(user42.userId);
+    if ( !needTfa ){
+      const { accessToken, refreshToken } = await this.authService.login(user42);
+      res.cookie(TokenConstants.USER_TOKEN, accessToken);
+      res.cookie(TokenConstants.REFRESH_TOKEN, refreshToken);
+    } else {
+      res.cookie(TokenConstants.TFA_TOKEN, user42.userId);
+    }
     const hostName = new URL(`http://${req.headers['host']}`).hostname;
     res.redirect(`http://${hostName}:${process.env.WEB_PORT}`);
   }
@@ -41,9 +49,14 @@ export class AuthController {
     @Param("username") username: string,
     @Res() res: Response,
   ) {
-    const { accessToken, refreshToken } = await this.fakeAuthService.fakeLogin(username);
-    res.cookie(TokenConstants.USER_TOKEN, accessToken);
-    res.cookie(TokenConstants.REFRESH_TOKEN, refreshToken);
+    const tfaUserId: string = await this.fakeAuthService.tfaNeeded(username);
+    if (tfaUserId === undefined){
+      const { accessToken, refreshToken } = await this.fakeAuthService.fakeLogin(username);
+      res.cookie(TokenConstants.USER_TOKEN, accessToken);
+      res.cookie(TokenConstants.REFRESH_TOKEN, refreshToken);
+    } else {
+      res.cookie(TokenConstants.TFA_TOKEN, tfaUserId);
+    }
     const hostName = new URL(`http://${req.headers['host']}`).hostname;
     res.redirect(`http://${hostName}:${process.env.WEB_PORT}`);
   }
@@ -57,5 +70,19 @@ export class AuthController {
       refreshToken: refreshToken
     };
     return response;
+  }
+
+  @Post('login/tfa/validate')
+  async validarCodigoTFA(
+    @Body() body: ValidateDto, 
+    @Res() res: any
+  ) {
+     const validtfa = await this.tfaService.validTFACode(body, res);
+     if (validtfa) { 
+      const { accessToken, refreshToken } = await this.authService.refreshToken(body.userid);
+      return res.status(HttpStatus.OK).json({ response : { accessToken:accessToken, refreshToken:refreshToken} });
+     } else {
+      return res.status(HttpStatus.UNAUTHORIZED).json({ response: 'Unauthorized'});
+     }
   }
 }

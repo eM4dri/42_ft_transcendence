@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-// import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,7 +8,6 @@ import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
-// import { AuthInterceptor } from './core';
 import { ApiInterceptor, ErrorApiInterceptor } from './core';
 import { MySocket } from './services/web-socket.service';
 import { ChannelsCache, ChatsCache, UsersCache } from './cache';
@@ -21,6 +19,8 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { ProfileInfoComponent } from './components/profile/profile-info/profile-info.component';
 import { AvatarEditorComponent } from './components/avatar/avatar-editor/avatar-editor.component';
 import { OtherProfileComponent } from './modules/profile/other-profile.component/other-profile.component';
+import { LoginModule } from './modules/login/login.module';
+
 
 const config: SocketIoConfig = { url: environment.apiUrl };
 
@@ -60,17 +60,13 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     FormsModule,
     ReactiveFormsModule,
     SharedAlertModule,
+    LoginModule,
     BrowserAnimationsModule,
     TagModule,
     SplitButtonModule,
   ],
   providers: [
     CookieService,
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: AuthInterceptor,
-    //   multi: true,
-    // },
     provideHttpClient(withInterceptors([ApiInterceptor, ErrorApiInterceptor])),
     MySocket,
     UsersCache,

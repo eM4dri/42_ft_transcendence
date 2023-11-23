@@ -10,9 +10,9 @@ import { OtherProfileComponent } from './modules/profile/other-profile.component
 import { AdministrationComponent } from './modules';
 import { AuthGuard } from './guards/auth.guard';
 import { Role } from './models';
+import { LoginComponent } from './modules/login/login.component';
 
 const routes: Routes = [
-
   { path: "", redirectTo: "", pathMatch: "full" },
   { path: "", component: HomeComponent, canActivate: [AuthGuard] },
   { path: "home", component: HomeComponent, canActivate: [AuthGuard] },
@@ -26,6 +26,7 @@ const routes: Routes = [
       role: Role.Admin
     }
   },
+  { path: "login", component: LoginComponent },
 ];
 
 @NgModule({

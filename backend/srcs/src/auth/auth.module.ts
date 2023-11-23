@@ -9,6 +9,7 @@ import {
 import { AuthController } from './auth.controller';
 import { UserService } from '../user/user.service';
 import { FakeAuthService } from './fake.auth.service';
+import { TfaService } from 'src/tfa/tfa.service';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { FakeAuthService } from './fake.auth.service';
     UserService,
     FakeAuthService,
     RefreshTokenStrategy,
-    RefreshTokenStrategy
+    RefreshTokenStrategy,
+    TfaService
   ],
   exports: [AuthService, JwtModule],
 })
