@@ -45,5 +45,9 @@ export class AuthService {
   haveAdminRights() {
     return this.getRole() !== Role.User;
   }
-  
+
+  getMyUserId(): string {
+    return this.readFromCookie(CookieConstants.USER_TOKEN).sub;
+  }
+
 }

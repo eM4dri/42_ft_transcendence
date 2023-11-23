@@ -32,7 +32,6 @@ export class UserService {
     return this.mysocket.fromEvent<User[]>('users_to_cache').pipe(map((data) => data));
   }
 
-
 }
 
 

@@ -8,14 +8,15 @@ const apiBasePath = environment.apiUrl + apiVersion;
 const staticImgBase = environment.staticImagesUrl + '/static_images';
 export class UriConstants {
   public static readonly AUTH_REFRESH = apiBasePath + '/refresh';
-  // public static readonly AUTH_REFRESH = basePath + '/auth/refresh';
   public static readonly USERS = apiBasePath + '/user';
   public static readonly CHAT = apiBasePath + '/chat';
   public static readonly MESSAGE = apiBasePath + '/chat/message';
   public static readonly CHANNEL = apiBasePath + '/channel';
   public static readonly MANAGE_CHANNELS = apiBasePath + '/channel/admin';
-  public static readonly RAMDON_AVATAR = 'https://api.dicebear.com/7.x/bottts/svg?seed=';
+  public static readonly PROFILE_IMAGES_USERS = apiBasePath + '/profile-images/users'
+  public static readonly RAMDON_AVATAR_URL = 'https://api.dicebear.com/7.x/';
+  public static readonly RAMDON_AVATAR_PATH = '/svg?seed=';
   public static readonly USER_AVATAR_DEFAULT = staticImgBase + '/user/default.svg';
   public static readonly CHANNEL_AVATAR_DEFAULT = staticImgBase + '/channel/default.svg';
-
+  public static readonly TFA = apiBasePath + '/tfa/qrcode';
 }

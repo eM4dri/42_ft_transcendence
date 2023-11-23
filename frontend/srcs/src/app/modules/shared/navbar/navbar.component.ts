@@ -43,9 +43,9 @@ export class NavbarComponent {
   }
 
   public goToProfile(): void {
-    this.selectedNavItem = '';
-    this.dropdownVisibility = false;
-    this.router.navigate(['/profile']);
+      this.selectedNavItem = 'profile';
+      this.dropdownVisibility = false;
+      this.router.navigate(['/profile']);
   }
 
   public openChat(): void {

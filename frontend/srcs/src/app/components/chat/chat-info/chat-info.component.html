@@ -1,9 +1,8 @@
 <div class="user-info">
     <app-avatar
-    [user]="user"
-    >
+    [user]="user" (click)="goToUserInfo(user.userId)">
     </app-avatar>
     <p class="username">
         {{ user.username }}
     </p>
-</div> 
+</div>

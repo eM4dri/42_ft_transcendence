@@ -5,10 +5,19 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Role } from "../auth/role.enum";
 import { TwoFA } from "../auth/auth.2fa"
 import { AvatarConstants } from "src/utils/avatar.contants";
+import { PatchUserDto } from "./dto/patchUser.dto";
+
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) { }
+
+  getByUserId(userId: string) {
+    return this.prisma.user.findUnique({
+      where: { userId },
+    });
+  }
+
   all() {
     return this.prisma.user.findMany();
   }
@@ -77,8 +86,36 @@ export class UserService {
     }
   }
 
-  update() {
-    return "Update user!";
+  async update(userId: string, dto: PatchUserDto) {
+    try {
+      const user = await this.prisma.user.update({
+        where: {
+          userId: userId
+        },
+        data: {
+          username: dto.username,
+          email: dto.email,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+          twofa: dto.twofa,
+          twofa_code: dto.twofa_code
+        },
+      });
+      return user;
+    } catch (error) {
+      if (
+        error instanceof
+          PrismaClientKnownRequestError
+      ) {
+        if (error.code === "P2002") {
+          throw new HttpException(
+            "User already in use",
+            HttpStatus.CONFLICT,
+          );
+        }
+      }
+      throw error;
+    }
   }
 
   partialUpdate() {

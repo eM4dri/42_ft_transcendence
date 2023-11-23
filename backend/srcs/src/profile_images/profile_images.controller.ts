@@ -70,7 +70,7 @@ export class ProfileImagesController {
       type: channelFileUploadDto,
     })
     @UseInterceptors(FileInterceptor('file'))
-    UploadChannelProfileImageAsFile( @Body() dto : channelFileUploadDto,
+    async UploadChannelProfileImageAsFile( @Body() dto : channelFileUploadDto,
                               @UploadedFile(
                                 new ParseFilePipe({
                                   validators: [
@@ -79,7 +79,7 @@ export class ProfileImagesController {
                                   ],
                                 }),
                               ) file: Express.Multer.File) {
-      return this.ProfileImagesService.uploadProfileImageAsFile(dto.channelId, file, "channel");
+      return {response: await this.ProfileImagesService.uploadProfileImageAsFile(dto.channelId, file, "channel")};
     }
 
     @Post('channels/upload_url')
