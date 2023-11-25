@@ -9,7 +9,6 @@ export class HistoricGamesService {
   constructor(private prisma: PrismaService) { }
 
   async post_historic(dto: Historic_GameDto): Promise<historical_games> {
-    console.log("dto", dto)
     try {
       const local_name = await this.prisma.user.findUnique({
         where: { userId: dto.localId },
@@ -17,14 +16,12 @@ export class HistoricGamesService {
       }).then((name: { username: string }): string => {
         return name.username;
       });
-      console.log("local", local_name)
       const visitor_name = await this.prisma.user.findUnique({
         where: { userId: dto.visitorId },
         select: { username: true }
       }).then((name: { username: string }): string => {
         return name.username;
       });
-      console.log("visit", visitor_name)
 
       return await this.prisma.historical_games.create({
         data: {
