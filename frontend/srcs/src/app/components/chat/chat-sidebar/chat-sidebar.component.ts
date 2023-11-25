@@ -3,7 +3,7 @@ import { UsersCache } from 'src/app/cache';
 import { Chat, User } from 'src/app/models';
 import { ChatComponent } from 'src/app/modules/chat/chat.component';
 import { BaseComponent } from 'src/app/modules/shared';
-import { ApiService } from 'src/app/services';
+import { ApiService, AuthService } from 'src/app/services';
 import { UriConstants } from 'src/app/utils';
 
 @Component({
@@ -22,6 +22,8 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
     private readonly api: ApiService<User>,
     private readonly chatComponent: ChatComponent,
     private readonly cachedUsers: UsersCache,
+    private readonly authService: AuthService,
+
 
     ) {
       super(api);
@@ -59,11 +61,12 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
   searchChat: string= '';
 
   async createNewChat(){
+    
     this.users = (await this.searchArrAsync({
                      url: `${UriConstants.USERS}/all`,
                   })).response.filter(
                     (x) =>
-                        x.userId !== this.cachedUsers.getMyUserId()
+                        x.userId !== this.authService.getMyUserId()
                 );
     this.filteredUsers = this.users;
     this.users.forEach( user => {

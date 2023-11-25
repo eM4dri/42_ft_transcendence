@@ -3,9 +3,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ChannelManagementUsersComponent, ChannelUsersToAdmin } from '../channel-management-users/channel-management-users.component';
 import { BaseComponent } from 'src/app/modules';
-import { ApiService } from 'src/app/services';
+import { ApiService, AuthService } from 'src/app/services';
 import { UriConstants } from 'src/app/utils';
-import { UsersCache } from 'src/app/cache';
 
 @Component({
   selector: 'app-channel-management-actions',
@@ -77,7 +76,7 @@ export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},Ch
 
     constructor(
         private readonly api: ApiService<{},{},{},ChannelUsersToAdmin>,
-        private readonly cachedUsers: UsersCache,
+        private readonly authService: AuthService,
         private readonly parent: ChannelManagementUsersComponent
     ) {
         super(api);
@@ -127,7 +126,7 @@ export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},Ch
     }
 
     disableActions(){
-        return ( this.userChannel.userId === this.cachedUsers.getMyUserId() ||
+        return ( this.userChannel.userId === this.authService.getMyUserId() ||
             (this.userChannel.leaveAt !== null && !this.userChannel.isBanned));
     }
 

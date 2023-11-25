@@ -5,4 +5,5 @@ export * from './profile/profile.component'
 export * from './history/history.component'
 export * from './administration/administration.component'
 export * from './shared'
-
+export * from './login/login.module'
+export * from './spectate/spectate.module'

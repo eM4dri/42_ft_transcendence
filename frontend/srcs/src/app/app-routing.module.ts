@@ -11,6 +11,7 @@ import { AdministrationComponent } from './modules';
 import { AuthGuard } from './guards/auth.guard';
 import { Role } from './models';
 import { LoginComponent } from './modules/login/login.component';
+import { SpectateComponent } from './modules/spectate/spectate.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "", pathMatch: "full" },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: "chat", component: ChatComponent, canActivate: [AuthGuard] },
   { path: "profile", component: ProfileComponent, canActivate: [AuthGuard] },
   { path: "profile/:username", component: OtherProfileComponent, canActivate: [AuthGuard] },
+  { path: "live", component: SpectateComponent, canActivate: [AuthGuard] },
   {
     path: "administration", component: AdministrationComponent, canActivate: [AuthGuard], data: {
       role: Role.Admin

@@ -58,6 +58,11 @@ export class NavbarComponent {
     this.router.navigate(['/administration']);
   }
  
+  public openSpectate(): void {
+    this.selectedNavItem = 'live';
+    this.router.navigate(['/live']);
+  }
+
   public toggleDropdown(): void {
     this.dropdownVisibility = !this.dropdownVisibility;
   }

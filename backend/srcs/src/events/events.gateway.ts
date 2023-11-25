@@ -103,7 +103,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     }
 
     private async _usersConnected(userId: string,usersSocket: string) {
-        const usersId: string [] =  Array.from( this.socketsIdMap.keys() ).filter(x=>x !== userId);
+        const usersId: string [] =  Array.from( this.socketsIdMap.keys() );
         this.server.to(usersSocket).emit('users_connected', usersId);
     }
 

@@ -1,0 +1,10 @@
+<button (click)="newGame()">newGame</button>
+<div>
+  @for (game of games; track game.gameId) {
+    <app-result-card
+      [game]="game"
+    ></app-result-card>
+  <button (click)="localScores(game)">Local Scores</button>
+  <button (click)="visitorScores(game)">Viisitor Scores</button>
+  }
+</div>

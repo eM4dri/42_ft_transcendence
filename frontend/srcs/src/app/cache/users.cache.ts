@@ -57,13 +57,6 @@ export class UsersCache {
     return this._cachedUsers.get(userId)?.avatar || "https://api.dicebear.com/avatar.svg"; 
   }
 
-  setMyUserId(userId: string){
-    this._myUserId = userId;
-  }
-
-  getMyUserId():string {
-    return this._myUserId;
-  }
 
 }
 

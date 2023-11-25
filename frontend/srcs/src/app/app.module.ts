@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AdministrationComponent, ChatComponent, GameComponent, HistoryComponent, HomeComponent, NavbarComponent, ProfileComponent, SharedAlertModule } from './modules';
+import { AdministrationComponent, ChatComponent, GameComponent, HistoryComponent, HomeComponent, LoginModule, NavbarComponent, ProfileComponent, SharedAlertModule, SharedAvatarModule, SpectateModule } from './modules';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
@@ -19,7 +19,6 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { ProfileInfoComponent } from './components/profile/profile-info/profile-info.component';
 import { AvatarEditorComponent } from './components/avatar/avatar-editor/avatar-editor.component';
 import { OtherProfileComponent } from './modules/profile/other-profile.component/other-profile.component';
-import { LoginModule } from './modules/login/login.module';
 
 
 const config: SocketIoConfig = { url: environment.apiUrl };
@@ -50,7 +49,7 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     ChannelManagementUsersComponent,
     ChannelManagementActionsComponent,
     ChannelHeaderComponent,
-    AdministrationComponent,
+    AdministrationComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +59,9 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     FormsModule,
     ReactiveFormsModule,
     SharedAlertModule,
+    SharedAvatarModule,
     LoginModule,
+    SpectateModule,
     BrowserAnimationsModule,
     TagModule,
     SplitButtonModule,
