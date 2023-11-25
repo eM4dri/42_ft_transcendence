@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-11-25 - tommy
+### Added
+- Add avatar to get histotic (se puede usar de template)
+
 ## 2023-11-23 - emadriga
 ### Added
 - Login/logout complete workflow using tokens, 2fa & roles
