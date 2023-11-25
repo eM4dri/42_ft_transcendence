@@ -84,7 +84,7 @@ export class HistoricGamesController {
     @Query('userId') userId: string,
     @Query('skip') skip?: number,
     @Query('take') take?: number,
-  ): Promise<{ total: number, skip: number, take: number, result: historical_games[] }> {
+  ) {
     const t: number = await this.HistoricGamesService.total_num_historic_by_user(userId);
     if (isNaN(skip) || isNaN(take)) {
       skip = 0;
@@ -105,7 +105,7 @@ export class HistoricGamesController {
       }
     }
     return await this.HistoricGamesService.get_historic(userId, skip, take)
-      .then((result: historical_games[]) => {
+      .then((result) => {
         return { total: t, skip: skip, take: take, result: result };
       });
   }
