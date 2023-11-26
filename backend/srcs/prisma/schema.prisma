@@ -39,6 +39,8 @@ model User {
   banned_user BannedList[] @relation("banned_user")
   blocker BlockedList[] @relation("blocker")
   blockedUsers BlockedList[] @relation("blocked")
+  adding FriendsList[] @relation("adding")
+  added FriendsList[] @relation("added")
 
   channelUsers ChannelUser[]
 
@@ -78,6 +80,20 @@ model BlockedList {
   // Aseguramos que no puedan haber entradas iguales
   @@unique([userId_blocker, userId_blocked], name: "block_pair")
   @@map("blocked_list")
+}
+
+model FriendsList {
+  FriendListId String @id @default(uuid())
+
+  adding User @relation("adding", fields:[userId_adding], references: [userId], onDelete: Cascade)
+  userId_adding String
+
+  added User @relation("added", fields:[userId_added], references: [userId], onDelete: Cascade)
+  userId_added String
+
+  // Aseguramos que no puedan haber entradas iguales
+  @@unique([userId_adding, userId_added], name: "friend_pair")
+  @@map("added_list")
 }
 
 

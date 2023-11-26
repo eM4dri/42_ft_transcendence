@@ -19,6 +19,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { ProfileInfoComponent } from './components/profile/profile-info/profile-info.component';
 import { AvatarEditorComponent } from './components/avatar/avatar-editor/avatar-editor.component';
 import { OtherProfileComponent } from './modules/profile/other-profile.component/other-profile.component';
+import { ProfileAvatarComponent } from './components/avatar/profile-avatar/profile-avatar.component';
 
 
 const config: SocketIoConfig = { url: environment.apiUrl };
@@ -39,6 +40,7 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     ChatWindowMessageComponent,
     NavbarComponent,
     AvatarComponent,
+    ProfileAvatarComponent,
     AvatarEditorComponent,
     ChannelWindowComponent,
     ChannelWindowMessageComponent,

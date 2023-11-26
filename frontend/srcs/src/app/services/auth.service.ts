@@ -57,5 +57,5 @@ export class AuthService {
     this.cookieService.delete(CookieConstants.REFRESH_TOKEN);
     this.router.navigate(['/login']);
   }
-  
+
 }

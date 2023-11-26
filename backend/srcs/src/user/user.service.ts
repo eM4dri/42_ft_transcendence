@@ -11,14 +11,14 @@ import { PatchUserDto } from "./dto/patchUser.dto";
 export class UserService {
   constructor(private prisma: PrismaService) { }
 
-  all() {
-    return this.prisma.user.findMany();
-  }
-
   getByUserId(userId: string) {
     return this.prisma.user.findUnique({
       where: { userId },
     });
+  }
+
+  all() {
+    return this.prisma.user.findMany();
   }
 
   getByEmail(email: string) {

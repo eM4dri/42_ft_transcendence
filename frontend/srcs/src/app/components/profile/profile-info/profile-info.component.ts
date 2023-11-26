@@ -4,6 +4,7 @@ import { AlertModel } from 'src/app/models';
 import { UriConstants } from 'src/app/utils';
 import { PatchUserDto } from 'src/app/models/user/patch-user.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { UserFriendDTO } from 'src/app/models/user/user-friend.model';
 
 @Component({
   selector: 'app-profile-info',
@@ -41,6 +42,21 @@ export class ProfileInfoComponent implements OnInit {
       },
     });
 
+    if (this.myUserId !== this.userId) {
+      this.apiService.getService({
+        url: `${UriConstants.USER_FRIENDS}/${this.userId}`
+      }).subscribe({
+        next: (res: any) => {
+            this.friend = res !== null ? true : false;
+            console.log('friend')
+            console.log(this.friend)  
+        },
+        error: error => {
+            this.processError(error);
+        },
+      });
+    }
+
   };
 
   @Input() userId!: string;
@@ -52,6 +68,7 @@ export class ProfileInfoComponent implements OnInit {
   editingAvatar: boolean = false;
   formGroup: FormGroup
   avatarUrl: string = '';
+  friend: boolean = false;
 
   alertConfig = new AlertModel.AlertaClass(
     false,
@@ -116,6 +133,40 @@ export class ProfileInfoComponent implements OnInit {
       },
     });
 
+  }
+
+  public addFriend() {
+    const dto: UserFriendDTO = {
+      friendId: this.userId
+    };
+    this.apiService.postService({
+        url: `${UriConstants.USER_FRIENDS}`,
+        data: dto
+    }).subscribe({
+        next: () => {
+          this.friend = true;
+        },
+        error: error => {
+            this.processError(error);
+        },
+    });
+  }
+
+  public deleteFriend() {
+    const dto: UserFriendDTO = {
+      friendId: this.userId
+    };
+    this.apiService.deleteService({
+        url: `${UriConstants.USER_FRIENDS}`,
+        data: dto
+    }).subscribe({
+        next: () => {
+          this.friend = false;
+        },
+        error: error => {
+            this.processError(error);
+        },
+    });
   }
 
   public openAlert() {

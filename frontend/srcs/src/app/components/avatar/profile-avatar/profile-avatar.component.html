@@ -1,0 +1,12 @@
+<div class='avatar' 
+        [ngClass]=" 
+            isOnline(user.userId)
+            ? 'online' 
+            : 'offline'
+">
+    <img
+        src="{{ user.avatar }}"
+        alt="avatar"
+        (error)="handleImageError($event)"
+    />
+</div>

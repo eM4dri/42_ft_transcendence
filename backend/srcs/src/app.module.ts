@@ -17,6 +17,7 @@ import { ProfileImagesModule } from './profile_images/profile_images.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { GameModule } from './game/game.module';
 import { TfaModule } from './tfa/tfa.module';
+import { UserFriendsModule } from './user/friends/user.friends.module';
 
 @Module({
   imports: [
@@ -35,7 +36,8 @@ import { TfaModule } from './tfa/tfa.module';
     ProfileImagesModule,
     EventEmitterModule.forRoot(),
     GameModule,
-    TfaModule
+    TfaModule,
+    UserFriendsModule
   ],
   controllers: [AppController],
   providers: [AppService],
