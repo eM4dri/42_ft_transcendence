@@ -5,6 +5,7 @@ import { GameComponent } from './modules/game/game.component';
 import { HistoryComponent } from './modules/history/history.component';
 import { ChatComponent } from './modules/chat/chat.component';
 import { ProfileComponent } from './modules/profile/profile.component';
+//import { PongTVComponent } from './modules/pongtv/pongtv.component';
 import { OtherProfileComponent } from './modules/profile/other-profile.component/other-profile.component';
 // import {  LoginGuard } from './guards';
 import { AdministrationComponent } from './modules';
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: "history", component: HistoryComponent, canActivate: [AuthGuard] },
   { path: "chat", component: ChatComponent, canActivate: [AuthGuard] },
   { path: "profile", component: ProfileComponent, canActivate: [AuthGuard] },
+//  { path: "pongtv", component: PongTVComponent, canActivate: [AuthGuard] },
   { path: "profile/:username", component: OtherProfileComponent, canActivate: [AuthGuard] },
   { path: "live", component: SpectateComponent, canActivate: [AuthGuard] },
   {

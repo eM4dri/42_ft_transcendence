@@ -1,0 +1,37 @@
+body {
+	font-family: Arial, sans-serif;
+}
+
+.game-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 10px;
+	border: 1px solid #ccc;
+	padding: 10px;
+}
+
+.player {
+	flex: 1;
+	text-align: center;
+}
+
+.score {
+	flex: 0 0 50px;
+	text-align: center;
+}
+
+.vs {
+	flex: 0 0 20px;
+	text-align: center;
+}
+
+.time-left {
+	flex: 1;
+	text-align: center;
+}
+
+.spectate-button {
+	flex: 0 0 100px;
+	text-align: center;
+}

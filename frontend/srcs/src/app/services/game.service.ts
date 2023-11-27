@@ -17,6 +17,10 @@ export class GameService {
     this.mysocket.emit('keypressed', msg);
   }
 
+  sendMatchOngoing() {
+    this.mysocket.emit('matchongoing');
+  }
+
   playbutton() {
     this.mysocket.emit('matchmaking')
   }

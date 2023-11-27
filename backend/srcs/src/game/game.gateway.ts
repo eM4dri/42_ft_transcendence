@@ -16,8 +16,9 @@ import { GetUser } from 'src/auth/decorator';
 import { Game } from './game.service'
 import { Paddle } from './game.service'
 import { Ball } from './game.service'
-//import { Server } from 'http';
 import { Socket, Server } from 'socket.io';
+import { EventsModule } from 'src/events/events.module';
+import { UserService } from 'src/user/user.service';
 
 
 @WebSocketGateway({
@@ -27,15 +28,18 @@ import { Socket, Server } from 'socket.io';
 @UseGuards(WsGuard)
 @Injectable()
 export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
-	constructor(private readonly gameService: GameService)
+	constructor(private readonly gameService: GameService, private readonly userService: UserService)
 	{
 
 	}
 	
+
 //	matchmaking_queue: string[] = [];
 	matchmaking_queue = new Map<string, Socket>();
 
 	allgames = new Map<number, Game>()
+
+	allspectators = new Array<Socket>
 	@WebSocketServer( )
 	server: Server;
 	@SubscribeMessage('keypressed')
@@ -66,10 +70,20 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 				return ;
 			}
 		});
+		let idx = 0
+		this.allspectators.forEach((value: Socket) => {
+			if (socket == value)
+			{
+				console.log(">>>>> Spectator #", idx, "\x1b[0;31mDISCONNECTED\x1b[0m <<<<<", this.matchmaking_queue.size)
+				delete(this.allspectators[idx]);
+				return ;
+			}
+			idx++;
+		});
 	}
 	
 	@SubscribeMessage('matchmaking')
-	listenForMatchmaking(@GetUser() user: JwtPayload, @ConnectedSocket() socket : Socket) {
+	async listenForMatchmaking(@GetUser() user: JwtPayload, @ConnectedSocket() socket : Socket) {
 		if (!this.matchmaking_queue.has(user.sub))
 		{
 			this.matchmaking_queue.set(user.sub, socket);
@@ -88,7 +102,15 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 			valred.join(roomname)
 			this.matchmaking_queue.delete(keyblue)
 			this.matchmaking_queue.delete(keyred)
-			this.gameService.createMatch(keyblue, keyred, roomname);
+			this.gameService.createMatch(keyblue, keyred, roomname, valblue, valred);
+			this.server.to("all_spectators").emit('gamelist', new GameList(this.allgames))
+			let userid_list = []
+			this.allgames.forEach((value: Game, key: number) =>
+			{
+				userid_list.push(value.blueid);
+				userid_list.push(value.redid);
+			})
+			this._usersToCacheIndividual_byRoom("all_spectators", userid_list)
 		}
 	}
 
@@ -103,6 +125,40 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 			console.log(">>>>>>", user.sub, "\x1b[0;33mNOT CANCELED\x1b[0m <<<<<<", this.matchmaking_queue.size)
 	}
 
+	@SubscribeMessage('getgamelist')
+	listenForGetGameList(@ConnectedSocket() socket : Socket){
+		console.log(">>> SENDING GAMELIST...")
+		socket.emit('gamelist', new GameList(this.allgames))
+		socket.join("all_spectators")
+		let userid_list = []
+		this.allgames.forEach((value: Game, key: number) =>
+		{
+			userid_list.push(value.blueid);
+			userid_list.push(value.redid);
+		})
+		this._usersToCacheIndividual(socket, userid_list)
+		
+	}
+
+	@SubscribeMessage('matchongoing')
+	listenForMatchOngoing(@GetUser() user: JwtPayload, @ConnectedSocket() socket : Socket){
+		
+		this.allgames.forEach((value: Game, key: number) => {
+			if (value.blueid == user.sub)
+			{
+				//?		Do we want to allow the same match in multiple windows?
+//				value.bluesocket.leave(value.room);
+				socket.join(value.room);
+				value.bluesocket = socket;
+			}
+			else if (value.redid == user.sub)
+			{
+//				value.redsocket.leave(value.room);
+				socket.join(value.room);
+				value.redsocket = socket;
+			}
+		});
+	}
 
 	afterInit(){
 		setInterval(() => {
@@ -110,4 +166,60 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		}, 20);
 	}
 
+
+
+    private async _usersToCacheIndividual(socket: Socket, usersId: string[]) {
+		if (usersId.length > 1)
+		{
+			console.log(usersId)
+			//const users = await this.userService.getUsers(usersId);
+			const users = await this.userService.getUsers(usersId);
+			socket.emit('individual_users_to_cache', users);
+		}
+    }
+
+    private async _usersToCacheIndividual_byRoom(roomname: string, usersId: string[]) {
+		if (usersId.length > 1)
+		{
+			console.log(usersId)
+			//const users = await this.userService.getUsers(usersId);
+			const users = await this.userService.getUsers(usersId);
+			this.server.to(roomname).emit('individual_users_to_cache', users);
+		}
+    }
+
+}
+
+class GameList {
+	finalist: Array<GameItem>
+	constructor(themap: Map<number, Game>)
+	{
+		this.finalist = []
+//		this.finalist.push(new GameItem(8766, "I'm BLUE", "I'm RED", 2, 4, 87, "roooommmm"))	//! DELETE
+		themap.forEach((value: Game, key: number) =>
+		{
+			this.finalist.push(new GameItem(key, value.blueid, value.redid, value.bluescore, value.redscore, value.gametime, value.room))
+		})
+	}
+}
+
+class GameItem {
+	gameid: number;
+	blueplayer: string;
+	redplayer: string;
+	bluescore: number;
+	redscore: number;
+	timeleft: number;
+	roomname: string;
+
+	constructor(_gameid: number, _blueplayer: string, _redplayer: string, _bluescore: number, _redscore: number, _timeleft: number, _roomname: string)
+	{
+		this.gameid = _gameid;
+		this.blueplayer = _blueplayer;
+		this.redplayer = _redplayer;
+		this.bluescore = _bluescore;
+		this.redscore = _redscore;
+		this.timeleft = _timeleft;
+		this.roomname = _roomname;
+	}
 }

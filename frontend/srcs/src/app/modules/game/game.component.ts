@@ -7,6 +7,7 @@ import { Ball, Paddle, Game } from './game.classes';
 import { UsersCache } from 'src/app/cache/users.cache'
 import { User } from 'src/app/models';
 import { CookieConstants } from 'src/app/utils';
+import { UpperCasePipe } from '@angular/common';
 
 let gcomp: GameComponent;
 
@@ -88,6 +89,7 @@ export class GameComponent implements AfterViewInit
 		private readonly gameService: GameService,
 		private readonly auth: AuthService,
 		) { 
+			this.sendMatchOngoing();
 			myUserId = this.auth.readFromCookie(CookieConstants.USER_TOKEN).sub
 			console.log("~~ YOUR USER ~~")
 			console.log(myUserId)
@@ -103,6 +105,7 @@ export class GameComponent implements AfterViewInit
 			});
 			
 			this.gameService.listeningToStatusUpdate().subscribe(game => {
+				this.htmlstatus = 2;
 				if (game.status == 6)		//!		Not working.  [TODO]: Does the back emit a last Game with the status updated?? 
 					this.htmlstatus = 3;
 				else
@@ -127,6 +130,9 @@ export class GameComponent implements AfterViewInit
 			
 		}
 
+		sendMatchOngoing() {
+			this.gameService.sendMatchOngoing();
+		}
 
 	playbutton() {
 		this.htmlstatus = 1;
@@ -184,59 +190,8 @@ export class GameComponent implements AfterViewInit
 		this.context.drawImage(ballimg, this.gameClass.ball.x * 10 - 50, this.gameClass.ball.y * 10 - 50, 100, 100)
 
 	}
-
-	// private drawBluePaddle()
-	// {
-
-	// 	this.context.clearRect(0, 0, 2000, 1000);
-	// 	blue_paddleauraimg.onload = () => {
-	// 		this.context.drawImage(blue_paddleauraimg, 0, this.gameClass.bluepaddle.y * 10 - 100, 65.11627, 200)
-	// 		blue_paddleauraimg.style.zIndex = "1";
-	// 	};
-	// 	blue_paddleimg.onload = () => {
-	// 		this.context.drawImage(blue_paddleimg, 0, this.gameClass.bluepaddle.y * 10  - 100, 65.11627, 200)
-	// 		blue_paddleimg.style.zIndex = "2";
-	// 	};
-		
-
-	// }
-
-	// private drawRedPaddle()
-	// {		
-	// 	red_paddleauraimg.onload = () => {
-	// 		this.context.drawImage(red_paddleauraimg, 1940, 500, 65.11627, 200)
-	// 		red_paddleauraimg.style.zIndex = "1";
-	// 	};
-	// 	red_paddleimg.onload = () => {
-	// 		this.context.drawImage(red_paddleimg, 1940, 500, 65.11627, 200)
-	// 		red_paddleimg.style.zIndex = "2";
-	// 	};
-		
-	// 	red_paddleauraimg.src = "http://localhost:8081/game_assets/aura_red.svg"
-	// 	red_paddleimg.src = "http://localhost:8081/game_assets/paddle_red.svg"
-	// }
-
-	// private drawBall()
-	// {
-	// 	var ballaura = new Image();
-	// 	var ball = new Image();
-		
-	// 	ballauraimg.onload = () => {
-	// 		this.context.drawImage(ballauraimg, 1000, 500, 100, 100)
-	// 		ballauraimg.style.zIndex = "1";
-	// 	};
-	// 	ballimg.onload = () => {
-	// 		this.context.drawImage(ballimg, 1000, 500, 100, 100)
-	// 		ballimg.style.zIndex = "2";
-	// 	};
-		
-	// 	ballauraimg.src = "http://localhost:8081/game_assets/aura_ball.svg"
-	// 	ballimg.src = "http://localhost:8081/game_assets/ball.svg"
-	// }
-
 	front_updater(){
 		this.gameClass.bluepaddle.y += paddledirection;
-//		this.drawBluePaddle();
 	}
 
 	//!		requestAnimationFrame()
@@ -273,6 +228,7 @@ var up_pressed: boolean = false;
 var down_pressed: boolean = false;
 var paddledirection: number = 0;
 var last_paddledirection: number = 0;
+var windowfocused = true;
 
 window.addEventListener('keydown', e => {
 	if (e.keyCode == 38)
@@ -287,7 +243,16 @@ window.addEventListener('keyup', e => {
 	if (e.keyCode == 40)
 		down_pressed = false;
 });
-	
+
+window.addEventListener('blur', () => {
+	windowfocused = false;
+	up_pressed = false;
+	down_pressed = false;
+});
+
+window.addEventListener('focus', () => {
+	windowfocused = true;
+});
 
 function updater(){
 	let	paddledirection = 0
@@ -295,6 +260,8 @@ function updater(){
 		paddledirection -= 1;
 	if (down_pressed)
 		paddledirection += 1;
+	if (!windowfocused)
+		paddledirection = 0;
 	if (last_paddledirection != paddledirection)
 	{
 		console.log(paddledirection);

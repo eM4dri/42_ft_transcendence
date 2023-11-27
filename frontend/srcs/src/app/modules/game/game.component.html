@@ -7,7 +7,10 @@
 
 <div #matchmakingScreen *ngIf="htmlstatus === 0" style="width:100%; height:100%;" width="2000px">
 	<h1 style="text-align: center;">Do you want to look for a random game?</h1>
-	<button class="button" (click)="playbutton()" style="background-color: greenyellow;text-align: center;height:100px;width:50%;display: block;margin-left: 25%;">PLAY</button>
+	<div style="display: flex; justify-content: center;">
+		<button class="button" (click)="playbutton()" style="background-color: #d5ff2f;text-align: center;height:100px;width:35%;display: block;margin-right: 2%;"><h1>PLAY</h1></button>
+		<button class="button" (click)="playbutton()" style="background-color: #2fff97;text-align: center;height:100px;width:35%;display: block;margin-left: 2%;"><h1 style="margin-bottom: 0px;">PLAY with MODS</h1>(JK, mods are not implemented yet)</button>
+	</div>
 </div>
 
 <div #gameOver *ngIf="htmlstatus === 3" style="width:100%; height:100%;position:absolute" width="2000px">

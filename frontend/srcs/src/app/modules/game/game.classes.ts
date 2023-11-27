@@ -38,6 +38,7 @@ export class Game
 	bluepaddle: Paddle;
 	bluescore: number = 0;
 	gametime: number = 120000;	// Time in ms
+	modsenabled: boolean = false;
 	constructor()
 	{
 		this.id = 0;

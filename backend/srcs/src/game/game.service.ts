@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-//import { Server } from 'http'
 import { Historic_GameDto } from '../historic_games/dto';
 import { HistoricGamesController } from '../historic_games/historic_games.controller'
 import { HistoricGamesService } from '../historic_games/historic_games.service'
 import { PrismaService } from "../prisma/prisma.service";
 import { Server, Socket } from 'socket.io';
 import { WsResponse, WebSocketServer } from '@nestjs/websockets';
-// import { historical_games } from '@prisma/client';
+import { StatsService } from '../stats/stats.service'
+import { Update_statsDto } from 'src/stats/dto';
 
 
 var ball_radius: number = 5;
@@ -57,13 +57,20 @@ export class Game
 	redscore: number = 0;
 	bluepaddle: Paddle;
 	bluescore: number = 0;
+	bluesocket: Socket;
+	redsocket: Socket;
 	gametime: number = 120000;	// Time in ms
-	constructor(newid: number, _blueid: string, _redid: string, _room: string)
+	modsenabled: boolean = false;
+	constructor(newid: number, _blueid: string, _redid: string, _room: string, _bluesocket: Socket, _redsocket: Socket)
 	{
 		this.id = newid;
 		this.blueid = _blueid;
 		this.redid = _redid;
 		this.room = _room;
+		this.bluesocket = _bluesocket;
+//		console.log(this.bluesocket)
+		this.redsocket = _redsocket;
+//		console.log(this.bluesocket)
 		this.redpaddle = new Paddle;
 		this.bluepaddle = new Paddle;
 		this.ball = new Ball;
@@ -73,38 +80,112 @@ export class Game
 	blueserve: boolean = false; //?		true: blue's serving  |  false: red's serving
 }
 
+class GameZIP
+{
+	id: number;
+	blueid: string;
+	redid: string;
+	room: string;
+	ball: Ball;
+	redpaddle: Paddle;
+	bluepaddle: Paddle;
+	redscore: number = 0;
+	bluescore: number = 0;
+	gametime: number = 120000;	// Time in ms
+	modsenabled: boolean = false;
+	constructor(orig: Game)
+	{
+		this.id = orig.id;
+		this.blueid = orig.blueid;
+		this.redid = orig.redid;
+		this.room = orig.room;
+		this.bluepaddle = orig.bluepaddle;
+		this.redpaddle = orig.redpaddle;
+		this.ball = orig.ball;
+		this.bluescore = orig.bluescore;
+		this.redscore = orig.redscore;
+		this.gametime = orig.gametime;
+	}
+	status: number = gameStatus.pregame;
+	waitEnd: number = 0;
+}
+
+class GameList {
+	finalist: Array<GameItem>
+	test: string
+	constructor(themap: Map<number, Game>)
+	{
+		this.finalist = []
+		this.test = "(1)"
+//		this.finalist.push(new GameItem(8766, "I'm BLUE", "I'm RED", 2, 4, 87, "roooommmm"))	//! DELETE
+		themap.forEach((value: Game, key: number) =>
+		{
+			this.finalist.push(new GameItem(key, value.blueid, value.redid, value.bluescore, value.redscore, value.gametime, value.room, value.modsenabled))
+		})
+	}
+}
+
+class GameItem {
+	gameid: number;
+	blueplayer: string;
+	redplayer: string;
+	bluescore: number;
+	redscore: number;
+	timeleft: number;
+	roomname: string;
+	modsenabled: boolean;
+
+	constructor(_gameid: number, _blueplayer: string, _redplayer: string, _bluescore: number, _redscore: number, _timeleft: number, _roomname: string, _modsenabled: boolean)
+	{
+		this.gameid = _gameid;
+		this.blueplayer = _blueplayer;
+		this.redplayer = _redplayer;
+		this.bluescore = _bluescore;
+		this.redscore = _redscore;
+		this.timeleft = _timeleft;
+		this.roomname = _roomname;
+		this.modsenabled = _modsenabled;
+	}
+}
+
 @Injectable()
 export class GameService {
 	allgames = new Map<number, Game>();
-	constructor(private readonly historicGamesService: HistoricGamesService){
+	constructor(private readonly historicGamesService: HistoricGamesService, private readonly statsService: StatsService){
 		// this.allgames.set(new, new Game(newuid))
 	}
 
-	public	createMatch(blueid: string, redid: string, room: string)
+	public	createMatch(blueid: string, redid: string, room: string, bluesocket: Socket, redsocket: Socket)
 	{
+		
 		let newuid = Math.round(Math.random() * 100000);
-		this.allgames.set(newuid, new Game(newuid, blueid, redid, room))
+		
+		this.allgames.set(newuid, new Game(newuid, blueid, redid, room, bluesocket, redsocket))
+		
 	}
-
+	
 	public  mainLoop(server: Server): Map<number, Game>
 	{
 		let current_time: number = Date.now();
 		this.allgames.forEach((value: Game, key: number) =>
 		{
+			
 			if (value.waitEnd >= current_time)		//?		Waiting for something. Wait hasn't ended yet.
 			{
+				
 				if (value.status != gameStatus.none && value.status != gameStatus.pregame && value.status != gameStatus.postgame)
 				{
 					if (value.bluepaddle.y + value.bluepaddle.direction >= paddle_radius && value.bluepaddle.y + value.bluepaddle.direction <= 100 - paddle_radius)
 						value.bluepaddle.y += value.bluepaddle.direction;
 					if (value.redpaddle.y + value.redpaddle.direction >= paddle_radius && value.redpaddle.y + value.redpaddle.direction <= 100 - paddle_radius)
 						value.redpaddle.y += value.redpaddle.direction;
-					server.to(value.room).emit('statusUpdate', value)
+					server.to(value.room).emit('statusUpdate', new GameZIP(value))
 				}
 				return ;
 			}
 			else	//?		Either wait just ended or wasn't waiting
 			{
+				
 				if (value.status == gameStatus.ballfalling)	//?		Ball finished falling, game begins/resumes
 				{
 					value.status = gameStatus.game;
@@ -124,7 +205,6 @@ export class GameService {
 				{
 					value.status = gameStatus.gameout;
 					// const historicService: HistoricGamesService = new HistoricGamesService(new PrismaService);
-
 					const newHistoricGame: Historic_GameDto = {
 						localId: value.blueid,
 						visitorId: value.redid,
@@ -136,15 +216,43 @@ export class GameService {
 						pointsLocal: 50 * (value.bluescore > value.redscore ? 1 : 0) + 20 * (value.bluescore == value.redscore ? 1 : 0) + value.bluescore,
 						pointsVisitor: 50 * (value.redscore > value.bluescore ? 1 : 0) + 20 * (value.redscore == value.bluescore ? 1 : 0) + value.redscore
 					}
+					
+					this.historicGamesService.post_historic(newHistoricGame);
+					
+					const newStat_blue: Update_statsDto = {
+						userId: value.blueid,
+						win: value.bluescore > value.redscore,
+						lose: value.bluescore < value.redscore,
+						draw: value.bluescore == value.redscore,
+						goalsFavor: value.bluescore,
+						goalsAgainst: value.redscore,
+						disconect: false, //! No idea what this does. Also, typo X(
+						points: 50 * (value.bluescore > value.redscore ? 1 : 0) + 20 * (value.bluescore == value.redscore ? 1 : 0) + value.bluescore
 
-				this.historicGamesService.post_historic(newHistoricGame);
+					}
+					this.statsService.update_stats(newStat_blue);
+					
+					const newStat_red: Update_statsDto = {
+						userId: value.redid,
+						win: value.bluescore < value.redscore,
+						lose: value.bluescore > value.redscore,
+						draw: value.bluescore == value.redscore,
+						goalsFavor: value.redscore,
+						goalsAgainst: value.bluescore,
+						disconect: false, //! No idea what this does. Also, typo X(
+						points: 50 * (value.bluescore < value.redscore ? 1 : 0) + 20 * (value.bluescore == value.redscore ? 1 : 0) + value.redscore
 
+					}
+					this.statsService.update_stats(newStat_red);
+					
 					//?		see POST /historic-games in localhost:3000
 					//?		backend/srcs/src/historic_games/historic_games.controller.ts -> L74
 					this.allgames.delete(key);
+					server.to("all_spectators").emit('gamelist', new GameList(this.allgames))
 					return;
 				}
 			}
+			
 			if (value.status == gameStatus.game)	//?		Ongoing game
 			{
 				value.ball.x += value.ball.speed * Math.cos(value.ball.angle * Math.PI / 180) * value.ball.direction;	//?	Calculating new position for this frame
@@ -185,7 +293,6 @@ export class GameService {
 				}
 				else if (value.ball.x - ball_radius <= 0)	//?	Red scored on blue's side
 				{
-					//!		Send GOAL signal
 					// console.log("❤️❤️❤️ GOAAAALLLL ❤️❤️❤️")
 					value.status = gameStatus.goalanimation;
 					value.redscore += 1;
@@ -198,6 +305,7 @@ export class GameService {
 					value.ball.direction = 1;
 					value.blueserve = !value.blueserve
 					value.ball.angle = Math.round((Math.random() - 0.5) * 120);
+					server.to("all_spectators").emit('gameupdate', new GameItem(value.id, value.blueid, value.redid, value.bluescore, value.redscore, value.gametime, value.room, value.modsenabled))
 				}
 				else if (value.ball.x + ball_radius >= 200)	//?	Blue scored on red's side
 				{
@@ -214,6 +322,7 @@ export class GameService {
 					value.ball.direction = 1;
 					value.blueserve = !value.blueserve
 					value.ball.angle = Math.round((Math.random() - 0.5) * 120);
+					server.to("all_spectators").emit('gameupdate', new GameItem(value.id, value.blueid, value.redid, value.bluescore, value.redscore, value.gametime, value.room, value.modsenabled))
 				}
 				else
 					value.ball.passedLimit = false;
@@ -224,16 +333,19 @@ export class GameService {
 				if (value.redpaddle.y + value.redpaddle.direction >= paddle_radius && value.redpaddle.y + value.redpaddle.direction <= 100 - paddle_radius)
 					value.redpaddle.y += value.redpaddle.direction;
 			}
+			
 			if (value.gametime <= 0)	//?		Game ended from timeout.
 			{
-				// console.log("🏁 🏁 TIME'S UP: Game Ended 🏁 🏁");
+				// console.log("🏁 🏁 TIME'S UP: Game Ended 🏁 🏁")
 				value.status = gameStatus.postgame;
 			}
 			// console.log("🟦", value.bluepaddle.y, "(", value.bluepaddle.direction, ")   |   🟥", value.redpaddle.y, "(", value.redpaddle.direction, ")")
 			// console.log("🟠", value.ball.x, value.ball.y, value.ball.angle, value.ball.direction)
 			// console.log("GAME STATUS:", value.status, " |  Time Left:", Math.round(value.gametime / 1000))
 ////			if (value.status != gameStatus.gameout)
-			server.to(value.room).emit('statusUpdate', value)	//?		Sending the status of the game to the clients to update their info.
+			
+			server.to(value.room).emit('statusUpdate', new GameZIP(value))	//?		Sending the status of the game to the clients to update their info.
+			
 		});
 		return (this.allgames)
 	}

@@ -6,13 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-11-26 - jvacaris
+### Added
+- Used `emadriga`'s Interface to display current matches' status, updated in real time. It now shows the player's username and profile pictures.
+- Player's stats are update according to a match's results.
+
+## 2023-11-25 - jvacaris
+### Fixed
+- Matchmaking now checks whether the user is already in a match or not. Suports a user from multiple windows.
+
+### Added
+- PongTV updates in real time: new matches, match updates and match endings.
 
 ## 2023-11-25 - emadriga
 ### Added
 - Mock up Interface spectate games 
+
 ## 2023-11-25 - tommy
 ### Added
 - Add avatar to get histotic (se puede usar de template)
+
+## 2023-11-24 - jvacaris
+### Added
+- PongTV page: to view all current games with the current score (✅) and be able to join a game as a spectator (❌).
 
 ## 2023-11-23 - emadriga
 ### Added

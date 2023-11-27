@@ -8,7 +8,10 @@ export type Game = {
 	redscore: number,
 	bluepaddle: Paddle,
 	bluescore: number,
+	bluesocket: any,
+	redsocket: any,
 	gametime: number,	// Time in ms
+	modsenabled: boolean;
 	status: number,
 	waitEnd: number,
 	blueserve: boolean //?		true: blue's serving  |  false: red's serving

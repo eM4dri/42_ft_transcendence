@@ -19,6 +19,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { ProfileInfoComponent } from './components/profile/profile-info/profile-info.component';
 import { AvatarEditorComponent } from './components/avatar/avatar-editor/avatar-editor.component';
 import { OtherProfileComponent } from './modules/profile/other-profile.component/other-profile.component';
+//import { PongTVComponent } from './modules/pongtv/pongtv.component';
 import { ProfileAvatarComponent } from './components/avatar/profile-avatar/profile-avatar.component';
 
 
@@ -51,7 +52,8 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     ChannelManagementUsersComponent,
     ChannelManagementActionsComponent,
     ChannelHeaderComponent,
-    AdministrationComponent
+    AdministrationComponent,
+//    PongTVComponent,
   ],
   imports: [
     BrowserModule,
