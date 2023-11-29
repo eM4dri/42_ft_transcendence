@@ -59,8 +59,8 @@ export class HistoricGamesService {
         ]
       },
       orderBy: { gameDate: 'desc' },
-      skip: skip,
-      take: take,
+      //skip: skip,
+      //take: take,
     })
     const localIds = Array.from(historical_games.map(x => x.localId));
     const visitorsIds = Array.from(historical_games.map(x => x.visitorId));

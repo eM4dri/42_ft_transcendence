@@ -67,6 +67,7 @@ front-in:
 prune: down dev-down
 	docker system prune -af
 	docker volume prune -f
+	docker network prune -af
 
 generate_users:
 	bash generate_user.sh $(num)

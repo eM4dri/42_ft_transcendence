@@ -4,8 +4,10 @@ import {
   Body,
   Controller,
   HttpCode,
-  Query
+  Query,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtGuard } from "src/auth/guard";
 
 import {
   ApiBearerAuth,
@@ -21,6 +23,7 @@ import { historical_games } from "@prisma/client";
 @Controller('historic-games')
 @ApiTags('historic games')
 @ApiBearerAuth()
+@UseGuards(JwtGuard)
 export class HistoricGamesController {
   constructor(private readonly HistoricGamesService: HistoricGamesService) { }
   @Post()
@@ -104,9 +107,10 @@ export class HistoricGamesController {
         take = 10;
       }
     }
-    return await this.HistoricGamesService.get_historic(userId, skip, take)
+    const result = await this.HistoricGamesService.get_historic(userId, skip, take)
       .then((result) => {
         return { total: t, skip: skip, take: take, result: result };
       });
+    return { response: await result }
   }
 }

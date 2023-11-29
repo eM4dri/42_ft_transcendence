@@ -16,6 +16,8 @@ import { DateMutations } from './utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TagModule } from 'primeng/tag';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { HistoricTableComponent } from './components/historic-table/historic-table.component';
+// app.module.ts
 import { ProfileInfoComponent } from './components/profile/profile-info/profile-info.component';
 import { AvatarEditorComponent } from './components/avatar/avatar-editor/avatar-editor.component';
 import { OtherProfileComponent } from './modules/profile/other-profile.component/other-profile.component';
@@ -30,7 +32,8 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     AppComponent,
     HomeComponent,
     GameComponent,
-    // HistoryComponent,
+    //HistoryComponent,
+    //HistoricTableComponent,
     ChatComponent,
     ProfileComponent,
     OtherProfileComponent,

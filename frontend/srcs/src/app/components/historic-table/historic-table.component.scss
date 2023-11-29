@@ -1,0 +1,40 @@
+caption{
+  caption-side: center;
+}
+
+th {
+  background-color: var(--bg-secondary)
+}
+
+.table{
+  --bs-table-bg: var(--bg-secondary);
+  --bs-table-striped-bg: var(--bg-primary);
+  --bs-table-color: var(--text-secondary);
+  --bs-table-striped-color: var(--text-primary);
+}
+
+.svg1_color{
+  fill: var(--text-primary);
+  vertical-align: middle;
+}
+
+td {
+  text-align: center;
+}
+
+th {
+  text-align: center;
+}
+.td-local-win{
+  vertical-align: center; 
+  text-align: center;
+  display: block;
+  margin: auto;
+}
+
+.td-visitor-win{
+  vertical-align: center; 
+  text-align: center;
+  display: block;
+  margin: auto;
+}
