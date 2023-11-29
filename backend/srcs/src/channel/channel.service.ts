@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateChannelDto, CreateChannelMessageDto, JoinChannelDto, ResponseChannelDto, ResponseChannelUserDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -120,7 +120,7 @@ export class ChannelService {
               ) {
                 if (error.code === 'P2002') {
                   throw new HttpException(
-                    'User already in use',
+                    { response:'Channel already in use' },
                     HttpStatus.CONFLICT,
                   );
                 }
@@ -143,10 +143,7 @@ export class ChannelService {
               PrismaClientKnownRequestError
             ) {
               if (error.code === 'P2025') {
-                throw new HttpException(
-                  'An operation failed because it depends on one or more records that were required but not found. {cause}',
-                  HttpStatus.NOT_FOUND,
-                );
+                throw new NotFoundException({response:  'Not Found'});
               }
             }
             throw error;
@@ -161,7 +158,7 @@ export class ChannelService {
             if (channel.password !== null)  {
                 const pwMatches = await argon.verify( channel.password, dto.password);
                 if (pwMatches === false) {
-                    throw new UnauthorizedException();
+                    throw new ForbiddenException({response:"Password doesn't match"});
                 }
             }
             const oldChannelUser = (await this.prisma.channelUser.findFirst({
@@ -194,7 +191,7 @@ export class ChannelService {
               ) {
                 if (error.code === 'P2002') {
                   throw new HttpException(
-                    'User already in use',
+                    { response:'User already join' },
                     HttpStatus.CONFLICT,
                   );
                 }
@@ -253,7 +250,7 @@ export class ChannelService {
             return channelMessages;
         } catch (error) {
             if (error.code === 'P2025') {
-                throw new UnauthorizedException();
+                throw new NotFoundException({response:  'Not Found'});
             }
             throw (error);
         }
@@ -277,7 +274,7 @@ export class ChannelService {
             return message;
         } catch (error) {
             if (error.code === 'P2025') {
-                throw new UnauthorizedException();
+                throw new NotFoundException({response:  'Not Found'});
             }
             throw (error);
         }

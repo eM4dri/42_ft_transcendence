@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-11-28 - emadriga
+### Major
+- User info is now stored on LocalStorage(remains on browser), instead of nonbrowser accesible storage, the reason for this is avoiding handing load data when the info should be downladed already, backup plan with userIds as username and fallback of nginx image is provided.
+
+### Added
+- Friend/block-list panel workflow, including adding and removng friends
+- GetUserMin get all users's avatars & usernames included in an array
+- Pink sidebar colors as css global vars
+
+### Changed
+- Changed http responses to more suitables one, and using fronts format to handle response
+- Concat WS userIds to send to cached Users on new connections
+
 ## 2023-11-26 - jvacaris
 ### Added
 - Used `emadriga`'s Interface to display current matches' status, updated in real time. It now shows the player's username and profile pictures.

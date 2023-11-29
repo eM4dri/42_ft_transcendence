@@ -21,6 +21,8 @@ import { CreateChannelMessageDto, JoinChannelDto, ResponseChannelDto, ResponseCh
 import { UserService } from 'src/user/user.service';
 import { ChannelUser } from '@prisma/client';
 import { OnEvent } from '@nestjs/event-emitter';
+import { UserFriendsService } from 'src/user/friends/user.friends.service';
+import { ResponseUserMinDto } from 'src/user/dto';
 
 
 // https://www.makeuseof.com/build-real-time-chat-api-using-websockets-nestjs/
@@ -39,6 +41,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         private readonly authService: AuthService,
         private readonly channelService: ChannelService,
         private readonly blockService: BlockService,
+        private readonly userfriendsService: UserFriendsService,
         private readonly userService: UserService
     ){}
     @WebSocketServer( )
@@ -72,10 +75,13 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     }
 
     @SubscribeMessage('client_ready')
-    clientReadyForData(@GetUser() user: JwtPayload ,@ConnectedSocket() socket : Socket) {
+    async clientReadyForData(@GetUser() user: JwtPayload ,@ConnectedSocket() socket : Socket) {
         this._usersConnected(user.sub, socket.id);
-        this._usersBlocked(user.sub);
-        this._chatsAvailables(user.sub);
+        const blockedUserIds = await this._usersBlocked(user.sub, socket.id);
+        const friendUserIds = await this._usersFriends(user.sub, socket.id);
+        const chatUserIds = await this._chatsAvailables(user.sub);
+        const usersIds:string [] = chatUserIds.concat(blockedUserIds,friendUserIds);
+        this._usersToCache(socket.id, usersIds.filter(x=>x));
         this._channelsJoinedByUser(user.sub);
         this._loadUserChats(user.sub);
     }
@@ -107,18 +113,24 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         this.server.to(usersSocket).emit('users_connected', usersId);
     }
 
-    private async _usersBlocked(userId: string) {
-        const users_blocked = await this.blockService.getBlockedList(userId);
-        const socket = this.socketsIdMap.get(userId);
-        this.server.to(socket).emit('users_blocked', users_blocked);
+    private async _usersBlocked(userId: string, usersSocket: string) {
+        const blockedUserIds: string [] = await this.blockService.getBlockedList(userId);
+        this.server.to(usersSocket).emit('users_blocked', blockedUserIds);
+        return blockedUserIds;
+    }
+
+    private async _usersFriends(userId: string, usersSocket: string) {
+        const friendUserIds = await this.userfriendsService.getFriendList(userId);
+        this.server.to(usersSocket).emit('users_friends', friendUserIds);
+        return friendUserIds;
     }
 
     private async _chatsAvailables(userId: string) {
         const chats = await this.chatService.getChatsByUserId(userId);
         const socket = this.socketsIdMap.get(userId);
         this.server.to(socket).emit('chats_availables', chats);
-        const usersIds = Array.from(chats.map(x=>x.userId));
-        this._usersToCache(socket, usersIds);
+        const usersIds: string [] = Array.from(chats.map(x=>x.userId));
+        return usersIds;
     }
 
     private async _channelsJoinedByUser(userId: string) {
@@ -229,7 +241,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     }
 
     private async _usersToCache(socketId: string, usersId: string[]) {
-        const users = await this.userService.getUsers(usersId);
+        const users: ResponseUserMinDto[] = await this.userService.getUsersMin(usersId);
         this.server.to(socketId).emit('users_to_cache', users);
     }
 }

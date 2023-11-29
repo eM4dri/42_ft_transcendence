@@ -1,0 +1,32 @@
+<div class="search-input">
+    <input
+        placeholder="Search"
+        type="text"
+        [(ngModel)]="searchUser"
+        (focus)="searchBlocked()"
+        (keyup)="filterUsers()"
+    />
+</div>
+<div class="users-list">
+    @if (filteredUsers.length) {
+        @for (user of filteredUsers; track user.userId) {
+            <div>
+                <app-chat-info
+                    [user]="user"
+                    (click)="addBlocked(user)"
+                ></app-chat-info>
+            </div>
+        } 
+    } @else {
+        @for (user of blockedUsers; track user) {
+            <div class="blocks-header">
+                <app-chat-info
+                    [user]="user"
+                ></app-chat-info>
+                <i class=" pi pi-times-circle" pTooltip="remove" (click)="removeBlocked(user)"></i>
+            </div>
+        } @empty {
+            Empty list of blocks
+        }
+    }
+</div>

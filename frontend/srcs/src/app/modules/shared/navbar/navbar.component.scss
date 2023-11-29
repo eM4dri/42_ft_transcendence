@@ -7,7 +7,7 @@
     padding: 0;
     z-index: 1;
     border-right-style: ridge;
-    border-right-color: #df49a6;
+    border-right-color: var(--icon-secondary);
   }
   
   .navbar-nav {
@@ -56,11 +56,11 @@
   }
   
   .fa-primary {
-    color: #ff7eee;
+    color: var(--icon-primary);
   }
   
   .fa-secondary {
-    color: #df49a6;
+    color: var(--icon-secondary);
   }
   
   .fa-primary,
@@ -105,7 +105,7 @@
       height: 5rem;
       border-top-style: ridge;
       border-right-style: none;
-      border-top-color: #df49a6;
+      border-top-color: var(--icon-secondary);
     }
   
     .logo {

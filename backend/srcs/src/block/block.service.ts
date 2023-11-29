@@ -42,7 +42,7 @@ export class BlockService {
             if (error instanceof PrismaClientKnownRequestError) {
                 if (error.code == 'P2002') {
                     throw new HttpException(
-                        'User already banned',
+                        { response:'Channel already in blocked' },
                         HttpStatus.CONFLICT,
                     );
                 }
@@ -67,7 +67,7 @@ export class BlockService {
             if (error instanceof PrismaClientKnownRequestError) {
                 if (error.code === 'P2025') {
                   throw new HttpException(
-                    'Silenced user not found',
+                    {response:  'Not Found'},
                     HttpStatus.NOT_FOUND,);
                 }
               }

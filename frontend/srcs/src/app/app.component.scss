@@ -5,8 +5,11 @@
   --text-secondary: #ececec;
   --bg-primary: #23232e;
   --bg-secondary: #141418;
+  --icon-primary: #ff7eee;
+  --icon-secondary: #df49a6;
   --transition-speed: 600ms;
 }
+
 
 body {
   color: var(--text-primary);
@@ -53,6 +56,8 @@ main {
   --text-secondary: #ececec;
   --bg-primary: #23232e;
   --bg-secondary: #141418;
+  --icon-primary: #ff7eee;
+  --icon-secondary: #df49a6;
 }
 
 .light {
@@ -60,6 +65,8 @@ main {
   --text-secondary: #000000;
   --bg-primary: #ffffff;
   --bg-secondary: #e4e4e4;
+  --icon-primary: #ff7eee;
+  --icon-secondary: #df49a6;
 }
 
 .solar {
@@ -67,4 +74,6 @@ main {
   --text-secondary: #35535c;
   --bg-primary: #fdf6e3;
   --bg-secondary: #f5e5b8;
+  --icon-primary: #ff7eee;
+  --icon-secondary: #df49a6;
 }

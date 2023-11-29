@@ -5,7 +5,20 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 @Injectable()
 export class UserFriendsService {
-  constructor(private prisma: PrismaService) { }
+  constructor(
+    private prisma: PrismaService
+    ) { }
+  async getFriendList(userId: string) {
+      const response = await this.prisma.friendsList.findMany({
+          where: {
+            userId_adding: userId
+          },
+          select: {
+              userId_added: true
+          }
+      });
+      return response.map((item) => item.userId_added);
+  }
 
   getByUserId(userId: string) {
     return this.prisma.friendsList.findMany({
@@ -47,7 +60,7 @@ export class UserFriendsService {
         ) {
           if (error.code === 'P2002') {
             throw new HttpException(
-              'Friend relation already exists',
+              {response:  'Friend relation already exists'},
               HttpStatus.CONFLICT,
             );
           }
@@ -71,7 +84,7 @@ export class UserFriendsService {
       ) {
         if (error.code === 'P2002') {
           throw new HttpException(
-            'Friend relation doesnt exist',
+            {response:  'Friend relation already exists'},
             HttpStatus.CONFLICT,
           );
         }

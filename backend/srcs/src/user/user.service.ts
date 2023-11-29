@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { CreateUserDto } from "./dto";
+import { CreateUserDto, ResponseUserMinDto } from "./dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Role } from "../auth/role.enum";
 import { AvatarConstants } from "src/utils/avatar.contants";
 import { PatchUserDto } from "./dto/patchUser.dto";
-
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class UserService {
@@ -33,6 +33,16 @@ export class UserService {
         userId: { in: userIds },
       },
     });
+  }
+
+  async getUsersMin(userIds: string[]): Promise<ResponseUserMinDto[]> {
+    return await plainToInstance(ResponseUserMinDto, 
+      await this.prisma.user.findMany({
+              where: {
+                userId: { in: userIds },
+              },
+            })
+      );
   }
 
   async new(dto: CreateUserDto) {

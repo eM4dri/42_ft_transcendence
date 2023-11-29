@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ChannelAdminService } from 'src/channel/admin/channel.admin.service';
 import { BlockService } from 'src/block/block.service';
 import { UserService } from 'src/user/user.service';
+import { UserFriendsService } from 'src/user/friends/user.friends.service';
 
 @Module({
   providers: [
@@ -18,6 +19,7 @@ import { UserService } from 'src/user/user.service';
     ChannelAdminService,
     BlockService,
     UserService,
+    UserFriendsService
   ],
 })
 export class EventsModule {}

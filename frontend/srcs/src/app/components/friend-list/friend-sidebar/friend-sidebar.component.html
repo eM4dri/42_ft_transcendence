@@ -1,0 +1,36 @@
+
+<div class="search-input">
+    <input
+        placeholder="Search"
+        type="text"
+        [(ngModel)]="searchUser"
+        (focus)="searchFriend()"
+        (keyup)="filterUsers()"
+    />
+</div>
+<div class="user-list">
+    @if (filteredUsers.length) {
+        @for (user of filteredUsers; track user.userId) {
+            <div>
+                <app-chat-info
+                    [user]="user"
+                    (click)="addFriend(user)"
+                ></app-chat-info>
+            </div>
+        } 
+    } @else {
+        @for (user of friendUsers; track user) {
+            <div class="friends-header">
+                <app-chat-info
+                    [user]="user"
+                ></app-chat-info>
+                <i class=" pi pi-times-circle" pTooltip="remove" (click)="removeFriend(user)"></i>
+            </div>
+        } @empty {
+            Empty list of friends
+        }
+    }
+</div>
+
+
+

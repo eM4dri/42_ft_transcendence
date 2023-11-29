@@ -81,8 +81,7 @@ export class AuthController {
      if (validtfa) { 
       const { accessToken, refreshToken } = await this.authService.refreshToken(body.userid);
       return res.status(HttpStatus.OK).json({ response : { accessToken:accessToken, refreshToken:refreshToken} });
-     } else {
-      return res.status(HttpStatus.UNAUTHORIZED).json({ response: 'Unauthorized'});
-     }
+     } 
+     return res;
   }
 }

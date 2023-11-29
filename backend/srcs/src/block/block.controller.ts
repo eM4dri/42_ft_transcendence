@@ -4,14 +4,11 @@ import { Controller,
          Post,
          Delete,
          HttpCode,
-         Param,
-         ParseUUIDPipe,
          Body
 } from '@nestjs/common';
 import {
     ApiBearerAuth,
     ApiBody,
-    ApiQuery,
     ApiOperation,
     ApiTags,
   } from '@nestjs/swagger';
@@ -35,11 +32,11 @@ export class BlockController {
     @ApiOperation({
         description: 'Get blocked list from one user'
     })
-    get(@GetUser('id') UserId: string) {
-      return this.BlockService.getBlockedList(UserId);
+    async get(@GetUser('id') UserId: string) {
+      return {response: await this.BlockService.getBlockedList(UserId)};
     };
 
-    @Post('/:uuid')
+    @Post()
     @ApiBody({
         description: 'Block a user',
         type: BlockedUserDto
@@ -52,7 +49,7 @@ export class BlockController {
         return this.BlockService.blockUser(userId_blocker, dto.userId_blocked);
     }
 
-    @Delete('/:uuid')
+    @Delete()
     @ApiBody({
         description: 'Block a user',
         type: BlockedUserDto

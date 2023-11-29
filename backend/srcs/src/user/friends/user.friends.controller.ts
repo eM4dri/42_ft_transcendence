@@ -18,7 +18,7 @@ import {
 } from "@nestjs/swagger";
 import { JwtGuard } from "src/auth/guard";
 import { GetUser } from 'src/auth/decorator';
-import { FriendDto } from "../dto/friend.dto";
+import { FriendDto } from "../dto";
 
 @Controller("userFriends")
 @ApiTags("userFriends")
@@ -32,9 +32,9 @@ export class UserFriendsController {
     description: 'Get user friends',
   })
   async getMyFriends(@GetUser('id') userId: string) {
-    return this.userFriendsService.getByUserId(
-      userId,
-    );
+    return { 
+      response: await this.userFriendsService.getFriendList(userId)
+    };
   }
 
   @Get(':uuid')

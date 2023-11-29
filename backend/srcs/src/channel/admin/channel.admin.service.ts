@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException,  Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {  MuteChannelUserDto, CreateChannelPassDto } from '../dto';
 import { ChannelUser } from '@prisma/client';
@@ -33,7 +33,7 @@ export class ChannelAdminService {
         try {
             //! Web owners & moderators can demote ann promote users
             if (await this._havePermisionRightsOverChannelUser(channelAdmin, channelUserId) !== ChannelRol.OWNER) {
-                throw new UnauthorizedException();
+                throw new ForbiddenException({ response: 'Forbidden'});
             }
             const channelUser = await this.prisma.channelUser.update({
                 where: { channelUserId: channelUserId, },
@@ -49,7 +49,7 @@ export class ChannelAdminService {
         try {
              //! Web owners & moderators can demote ann promote users
             if (await this._havePermisionRightsOverChannelUser(channelAdmin, channelUserId) !== ChannelRol.OWNER) {
-                throw new UnauthorizedException();
+                throw new ForbiddenException({ response: 'Forbidden'});
             }
             const channelUser = await this.prisma.channelUser.update({
                 where: { channelUserId: channelUserId, },
@@ -64,7 +64,7 @@ export class ChannelAdminService {
     async banChannelUser(channelUserId: string, channelAdmin: string) {
         try {
             if (await this._havePermisionRightsOverChannelUser(channelAdmin, channelUserId) === ChannelRol.USER) {
-                throw new UnauthorizedException();
+                throw new ForbiddenException({ response: 'Forbidden'});
             }
             const channelUser = await this.prisma.channelUser.update({
                 where: { channelUserId: channelUserId, },
@@ -83,7 +83,7 @@ export class ChannelAdminService {
     async unBanChannelUser(channelUserId: string, channelAdmin: string) {
         try {
             if (await this._havePermisionRightsOverChannelUser(channelAdmin, channelUserId) === ChannelRol.USER) {
-                throw new UnauthorizedException();
+                throw new ForbiddenException({ response: 'Forbidden'});
             }
             const channelUser = await this.prisma.channelUser.update({
                 where: { channelUserId: channelUserId, },
@@ -98,7 +98,7 @@ export class ChannelAdminService {
     async muteChannelUser(dto: MuteChannelUserDto, channelAdmin: string) {
         try {
             if (await this._havePermisionRightsOverChannelUser(channelAdmin,  dto.channelUserId) === ChannelRol.USER) {
-                throw new UnauthorizedException();
+                throw new ForbiddenException({ response: 'Forbidden'});
             }
             const channelUser = await this.prisma.channelUser.update({
                 where: { channelUserId: dto.channelUserId, },
@@ -114,7 +114,7 @@ export class ChannelAdminService {
     async unMuteChannelUser(channelUserId: string, channelAdmin: string) {
         try {
             if (await this._havePermisionRightsOverChannelUser(channelAdmin, channelUserId) === ChannelRol.USER) {
-                throw new UnauthorizedException();
+                throw new ForbiddenException({ response: 'Forbidden'});
             }
             const channelUser = await this.prisma.channelUser.update({
                 where: { channelUserId: channelUserId, },
@@ -130,7 +130,7 @@ export class ChannelAdminService {
     async kickChannelUser(channelUserId: string, channelAdmin: string) {
         try {
             if (await this._havePermisionRightsOverChannelUser(channelAdmin, channelUserId) === ChannelRol.USER) {
-                throw new UnauthorizedException();
+                throw new ForbiddenException({ response: 'Forbidden'});
             }
             const channelUser = await this.prisma.channelUser.update({
                             where: { channelUserId: channelUserId, },
@@ -146,7 +146,7 @@ export class ChannelAdminService {
     async setChannelPass(dto: CreateChannelPassDto, channelOwner: string){
         try {
             if (await this._isChannelOwner(channelOwner, dto.channelId) === ChannelRol.USER) {
-                throw new UnauthorizedException();
+                throw new ForbiddenException({ response: 'Forbidden'});
             }
             const hash: string | null =  dto.password ? await argon.hash(dto.password) : null;
             const channel = await this.prisma.channel.update({

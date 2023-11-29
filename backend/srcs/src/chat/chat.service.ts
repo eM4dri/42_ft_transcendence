@@ -206,7 +206,7 @@ export class ChatService {
       ) {
         if (error.code === 'P2025') {
           throw new HttpException(
-            'An operation failed because it depends on one or more records that were required but not found. {cause}',
+            {response:  'Not Found'},
             HttpStatus.NOT_FOUND,
           );
         }
@@ -229,7 +229,7 @@ export class ChatService {
       ) {
         if (error.code === 'P2025') {
           throw new HttpException(
-            'An operation failed because it depends on one or more records that were required but not found. {cause}',
+            {response:  'Not Found'},
             HttpStatus.NOT_FOUND,
           );
         }

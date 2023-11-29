@@ -63,12 +63,13 @@ export class NavbarComponent {
     this.router.navigate(['/live']);
   }
 
-  public toggleDropdown(): void {
-    this.dropdownVisibility = !this.dropdownVisibility;
+  public openFriendsList(): void {
+    this.selectedNavItem = 'friends';
+    this.router.navigate(['/friends']);
   }
 
-  public diHola(): void {
-    console.log("hola");
+  public toggleDropdown(): void {
+    this.dropdownVisibility = !this.dropdownVisibility;
   }
 
   public changeVisibility(): void {

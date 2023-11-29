@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { TwoFA } from '../auth/auth.2fa'
 import * as QRCode from 'qrcode';
@@ -58,12 +58,12 @@ export class TfaService {
       });
 
       if (isValid) {
-        return res.status(HttpStatus.OK).json({ message: 'Código de autenticación válido' });
+        return res.status(HttpStatus.OK).json({ response: 'Código de autenticación válido' });
       } else {
-        return res.status(HttpStatus.UNAUTHORIZED).json({ error: 'Código de autenticación inválido' });
+        return  res.status(HttpStatus.UNAUTHORIZED).json({ response: 'Unauthorized'});
       }
     } catch (error) {
-      return res.status(HttpStatus.UNAUTHORIZED).json({ error: 'Código de autenticación inválido' });
+      throw new UnauthorizedException({ response: 'Unauthorized'});
     }
   }
 
@@ -82,9 +82,12 @@ export class TfaService {
         encoding: 'base64',
         token: body.token,
       });
+      if (!isValid) {
+        res.status(HttpStatus.UNAUTHORIZED).json({ response: 'Unauthorized'});
+      }
       return isValid;
     } catch (error) {
-      return res.status(HttpStatus.UNAUTHORIZED).json({ response: 'Unauthorized'});
+      throw new UnauthorizedException({ response: 'Unauthorized'});
     }
   }
 }

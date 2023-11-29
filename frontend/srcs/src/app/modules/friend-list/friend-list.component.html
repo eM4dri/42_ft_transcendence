@@ -1,0 +1,24 @@
+<div class="friend-list-app">
+    <nav class="nav-tabs">
+        <a class="nav-tab" [class.active]="isFriendsTabSeleted()" (click)="showFriendsTab()">Friend</a>
+        <a class="nav-tab" [class.active]="!isFriendsTabSeleted()" (click)="showBlocksTab()">Block</a>
+    </nav>
+    @if(!selectedTab){
+        <app-friend-sidebar
+            [friendUsers]="friendUsers"
+        ></app-friend-sidebar>
+    } @else {
+        <app-block-sidebar
+            [blockedUsers]="blockedUsers"
+        ></app-block-sidebar>
+    }
+</div>
+<app-alert
+    [open]="alertConfig.open"
+    [singleMessage]="alertConfig.singleMessage"
+    [severity]="alertConfig.severity"
+    (eventCloseToast)="closeAlert()"
+    >
+</app-alert>
+
+

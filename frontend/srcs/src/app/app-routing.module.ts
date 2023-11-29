@@ -13,6 +13,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { Role } from './models';
 import { LoginComponent } from './modules/login/login.component';
 import { SpectateComponent } from './modules/spectate/spectate.component';
+import { FriendListComponent } from './modules/friend-list/friend-list.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "", pathMatch: "full" },
@@ -25,6 +26,7 @@ const routes: Routes = [
 //  { path: "pongtv", component: PongTVComponent, canActivate: [AuthGuard] },
   { path: "profile/:username", component: OtherProfileComponent, canActivate: [AuthGuard] },
   { path: "live", component: SpectateComponent, canActivate: [AuthGuard] },
+  { path: "friends", component: FriendListComponent, canActivate: [AuthGuard] },
   {
     path: "administration", component: AdministrationComponent, canActivate: [AuthGuard], data: {
       role: Role.Admin

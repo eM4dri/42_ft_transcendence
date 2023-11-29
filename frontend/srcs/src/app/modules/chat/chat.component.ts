@@ -53,7 +53,6 @@ export class ChatComponent  {
         private readonly cachedChannels: ChannelsCache,
         private readonly cachedUsers: UsersCache,
       ) {
-        this.userService.clientReady();
         this.chatsAvailables = this.cachedChats.getChatsAvailables();
         this.cachedChats.getChatsAvailablesSub().subscribe((data) => {
             this.chatsAvailables = data;
@@ -73,6 +72,7 @@ export class ChatComponent  {
                 this.typeChat = EnumChatWindowTypeSeleted.NONE
             }
         });
+        this.userService.clientReady();
     }
 
     public loadNewChat(user: User) {
