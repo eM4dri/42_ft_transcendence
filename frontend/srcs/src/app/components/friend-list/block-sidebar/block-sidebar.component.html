@@ -23,7 +23,10 @@
                 <app-chat-info
                     [user]="user"
                 ></app-chat-info>
-                <i class=" pi pi-times-circle" pTooltip="remove" (click)="removeBlocked(user)"></i>
+                <div class="icon-actions">
+                    <i class="bi bi-person-circle" pTooltip="see profile" tooltipPosition="left" placeholder="Left" (click)="goToUserInfo(user)"></i>
+                    <i class="bi bi-x-circle" pTooltip="remove blocked" tooltipPosition="left" placeholder="Left" (click)="removeBlocked(user)"></i>
+                </div>
             </div>
         } @empty {
             Empty list of blocks

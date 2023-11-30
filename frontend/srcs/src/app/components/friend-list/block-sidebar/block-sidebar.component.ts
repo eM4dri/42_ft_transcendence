@@ -5,6 +5,7 @@ import { UsersCache } from 'src/app/cache';
 import { BaseComponent, FriendListComponent } from 'src/app/modules';
 import { User } from 'src/app/models';
 import { UriConstants } from 'src/app/utils';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-block-sidebar',
@@ -21,7 +22,8 @@ export class BlockSidebarComponent extends BaseComponent<User> {
     private readonly api: ApiService<User>,
     private readonly cachedUsers: UsersCache,
     private readonly authService: AuthService,
-    private readonly parent: FriendListComponent
+    private readonly parent: FriendListComponent,
+    private readonly router: Router,
 
     ) {
       super(api);
@@ -62,5 +64,11 @@ export class BlockSidebarComponent extends BaseComponent<User> {
     this.parent.removeBlocked(user);
   }
 
+  public goToUserInfo(user: User) : void {
+    const navigationExtras: NavigationExtras = {
+      state: { data: { userId: user.userId  } }
+    };
+    this.router.navigate(['/profile/', user.username], navigationExtras);
+  }
 
 }

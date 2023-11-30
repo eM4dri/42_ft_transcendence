@@ -7,8 +7,13 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## 2023-11-30 - emadriga
+### Added
+- Added boostrap icons
+
 ### Fixed
 - Update some css problems after boostrap instalation 
+- Use frontend assets to serve images instead of nginx static images
+- Improve look & feel of menú icons
 
 ## 2023-11-29 - emadriga
 ### Major

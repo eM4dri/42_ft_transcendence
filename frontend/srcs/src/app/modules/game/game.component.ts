@@ -15,21 +15,21 @@ let myUserId: string;
 
 var blue_paddleauraimg = new Image();
 var blue_paddleimg = new Image();
-blue_paddleauraimg.src = "http://localhost:8081/game_assets/aura_blue.svg"
-blue_paddleimg.src = "http://localhost:8081/game_assets/paddle_blue.svg"
+blue_paddleauraimg.src = "assets/aura_blue.svg"
+blue_paddleimg.src = "assets/paddle_blue.svg"
 
 var red_paddleauraimg = new Image();
 var red_paddleimg = new Image();
-red_paddleauraimg.src = "http://localhost:8081/game_assets/aura_red.svg"
-red_paddleimg.src = "http://localhost:8081/game_assets/paddle_red.svg"
+red_paddleauraimg.src = "assets/aura_red.svg"
+red_paddleimg.src = "assets/paddle_red.svg"
 
 var ballauraimg = new Image();
 var ballimg = new Image();
-ballauraimg.src = "http://localhost:8081/game_assets/aura_ball.svg"
-ballimg.src = "http://localhost:8081/game_assets/ball.svg"
+ballauraimg.src = "assets/aura_ball.svg"
+ballimg.src = "assets/ball.svg"
 
 var backgroundimg = new Image();
-backgroundimg.src = "http://localhost:8081/game_assets/TEMP_gamebgdebug.png"
+backgroundimg.src = "assets/TEMP_gamebgdebug.png"
 
 @Component({
 	selector: 'app-game',
