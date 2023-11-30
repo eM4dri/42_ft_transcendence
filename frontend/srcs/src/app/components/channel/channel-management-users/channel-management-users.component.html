@@ -1,6 +1,6 @@
 <div *ngIf="channelUsers.size">
     <div *ngFor="let u of channelUsers | keyvalue" >
-        <div *ngIf="u.value.user" class="row">
+        <div *ngIf="u.value.user" class="channelUser-row">
             <app-channel-management-actions
                 [userChannel]="u.value"
              ></app-channel-management-actions>

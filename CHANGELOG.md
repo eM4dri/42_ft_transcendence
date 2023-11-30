@@ -6,12 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 2023-11-28 - emadriga
+## 2023-11-30 - emadriga
+### Fixed
+- Update some css problems after boostrap instalation 
+
+## 2023-11-29 - emadriga
 ### Major
 - User info is now stored on LocalStorage(remains on browser), instead of nonbrowser accesible storage, the reason for this is avoiding handing load data when the info should be downladed already, backup plan with userIds as username and fallback of nginx image is provided.
 
 ### Added
-- Friend/block-list panel workflow, including adding and removng friends
+- Blocklist panel workflow, including adding and removng friends
+
+## 2023-11-28 - emadriga
+### Added
+- Friend panel workflow, including adding and removng friends
 - GetUserMin get all users's avatars & usernames included in an array
 - Pink sidebar colors as css global vars
 
