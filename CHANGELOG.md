@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-12-02 - emadriga
+### Added
+- Added ngboostrap to handle modals and more
+- Added workflow to access locked channels through modals
+
+### Changed
+- Join channels through API REST post, return info to chache via WS
+- Remove unnecesary directory on nginx.conf since game img should be available at front.
+
 ## 2023-11-30 - emadriga
 ### Added
 - Added boostrap icons

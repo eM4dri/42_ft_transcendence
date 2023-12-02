@@ -1,4 +1,11 @@
 
+<ng-template #content let-modal>
+    <div class="password-input-group">
+        <input  [(ngModel)]="passwordToJoin" type="password" class="password-input"  placeholder="password" (keyup.enter)="joinChannelWithPass()">
+        <input class="button--join" value="Join" type="submit" (click)="joinChannelWithPass()">
+    </div>
+</ng-template>
+
 <div class="sidebar">
     <div class="chat-input">
         <input
@@ -14,10 +21,21 @@
         </ng-container>
         <ng-template #newChat>
             <div *ngFor="let channel of filteredChannels" >
-                <app-channel-info
-                    [channel]="channel"
-                    (click)="joinChannel(channel)"
-                ></app-channel-info>
+                @if (channel.isLocked){
+                    <div class="filtered-channels" (click)="open(content,channel)">
+                        <app-channel-info
+                            [channel]="channel"
+                        ></app-channel-info>
+                        <i class="pi pi-lock" style="font-size: 2rem"></i>
+                    </div>
+                } @else {
+                    <div class="filtered-channels">
+                        <app-channel-info
+                            [channel]="channel"
+                            (click)="joinChannel(channel)"
+                        ></app-channel-info>
+                    </div>
+                }
             </div>
         </ng-template>
         <ng-template #notNewChat>
@@ -32,3 +50,11 @@
         </ng-template>
     </div>
 </div>
+
+<app-alert
+[open]="alertConfig.open"
+[singleMessage]="alertConfig.singleMessage"
+[severity]="alertConfig.severity"
+(eventCloseToast)="closeAlert()"
+>
+</app-alert>

@@ -139,24 +139,23 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         this.server.to(socket).emit('joined_channels', channels);
     }
 
-    @SubscribeMessage('join_channel')
-    public async channelJoinedByUser(@GetUser() user: JwtPayload, @MessageBody() dto: JoinChannelDto, @ConnectedSocket() socket : Socket) {
-        const channelUser: ResponseChannelUserDto = await this.channelService.joinChannel(user.sub, dto);
-        // const userId: string = user.sub;
+    @OnEvent('user_join_channel')
+    public async channelJoinedByUser2(channelUser: ResponseChannelUserDto) {
         const channels: ResponseChannelDto[] = [await this.channelService.getChannelByChannelId(channelUser.channelId)];
-        // const socketId = this.socketsMap.get(userId);
+        const socket: Socket = this.socketsMap.get(channelUser.userId);
+        const channelId: string = channelUser.channelId;
         // Add channel into joined_channels ws for socket
         this.server.to(socket.id).emit('joined_channels', channels);
         // load user data to show
-        this._channelUsersToCache(socket.id, [dto.channelId]);
+        this._channelUsersToCache(socket.id, [channelId]);
         // load users to its {channelId}_users ws for socket
-       this._loadChannelUsers(socket.id, dto.channelId);
+       this._loadChannelUsers(socket.id, channelId);
         // load messages to its {channelId}_users ws for socket
-        this._loadChannelMessages(socket.id, dto.channelId);
+        this._loadChannelMessages(socket.id, channelId);
         // join the socket to the room
-        socket.join(`${dto.channelId}_room`);
+        socket.join(`${channelId}_room`);
         // anounce to the room new joined user
-        this.server.to(`${dto.channelId}_room`).emit(`${dto.channelId}_users`, channelUser );
+        this.server.to(`${channelId}_room`).emit(`${channelId}_users`, [channelUser] );
     }
 
     @OnEvent('newChat')

@@ -17,10 +17,6 @@ export class ChannelService {
     this.mysocket.emit('typing', msg);
   }
 
-  joinChannel(request: JoinChannelDto | false) {
-    this.mysocket.emit('join_channel', request);
-  }
-
   loadChannelSubscriptions(request: string | false) {
     this.mysocket.emit('susbcribe_channel', request);
   }

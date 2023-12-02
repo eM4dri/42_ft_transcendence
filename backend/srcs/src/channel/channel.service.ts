@@ -182,8 +182,10 @@ export class ChannelService {
                     },
                 });
              }
-            this.channelAdminService.reOwningChannel(channelUser.channelId);           
-            return plainToInstance(ResponseChannelUserDto , channelUser);
+            this.channelAdminService.reOwningChannel(channelUser.channelId);
+            const response : ResponseChannelUserDto = plainToInstance(ResponseChannelUserDto , channelUser);
+            this.eventEmitter.emit('user_join_channel', response);     
+            return response;
         } catch (error) {
             if (
                 error instanceof

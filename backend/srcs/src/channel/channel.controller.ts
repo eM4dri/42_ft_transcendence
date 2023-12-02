@@ -62,14 +62,14 @@ export class ChannelController {
     }
 
     @Post('/join')
-    joinChannel(
+    async joinChannel(
       @GetUser('id') userId: string,
       @Body() dto: JoinChannelDto
     ) {
-      return this.channelService.joinChannel(
-        userId,
-        dto
-      );
+      console.log('Hola', dto);
+      return { 
+        response: await this.channelService.joinChannel(userId, dto )
+      };
     }
 
     @Patch('/leave/:uuid')
