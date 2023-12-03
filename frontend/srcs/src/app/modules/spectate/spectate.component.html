@@ -3,6 +3,7 @@
   @for (game of games; track game.gameId) {
     <app-result-card
       [game]="game"
+      (spectateEvent)="spectateGame($event)"
     ></app-result-card>
   <!-- <button (click)="localScores(game)">Local Scores</button>
   <button (click)="visitorScores(game)">Viisitor Scores</button> -->
@@ -13,3 +14,5 @@
 	<h1 style="text-align: center;">No matches are being played currently</h1>
 	<button class="button" (click)="joinQueue()" style="background-color: greenyellow;text-align: center;height:100px;width:50%;display: block;margin-left: 25%;">Oh, no! This needs to be fixed!</button>
 </div>
+
+

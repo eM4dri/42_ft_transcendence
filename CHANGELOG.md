@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-12-02 - jvacaris
+### Added
+- Icons specifying the type of game in the history page. Also visible in the matchmaking screen.
+- Trail aura for the ball and paddles.
+- Goal animation.
+- Ball collision with walls animation.
+
+
 ## 2023-12-02 - tommy
 ### Added
 - Truncate pipe
@@ -19,6 +27,19 @@ and this project adheres to
 - Join channels through API REST post, return info to chache via WS
 - Remove unnecesary directory on nginx.conf since game img should be available at front.
 
+## 2023-12-01 - jvacaris
+### Added
+- Name introduction when starting a match and when spectator joins
+- Tutorial button
+
+### Bugs
+- Name introduction when spectating consecutive games speeds up uncontrollably.
+
+## 2023-11-30½ - jvacaris
+### Added
+- Spectating
+- Being able to play from different computers.
+
 ## 2023-11-30 - emadriga
 ### Added
 - Added boostrap icons
@@ -28,12 +49,22 @@ and this project adheres to
 - Use frontend assets to serve images instead of nginx static images
 - Improve look & feel of menú icons
 
+## 2023-11-29 - jvacaris
+### Added
+- Intro screen
+
 ## 2023-11-29 - emadriga
 ### Major
 - User info is now stored on LocalStorage(remains on browser), instead of nonbrowser accesible storage, the reason for this is avoiding handing load data when the info should be downladed already, backup plan with userIds as username and fallback of nginx image is provided.
 
 ### Added
 - Blocklist panel workflow, including adding and removng friends
+
+## 2023-11-28½ - jvacaris
+### Added
+- Paddle shrink Power-Up
+- Game ending screen (including player's info)
+- Ball falling animation
 
 ## 2023-11-28 - emadriga
 ### Added
@@ -44,6 +75,10 @@ and this project adheres to
 ### Changed
 - Changed http responses to more suitables one, and using fronts format to handle response
 - Concat WS userIds to send to cached Users on new connections
+
+## 2023-11-27 - jvacaris
+### Added
+- Modded games with 2 powerups.
 
 ## 2023-11-26 - jvacaris
 ### Added

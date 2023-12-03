@@ -83,6 +83,8 @@ export class HistoricGamesService {
       return {
         gameId: game.gameId,
         gameDate: game.gameDate,
+        competitive: game.competitive,
+        modded: game.modded,
         localId: local.userId,
         localName: local.username,
         localAvatar: local.avatar,

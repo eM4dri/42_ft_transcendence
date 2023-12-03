@@ -12,6 +12,8 @@ export interface HistoricData {
   draw: boolean
   pointsLocal: number
   pointsVisitor: number
+  modded: boolean
+  competitive: boolean
   gameDate: string
 }
 

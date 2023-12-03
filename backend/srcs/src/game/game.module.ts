@@ -15,7 +15,8 @@ import { UserService } from 'src/user/user.service';
     StatsService,
     AuthService,
     JwtService, 
-    UserService
+    UserService,
+    StatsService
   ]
 })
 export class GameModule {}

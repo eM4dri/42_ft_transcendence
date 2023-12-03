@@ -38,6 +38,10 @@ export class PongTVService {
     console.log(">> Cache list received")
     return this.mysocket.fromEvent<User[]>('individual_users_to_cache').pipe(map((data) => data));
   }
+
+  listeningToGameNotFound() {
+    return this.mysocket.fromEvent<void>('gamenotfound').pipe(map((data) => data));
+  }
 }
 
 class GameList {

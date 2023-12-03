@@ -43,6 +43,8 @@ export class HistoricGamesController {
           draw: false,
           pointsLocal: 500,
           pointsVisitor: 150,
+          competitive: true,
+          modded: false,
         }
       },
       exampleVisitorWin: {
@@ -56,6 +58,8 @@ export class HistoricGamesController {
           draw: false,
           pointsLocal: 100,
           pointsVisitor: 450,
+          competitive: true,
+          modded: true,
         }
       },
       exampleVisitorDraw: {
@@ -69,6 +73,8 @@ export class HistoricGamesController {
           draw: true,
           pointsLocal: 300,
           pointsVisitor: 300,
+          competitive: true,
+          modded: false,
         }
       }
     }

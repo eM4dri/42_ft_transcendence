@@ -5,5 +5,8 @@ export type Ball = {
 	angle: number;		// -90 ↑  |  0 ⭤  |  90 ↓ (0's direction gets decided by the parameter below. Don't let the angle be >= 90 || <= -90)
 	direction: number,	//  -1 ←  |  1 →
 	radius: number,		// 5% of the field.
-	passedLimit: boolean
+	passedLimit: boolean,
+	opacity: number,
+	invis_len: number,
+	just_collided: boolean
 }

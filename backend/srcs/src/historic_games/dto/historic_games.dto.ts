@@ -40,6 +40,24 @@ export class Historic_GameDto {
   })
   visitorId: string
 
+  @IsBoolean()
+  @IsNotEmpty()
+  @ApiProperty({
+    name: 'modded',
+    type: Boolean,
+    required: true,
+  })
+  modded: boolean
+
+  @IsBoolean()
+  @IsNotEmpty()
+  @ApiProperty({
+    name: 'competitive',
+    type: Boolean,
+    required: true,
+  })
+  competitive: boolean
+
   @IsNumber()
   @ApiProperty({
     name: 'localGoals',

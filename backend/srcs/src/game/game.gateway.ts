@@ -19,7 +19,10 @@ import { Ball } from './game.service'
 import { Socket, Server } from 'socket.io';
 import { EventsModule } from 'src/events/events.module';
 import { UserService } from 'src/user/user.service';
+import { stats_user } from "@prisma/client";
+import { StatsService } from '../stats/stats.service'
 
+var paddle_normal_speed: number = 1.25;	//! To change the default paddle speed
 
 @WebSocketGateway({
 	cors: true,
@@ -28,7 +31,7 @@ import { UserService } from 'src/user/user.service';
 @UseGuards(WsGuard)
 @Injectable()
 export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
-	constructor(private readonly gameService: GameService, private readonly userService: UserService)
+	constructor(private readonly gameService: GameService, private readonly userService: UserService, private statsService: StatsService)
 	{
 
 	}
@@ -36,6 +39,8 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 
 //	matchmaking_queue: string[] = [];
 	matchmaking_queue = new Map<string, Socket>();
+	modded_matchmaking_queue = new Map<string, Socket>();
+	allcurrentspectators = new Map<Socket, string>();
 
 	allgames = new Map<number, Game>()
 
@@ -48,17 +53,22 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		{
 			if (value.blueid == user.sub)
 			{
-				value.bluepaddle.direction = message == 0 ? 0 : message / Math.abs(message);
+				value.bluepaddle.direction = (message == 0 ? 0 : message / Math.abs(message)) * paddle_normal_speed;
 			}
 			else if (value.redid == user.sub)
 			{
-				value.redpaddle.direction = message == 0 ? 0 : message / Math.abs(message);
+				value.redpaddle.direction = (message == 0 ? 0 : message / Math.abs(message)) * paddle_normal_speed;
 			}
 		})
 //		const newpaddle: Paddle = this.allgames.get(100000).bluepaddle;
 //		console.log(user.sub, 'is pressing a key. (', message, ")");
 //		this.allgames.get(100000).bluepaddle.direction = message;	//TODO  This is temporary. Need to find the game and player that's being affected!!
-//		this.server.emit("HelloSignal", newpaddle)
+//		this.server.emit("HelloSignal", newpaddle).
+	}
+
+	@SubscribeMessage('disconnectedFromGame')
+	async disconnectedFromGame(@ConnectedSocket() socket : Socket) {
+		await this.handleDisconnect(socket);
 	}
 
 	async handleDisconnect(socket: Socket) {
@@ -70,28 +80,59 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 				return ;
 			}
 		});
+		this.modded_matchmaking_queue.forEach((value: Socket, key: string) => {
+			if (socket == value)
+			{
+				console.log(">>>>>", key, "\x1b[0;31mDISCONNECTED\x1b[0m <<<<<", this.modded_matchmaking_queue.size)
+				this.modded_matchmaking_queue.delete(key);
+				return ;
+			}
+		});
 		let idx = 0
 		this.allspectators.forEach((value: Socket) => {
 			if (socket == value)
 			{
-				console.log(">>>>> Spectator #", idx, "\x1b[0;31mDISCONNECTED\x1b[0m <<<<<", this.matchmaking_queue.size)
+				console.log(">>>>> Spectator #", idx, "\x1b[0;31mDISCONNECTED\x1b[0m <<<<<")
 				delete(this.allspectators[idx]);
 				return ;
 			}
 			idx++;
 		});
+		if (this.allcurrentspectators.has(socket))
+		{
+			this.allgames.forEach((value: Game, key: number) => {
+				if (value.room == this.allcurrentspectators.get(socket))
+				{
+					value.spectators--;
+				}
+			});
+			socket.leave(this.allcurrentspectators.get(socket));
+		}
 	}
 	
 	@SubscribeMessage('matchmaking')
-	async listenForMatchmaking(@GetUser() user: JwtPayload, @ConnectedSocket() socket : Socket) {
-		if (!this.matchmaking_queue.has(user.sub))
+	async listenForMatchmaking(@GetUser() user: JwtPayload, @ConnectedSocket() socket : Socket, @MessageBody() ismodded: boolean) {
+		if (!ismodded)
 		{
-			this.matchmaking_queue.set(user.sub, socket);
-			console.log(">>>>>>>>", user.sub, "\x1b[0;32mJOINED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
+			if (!this.matchmaking_queue.has(user.sub))
+			{
+				this.matchmaking_queue.set(user.sub, socket);
+				console.log(">>>>>>>>", user.sub, "\x1b[0;32mJOINED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
+			}
+			else
+				console.log(">>>", user.sub, "\x1b[0;33mWAS ALREADY HERE\x1b[0m <<<", this.matchmaking_queue.size)
 		}
 		else
-			console.log(">>>", user.sub, "\x1b[0;33mWAS ALREADY HERE\x1b[0m <<<", this.matchmaking_queue.size)
-		if (this.matchmaking_queue.size >= 2)
+		{
+			if (!this.modded_matchmaking_queue.has(user.sub))
+			{
+				this.modded_matchmaking_queue.set(user.sub, socket);
+				console.log(">>>>>>>>", user.sub, "\x1b[0;32mJOINED\x1b[0m <<<<<<<<", this.modded_matchmaking_queue.size)
+			}
+			else
+				console.log(">>>", user.sub, "\x1b[0;33mWAS ALREADY HERE\x1b[0m <<<", this.modded_matchmaking_queue.size)
+		}
+		if (!ismodded && this.matchmaking_queue.size >= 2)
 		{
 			let  keyblue: string = Array.from(this.matchmaking_queue)[0][0];
 			let  keyred: string = Array.from(this.matchmaking_queue)[1][0];
@@ -102,7 +143,34 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 			valred.join(roomname)
 			this.matchmaking_queue.delete(keyblue)
 			this.matchmaking_queue.delete(keyred)
-			this.gameService.createMatch(keyblue, keyred, roomname, valblue, valred);
+			const prev_blue: stats_user = await this.statsService.getUserStats(keyblue);
+			const prev_red: stats_user = await this.statsService.getUserStats(keyred);
+
+			this.gameService.createMatch(keyblue, keyred, roomname, valblue, valred, ismodded, prev_blue, prev_red);
+			this.server.to("all_spectators").emit('gamelist', new GameList(this.allgames))
+			let userid_list = []
+			this.allgames.forEach((value: Game, key: number) =>
+			{
+				userid_list.push(value.blueid);
+				userid_list.push(value.redid);
+			})
+			this._usersToCacheIndividual_byRoom("all_spectators", userid_list)
+		}
+		else if (ismodded && this.modded_matchmaking_queue.size >= 2)
+		{
+			let  keyblue: string = Array.from(this.modded_matchmaking_queue)[0][0];
+			let  keyred: string = Array.from(this.modded_matchmaking_queue)[1][0];
+			let  valblue: Socket = Array.from(this.modded_matchmaking_queue)[0][1];
+			let  valred: Socket = Array.from(this.modded_matchmaking_queue)[1][1];
+			let roomname: string = `${keyblue}${keyred}`
+			valblue.join(roomname)
+			valred.join(roomname)
+			this.modded_matchmaking_queue.delete(keyblue)
+			this.modded_matchmaking_queue.delete(keyred)
+			const prev_blue: stats_user = await this.statsService.getUserStats(keyblue);
+			const prev_red: stats_user = await this.statsService.getUserStats(keyred);
+
+			this.gameService.createMatch(keyblue, keyred, roomname, valblue, valred, ismodded, prev_blue, prev_red);
 			this.server.to("all_spectators").emit('gamelist', new GameList(this.allgames))
 			let userid_list = []
 			this.allgames.forEach((value: Game, key: number) =>
@@ -114,11 +182,34 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		}
 	}
 
-	@SubscribeMessage('cancelmatchmaking')
+
+	@SubscribeMessage('wannawatch')
+	listenForWannaWatch(@ConnectedSocket() socket: Socket, @MessageBody() gameid: number) {
+		console.log(">>>>>>>> Someone \x1b[0;34mWANNA WATCH\x1b[0m", gameid, "<<<<<<<<")
+		if (this.allgames.has(gameid))
+		{
+			socket.join(this.allgames.get(gameid).room);
+			this.allgames.get(gameid).spectators++;
+			this.allcurrentspectators.set(socket, this.allgames.get(gameid).room);
+			console.log(">>>>> Someone joined room ", this.allgames.get(gameid).room, " <<<<<")
+		}
+		else
+		{
+			socket.emit("gamenotfound");
+		}
+	}
+
+
+	@SubscribeMessage('cancelmatchmaking')//
 	listenForCancelMatchmaking(@GetUser() user: JwtPayload) {
 		if (this.matchmaking_queue.has(user.sub))
 		{
 			this.matchmaking_queue.delete(user.sub);
+			console.log(">>>>>>>>", user.sub, "\x1b[0;31mCANCELED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
+		}
+		else if (this.modded_matchmaking_queue.has(user.sub))
+		{
+			this.modded_matchmaking_queue.delete(user.sub);
 			console.log(">>>>>>>>", user.sub, "\x1b[0;31mCANCELED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
 		}
 		else
@@ -198,7 +289,7 @@ class GameList {
 //		this.finalist.push(new GameItem(8766, "I'm BLUE", "I'm RED", 2, 4, 87, "roooommmm"))	//! DELETE
 		themap.forEach((value: Game, key: number) =>
 		{
-			this.finalist.push(new GameItem(key, value.blueid, value.redid, value.bluescore, value.redscore, value.gametime, value.room))
+			this.finalist.push(new GameItem(key, value.blueid, value.redid, value.bluescore, value.redscore, value.gametime, value.room, value.modsenabled))
 		})
 	}
 }
@@ -211,8 +302,9 @@ class GameItem {
 	redscore: number;
 	timeleft: number;
 	roomname: string;
+	modsenabled: boolean;
 
-	constructor(_gameid: number, _blueplayer: string, _redplayer: string, _bluescore: number, _redscore: number, _timeleft: number, _roomname: string)
+	constructor(_gameid: number, _blueplayer: string, _redplayer: string, _bluescore: number, _redscore: number, _timeleft: number, _roomname: string, _modsenabled: boolean)
 	{
 		this.gameid = _gameid;
 		this.blueplayer = _blueplayer;
@@ -221,5 +313,6 @@ class GameItem {
 		this.redscore = _redscore;
 		this.timeleft = _timeleft;
 		this.roomname = _roomname;
+		this.modsenabled = _modsenabled;
 	}
 }

@@ -199,6 +199,8 @@ model stats_user {
 model historical_games {
   gameId        String   @id @default(uuid())
   gameDate      DateTime @default(now())
+  modded        Boolean
+  competitive   Boolean
   localId       String
   localName     String
   visitorId     String

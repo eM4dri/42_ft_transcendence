@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { User } from 'src/app/models';
-import { PongTVService } from 'src/app/services';
-import { Router } from '@angular/router';
+import { AuthService, GameService, PongTVService } from 'src/app/services';
+import { Router, NavigationExtras } from '@angular/router';
+import { GameResult } from 'src/app/models/game/gameresult.model';
+import { environment } from 'src/environments/environment';
+import { Game, gameStatus } from '../game/game.classes';
+
 
 export interface LiveGame{
   gameId: string,
@@ -41,52 +45,9 @@ export class SpectateComponent implements OnInit{
     this.games.push(newGame);
   }
 
-    constructor(private readonly pongTVService: PongTVService, private router:Router)
-    {
+  constructor(private readonly pongTVService: PongTVService, private router:Router, private gameService: GameService)
+  {
 
-//       this.pongTVService.listeningToGameList().subscribe(gamelist => {
-//         console.log('this.pongTVService.listeningToGameList()',gamelist);
-//         if (this.games.length > 0)
-//           this.games = []
-//         gamelist.finalist.forEach((game) => {
-//           this.newGame((game.gameid).toString(), game.blueplayer, game.blueplayer, game.redplayer, game.redplayer, game.bluescore, game.redscore)
-//         });
-//       });
-
-//       this.pongTVService.listeningToGameListUpdate().subscribe(gameitem => {
-//         console.log('this.pongTVService.listeningToGameListUpdate()',gameitem);
-//         this.games.forEach((game) => {
-//           if (game.gameId == gameitem.gameid.toString())
-//           {
-//             game.score1 = gameitem.bluescore;
-//             game.score2 = gameitem.redscore;
-// //            game.timeLeft = gameitem.timeleft;
-//           }
-//         });
-//       });
-
-//       this.pongTVService.listeningToCacheUpdate().subscribe(gameitem => {
-//         console.log(' this.pongTVService.listeningToCacheUpdate()',gameitem);
-//         console.log("cacheupdate")
-//         console.log(gameitem)
-//         this.games.forEach((game) => {
-//           gameitem.forEach((db_userlist) => {
-//             if (game.user1.userId == db_userlist.userId)
-//             {
-//               if (db_userlist.avatar)
-//                 game.user1.avatar = db_userlist.avatar;
-//               game.user1.username = db_userlist.username;
-//             }
-//             else if (game.user2.userId == db_userlist.userId)
-//             {
-//               if (db_userlist.avatar)
-//                 game.user2.avatar = db_userlist.avatar;
-//               game.user2.username = db_userlist.username;
-//             }
-//           });
-//         });
-//       });
-//       this.getGameList()
   }
 
 	ngOnInit(): void
@@ -115,6 +76,10 @@ export class SpectateComponent implements OnInit{
 //            game.timeLeft = gameitem.timeleft;
         }
       });
+    });
+
+    this.pongTVService.listeningToGameNotFound().subscribe(gameitem => {
+      alert("Game not found")
     });
 
     this.pongTVService.listeningToCacheUpdate().subscribe(gameitem => {
@@ -147,10 +112,16 @@ export class SpectateComponent implements OnInit{
 		this.pongTVService.getGameList()
 	}
 
-	spectateGame(item: GameItem)
+	spectateGame(item: LiveGame)
 	{
-		alert("Not implemented");
+    const navigationExtras: NavigationExtras = {
+      state: { data: { spectate: true  } }
+    };
+
+    this.gameService.sendWannaWatch(Number(item.gameId));
+    this.router.navigate(["/game/spectate"], navigationExtras);
 	}
+
 
   public joinQueue(): void {
     // Aquí va a tener que ir la lógica de la cola.

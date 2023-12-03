@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" width="500" height="500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <radialGradient id="gradient-0-0" gradientUnits="userSpaceOnUse" cx="250" cy="250" r="250" gradientTransform="matrix(1, 0, 0, 1, 0.000427, 0.000055)" xlink:href="#gradient-0"/>
+    <linearGradient id="gradient-0">
+      <title>green-aura</title>
+      <stop offset="0" style="stop-color: rgb(0, 255, 0);"/>
+      <stop offset="0.45" style="stop-color: rgba(0, 255, 0, 0.6);">
+        <animate attributeName="offset" values="0.45;0.25;0.45" begin="0s" dur="3s" repeatCount="indefinite" fill="freeze" keyTimes="0; 0.49964; 1"/>
+      </stop>
+      <stop offset="0.6" style="stop-color: rgb(0, 255, 0);">
+        <animate attributeName="offset" values="0.5;0.7;0.5" begin="0s" dur="3s" fill="freeze" repeatCount="indefinite" keyTimes="0; 0.50128; 1"/>
+      </stop>
+      <stop offset="1" style="stop-color: rgba(0, 255, 0, 0);">
+        <animate attributeName="offset" values="1;0.9;1" begin="0s" dur="3s" fill="freeze" repeatCount="indefinite" keyTimes="0; 0.50123; 1"/>
+      </stop>
+    </linearGradient>
+    <linearGradient id="gradient-2-2" gradientUnits="userSpaceOnUse" x1="257.164" y1="159.671" x2="257.164" y2="200" gradientTransform="matrix(0.596042, -0.802953, 1.453544, 0.997674, -153.948187, 206.531256)" xlink:href="#gradient-2"/>
+    <linearGradient id="gradient-2" bx:pinned="true">
+      <stop offset="0" style="stop-color: rgba(204, 255, 204, 0.6);"/>
+      <stop offset="1" style="stop-color: rgb(204, 255, 204);"/>
+    </linearGradient>
+    <linearGradient id="gradient-2-0" gradientUnits="userSpaceOnUse" x1="257.164" y1="300" x2="257.164" y2="340.329" gradientTransform="matrix(-0.54179, -0.840514, 1.453548, -0.972819, -65.314559, 846.804251)" xlink:href="#gradient-2"/>
+    <linearGradient id="gradient-2-3" gradientUnits="userSpaceOnUse" x1="257.164" y1="300" x2="257.164" y2="340.329" gradientTransform="matrix(-0.154737, 0.770492, 1.453542, 0, -164.848624, 53.189738)" xlink:href="#gradient-2"/>
+  </defs>
+  <ellipse style="stroke: rgba(0, 0, 0, 0); stroke-opacity: 0; stroke-width: 0px; fill: url('#gradient-0-0');" cx="250" cy="250" rx="250" ry="250" transform="matrix(1, 0, 0, 1, -5.684341886080802e-14, 0)"/>
+  <ellipse style="stroke-width: 10px; fill-opacity: 0; fill: rgba(0, 0, 0, 0); stroke: rgb(204, 255, 204);" cx="250" cy="250" rx="150" ry="150" transform="matrix(1, 0, 0, 1, -5.684341886080802e-14, 0)"/>
+  <path style="fill: rgba(216, 216, 216, 0); fill-opacity: 0; stroke-linecap: round; stroke-width: 10px; stroke-dasharray: 12; stroke: rgba(204, 255, 204, 0.6);" d="M 187.821 280.363 L 187.821 342.567 C 187.821 354.536 200.781 362.019 211.148 356.033 C 215.959 353.255 218.921 348.122 218.921 342.567 L 218.921 155.958 C 218.921 143.987 205.964 136.506 195.597 142.492 C 190.785 145.269 187.821 150.403 187.821 155.958 L 187.821 218.16"/>
+  <path style="fill: rgba(216, 216, 216, 0); fill-opacity: 0; stroke-linecap: round; stroke-width: 7px; stroke: rgb(204, 255, 204);" d="M 303.567 264.824 L 303.567 295.149 C 303.567 300.984 309.886 304.632 314.94 301.714 C 317.285 300.359 318.729 297.857 318.729 295.149 L 318.729 204.176 C 318.729 198.34 312.412 194.693 307.358 197.611 C 305.012 198.965 303.567 201.467 303.567 204.176 L 303.567 234.5"/>
+  <line style="fill: rgb(216, 216, 216); stroke-linecap: round; stroke-width: 5px; stroke: url('#gradient-2-2');" x1="231.421" y1="159.247" x2="290.041" y2="199.576"/>
+  <line style="fill: rgb(216, 216, 216); stroke-linecap: round; stroke-width: 5px; stroke: url('#gradient-2-0');" x1="231.421" y1="339.905" x2="290.041" y2="299.576"/>
+  <line style="fill: rgb(216, 216, 216); stroke-linecap: round; stroke-width: 5px; stroke: url('#gradient-2-3');" x1="231.421" y1="251.333" x2="290.041" y2="251.333"/>
+</svg>

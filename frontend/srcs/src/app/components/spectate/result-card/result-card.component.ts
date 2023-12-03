@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { LiveGame } from 'src/app/modules/spectate/spectate.component';
 
 @Component({
@@ -8,4 +8,10 @@ import { LiveGame } from 'src/app/modules/spectate/spectate.component';
 })
 export class ResultCardComponent {
   @Input() game!: LiveGame;
+  @Output() spectateEvent = new EventEmitter<LiveGame>();
+
+  spectateGame(game: LiveGame)
+  {
+    this.spectateEvent.emit(game);
+  }
 }
