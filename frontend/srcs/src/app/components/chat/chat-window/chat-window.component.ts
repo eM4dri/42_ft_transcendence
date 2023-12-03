@@ -106,7 +106,7 @@ export class ChatWindowComponent extends BaseComponent<{},PostMessage> implement
                   userId: this.user.userId,
                   chatUserId: chatUserIdListener || 'unknown',
                 }
-                this.cachedUsers._setCachedUser(this.user);
+                this.cachedUsers.setCachedUser(this.user);
                 this.chatComponent.loadChat(chat);
               },
               error: error => {

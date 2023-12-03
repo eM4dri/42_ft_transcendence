@@ -34,9 +34,11 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
     this.chatsAvailables.forEach(chat =>{
       if (this.currentUsers.has(chat.userId) === false)
       {
-        const user: User | undefined = this.cachedUsers.getUser(chat.userId) ;
-        if (user !== undefined){
-          this.currentUsers.set(chat.chatId, user);
+        if (!this.cachedUsers.isUserBlocked(chat.userId)) {
+          const user: User | undefined = this.cachedUsers.getUser(chat.userId);
+          if (user !== undefined){
+            this.currentUsers.set(chat.chatId, user);
+          }
         }
         this.removeNewChat(chat.userId);
       }
@@ -48,9 +50,11 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
     this.chatsAvailables.forEach(chat =>{
       if (this.currentUsers.has(chat.userId) === false)
       {
-        const user: User | undefined = this.cachedUsers.getUser(chat.userId);
-        if (user !== undefined){
-          this.currentUsers.set(chat.chatId, user);
+        if (!this.cachedUsers.isUserBlocked(chat.userId)) {
+          const user: User | undefined = this.cachedUsers.getUser(chat.userId);
+          if (user !== undefined){
+            this.currentUsers.set(chat.chatId, user);
+          }
         }
         this.removeNewChat(chat.userId);
       }
@@ -70,7 +74,7 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
                 );
     this.filteredUsers = this.users;
     this.users.forEach( user => {
-      this.cachedUsers._setCachedUser(user);
+      this.cachedUsers.setCachedUser(user);
     });
   }
  

@@ -20,6 +20,7 @@
                         <app-channel-window-message
                             [msg] = "msg"
                             [channelUser] = "getChannelUser(msg.channelUserId)"
+                            [isBlocked] = "blockedChannelUsers.has(msg.channelUserId)"
                         ></app-channel-window-message>
                     </ng-template>
                     <ng-template #mine>

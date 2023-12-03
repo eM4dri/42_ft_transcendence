@@ -11,6 +11,7 @@ import { ChannelUsersData } from '../channel-window/channel-window.component';
 export class ChannelWindowMessageComponent {
   @Input() msg!: ChannelMessages;
   @Input() channelUser?: ChannelUsersData;
+  @Input() isBlocked!: boolean;
   constructor(
     private readonly dateMutations : DateMutations
   )

@@ -7,6 +7,9 @@ import { UserService } from '../services';
 })
 export class UsersCache {
   private _conectedUsers = new Set<string>();
+  private _blockedUserIds = new Set<string>();
+  private _friendUserIds = new Set<string>();
+
   // private _cachedUsers = new Map<string, User>();
 
   constructor(
@@ -23,15 +26,52 @@ export class UsersCache {
     this.userService.userConnects().subscribe(user => {
         this._conectedUsers.add(user);
     });
-
     this.userService.usersToCache().subscribe(users => {
       users.forEach(user =>{
-        this._setCachedUser(user);
+        this.setCachedUser(user);
+      });
+    });
+    this.userService.friendUserIds().subscribe(users => {
+      users.forEach(user =>{
+        this._friendUserIds.add(user);
+      });
+    });
+    this.userService.blockedUserIds().subscribe(users => {
+      users.forEach(user =>{
+        this._blockedUserIds.add(user);
       });
     });
   }
 
-  public  _setCachedUser(user: User) {
+  addBlockedUserId(userId: string) {
+    this._blockedUserIds.add(userId);
+  }
+
+  deleteBlockedUserId(userId: string) {
+    this._blockedUserIds.delete(userId);
+  }
+
+  getBlockedUserIds(){
+    return this._blockedUserIds;
+  }
+
+  isUserBlocked(userId:string): boolean {
+    return this._blockedUserIds.has(userId)
+  }
+
+  addFriendUserId(userId: string) {
+    this._friendUserIds.add(userId);
+  }
+
+  deleteFriendUserId(userId: string) {
+    this._friendUserIds.delete(userId);
+  }
+
+  getFriendUserIds(){
+    return this._blockedUserIds;
+  }
+
+  setCachedUser(user: User) {
     localStorage.setItem(user.userId, JSON.stringify(user));
     // if (this._cachedUsers.has(user.userId) === false) {
     //   this._cachedUsers.set(user.userId, user);
@@ -41,6 +81,7 @@ export class UsersCache {
   getConnectedUsers(){
     return this._conectedUsers;
   }
+  
   isUserConnected(userId:string): boolean {
     return this._conectedUsers.has(userId)
   }

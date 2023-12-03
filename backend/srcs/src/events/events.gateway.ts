@@ -77,8 +77,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     @SubscribeMessage('client_ready')
     async clientReadyForData(@GetUser() user: JwtPayload ,@ConnectedSocket() socket : Socket) {
         this._usersConnected(user.sub, socket.id);
-        const blockedUserIds = await this._usersBlocked(user.sub, socket.id);
-        const friendUserIds = await this._usersFriends(user.sub, socket.id);
+        const blockedUserIds = await this._blockedUserIds(user.sub, socket.id);
+        const friendUserIds = await this._friendUserIds(user.sub, socket.id);
         const chatUserIds = await this._chatsAvailables(user.sub);
         const usersIds:string [] = chatUserIds.concat(blockedUserIds,friendUserIds);
         this._usersToCache(socket.id, usersIds.filter(x=>x));
@@ -113,15 +113,15 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         this.server.to(usersSocket).emit('users_connected', usersId);
     }
 
-    private async _usersBlocked(userId: string, usersSocket: string) {
+    private async _blockedUserIds(userId: string, usersSocket: string) {
         const blockedUserIds: string [] = await this.blockService.getBlockedList(userId);
-        this.server.to(usersSocket).emit('users_blocked', blockedUserIds);
+        this.server.to(usersSocket).emit('blocked_userids', blockedUserIds);
         return blockedUserIds;
     }
 
-    private async _usersFriends(userId: string, usersSocket: string) {
+    private async _friendUserIds(userId: string, usersSocket: string) {
         const friendUserIds = await this.userfriendsService.getFriendList(userId);
-        this.server.to(usersSocket).emit('users_friends', friendUserIds);
+        this.server.to(usersSocket).emit('friend_userids', friendUserIds);
         return friendUserIds;
     }
 

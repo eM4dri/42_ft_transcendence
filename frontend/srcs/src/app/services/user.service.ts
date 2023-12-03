@@ -16,6 +16,14 @@ export class UserService {
     this.mysocket.emit('client_ready');
   }
 
+  blockedUserIds() {
+    return this.mysocket.fromEvent<string[]>('blocked_userids').pipe(map((data) => data));
+  }
+
+  friendUserIds() {
+    return this.mysocket.fromEvent<string[]>('friend_userids').pipe(map((data) => data));
+  }
+
   usersConnected() {
     return this.mysocket.fromEvent<string[]>('users_connected').pipe(map((data) => data));
   }

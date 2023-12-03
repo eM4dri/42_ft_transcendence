@@ -6,13 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## 2023-12-03 - emadriga
+### Added
+- Blocked and friends added to front cache
+- Mute blocked users in channels and chats
+
 ## 2023-12-02 - jvacaris
 ### Added
 - Icons specifying the type of game in the history page. Also visible in the matchmaking screen.
 - Trail aura for the ball and paddles.
 - Goal animation.
 - Ball collision with walls animation.
-
 
 ## 2023-12-02 - tommy
 ### Added

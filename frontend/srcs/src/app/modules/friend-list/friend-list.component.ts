@@ -68,7 +68,7 @@ export class FriendListComponent extends BaseComponent<string>  {
         }
     }).subscribe({
         next: (res) => {
-            this.cachedUsers._setCachedUser(user);
+            this.cachedUsers.setCachedUser(user);
             this.friendUsers.push(user);
         },
         error: error => {
@@ -113,7 +113,7 @@ export class FriendListComponent extends BaseComponent<string>  {
         }
     }).subscribe({
         next: (res) => {
-            this.cachedUsers._setCachedUser(user);
+            this.cachedUsers.setCachedUser(user);
             this.blockedUsers.push(user);
         },
         error: error => {

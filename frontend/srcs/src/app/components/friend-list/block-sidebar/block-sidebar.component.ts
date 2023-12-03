@@ -40,7 +40,7 @@ export class BlockSidebarComponent extends BaseComponent<User> {
                 );
     this.filteredUsers = this.users;
     this.users.forEach( user => {
-      this.cachedUsers._setCachedUser(user);
+      this.cachedUsers.setCachedUser(user);
     });
   }
  
@@ -56,12 +56,14 @@ export class BlockSidebarComponent extends BaseComponent<User> {
 
   addBlocked(user: User) {
     this.parent.addBlocked(user);
+    this.cachedUsers.addBlockedUserId(user.userId);
     this.filteredUsers = this.users = [];
     this.searchUser = '';
   }
 
   removeBlocked(user: User) {
     this.parent.removeBlocked(user);
+    this.cachedUsers.deleteBlockedUserId(user.userId);
   }
 
   public goToUserInfo(user: User) : void {

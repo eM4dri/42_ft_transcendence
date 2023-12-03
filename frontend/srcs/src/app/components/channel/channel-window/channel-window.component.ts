@@ -20,6 +20,7 @@ export class ChannelWindowComponent implements OnInit, OnChanges, AfterViewCheck
 
   channelMessages: Map<number,ChannelMessages[]> = new Map<number,ChannelMessages[]>();
   channelUsers: Map<string,ChannelUsersData> = new Map<string,ChannelUsersData>();
+  blockedChannelUsers: Set<string> = new Set<string>();
   myChannelUser!: ChannelUsersExtended;
 
   ngOnInit(): void {
@@ -40,6 +41,9 @@ export class ChannelWindowComponent implements OnInit, OnChanges, AfterViewCheck
       if (res.channelId === this.channel.channelId) {
         let channelUsers = res.channelUsers;
         for (let c of channelUsers){
+          if (this.cachedUsers.isUserBlocked(c.userId)) {
+            this.blockedChannelUsers.add(c.channelUserId);
+          }
           const user = this.cachedUsers.getUser(c.userId);
           const channelUsersData: ChannelUsersData = {
             channelUserId: c.channelUserId,
@@ -68,6 +72,9 @@ export class ChannelWindowComponent implements OnInit, OnChanges, AfterViewCheck
     }
     this.channelUsers.clear();
     for (let c of channelUsers) {
+      if (this.cachedUsers.isUserBlocked(c.userId)) {
+        this.blockedChannelUsers.add(c.channelUserId);
+      }
       const user = this.cachedUsers.getUser(c.userId);
       const channelUsersData: ChannelUsersData = {
         channelUserId: c.channelUserId,

@@ -39,7 +39,7 @@ export class FriendSidebarComponent extends BaseComponent<User> {
                 );
     this.filteredUsers = this.users;
     this.users.forEach( user => {
-      this.cachedUsers._setCachedUser(user);
+      this.cachedUsers.setCachedUser(user);
     });
   }
  
@@ -55,12 +55,14 @@ export class FriendSidebarComponent extends BaseComponent<User> {
 
   addFriend(user: User) {
     this.parent.addFriend(user);
+    this.cachedUsers.addFriendUserId(user.userId);
     this.filteredUsers = this.users = [];
     this.searchUser = '';
   }
 
   removeFriend(user: User) {
     this.parent.removeFriend(user);
+    this.cachedUsers.deleteFriendUserId(user.userId);
   }
 
   public goToUserInfo(user: User) : void {

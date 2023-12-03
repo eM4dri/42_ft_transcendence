@@ -33,15 +33,21 @@ else alignLeft
         <div class="chat-grid left">
             <div class="chat-message left">
                 <div class="comic-bubble left">
-                    <p class="msg">
-                        {{ channelUser?.user?.username }}
-                    </p>
-                    <p class="msg">
-                        {{ msg.message }}
-                    </p>
-                    <p class="time">
-                        {{ toTimeLocale(msg.createdAt) }}
-                    </p>
+                    @if (isBlocked){
+                        <p class="msg">
+                            · · ·
+                        </p>    
+                    } @else {
+                        <p class="msg">
+                            {{ channelUser?.user?.username }}
+                        </p>
+                        <p class="msg">
+                            {{ msg.message }}
+                        </p>
+                        <p class="time">
+                            {{ toTimeLocale(msg.createdAt) }}
+                        </p>
+                    }
                 </div>
             </div>
         </div>
