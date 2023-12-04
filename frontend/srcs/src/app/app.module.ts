@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AdministrationComponent, ChatComponent, FriendListComponent, GameComponent, HistoryComponent, HomeComponent, LoginModule, NavbarComponent, ProfileComponent, SharedAlertModule, SharedAvatarModule, SpectateModule } from './modules';
+import { AdministrationComponent, ChallengeModule, ChatComponent, FriendListComponent, GameComponent, HistoryComponent, HomeComponent, LoginModule, NavbarComponent, ProfileComponent, SharedAlertModule, SharedAvatarModule, SpectateModule } from './modules';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
@@ -16,14 +16,11 @@ import { DateMutations } from './utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TagModule } from 'primeng/tag';
 import { SplitButtonModule } from 'primeng/splitbutton';
-import { HistoricTableComponent } from './components/historic-table/historic-table.component';
-// app.module.ts
 import { ProfileInfoComponent } from './components/profile/profile-info/profile-info.component';
 import { AvatarEditorComponent } from './components/avatar/avatar-editor/avatar-editor.component';
 import { OtherProfileComponent } from './modules/profile/other-profile.component/other-profile.component';
 import { ProfileAvatarComponent } from './components/avatar/profile-avatar/profile-avatar.component';
 import { TooltipModule } from 'primeng/tooltip';
-//import { PongTVComponent } from './modules/pongtv/pongtv.component';
 
 
 
@@ -34,8 +31,6 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     AppComponent,
     HomeComponent,
     GameComponent,
-    //HistoryComponent,
-    //HistoricTableComponent,
     ChatComponent,
     ProfileComponent,
     OtherProfileComponent,
@@ -78,7 +73,8 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     BrowserAnimationsModule,
     TagModule,
     SplitButtonModule,
-    TooltipModule
+    TooltipModule,
+    ChallengeModule
   ],
   providers: [
     CookieService,

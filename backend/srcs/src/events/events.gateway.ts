@@ -243,4 +243,14 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         const users: ResponseUserMinDto[] = await this.userService.getUsersMin(usersId);
         this.server.to(socketId).emit('users_to_cache', users);
     }
+
+    @SubscribeMessage('accept_challenge')
+    async acceptChallenge(@GetUser() user: JwtPayload ,@ConnectedSocket() socket : Socket) {
+        console.log('challenge_accepted');
+    }
+
+    @SubscribeMessage('reject_challenge')
+    async rejectChallenge(@GetUser() user: JwtPayload ,@ConnectedSocket() socket : Socket) {
+        console.log('challenge_rejected');
+    }
 }
