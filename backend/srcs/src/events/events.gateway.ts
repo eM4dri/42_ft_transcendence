@@ -244,9 +244,18 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         this.server.to(socketId).emit('users_to_cache', users);
     }
 
+    @SubscribeMessage('challenge_userid')
+    async challengeUserId(@GetUser() user: JwtPayload, @MessageBody() challengeUserId: string) {
+        const socketId: string = this.socketsIdMap.get(challengeUserId);
+        this._usersToCache(socketId, [user.sub]).then(() => {
+            this.server.to(socketId).emit(`here_comes_a_new_challenger_for_${challengeUserId}`, user.sub);
+        });
+    }
+
     @SubscribeMessage('accept_challenge')
-    async acceptChallenge(@GetUser() user: JwtPayload ,@ConnectedSocket() socket : Socket) {
-        console.log('challenge_accepted');
+    async acceptChallenge(@GetUser() user: JwtPayload ,@ConnectedSocket() socket : Socket, @MessageBody() challengeUserId: string) {
+        console.log('challenged user socket', user.sub, socket);
+        console.log('challenger user socket', challengeUserId, this.socketsMap.get(challengeUserId));
     }
 
     @SubscribeMessage('reject_challenge')

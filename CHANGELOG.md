@@ -7,6 +7,10 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## 2023-12-04 - emadriga
+### Added
+- Challenge match modal workflow
+
 ## 2023-12-03 - emadriga
 ### Added
 - Blocked and friends added to front cache

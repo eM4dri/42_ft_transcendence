@@ -25,3 +25,23 @@ margin-right: 10px;
 .selected {
 background-color: var(--bg-secondary);
 }
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  max-width: calc(90vw);
+  align-items: center;
+}
+
+.bi{
+  font-size: 2rem;
+  &:hover {
+    color: var(--icon-secondary);
+  }
+}
+
+.icon-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}

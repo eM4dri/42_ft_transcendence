@@ -4,6 +4,7 @@ import { Chat, User } from 'src/app/models';
 import { ChatComponent } from 'src/app/modules/chat/chat.component';
 import { BaseComponent } from 'src/app/modules/shared';
 import { ApiService, AuthService } from 'src/app/services';
+import { ChallengeService } from 'src/app/services/challenge.service';
 import { UriConstants } from 'src/app/utils';
 
 @Component({
@@ -17,12 +18,13 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
   currentUsers: Map<string, User> = new Map<string, User>();
   users: User[] = [];
   filteredUsers: User[] = [];
-
+  
   constructor (
     private readonly api: ApiService<User>,
     private readonly chatComponent: ChatComponent,
     private readonly cachedUsers: UsersCache,
     private readonly authService: AuthService,
+    private readonly challengeService: ChallengeService
 
 
     ) {
@@ -114,6 +116,14 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
     if (newChatUserId === userId){
       this.currentUsers.delete('new');
     }
+  }
+
+  challengeUserid(userId: string){
+    this.challengeService.challengeUserId(userId);
+  }
+
+  isOnline(userId: string): boolean {
+    return this.cachedUsers.isUserConnected(userId);
   }
 
 }

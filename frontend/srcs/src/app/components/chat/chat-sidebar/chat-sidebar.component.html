@@ -21,11 +21,16 @@
             } 
         } @else {
             @for (user of currentUsers; track user[0]) {
-                <div [class.selected]="isCurrentChat(user[0])">
+                <div class="chat-header" [class.selected]="isCurrentChat(user[0])">
                     <app-chat-info
                         [user]="user[1]"
                         (click)="loadChat(user[0])"
                     ></app-chat-info>
+                    <div class="icon-actions">
+                        @if (isOnline(user[1].userId)){
+                            <i class="bi bi-joystick" pTooltip="Chalenge" placeholder="Left" (click)="challengeUserid(user[1].userId)"></i>
+                        }
+                    </div>
                 </div>
             } @empty {
                 Empty list of chats

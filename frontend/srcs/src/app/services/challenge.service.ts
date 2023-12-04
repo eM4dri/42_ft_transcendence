@@ -12,8 +12,8 @@ export class ChallengeService {
     private readonly mysocket: MySocket,
   ) { }
 
-  challenge(userId: string) {
-    this.mysocket.emit('challenge', userId);
+  challengeUserId(userId: string) {
+    this.mysocket.emit('challenge_userid', userId);
   }
 
   rejectChallenge(userId: string) {
@@ -24,8 +24,8 @@ export class ChallengeService {
     this.mysocket.emit('accept_challenge', userId);
   }
 
-  hereComesANewChallenger() {
-    return this.mysocket.fromEvent<string>('here_comes_a_new_challenger').pipe(map((data) => data));
+  hereComesANewChallenger(userId: string) {
+    return this.mysocket.fromEvent<string>(`here_comes_a_new_challenger_for_${userId}`).pipe(map((data) => data));
   }
 
 }
