@@ -21,6 +21,7 @@ import { EventsModule } from 'src/events/events.module';
 import { UserService } from 'src/user/user.service';
 import { stats_user } from "@prisma/client";
 import { StatsService } from '../stats/stats.service'
+import { OnEvent } from '@nestjs/event-emitter';
 
 var paddle_normal_speed: number = 1.25;	//! To change the default paddle speed
 
@@ -114,8 +115,10 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 	async listenForMatchmaking(@GetUser() user: JwtPayload, @ConnectedSocket() socket : Socket, @MessageBody() ismodded: boolean) {
 		if (!ismodded)
 		{
+			console.log("[[1]]")
 			if (!this.matchmaking_queue.has(user.sub))
 			{
+				console.log(this.matchmaking_queue)
 				this.matchmaking_queue.set(user.sub, socket);
 				console.log(">>>>>>>>", user.sub, "\x1b[0;32mJOINED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
 			}
@@ -124,6 +127,7 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		}
 		else
 		{
+			console.log("[[2]]")
 			if (!this.modded_matchmaking_queue.has(user.sub))
 			{
 				this.modded_matchmaking_queue.set(user.sub, socket);
@@ -134,11 +138,13 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		}
 		if (!ismodded && this.matchmaking_queue.size >= 2)
 		{
+			console.log("[[3]]")
 			let  keyblue: string = Array.from(this.matchmaking_queue)[0][0];
 			let  keyred: string = Array.from(this.matchmaking_queue)[1][0];
 			let  valblue: Socket = Array.from(this.matchmaking_queue)[0][1];
 			let  valred: Socket = Array.from(this.matchmaking_queue)[1][1];
-			let roomname: string = `${keyblue}${keyred}`
+			let  randomid: string = (Math.round(Math.random() * 1000000)).toString()
+			let roomname: string = `${keyblue}${keyred}${randomid}`
 			valblue.join(roomname)
 			valred.join(roomname)
 			this.matchmaking_queue.delete(keyblue)
@@ -146,7 +152,7 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 			const prev_blue: stats_user = await this.statsService.getUserStats(keyblue);
 			const prev_red: stats_user = await this.statsService.getUserStats(keyred);
 
-			this.gameService.createMatch(keyblue, keyred, roomname, valblue, valred, ismodded, prev_blue, prev_red);
+			this.gameService.createMatch(keyblue, keyred, roomname, valblue, valred, ismodded, prev_blue, prev_red, false);
 			this.server.to("all_spectators").emit('gamelist', new GameList(this.allgames))
 			let userid_list = []
 			this.allgames.forEach((value: Game, key: number) =>
@@ -158,6 +164,7 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		}
 		else if (ismodded && this.modded_matchmaking_queue.size >= 2)
 		{
+			console.log("[[4]]")
 			let  keyblue: string = Array.from(this.modded_matchmaking_queue)[0][0];
 			let  keyred: string = Array.from(this.modded_matchmaking_queue)[1][0];
 			let  valblue: Socket = Array.from(this.modded_matchmaking_queue)[0][1];
@@ -170,7 +177,7 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 			const prev_blue: stats_user = await this.statsService.getUserStats(keyblue);
 			const prev_red: stats_user = await this.statsService.getUserStats(keyred);
 
-			this.gameService.createMatch(keyblue, keyred, roomname, valblue, valred, ismodded, prev_blue, prev_red);
+			this.gameService.createMatch(keyblue, keyred, roomname, valblue, valred, ismodded, prev_blue, prev_red, false);
 			this.server.to("all_spectators").emit('gamelist', new GameList(this.allgames))
 			let userid_list = []
 			this.allgames.forEach((value: Game, key: number) =>
@@ -180,6 +187,7 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 			})
 			this._usersToCacheIndividual_byRoom("all_spectators", userid_list)
 		}
+
 	}
 
 
@@ -231,6 +239,7 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		
 	}
 
+
 	@SubscribeMessage('matchongoing')
 	listenForMatchOngoing(@GetUser() user: JwtPayload, @ConnectedSocket() socket : Socket){
 		
@@ -250,6 +259,20 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 			}
 		});
 	}
+
+	@OnEvent('startChallenge')
+	public async startChallenge(blueid: string, redid: string, bluesocket: Socket, redsocket: Socket, ismodded: boolean)
+	{
+		let  randomid: string = (Math.round(Math.random() * 1000000)).toString()
+		let roomname: string = `${blueid}${redid}${randomid}`;
+		bluesocket.join(roomname)
+		redsocket.join(roomname)
+		const prev_blue: stats_user = await this.statsService.getUserStats(blueid);
+		const prev_red: stats_user = await this.statsService.getUserStats(redid);
+
+		this.gameService.createMatch(blueid, redid, roomname, bluesocket, redsocket, ismodded, prev_blue, prev_red, true);
+	}
+
 
 	afterInit(){
 		setInterval(() => {

@@ -746,7 +746,6 @@ function updater(){
 		paddledirection = 0;
 	if (last_paddledirection != paddledirection)
 	{
-		console.log(paddledirection);
 		gcomp.sendKeypress(paddledirection);
 	}
 	

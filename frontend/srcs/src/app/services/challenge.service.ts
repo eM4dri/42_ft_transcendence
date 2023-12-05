@@ -28,6 +28,11 @@ export class ChallengeService {
     return this.mysocket.fromEvent<string>(`here_comes_a_new_challenger_for_${userId}`).pipe(map((data) => data));
   }
 
+  startChallenge_front() {
+    return this.mysocket.fromEvent<boolean>('challengeStart').pipe(map((data) => data));
+  }
+
+
 }
 
 

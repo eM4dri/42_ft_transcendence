@@ -1,8 +1,9 @@
 import { Component, OnInit, TemplateRef, inject } from '@angular/core';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ChallengeInfoComponent } from '../challenge-info/challenge-info.component';
 import { ChallengeService } from 'src/app/services/challenge.service';
 import { AuthService } from 'src/app/services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-challenge',
@@ -14,30 +15,33 @@ export class ChallengeComponent implements OnInit{
   private challengeService = inject(ChallengeService);
   private authService = inject(AuthService);
   closeResult = '';
+  modalReference: NgbModalRef[] = [];
 
   ngOnInit(): void {
     this.challengeService.hereComesANewChallenger(this.authService.getMyUserId()).subscribe(newChallengerUserId => {
       this.openModal(newChallengerUserId);
     });
+  
+  }
+
+  constructor(private readonly router: Router)
+  {
+
+    this.challengeService.startChallenge_front().subscribe(ctrl => {
+      if (ctrl) {
+        for (const modal of this.modalReference){
+          modal.close();
+        }
+        this.modalReference = [];
+        router.navigate(["/game"]);
+      }
+    });
   }
 
   openModal(newChallengerUserId: string) {
-    const modalRef = this.modalService.open(ChallengeInfoComponent);
-    modalRef.componentInstance.newChallengerUserId = newChallengerUserId;
-    // Optional: Pass data to the modal component if needed
-    // modalRef.componentInstance.someData = someValue;
-  
-    // Optional: Handle modal result
-    modalRef.result.then(
-      (result) => {
-        console.log(`Modal closed with result: ${result}`);
-      },
-      (reason) => {
-        console.log(`Modal dismissed with reason: ${reason}`);
-      }
-    );
+    this.modalReference.push(this.modalService.open(ChallengeInfoComponent));
+    this.modalReference[0].componentInstance.newChallengerUserId = newChallengerUserId;
   }
-  
   
   
   open(content: TemplateRef<any>) {

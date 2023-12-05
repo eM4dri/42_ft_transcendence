@@ -20,10 +20,9 @@ import { ChannelService } from 'src/channel/channel.service';
 import { CreateChannelMessageDto, JoinChannelDto, ResponseChannelDto, ResponseChannelUserDto } from 'src/channel/dto';
 import { UserService } from 'src/user/user.service';
 import { ChannelUser } from '@prisma/client';
-import { OnEvent } from '@nestjs/event-emitter';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { UserFriendsService } from 'src/user/friends/user.friends.service';
 import { ResponseUserMinDto } from 'src/user/dto';
-
 
 // https://www.makeuseof.com/build-real-time-chat-api-using-websockets-nestjs/
 @WebSocketGateway({
@@ -42,7 +41,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         private readonly channelService: ChannelService,
         private readonly blockService: BlockService,
         private readonly userfriendsService: UserFriendsService,
-        private readonly userService: UserService
+        private readonly userService: UserService,
+        private readonly eventEmitter: EventEmitter2   
     ){}
     @WebSocketServer( )
     server: Server;
@@ -254,8 +254,9 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
 
     @SubscribeMessage('accept_challenge')
     async acceptChallenge(@GetUser() user: JwtPayload ,@ConnectedSocket() socket : Socket, @MessageBody() challengeUserId: string) {
-        console.log('challenged user socket', user.sub, socket);
-        console.log('challenger user socket', challengeUserId, this.socketsMap.get(challengeUserId));
+        socket.emit("challengeStart", true)
+        this.socketsMap.get(challengeUserId).emit("challengeStart", true)
+        this.eventEmitter.emit('startChallenge', user.sub, challengeUserId, socket, this.socketsMap.get(challengeUserId),false);  
     }
 
     @SubscribeMessage('reject_challenge')

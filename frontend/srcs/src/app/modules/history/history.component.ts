@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { HistoricTableComponent } from 'src/app/components/historic-table/historic-table.component';
 import { NgModule } from '@angular/core';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-history',
@@ -12,6 +13,6 @@ export class HistoryComponent { }
 
 @NgModule({
   declarations: [HistoryComponent, HistoricTableComponent],
-  imports: [CommonModule],
+  imports: [CommonModule, TooltipModule],
 })
 export class HistoryModule { }

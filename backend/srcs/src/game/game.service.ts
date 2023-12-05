@@ -83,7 +83,8 @@ export class Game
 	prev_blue_stats: stats_user;
 	prev_red_stats: stats_user;
 	spectators: number = 0;
-	constructor(newid: number, _blueid: string, _redid: string, _room: string, _waitEnd: number, _bluesocket: Socket, _redsocket: Socket, ismodded: boolean, prev_blue: stats_user, prev_red: stats_user)
+	friendlygame: boolean = false;
+	constructor(newid: number, _blueid: string, _redid: string, _room: string, _waitEnd: number, _bluesocket: Socket, _redsocket: Socket, ismodded: boolean, prev_blue: stats_user, prev_red: stats_user, friendlygame: boolean)
 	{
 		this.id = newid;
 		this.blueid = _blueid;
@@ -103,6 +104,8 @@ export class Game
 		this.modsenabled = ismodded;
 		this.prev_blue_stats = prev_blue;
 		this.prev_red_stats = prev_red;
+		this.friendlygame = friendlygame;
+
 	}
 	status: number = gameStatus.pregame;
 	waitEnd: number = 6000;
@@ -128,6 +131,7 @@ class GameZIP
 	status: number = gameStatus.pregame;
 	waitEnd: number = 6000;
 	spectators: number;
+	friendlygame: boolean;
 	constructor(orig: Game)
 	{
 		this.id = orig.id;
@@ -147,6 +151,7 @@ class GameZIP
 		this.status = orig.status;
 		this.waitEnd = orig.waitEnd - Date.now();
 		this.spectators = orig.spectators;
+		this.friendlygame = orig.friendlygame;
 	}
 }
 
@@ -172,7 +177,6 @@ class GameList {
 	constructor(themap: Map<number, Game>)
 	{
 		this.finalist = []
-//		this.finalist.push(new GameItem(8766, "I'm BLUE", "I'm RED", 2, 4, 87, "roooommmm"))	//! DELETE
 		themap.forEach((value: Game, key: number) =>
 		{
 			this.finalist.push(new GameItem(key, value.blueid, value.redid, value.bluescore, value.redscore, value.gametime, value.room, value.modsenabled))
@@ -210,29 +214,21 @@ export class GameService {
 		// this.allgames.set(new, new Game(newuid))
 	}
 
-	public	createMatch(blueid: string, redid: string, room: string, bluesocket: Socket, redsocket: Socket, ismodded: boolean, prev_blue: stats_user, prev_red: stats_user)
+	public	createMatch(blueid: string, redid: string, room: string, bluesocket: Socket, redsocket: Socket, ismodded: boolean, prev_blue: stats_user, prev_red: stats_user, friendlygame: boolean)
 	{
 		let current_time: number = Date.now();
 		let newuid = Math.round(Math.random() * 100000);
 		
-		this.allgames.set(newuid, new Game(newuid, blueid, redid, room, current_time + 6000, bluesocket, redsocket, ismodded, prev_blue, prev_red))
+		this.allgames.set(newuid, new Game(newuid, blueid, redid, room, current_time + 6000, bluesocket, redsocket, ismodded, prev_blue, prev_red, friendlygame))
 		bluesocket.emit('teamblue', true)
 		redsocket.emit('teamblue', false)
 	}
-	
-	// async getStats(game: Game): Promise<Game>
-	// {
-	// 	game.prev_blue_stats = await this.statsService.getUserStats(game.blueid);
-	// 	game.prev_red_stats = await this.statsService.getUserStats(game.blueid);
-	// 	return (game)
-	// }
 
 	public  mainLoop(server: Server): Map<number, Game>
 	{
 		let current_time: number = Date.now();
 		this.allgames.forEach((value: Game, key: number) =>
 		{
-//			console.log(value.status)
 			value.ball.just_collided = false;
 			if (value.waitEnd >= current_time)		//?		Waiting for something. Wait hasn't ended yet.
 			{
@@ -280,10 +276,10 @@ export class GameService {
 						winLocal: value.bluescore > value.redscore,
 						winVisitor: value.bluescore < value.redscore,
 						draw: value.bluescore == value.redscore,
-						pointsLocal: 50 * (value.bluescore > value.redscore ? 1 : 0) + 20 * (value.bluescore == value.redscore ? 1 : 0) + value.bluescore,
-						pointsVisitor: 50 * (value.redscore > value.bluescore ? 1 : 0) + 20 * (value.redscore == value.bluescore ? 1 : 0) + value.redscore,
+						pointsLocal: value.friendlygame ? 0 : (50 * (value.bluescore > value.redscore ? 1 : 0) + 20 * (value.bluescore == value.redscore ? 1 : 0) + value.bluescore),
+						pointsVisitor: value.friendlygame ? 0 : (50 * (value.redscore > value.bluescore ? 1 : 0) + 20 * (value.redscore == value.bluescore ? 1 : 0) + value.redscore),
 						modded: value.modsenabled,
-						competitive: true,
+						competitive: !value.friendlygame,
 					}
 					
 					this.historicGamesService.post_historic(newHistoricGame);
@@ -296,7 +292,7 @@ export class GameService {
 						goalsFavor: value.bluescore,
 						goalsAgainst: value.redscore,
 						disconect: false,
-						points: 50 * (value.bluescore > value.redscore ? 1 : 0) + 20 * (value.bluescore == value.redscore ? 1 : 0) + value.bluescore
+						points: value.friendlygame ? 0 : (50 * (value.bluescore > value.redscore ? 1 : 0) + 20 * (value.bluescore == value.redscore ? 1 : 0) + value.bluescore)
 
 					}
 					this.statsService.update_stats(newStat_blue);
@@ -309,7 +305,7 @@ export class GameService {
 						goalsFavor: value.redscore,
 						goalsAgainst: value.bluescore,
 						disconect: false,
-						points: 50 * (value.bluescore < value.redscore ? 1 : 0) + 20 * (value.bluescore == value.redscore ? 1 : 0) + value.redscore
+						points: value.friendlygame ? 0 : (50 * (value.bluescore < value.redscore ? 1 : 0) + 20 * (value.bluescore == value.redscore ? 1 : 0) + value.redscore)
 
 					}
 					this.statsService.update_stats(newStat_red);
