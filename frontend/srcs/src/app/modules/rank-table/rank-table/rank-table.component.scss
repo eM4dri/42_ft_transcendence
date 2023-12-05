@@ -1,0 +1,31 @@
+
+.table{
+  --bs-table-bg: var(--bg-secondary);
+  --bs-table-striped-bg: var(--bg-primary);
+  --bs-table-color: var(--text-secondary);
+  --bs-table-striped-color: var(--text-primary);
+}
+
+input{
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+ ::placeholder {
+  color: var(--text-primarya)
+ }
+
+ input:focus{
+  background-color: var(--bg-primary);
+  color: var(--text-primary)
+}
+
+td {
+  text-align: center;
+}
+
+th {
+  text-align: center;
+  background-color: var(--bg-secondary)
+}

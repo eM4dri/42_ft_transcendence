@@ -2,329 +2,197 @@
     <ul class="navbar-nav">
 
         <li class="nav-item" [ngClass]="{ 'active': selectedNavItem === 'home' ||  selectedNavItem === 'game' }">
-        <a (click)="goToHome()" class="nav-link">
-            <svg
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fad"
-            data-icon="controller"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 640 512"
-            class="svg-inline--fa fa-controller fa-w-16 fa-9x"
-            >
-            <g>
-                <path
-                fill="currentColor"
-                d="M192 64C86 64 0 150 0 256S86 448 192 448H448c106 0 192-86 192-192s-86-192-192-192H192z M496 168a40 40 0 1 1 0 80 40 40 0 1 1 0-80zM392 304a40 40 0 1 1 80 0 40 40 0 1 1 -80 0z"
-                class="fa-secondary"
-                ></path>
-                <path
-                fill="currentColor"
-                d="M168 200c0-13.3 10.7-24 24-24s24 10.7 24 24v32h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H216v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h32V200z"
-                class="fa-primary"
-                ></path>
-            </g>
-            </svg>
-            <span class="link-text">Play</span>
-          </a>
+            <a (click)="goToHome()" class="nav-link">
+                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="controller" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
+                    class="svg-inline--fa fa-controller fa-w-16 fa-9x">
+                    <g>
+                        <path fill="currentColor"
+                            d="M192 64C86 64 0 150 0 256S86 448 192 448H448c106 0 192-86 192-192s-86-192-192-192H192z M496 168a40 40 0 1 1 0 80 40 40 0 1 1 0-80zM392 304a40 40 0 1 1 80 0 40 40 0 1 1 -80 0z"
+                            class="fa-secondary"></path>
+                        <path fill="currentColor"
+                            d="M168 200c0-13.3 10.7-24 24-24s24 10.7 24 24v32h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H216v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h32V200z"
+                            class="fa-primary"></path>
+                    </g>
+                </svg>
+                <span class="link-text">Play</span>
+            </a>
         </li>
 
         <li class="nav-item">
-        <a class="nav-link">
-            <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 576 512"
-            >
-            <g>
-                <path
-                fill="currentColor"
-                d="M353.8 54.1L330.2 6.3c-3.9-8.3-16.1-8.6-20.4 0L286.2 54.1l-52.3 7.5c-9.3 1.4-13.3 12.9-6.4 19.8l38 37-9 52.1c-1.4 9.3 8.2 16.5 16.8 12.2l46.9-24.8 46.6 24.4c8.6 4.3 18.3-2.9 16.8-12.2l-9-52.1 38-36.6c6.8-6.8 2.9-18.3-6.4-19.8l-52.3-7.5z
+            <a (click)="goToRank()" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                    <g>
+                        <path fill="currentColor"
+                            d="M353.8 54.1L330.2 6.3c-3.9-8.3-16.1-8.6-20.4 0L286.2 54.1l-52.3 7.5c-9.3 1.4-13.3 12.9-6.4 19.8l38 37-9 52.1c-1.4 9.3 8.2 16.5 16.8 12.2l46.9-24.8 46.6 24.4c8.6 4.3 18.3-2.9 16.8-12.2l-9-52.1 38-36.6c6.8-6.8 2.9-18.3-6.4-19.8l-52.3-7.5z
                 M32 320c-17.7 0-32 14.3-32 32V480c0 17.7 14.3 32 32 32H160c17.7 0 32-14.3 32-32V352c0-17.7-14.3-32-32-32H32z
                 m416 96v64c0 17.7 14.3 32 32 32H608c17.7 0 32-14.3 32-32V416c0-17.7-14.3-32-32-32H480c-17.7 0-32 14.3-32 32z"
-                class="fa-secondary"
-                ></path>
-                <path
-                fill="currentColor"
-                d="M256 256c-17.7 0-32 14.3-32 32V480c0 17.7 14.3 32 32 32H384c17.7 0 32-14.3 32-32V288c0-17.7-14.3-32-32-32H256z"
-                class="fa-primary"
-                ></path>
-            </g>
-            </svg>
-            <span class="link-text">Rank</span>
-        </a>
+                            class="fa-secondary"></path>
+                        <path fill="currentColor"
+                            d="M256 256c-17.7 0-32 14.3-32 32V480c0 17.7 14.3 32 32 32H384c17.7 0 32-14.3 32-32V288c0-17.7-14.3-32-32-32H256z"
+                            class="fa-primary"></path>
+                    </g>
+                </svg>
+                <span class="link-text">Rank</span>
+            </a>
         </li>
 
         <li class="nav-item" [ngClass]="{ 'active': selectedNavItem === 'history' }">
-        <a (click)="goToHistory()" class="nav-link">
-            <svg
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fad"
-            data-icon="space-station-moon-alt"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-            class="svg-inline--fa fa-space-station-moon-alt fa-w-16 fa-5x"
-            >
-            <g>
-                <path
-                fill="currentColor"
-                d="M501.70312,224H448V160H368V96h48V66.67383A246.86934,246.86934,0,0,0,256,8C119.03125,8,8,119.0332,8,256a250.017,250.017,0,0,0,1.72656,28.26562C81.19531,306.76953,165.47656,320,256,320s174.80469-13.23047,246.27344-35.73438A250.017,250.017,0,0,0,504,256,248.44936,248.44936,0,0,0,501.70312,224ZM192,240a80,80,0,1,1,80-80A80.00021,80.00021,0,0,1,192,240ZM384,343.13867A940.33806,940.33806,0,0,1,256,352c-87.34375,0-168.71094-11.46094-239.28906-31.73633C45.05859,426.01953,141.29688,504,256,504a247.45808,247.45808,0,0,0,192-91.0918V384H384Z"
-                class="fa-secondary"
-                ></path>
-                <path
-                fill="currentColor"
-                d="M256,320c-90.52344,0-174.80469-13.23047-246.27344-35.73438a246.11376,246.11376,0,0,0,6.98438,35.998C87.28906,340.53906,168.65625,352,256,352s168.71094-11.46094,239.28906-31.73633a246.11376,246.11376,0,0,0,6.98438-35.998C430.80469,306.76953,346.52344,320,256,320Zm-64-80a80,80,0,1,0-80-80A80.00021,80.00021,0,0,0,192,240Zm0-104a24,24,0,1,1-24,24A23.99993,23.99993,0,0,1,192,136Z"
-                class="fa-primary"
-                ></path>
-            </g>
-            </svg>
-            <span class="link-text">History</span>
-        </a>
+            <a (click)="goToHistory()" class="nav-link">
+                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="space-station-moon-alt"
+                    role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                    class="svg-inline--fa fa-space-station-moon-alt fa-w-16 fa-5x">
+                    <g>
+                        <path fill="currentColor"
+                            d="M501.70312,224H448V160H368V96h48V66.67383A246.86934,246.86934,0,0,0,256,8C119.03125,8,8,119.0332,8,256a250.017,250.017,0,0,0,1.72656,28.26562C81.19531,306.76953,165.47656,320,256,320s174.80469-13.23047,246.27344-35.73438A250.017,250.017,0,0,0,504,256,248.44936,248.44936,0,0,0,501.70312,224ZM192,240a80,80,0,1,1,80-80A80.00021,80.00021,0,0,1,192,240ZM384,343.13867A940.33806,940.33806,0,0,1,256,352c-87.34375,0-168.71094-11.46094-239.28906-31.73633C45.05859,426.01953,141.29688,504,256,504a247.45808,247.45808,0,0,0,192-91.0918V384H384Z"
+                            class="fa-secondary"></path>
+                        <path fill="currentColor"
+                            d="M256,320c-90.52344,0-174.80469-13.23047-246.27344-35.73438a246.11376,246.11376,0,0,0,6.98438,35.998C87.28906,340.53906,168.65625,352,256,352s168.71094-11.46094,239.28906-31.73633a246.11376,246.11376,0,0,0,6.98438-35.998C430.80469,306.76953,346.52344,320,256,320Zm-64-80a80,80,0,1,0-80-80A80.00021,80.00021,0,0,0,192,240Zm0-104a24,24,0,1,1-24,24A23.99993,23.99993,0,0,1,192,136Z"
+                            class="fa-primary"></path>
+                    </g>
+                </svg>
+                <span class="link-text">History</span>
+            </a>
         </li>
 
         <li class="nav-item" [ngClass]="{ 'active': selectedNavItem === 'chat' }">
-        <a (click)="openChat()" class="nav-link">
-            <svg
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fad"
-            data-icon="comments-o"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 640 512"
-            class="svg-inline--fa fa-comments-o fa-w-20 fa-5x"
-            >
-            <g>
-                <path
-                fill="currentColor"
-                d="M208 352c114.9 0 208-78.8 208-176S322.9 0 208 0S0 78.8 0 176c0 38.6 14.7 74.3 39.6 103.4c-3.5 9.4-8.7 17.7-14.2 24.7c-4.8 6.2-9.7 11-13.3 14.3c-1.8 1.6-3.3 2.9-4.3 3.7c-.5 .4-.9 .7-1.1 .8l-.2 .2 0 0 0 0C1 327.2-1.4 334.4 .8 340.9S9.1 352 16 352c21.8 0 43.8-5.6 62.1-12.5c9.2-3.5 17.8-7.4 25.3-11.4C134.1 343.3 169.8 352 208 352z"
-                class="fa-secondary"
-                ></path>
-                <path
-                fill="currentColor"
-                d="M448 176c0 112.3-99.1 196.9-216.5 207C255.8 457.4 336.4 512 432 512c38.2 0 73.9-8.7 104.7-23.9c7.5 4 16 7.9 25.2 11.4c18.3 6.9 40.3 12.5 62.1 12.5c6.9 0 13.1-4.5 15.2-11.1c2.1-6.6-.2-13.8-5.8-17.9l0 0 0 0-.2-.2c-.2-.2-.6-.4-1.1-.8c-1-.8-2.5-2-4.3-3.7c-3.6-3.3-8.5-8.1-13.3-14.3c-5.5-7-10.7-15.4-14.2-24.7c24.9-29 39.6-64.7 39.6-103.4c0-92.8-84.9-168.9-192.6-175.5c.4 5.1 .6 10.3 .6 15.5z"
-                class="fa-primary"
-                ></path>
-            </g>
-            </svg>
-            <span class="link-text">Chat</span>
-        </a>
+            <a (click)="openChat()" class="nav-link">
+                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="comments-o" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
+                    class="svg-inline--fa fa-comments-o fa-w-20 fa-5x">
+                    <g>
+                        <path fill="currentColor"
+                            d="M208 352c114.9 0 208-78.8 208-176S322.9 0 208 0S0 78.8 0 176c0 38.6 14.7 74.3 39.6 103.4c-3.5 9.4-8.7 17.7-14.2 24.7c-4.8 6.2-9.7 11-13.3 14.3c-1.8 1.6-3.3 2.9-4.3 3.7c-.5 .4-.9 .7-1.1 .8l-.2 .2 0 0 0 0C1 327.2-1.4 334.4 .8 340.9S9.1 352 16 352c21.8 0 43.8-5.6 62.1-12.5c9.2-3.5 17.8-7.4 25.3-11.4C134.1 343.3 169.8 352 208 352z"
+                            class="fa-secondary"></path>
+                        <path fill="currentColor"
+                            d="M448 176c0 112.3-99.1 196.9-216.5 207C255.8 457.4 336.4 512 432 512c38.2 0 73.9-8.7 104.7-23.9c7.5 4 16 7.9 25.2 11.4c18.3 6.9 40.3 12.5 62.1 12.5c6.9 0 13.1-4.5 15.2-11.1c2.1-6.6-.2-13.8-5.8-17.9l0 0 0 0-.2-.2c-.2-.2-.6-.4-1.1-.8c-1-.8-2.5-2-4.3-3.7c-3.6-3.3-8.5-8.1-13.3-14.3c-5.5-7-10.7-15.4-14.2-24.7c24.9-29 39.6-64.7 39.6-103.4c0-92.8-84.9-168.9-192.6-175.5c.4 5.1 .6 10.3 .6 15.5z"
+                            class="fa-primary"></path>
+                    </g>
+                </svg>
+                <span class="link-text">Chat</span>
+            </a>
         </li>
 
         <li class="nav-item" [ngClass]="{ 'active': selectedNavItem === 'profile' }">
             <a (click)="goToProfile()" class="nav-link">
-                <svg
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="fad"
-                data-icon="robot"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 640 512"
-                >
-                <g>
-                    <path
-                    fill="currentColor"
-                    d="M320 0c17.7 0 32 14.3 32 32V96H472c39.8 0 72 32.2 72 72V440c0 39.8-32.2 72-72 72H168c-39.8 0-72-32.2-72-72V168c0-39.8 32.2-72 72-72H288V32c0-17.7 14.3-32 32-32zM264 256a40 40 0 1 0 -80 0 40 40 0 1 0 80 0zm152 40a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"
-                    class="fa-secondary"
-                    ></path>
-                    <path
-                    fill="currentColor"
-                    d="M208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM48 224H64V416H48c-26.5 0-48-21.5-48-48V272c0-26.5 21.5-48 48-48zm544 0c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H576V224h16z"
-                    class="fa-primary"
-                    ></path>
-                </g>
-            </svg>
-            <span class="link-text">Profile</span>
-        </a>
-    </li>
+                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="robot" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                    <g>
+                        <path fill="currentColor"
+                            d="M320 0c17.7 0 32 14.3 32 32V96H472c39.8 0 72 32.2 72 72V440c0 39.8-32.2 72-72 72H168c-39.8 0-72-32.2-72-72V168c0-39.8 32.2-72 72-72H288V32c0-17.7 14.3-32 32-32zM264 256a40 40 0 1 0 -80 0 40 40 0 1 0 80 0zm152 40a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"
+                            class="fa-secondary"></path>
+                        <path fill="currentColor"
+                            d="M208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM48 224H64V416H48c-26.5 0-48-21.5-48-48V272c0-26.5 21.5-48 48-48zm544 0c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H576V224h16z"
+                            class="fa-primary"></path>
+                    </g>
+                </svg>
+                <span class="link-text">Profile</span>
+            </a>
+        </li>
 
 
-    <li class="nav-item" [ngClass]="{ 'active': selectedNavItem === 'live' }">
-        <a (click)="openSpectate()" class="nav-link">
-            <svg
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fad"
-            data-icon="robot"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            >
-            <g>
-                <path
-                fill="currentColor"
-                d="
+        <li class="nav-item" [ngClass]="{ 'active': selectedNavItem === 'live' }">
+            <a (click)="openSpectate()" class="nav-link">
+                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="robot" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <g>
+                        <path fill="currentColor" d="
                 M13.4163 6.00011L15.5695 3.48811C15.839 3.17361 15.8026 2.70014 15.4881 2.43057C15.1736 2.161 14.7001 2.19743 14.4306 2.51192L12 5.34757L9.56946 2.51192C9.29989 2.19743 8.82641 2.16101 8.51192 2.43057C8.19743 2.70014 8.161 3.17361 8.43057 3.48811L10.5837 6.00011H13.4163Z
                 M22 11.9998V15.9998C22 18.8282 22 20.2424 21.1213 21.1211C20.296 21.9464 18.9983 21.9966 16.5 21.9996H16V6H16.5C18.9983 6.00305 20.296 6.05318 21.1213 6.87848C22 7.75716 22 9.17138 22 11.9998Z
-                "
-                class="fa-primary"
-                ></path>
-                <path
-                fill="currentColor"
-                d="
+                " class="fa-primary"></path>
+                        <path fill="currentColor" d="
                 M16 6H13.4163H10.5837H8C5.17157 6 3.75736 6 2.87868 6.87868C2 7.75736 2 9.17157 2 12V16C2 18.8284 2 20.2426 2.87868 21.1213C3.75736 22 5.17157 22 8 22L16 22V6Z                    
                 M19 11C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13C18.4477 13 18 12.5523 18 12C18 11.4477 18.4477 11 19 11Z                    
                 M19 15C19.5523 15 20 15.4477 20 16C20 16.5523 19.5523 17 19 17C18.4477 17 18 16.5523 18 16C18 15.4477 18.4477 15 19 15Z  
-                "
-                class="fa-secondary"
-                ></path>          
-            
-            </g>
-            </svg>
-            <span class="link-text">Live</span>
-        </a>
+                " class="fa-secondary"></path>
+
+                    </g>
+                </svg>
+                <span class="link-text">Live</span>
+            </a>
         </li>
 
-            <li class="nav-item" [ngClass]="{ 'active': selectedNavItem === 'friends' }">
-                <a (click)="openFriendsList()" class="nav-link">
-                    <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    data-prefix="fad"
-                    data-icon="robot"
-                    role="img"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    >
+        <li class="nav-item" [ngClass]="{ 'active': selectedNavItem === 'friends' }">
+            <a (click)="openFriendsList()" class="nav-link">
+                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="robot" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <g>
-                        <path
-                        fill="currentColor"
-                        d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
-                        class="fa-primary"
-                        ></path>
-                        <path
-                        fill="currentColor"
-                        d="M16.5 13.2871C14.0251 10.5713 11 12.5746 11 15.3995C11 17.9583 12.814 19.4344 14.3584 20.6912L14.4018 20.7265C14.5474 20.8449 14.6903 20.9615 14.829 21.0769C15.4 21.5523 15.95 22 16.5 22C17.05 22 17.6 21.5523 18.171 21.0769C19.7893 19.7296 22 18.2243 22 15.3995C22 14.4715 21.6735 13.6321 21.1474 13.0197C20.0718 11.7677 18.1619 11.4635 16.5 13.2871Z"
-                        class="fa-secondary"
-                        ></path>          
-                    
+                        <path fill="currentColor"
+                            d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                            class="fa-primary"></path>
+                        <path fill="currentColor"
+                            d="M16.5 13.2871C14.0251 10.5713 11 12.5746 11 15.3995C11 17.9583 12.814 19.4344 14.3584 20.6912L14.4018 20.7265C14.5474 20.8449 14.6903 20.9615 14.829 21.0769C15.4 21.5523 15.95 22 16.5 22C17.05 22 17.6 21.5523 18.171 21.0769C19.7893 19.7296 22 18.2243 22 15.3995C22 14.4715 21.6735 13.6321 21.1474 13.0197C20.0718 11.7677 18.1619 11.4635 16.5 13.2871Z"
+                            class="fa-secondary"></path>
+
                     </g>
-                    </svg>
-                    <span class="link-text">Friends</span>
-                </a>
-                </li>
+                </svg>
+                <span class="link-text">Friends</span>
+            </a>
+        </li>
 
 
-                
+
         <li *ngIf="isAdmin()" class="nav-item" [ngClass]="{ 'active': selectedNavItem === 'chat' }">
-        <a (click)="openAdministration()" class="nav-link">
-            <svg
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fad"
-            data-icon="robot"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 640 512"
-            >
-            <g>
-                <path
-                fill="currentColor"
-                d="
+            <a (click)="openAdministration()" class="nav-link">
+                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="robot" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                    <g>
+                        <path fill="currentColor" d="
                 M268.9 .9c-5.5-.7-11 1.4-14.5 5.7s-4.6 10.1-2.8 15.4c2.8 8.2 4.3 16.9 4.3 26.1c0 44.1-35.7 79.9-79.8 80H160c-35.3 0-64 28.7-64 64c0 19.1 8.4 36.3 21.7 48H104c-39.8 0-72 32.2-72 72c0 23.2 11 43.8 28 57c-34.1 5.7-60 35.3-60 71c0 39.8 32.2 72 72 72H440c39.8 0 72-32.2 72-72c0-35.7-25.9-65.3-60-71c17-13.2 28-33.8 28-57c0-39.8-32.2-72-72-72H394.3c13.3-11.7 21.7-28.9 21.7-48c0-35.3-28.7-64-64-64h-5.5c3.5-10 5.5-20.8 5.5-32c0-48.6-36.2-88.8-83.1-95.1z
                 M192 256a32 32 0 1 1 0 64 32 32 0 1 1 0-64z
                 m96 32a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z
-                "
-                class="fa-primary"
-                ></path>
-                <path
-                fill="currentColor"
-                d="
+                " class="fa-primary"></path>
+                        <path fill="currentColor" d="
                 M268.9 .9c-5.5-.7-11 1.4-14.5 5.7s-4.6 10.1-2.8 15.4c2.8 8.2 4.3 16.9 4.3 26.1c0 44.1-35.7 79.9-79.8 80H160c-35.3 0-64 28.7-64 64c0 19.1 8.4 36.3 21.7 48H104c-39.8 0-72 32.2-72 72c0 23.2 11 43.8 28 57c-34.1 5.7-60 35.3-60 71c0 39.8 32.2 72 72 72H440c39.8 0 72-32.2 72-72c0-35.7-25.9-65.3-60-71c17-13.2 28-33.8 28-57c0-39.8-32.2-72-72-72H394.3c13.3-11.7 21.7-28.9 21.7-48c0-35.3-28.7-64-64-64h-5.5c3.5-10 5.5-20.8 5.5-32c0-48.6-36.2-88.8-83.1-95.1z
                 M192 256a32 32 0 1 1 0 64 32 32 0 1 1 0-64z
                 m96 32a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z
                 m64 108.3c0 2.4-.7 4.8-2.2 6.7c-8.2 10.5-39.5 45-93.8 45s-85.6-34.6-93.8-45c-1.5-1.9-2.2-4.3-2.2-6.7c0-6.8 5.5-12.3 12.3-12.3H339.7c6.8 0 12.3 5.5 12.3 12.3z
-                "
-                class="fa-secondary"
-                ></path>
-            </g>
-            </svg>
-            <span class="link-text">Administration</span>
-        </a>
+                " class="fa-secondary"></path>
+                    </g>
+                </svg>
+                <span class="link-text">Administration</span>
+            </a>
         </li>
         <li class="nav-item" id="themeButton">
-        <a  class="nav-link">
-            <svg *ngIf="!this.appComponent.darkMode" (click)="changeVisibility()"
-            class="theme-icon"
-            id="lightIcon"
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fad"
-            data-icon="moon-stars"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-            class=""
-            >
-            <g >
-                <path
-                fill="currentColor"
-                d="M320 32L304 0l-16 32-32 16 32 16 16 32 16-32 32-16zm138.7 149.3L432 128l-26.7 53.3L352 208l53.3 26.7L432 288l26.7-53.3L512 208z"
-                class="fa-secondary"
-                ></path>
-                <path
-                fill="currentColor"
-                d="M332.2 426.4c8.1-1.6 13.9 8 8.6 14.5a191.18 191.18 0 0 1-149 71.1C85.8 512 0 426 0 320c0-120 108.7-210.6 227-188.8 8.2 1.6 10.1 12.6 2.8 16.7a150.3 150.3 0 0 0-76.1 130.8c0 94 85.4 165.4 178.5 147.7z"
-                class="fa-primary"
-                ></path>
-            </g>
-            </svg>
-            <svg *ngIf="this.appComponent.darkMode" (click)="changeVisibility()"
-            class="theme-icon"
-            id="solarIcon"
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fad"
-            data-icon="sun"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-            class=""
-            >
-            <g >
-                <path
-                fill="currentColor"
-                d="M502.42 240.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.41-94.8a17.31 17.31 0 0 0-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4a17.31 17.31 0 0 0 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.41-33.5 47.3 94.7a17.31 17.31 0 0 0 31 0l47.31-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3a17.33 17.33 0 0 0 .2-31.1zm-155.9 106c-49.91 49.9-131.11 49.9-181 0a128.13 128.13 0 0 1 0-181c49.9-49.9 131.1-49.9 181 0a128.13 128.13 0 0 1 0 181z"
-                class="fa-secondary"
-                ></path>
-                <path
-                fill="currentColor"
-                d="M352 256a96 96 0 1 1-96-96 96.15 96.15 0 0 1 96 96z"
-                class="fa-primary"
-                ></path>
-            </g>
-            </svg>
-            <span class="link-text">
-                <svg (click)="logOut()"
-                class="theme-icon"
-                id="solarIcon"
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="fad"
-                data-icon="sun"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 1069 1069"
-                class=""
-                >
-                <g >
-                    <path
-                    fill="currentColor"
-                    d="M667.318,424.801c27.545,31.216 44.266,72.204 44.266,117.066c-0,97.735 -79.349,177.083 -177.084,177.083c-97.734,0 -177.083,-79.348 -177.083,-177.083c0,-45.331 17.073,-86.707 45.133,-118.042c11.506,-12.849 10.415,-32.621 -2.434,-44.127c-12.848,-11.506 -32.621,-10.415 -44.127,2.433c-37.971,42.404 -61.072,98.393 -61.072,159.736c0,132.23 107.354,239.583 239.583,239.583c132.23,0 239.584,-107.353 239.584,-239.583c-0,-60.709 -22.627,-116.176 -59.901,-158.418c-11.412,-12.933 -31.176,-14.168 -44.109,-2.756c-12.932,11.411 -14.167,31.175 -2.756,44.108Z"
-                    class="fa-secondary"
-                    ></path>
-                    <path
-                    fill="currentColor"
-                    d="M534.5,87.006c-247.211,0 -447.916,200.705 -447.916,447.917c-0,247.212 200.705,447.916 447.916,447.916c247.212,0 447.917,-200.704 447.917,-447.916c0,-247.212 -200.705,-447.917 -447.917,-447.917Zm0,62.5c212.718,0 385.417,172.699 385.417,385.417c0,212.717 -172.699,385.416 -385.417,385.416c-212.717,0 -385.416,-172.699 -385.416,-385.416c-0,-212.718 172.699,-385.417 385.416,-385.417Zm31.25,427.083l0,-250c0,-17.247 -14.002,-31.25 -31.25,-31.25c-17.247,0 -31.25,14.003 -31.25,31.25l0,250c0,17.248 14.003,31.25 31.25,31.25c17.248,0 31.25,-14.002 31.25,-31.25Z"
-                    class="fa-primary"
-                    ></path>
-                </g>
+            <a class="nav-link">
+                <svg *ngIf="!this.appComponent.darkMode" (click)="changeVisibility()" class="theme-icon" id="lightIcon"
+                    aria-hidden="true" focusable="false" data-prefix="fad" data-icon="moon-stars" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="">
+                    <g>
+                        <path fill="currentColor"
+                            d="M320 32L304 0l-16 32-32 16 32 16 16 32 16-32 32-16zm138.7 149.3L432 128l-26.7 53.3L352 208l53.3 26.7L432 288l26.7-53.3L512 208z"
+                            class="fa-secondary"></path>
+                        <path fill="currentColor"
+                            d="M332.2 426.4c8.1-1.6 13.9 8 8.6 14.5a191.18 191.18 0 0 1-149 71.1C85.8 512 0 426 0 320c0-120 108.7-210.6 227-188.8 8.2 1.6 10.1 12.6 2.8 16.7a150.3 150.3 0 0 0-76.1 130.8c0 94 85.4 165.4 178.5 147.7z"
+                            class="fa-primary"></path>
+                    </g>
                 </svg>
-            </span>
-        </a>
+                <svg *ngIf="this.appComponent.darkMode" (click)="changeVisibility()" class="theme-icon" id="solarIcon"
+                    aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sun" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="">
+                    <g>
+                        <path fill="currentColor"
+                            d="M502.42 240.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.41-94.8a17.31 17.31 0 0 0-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4a17.31 17.31 0 0 0 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.41-33.5 47.3 94.7a17.31 17.31 0 0 0 31 0l47.31-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3a17.33 17.33 0 0 0 .2-31.1zm-155.9 106c-49.91 49.9-131.11 49.9-181 0a128.13 128.13 0 0 1 0-181c49.9-49.9 131.1-49.9 181 0a128.13 128.13 0 0 1 0 181z"
+                            class="fa-secondary"></path>
+                        <path fill="currentColor" d="M352 256a96 96 0 1 1-96-96 96.15 96.15 0 0 1 96 96z"
+                            class="fa-primary"></path>
+                    </g>
+                </svg>
+                <span class="link-text">
+                    <svg (click)="logOut()" class="theme-icon" id="solarIcon" aria-hidden="true" focusable="false"
+                        data-prefix="fad" data-icon="sun" role="img" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 1069 1069" class="">
+                        <g>
+                            <path fill="currentColor"
+                                d="M667.318,424.801c27.545,31.216 44.266,72.204 44.266,117.066c-0,97.735 -79.349,177.083 -177.084,177.083c-97.734,0 -177.083,-79.348 -177.083,-177.083c0,-45.331 17.073,-86.707 45.133,-118.042c11.506,-12.849 10.415,-32.621 -2.434,-44.127c-12.848,-11.506 -32.621,-10.415 -44.127,2.433c-37.971,42.404 -61.072,98.393 -61.072,159.736c0,132.23 107.354,239.583 239.583,239.583c132.23,0 239.584,-107.353 239.584,-239.583c-0,-60.709 -22.627,-116.176 -59.901,-158.418c-11.412,-12.933 -31.176,-14.168 -44.109,-2.756c-12.932,11.411 -14.167,31.175 -2.756,44.108Z"
+                                class="fa-secondary"></path>
+                            <path fill="currentColor"
+                                d="M534.5,87.006c-247.211,0 -447.916,200.705 -447.916,447.917c-0,247.212 200.705,447.916 447.916,447.916c247.212,0 447.917,-200.704 447.917,-447.916c0,-247.212 -200.705,-447.917 -447.917,-447.917Zm0,62.5c212.718,0 385.417,172.699 385.417,385.417c0,212.717 -172.699,385.416 -385.417,385.416c-212.717,0 -385.416,-172.699 -385.416,-385.416c-0,-212.718 172.699,-385.417 385.416,-385.417Zm31.25,427.083l0,-250c0,-17.247 -14.002,-31.25 -31.25,-31.25c-17.247,0 -31.25,14.003 -31.25,31.25l0,250c0,17.248 14.003,31.25 31.25,31.25c17.248,0 31.25,-14.002 31.25,-31.25Z"
+                                class="fa-primary"></path>
+                        </g>
+                    </svg>
+                </span>
+            </a>
         </li>
     </ul>
 </nav>

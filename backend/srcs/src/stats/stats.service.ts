@@ -1,7 +1,8 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { Update_statsDto } from "./dto";
+import { Update_statsDto, ResponseStatsDto } from "./dto";
 import { stats_user } from "@prisma/client";
+import { plainToInstance } from 'class-transformer';
 
 
 @Injectable()
@@ -61,13 +62,35 @@ export class StatsService {
     });
   }
 
-  async get_rank_list(skip: number, take: number): Promise<{ skip: number, take: number, result: stats_user[] }> {
-    const result: stats_user[] = await this.prisma.stats_user.findMany({
+  async get_rank_list(): Promise<any> {
+    const result_data: stats_user[] = await this.prisma.stats_user.findMany({
       orderBy: { points: 'desc' },
-      skip: skip,
-      take: take,
     });
-    return { skip: skip, take: take, result: result }
+
+    console.log(result_data)
+    const Ids = Array.from(result_data.map(x => x.userId));
+
+    const users_data = await plainToInstance(ResponseStatsDto, await this.prisma.user.findMany({
+      where: {
+        userId: { in: Ids },
+      },
+    }));
+    const result = await result_data.map((datas) => {
+      const local = users_data.filter((user) => user.userId == datas.userId)[0]
+      return {
+        userId: datas.userId,
+        login: local.username,
+        avatar: local.avatar,
+        gamesWin: datas.gamesWin,
+        gamesLose: datas.gamesLose,
+        gamesDraw: datas.gamesDraw,
+        goalsFavor: datas.goalsFavor,
+        goalsAgainst: datas.goalsAgainst,
+        disconect: datas.disconect,
+        points: datas.points,
+      }
+    })
+    return result;
   }
 
   async get_number_rank_user(): Promise<number> {

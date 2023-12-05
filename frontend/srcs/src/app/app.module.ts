@@ -21,6 +21,10 @@ import { AvatarEditorComponent } from './components/avatar/avatar-editor/avatar-
 import { OtherProfileComponent } from './modules/profile/other-profile.component/other-profile.component';
 import { ProfileAvatarComponent } from './components/avatar/profile-avatar/profile-avatar.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { RankTableModule } from './modules/rank-table/rank-table.module'
+import { RankTableComponent } from './modules/rank-table/rank-table/rank-table.component'
+import { TruncatePipe } from './pipes/truncate.pipe';
+//import { PongTVComponent } from './modules/pongtv/pongtv.component';
 
 
 
@@ -56,10 +60,12 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     FriendListComponent,
     ChatSidebarComponent,
     FriendSidebarComponent,
-    BlockSidebarComponent
-//    PongTVComponent,
+    BlockSidebarComponent,
+    TruncatePipe
+    //    PongTVComponent,
   ],
   imports: [
+    RankTableModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -74,6 +80,7 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     TagModule,
     SplitButtonModule,
     TooltipModule,
+    RankTableModule,
     ChallengeModule
   ],
   providers: [

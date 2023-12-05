@@ -14,6 +14,9 @@ import { Role } from './models';
 import { LoginComponent } from './modules/login/login.component';
 import { SpectateComponent } from './modules/spectate/spectate.component';
 import { FriendListComponent } from './modules/friend-list/friend-list.component';
+import { RankTableModule } from './modules/rank-table/rank-table.module';
+
+import { RankTableComponent } from 'src/app/modules/rank-table/rank-table/rank-table.component'
 
 const routes: Routes = [
   { path: "", redirectTo: "", pathMatch: "full" },
@@ -21,10 +24,11 @@ const routes: Routes = [
   { path: "home", component: HomeComponent, canActivate: [AuthGuard] },
   { path: "game", component: GameComponent, canActivate: [AuthGuard] },
   { path: "game/spectate", component: GameComponent, canActivate: [AuthGuard] },
+  { path: "rank", component: RankTableComponent, canActivate: [AuthGuard] },
   { path: "history", component: HistoryComponent, canActivate: [AuthGuard] },
   { path: "chat", component: ChatComponent, canActivate: [AuthGuard] },
   { path: "profile", component: ProfileComponent, canActivate: [AuthGuard] },
-//  { path: "pongtv", component: PongTVComponent, canActivate: [AuthGuard] },
+  //  { path: "pongtv", component: PongTVComponent, canActivate: [AuthGuard] },
   { path: "profile/:username", component: OtherProfileComponent, canActivate: [AuthGuard] },
   { path: "live", component: SpectateComponent, canActivate: [AuthGuard] },
   { path: "friends", component: FriendListComponent, canActivate: [AuthGuard] },

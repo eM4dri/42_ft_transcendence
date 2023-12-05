@@ -5,10 +5,9 @@ import {
   Controller,
   HttpCode,
   Query,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common';
 import { JwtGuard } from "src/auth/guard";
-
 import {
   ApiBearerAuth,
   ApiOperation,

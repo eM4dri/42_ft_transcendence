@@ -1,8 +1,8 @@
-import { 
-  Component, 
+import {
+  Component,
 } from '@angular/core';
-import { 
-  Router, 
+import {
+  Router,
 } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { AuthService } from 'src/app/services';
@@ -14,12 +14,12 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
-  constructor (
-    private readonly router:Router,
+  constructor(
+    private readonly router: Router,
     public readonly appComponent: AppComponent,
     private readonly authService: AuthService
-    ) {   }
-    
+  ) { }
+
   title: string = 'Clash of Pong';
   selectedNavItem: string = 'home';
   dropdownVisibility: boolean = false;
@@ -43,21 +43,26 @@ export class NavbarComponent {
   }
 
   public goToProfile(): void {
-      this.selectedNavItem = 'profile';
-      this.dropdownVisibility = false;
-      this.router.navigate(['/profile']);
+    this.selectedNavItem = 'profile';
+    this.dropdownVisibility = false;
+    this.router.navigate(['/profile']);
+  }
+
+  public goToRank(): void {
+    this.selectedNavItem = 'rank';
+    this.router.navigate(['/rank']);
   }
 
   public openChat(): void {
     this.selectedNavItem = 'chat';
     this.router.navigate(['/chat']);
   }
-  
+
   public openAdministration(): void {
     this.selectedNavItem = 'administration';
     this.router.navigate(['/administration']);
   }
- 
+
   public openSpectate(): void {
     this.selectedNavItem = 'live';
     this.router.navigate(['/live']);

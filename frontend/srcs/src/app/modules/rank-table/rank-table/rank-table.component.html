@@ -1,0 +1,35 @@
+<h3>rank-table</h3>
+<form>
+	<div class="mb-3 row">
+		<label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Player search:</label>
+		<div class="col-xs-3 col-sm-auto">
+		  <input id="rank-table-filtering-search" class="form-control" name="filterPost" type="text" placeholder="Search..." [(ngModel)]='filterPost' />
+		</div>
+	</div>
+</form>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col" >Name</th>
+			<th scope="col" >Points</th>
+			<th scope="col" >Goals</th>
+		</tr>
+	</thead>
+	<tbody>
+  <tr *ngFor="let rank of rank_ext | filter:filterPost; let i = index;">
+    <td scope="row">{{ rank.position + 1 }}</td>
+    <td scope="rox">
+    @if( rank.position === 0) { 1  
+    } @else if(rank.position === 1){  2  
+    } @else if(rank.position === 2){ 3  }
+      <img src={{rank.avatar}} class="me-2" style="width: 25px"/>
+      {{rank.login}}
+    </td>
+    <td scope="row">{{rank.points}}</td>
+    <td scope="row">{{rank.goalsFavor}}</td>
+
+  </tr>
+	</tbody>
+</table>	 
+

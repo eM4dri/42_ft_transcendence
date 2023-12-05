@@ -29,7 +29,7 @@ import { stats_user } from "@prisma/client";
 @Injectable()
 @UseGuards(JwtGuard)
 export class StatsController {
-  constructor(private StatsService: StatsService) {}
+  constructor(private StatsService: StatsService) { }
 
   @Get()
   @ApiOperation({ description: "Get stats from one user" })
@@ -103,33 +103,9 @@ export class StatsController {
 
   @Get("rank")
   @ApiOperation({ description: "Get rank list" })
-  @ApiQuery({ name: "skip", required: false, type: Number })
-  @ApiQuery({ name: "take", required: false, type: Number })
-  async get_rank_list(
-    @Query("skip") skip?: number,
-    @Query("take") take?: number,
-  ): Promise<{ skip: number; take: number; result: stats_user[] }> {
-    const t = await this.StatsService.get_number_rank_user();
-
-    if (isNaN(skip) || isNaN(take)) {
-      skip = 0;
-      take = 10;
-    }
-
-    if (skip < 0 || take < 0) {
-      skip = 0;
-      take = 10;
-    }
-
-    if ((skip + take) > t) {
-      skip = 0;
-      if (take > t) {
-        take = t;
-      } else {
-        take = 10;
-      }
-    }
-
-    return this.StatsService.get_rank_list(skip, take);
+  async get_rank_list(): Promise<{ response: stats_user[] }> {
+    const result: Promise<stats_user[]> = this.StatsService.get_rank_list()
+    console.log(result)
+    return { response: await result };
   }
 }
