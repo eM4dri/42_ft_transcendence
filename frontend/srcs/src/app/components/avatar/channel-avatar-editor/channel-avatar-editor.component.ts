@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { ApiService } from 'src/app/services';
-import { AlertModel } from 'src/app/models';
+import { AlertModel, Channel } from 'src/app/models';
 import { UriConstants } from 'src/app/utils';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ProfileInfoComponent } from '../../profile/profile-info/profile-info.component';
+import { FormBuilder } from '@angular/forms';
 import { BaseComponent } from 'src/app/modules';
+import { ChannelManagementComponent } from '../../channel';
 
 
 export type POST= {
@@ -12,24 +12,18 @@ export type POST= {
 }
 
 @Component({
-  selector: 'app-avatar-editor',
-  templateUrl: './avatar-editor.component.html',
-  styleUrls: ['./avatar-editor.component.scss']
+  selector: 'app-channel-avatar-editor',
+  templateUrl: './channel-avatar-editor.component.html',
+  styleUrls: ['./channel-avatar-editor.component.scss']
 })
-export class AvatarEditorComponent extends BaseComponent<{},POST> {
+export class ChannelAvatarEditorComponent extends BaseComponent<{},POST> implements OnInit {
 
   constructor(
     protected api: ApiService<{},POST>,
     private readonly fb: FormBuilder,
-    private readonly parent: ProfileInfoComponent,
+    private readonly parent: ChannelManagementComponent,
     ) {
       super(api);
-      this.formGroup2 = this.fb.group({
-        username: [''],
-        firstName: [''],
-        lastName: [''],
-        email: ['']
-      });
     }
 
   DropdownOptions : { [key: string]: string } = {
@@ -39,38 +33,43 @@ export class AvatarEditorComponent extends BaseComponent<{},POST> {
     emoji: "fun-emoji",
 
   }
-  @Input() userAvatar! : string;
+  @Input() channel! : Channel;
   loadingPage = false;
   editingUser: boolean = false;
-  formGroup2: FormGroup
-  avatarUrl: string = this.parent.avatarUrl;
+  channelAvatar: string | undefined;
   seed: string = '';
   random!: boolean;
   selectedOption: string = 'pixel-art';
-  previousAvatar: string = this.parent.avatarUrl;
+  previousAvatar: string | undefined = this.parent.channel.avatar;
+
+  ngOnInit(): void {
+    this.channelAvatar = this.channel.avatar;
+    console.log(this.channelAvatar)
+  }
 
 
   changeAvatar() {
+    console.log(this.previousAvatar)
+    console.log(this.channelAvatar)
     const dropdown = document.getElementById('dropdown') as HTMLSelectElement;
-    console.log('changeAvatar');
-    this.avatarUrl = UriConstants.RAMDON_AVATAR_URL + this.DropdownOptions[dropdown.value] + UriConstants.RAMDON_AVATAR_PATH;
-    this.parent.updateAvatar(this.avatarUrl);
-    console.log(this.avatarUrl)
+    this.channelAvatar = UriConstants.RAMDON_AVATAR_URL + this.DropdownOptions[dropdown.value] + UriConstants.RAMDON_AVATAR_PATH;
+    this.parent.updateAvatar(this.channelAvatar);
   }
 
   cancelAvatarEdition(): void {
-    this.parent.user.avatar = this.previousAvatar;
+    this.parent.channel.avatar = this.previousAvatar;
     this.parent.editingAvatar = false;
   }
 
   rollDice() {
-    console.log(this.avatarUrl);
     this.seed = this.generateRandomString(5);
-    this.userAvatar = this.avatarUrl + this.seed;
-    this.parent.updateAvatar(this.userAvatar);
+    this.channelAvatar = this.channelAvatar + this.seed;
+    this.parent.updateAvatar(this.channelAvatar);
+    console.log(this.channelAvatar);
   }
 
   onFileSelected(event: any) {
+    console.log('entra')
     const selectedFile: File | null = event.target.files[0];
 
     if (selectedFile) {
@@ -82,18 +81,15 @@ export class AvatarEditorComponent extends BaseComponent<{},POST> {
 
       const formData = new FormData();
       formData.append('file', selectedFile);
-      const dto = {
-        file: formData,
-      }
-      console.log(dto)
+      formData.append('channelId', this.channel.channelId);
 
       this.createService({
-        url: `${UriConstants.PROFILE_IMAGES_USERS}/upload_file`,
+        url: `${UriConstants.PROFILE_IMAGES_CHANNELS}/upload_file`,
         data: formData
       }).subscribe({
           next: (res: any) => {
             // Arreglar
-            this.userAvatar = res.imageUrl;
+            this.channelAvatar = res.imageUrl;
             this.parent.editingAvatar = false;
             this.parent.updateAvatar(res.imageUrl);
           },
@@ -110,13 +106,14 @@ export class AvatarEditorComponent extends BaseComponent<{},POST> {
 
     const dto = {
       url: url,
+      channelId: this.channel.channelId
     }
     this.apiService.postService({
-      url: `${UriConstants.PROFILE_IMAGES_USERS}/upload_url`,
+      url: `${UriConstants.PROFILE_IMAGES_CHANNELS}/upload_url`,
       data: dto
     }).subscribe({
         next: () => {
-            this.userAvatar = url;
+            this.channelAvatar = url;
             this.parent.editingAvatar = false;
             this.parent.updateAvatar(url);
         },

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { UsersCache } from 'src/app/cache';
-import { User } from 'src/app/models';
+import { Channel, User } from 'src/app/models';
 import { UriConstants } from 'src/app/utils';
 
 @Component({
@@ -10,6 +10,7 @@ import { UriConstants } from 'src/app/utils';
 })
 export class AvatarComponent {
   @Input() user!: User;
+  @Input() channel!: Channel
 
   constructor(
     private readonly cachedUsers: UsersCache

@@ -5,6 +5,7 @@ import { ChatComponent } from 'src/app/modules/chat/chat.component';
 import { BaseComponent } from 'src/app/modules/shared';
 import { ApiService, ChannelService } from 'src/app/services';
 import { UriConstants } from 'src/app/utils';
+import { ChannelsCache } from 'src/app/cache';
 
 @Component({
   selector: 'app-channel-sidebar',
@@ -13,12 +14,13 @@ import { UriConstants } from 'src/app/utils';
 })
 export class ChannelSidebarComponent extends BaseComponent<Channel, {}> implements OnChanges {
   @Input() joinedChannels!: Map< string, Channel >;
-  
-  constructor( 
+
+  constructor(
     private readonly api: ApiService<Channel, {}>,
     private readonly chatComponent: ChatComponent,
     private readonly channelService: ChannelService,
-    private readonly modalService: NgbModal
+    private readonly modalService: NgbModal,
+    private readonly channelsCache: ChannelsCache
   ) {
     super(api);
     this.filteredChannels = this.channels;
@@ -106,5 +108,19 @@ export class ChannelSidebarComponent extends BaseComponent<Channel, {}> implemen
       modal.close();
     }
     this.modalReference = [];
-  }  
+  }
+
+  amIChannelAdmin(channelId: string) : boolean {
+    return this.channelsCache.getMyChannelUser(channelId)?.isAdmin || this.channelsCache.getMyChannelUser(channelId)?.isOwner ? true : false;
+ }
+
+
+  newChannel() {
+    this.chatComponent.manageChannel();
+  }
+
+  manageChannel(channel: Channel) {
+    this.chatComponent.manageChannel(channel);
+  }
+
 }

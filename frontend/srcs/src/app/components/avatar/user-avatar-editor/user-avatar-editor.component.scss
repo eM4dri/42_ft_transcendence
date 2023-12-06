@@ -1,0 +1,136 @@
+.custum-file-upload {
+  height: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  gap: 20px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #e8e8e8;
+  background-color: #212121;
+  padding: 1.5rem;
+  border-radius: 5px;
+  box-shadow: 0px 24px 13px -24px #e8e8e8;
+}
+
+.custum-file-upload .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custum-file-upload .icon svg {
+  height: 20px;
+  fill: #e8e8e8;
+}
+
+.custum-file-upload .text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custum-file-upload .text span {
+  font-weight: 100;
+  color: #e8e8e8;
+}
+
+.custum-file-upload input {
+  display: none;
+}
+
+.user-avatar-editor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.user-avatar-editor button {
+  padding: 1rem 0.75rem;
+  border-radius: 0.5rem;
+  background-color: var(--bg-dark);
+  color: var(--bg-light);
+  border: none;
+  cursor: pointer;
+  transition: all 300ms;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.user-avatar-editor button:hover {
+  background-color: var(--clr);
+  color: var(--bg-dark);
+}
+
+.user-avatar-editor select {
+  border-radius: 0.5rem;
+  padding: 1rem 0.75rem;
+  width: 100%;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--clr-alpha);
+  outline: 2px solid var(--bg-dark);
+  color: var(--text-secondary);
+}
+
+.user-avatar-editor select:focus {
+  outline: 2px solid var(--clr);
+}
+
+.user-avatar-editor label {
+  align-self: flex-start;
+  color: var(--clr);
+  font-weight: 600;
+}
+
+.user-avatar-editor input[type="file"] {
+  display: none;
+}
+
+.random-avatar-dropdown {
+  width: 100%;
+  border-radius: 0.5rem;
+  padding: 1rem 0.75rem;
+  border: none;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  background-color: var(--clr-alpha);
+  outline: 2px solid var(--bg-dark);
+  color: var(--text-secondary);
+}
+
+.random-avatar-dropdown:focus {
+  outline: 2px solid var(--clr);
+}
+
+.avatar-editor-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.avatar-editor-buttons button {
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  background-color: var(--bg-dark);
+  color: var(--bg-light);
+  border: none;
+  cursor: pointer;
+  transition: all 300ms;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.avatar-editor-buttons button:hover {
+  background-color: var(--clr);
+  color: var(--bg-dark);
+}

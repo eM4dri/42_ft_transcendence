@@ -17,7 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TagModule } from 'primeng/tag';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ProfileInfoComponent } from './components/profile/profile-info/profile-info.component';
-import { AvatarEditorComponent } from './components/avatar/avatar-editor/avatar-editor.component';
+import { UserAvatarEditorComponent } from './components/avatar/user-avatar-editor/user-avatar-editor.component';
 import { OtherProfileComponent } from './modules/profile/other-profile.component/other-profile.component';
 import { ProfileAvatarComponent } from './components/avatar/profile-avatar/profile-avatar.component';
 import { TooltipModule } from 'primeng/tooltip';
@@ -25,7 +25,8 @@ import { RankTableModule } from './modules/rank-table/rank-table.module'
 import { RankTableComponent } from './modules/rank-table/rank-table/rank-table.component'
 import { TruncatePipe } from './pipes/truncate.pipe';
 //import { PongTVComponent } from './modules/pongtv/pongtv.component';
-
+import { ChannelAvatarEditorComponent } from './components/avatar/channel-avatar-editor/channel-avatar-editor.component';
+//import { PongTVComponent } from './modules/pongtv/pongtv.component';
 
 
 const config: SocketIoConfig = { url: environment.apiUrl };
@@ -46,7 +47,9 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     NavbarComponent,
     AvatarComponent,
     ProfileAvatarComponent,
-    AvatarEditorComponent,
+    ProfileAvatarComponent,
+    UserAvatarEditorComponent,
+    ChannelAvatarEditorComponent,
     ChannelWindowComponent,
     ChannelWindowMessageComponent,
     ChannelSidebarComponent,
@@ -57,6 +60,7 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     ChannelManagementActionsComponent,
     ChannelHeaderComponent,
     AdministrationComponent,
+    FriendListComponent,
     FriendListComponent,
     ChatSidebarComponent,
     FriendSidebarComponent,

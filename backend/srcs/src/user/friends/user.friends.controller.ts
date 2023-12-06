@@ -32,7 +32,7 @@ export class UserFriendsController {
     description: 'Get user friends',
   })
   async getMyFriends(@GetUser('id') userId: string) {
-    return { 
+    return {
       response: await this.userFriendsService.getFriendList(userId)
     };
   }

@@ -9,13 +9,13 @@ form {
     gap: 1rem;
     width: 100%;
   }
-  
+
   .form .input-span {
     width:90%;
     display: flex;
     flex-direction: column;
     gap: .5rem;
-    
+
   }
 
   form input[type="email"],
@@ -32,19 +32,19 @@ form {
     outline: 2px solid var(--bg-dark);
     color: var(--text-secondary);
   }
-  
+
   form input[type="email"]:focus,
   form input[type="text"]:focus,
   form input[type="password"]:focus {
     outline: 2px solid var(--clr);
   }
-  
+
   .label {
     align-self: flex-start;
     color: var(--clr);
     font-weight: 600;
   }
-  
+
   form .submit {
     padding: 1rem 0.75rem;
     width: 90%;
@@ -60,17 +60,24 @@ form {
     font-weight: 600;
     font-size: .9rem;
   }
-  
+
   form .submit:hover {
     background-color: var(--clr);
     color: var(--bg-dark);
   }
-  
+
   .span {
     text-decoration: none;
     color: var(--bg-dark);
   }
-  
+
   .span a {
     color: var(--clr);
+  }
+
+  .avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
   }

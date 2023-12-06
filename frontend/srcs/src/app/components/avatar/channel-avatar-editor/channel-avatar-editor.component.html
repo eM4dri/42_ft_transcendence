@@ -1,4 +1,4 @@
-<div class="d-flex">
+<div class="channel-avatar-editor d-flex">
 	<div ngbNav class="nav-pills flex-column" orientation="vertical">
 		<ng-container ngbNavItem="random">
 			<button ngbNavLink (click)="random = true">Random avatar</button>
@@ -10,16 +10,18 @@
 </div>
 
 <ng-container *ngIf="random === true">
-    <select id="dropdown" [(ngModel)]="selectedOption" (ngModelChange)="changeAvatar()">
+    <select id="dropdown" [(ngModel)]="selectedOption" (ngModelChange)="changeAvatar()" class="random-avatar-dropdown">
         <option disabled selected>Select a theme</option>
         <option value="pixel">Pixel art</option>
         <option value="avatar">Avatar</option>
         <option value="bot">Bot</option>
         <option value="emoji">Emoji</option>
     </select>
-    <ng-container *ngIf="avatarUrl !== previousAvatar">
-        <button (click)="rollDice()">REROLL</button>
-        <button (click)="uploadUrl(avatarUrl + seed)">Save Image</button>
+    <ng-container *ngIf="channelAvatar !== previousAvatar">
+        <div class="avatar-editor-buttons">
+            <button (click)="rollDice()">Reroll</button>
+            <button (click)="uploadUrl(channelAvatar || seed)">Save Image</button>
+        </div>
     </ng-container>
 </ng-container>
 <ng-container *ngIf="random === false">
@@ -33,5 +35,6 @@
         <input id="file" type="file" (change)="onFileSelected($event)">
     </label>
 </ng-container>
-
-<button (click)="cancelAvatarEdition()">Go Back</button>
+<div class="avatar-editor-buttons">
+    <button (click)="cancelAvatarEdition()" class="avatar-editor-buttons">Go Back to channel edition</button>
+</div>

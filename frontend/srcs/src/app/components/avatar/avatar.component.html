@@ -1,11 +1,18 @@
-<div class='avatar' 
-        [ngClass]=" 
+<div *ngIf="user" class='avatar'
+        [ngClass]="
             isOnline(user.userId)
-            ? 'online' 
+            ? 'online'
             : 'offline'
 ">
     <img
         src="{{ user.avatar }}"
+        alt="avatar"
+        (error)="handleImageError($event)"
+    />
+</div>
+<div *ngIf="channel" class='avatar'>
+    <img
+        src="{{ channel.avatar }}"
         alt="avatar"
         (error)="handleImageError($event)"
     />

@@ -1,10 +1,11 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags, ApiParam } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/decorator';
 import { User } from '@prisma/client';
 import { JwtGuard } from 'src/auth/guard';
 import { ChannelService } from './channel.service';
 import { CreateChannelDto, CreateChannelMessageDto, JoinChannelDto } from './dto';
+import { UpdateChannelDto } from './dto/updateChannel.dto';
 
 @Controller('channel')
 @ApiTags('channel')
@@ -18,10 +19,10 @@ export class ChannelController {
       description: 'Get all channels',
     })
     getAllChannels(@GetUser() user: User) {
-        //!validate user is website moderator or website owner 
+        //!validate user is website moderator or website owner
         return this.channelService.getAllChannels();
     }
- 
+
     @Get('/joined')
     @ApiOperation({
         description: 'Get all available channels for the user',
@@ -38,6 +39,22 @@ export class ChannelController {
       return { response: await this.channelService.getChannelsAvailablesByUserId(userId)};
     }
 
+    @Get(':uuid/isLocked')
+    @ApiOperation({
+        description: 'Get if channel is locked by id',
+    })
+    @ApiParam({
+      name: "uuid",
+      type: String,
+      required: true,
+      description: "Uuid of the channel",
+      example: "903af193-666f-47eb-9b37-35ca3d58d4ec",
+    })
+    async getIsChannelLockedById(@Param('uuid', new ParseUUIDPipe()) channelId: string) {
+      console.log(await this.channelService.getFullChannelByChannelId(channelId));
+      return { response: (await this.channelService.getChannelByChannelId(channelId)).password !== null ? true : false};
+    }
+
     @Post()
     async newChannel(
       @GetUser('id') creator: string,
@@ -51,11 +68,24 @@ export class ChannelController {
       };
     }
 
+    @Patch(':uuid')
+    async updateChannelPassword(
+      @Param('uuid', new ParseUUIDPipe()) channelId: string,
+      @Body() dto: UpdateChannelDto,
+    ) {
+      return {
+        response: await this.channelService.updateChannelPassword(
+            channelId,
+            dto
+          )
+      };
+    }
+
     @Delete('/:uuid')
     destroyChannel(
       @Param('uuid', new ParseUUIDPipe()) channelId: string,
     ) {
-      //!validate user is website moderator or website owner 
+      //!validate user is website moderator or website owner
       return this.channelService.destroyChannel(
         channelId
       );
