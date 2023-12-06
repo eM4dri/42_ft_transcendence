@@ -1,17 +1,32 @@
-<form class="form" [formGroup]="formGroup" (submit)="saveChannel()">
-  <span class="input-span">
+<div class="avatar">
+  <app-avatar (click)="editingAvatar = true" [channel]="channel"></app-avatar>
+  <app-channel-avatar-editor *ngIf="editingAvatar" [channel]="channel"></app-channel-avatar-editor>
+</div>
+
+<form *ngIf="!editingAvatar" class="form" [formGroup]="formGroup" (submit)="saveChannel()">
+  <span *ngIf="channel.channelId === 'none'" class="input-span">
     <label for="channelName" class="label">Channel name</label>
     <input type="text" formControlName="channelName" placeholder="ChannelName"/>
+  </span>
+  <span *ngIf="channel.isLocked && channel.channelId !== 'none'" class="input-span">
+    <label for="password" class="label">Current Password</label>
+    <input type="password" formControlName="currentPassword" placeholder="Current Password"/>
   </span>
   <span class="input-span">
     <label for="password" class="label">Password</label>
     <input type="password" formControlName="password" placeholder="Password"/>
   </span>
+  <span class="input-span">
+    <label for="password" class="label">Confirm Password</label>
+    <input type="password" formControlName="confirmPassword" placeholder="Confirm Password"/>
+  </span>
   <input class="submit" type="submit" [disabled]="formGroup.invalid" value="Save">
 
-  <app-channel-management-users
+  <div *ngIf="channel.channelId !== 'none'">
+    <app-channel-management-users
     [channel]="channel"
   ></app-channel-management-users>
+  </div>
 
 </form>
 

@@ -154,11 +154,11 @@ export class FriendListComponent extends BaseComponent<string>  {
   showFriendsTab() {
     this.selectedTab = EnumFriendListSidebarSelectedTab.FRIEND_TAB;
   }
-  
+
   showBlocksTab() {
     this.selectedTab = EnumFriendListSidebarSelectedTab.BLOCK_TAB;
   }
-  
+
   isFriendsTabSeleted(){
       return  (this.selectedTab === EnumFriendListSidebarSelectedTab.FRIEND_TAB);
   }

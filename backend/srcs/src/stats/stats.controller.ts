@@ -8,12 +8,14 @@ import {
   Patch,
   Query,
   UseGuards,
+  Param
 } from "@nestjs/common";
 
 import { JwtGuard } from "src/auth/guard";
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiParam,
   ApiOperation,
   ApiQuery,
   ApiTags,
@@ -34,6 +36,19 @@ export class StatsController {
   @Get()
   @ApiOperation({ description: "Get stats from one user" })
   get(@GetUser("id") UserId: string) {
+    return this.StatsService.getUserStats(UserId);
+  }
+
+  @Get(':uuid')
+  @ApiParam({
+    name: "uuid",
+    type: String,
+    required: true,
+    description: "Uuid of the user",
+    example: "903af193-666f-47eb-9b37-35ca3d58d4ec",
+  })
+  @ApiOperation({ description: "Get stats by user id" })
+  getById(@Param('uuid', new ParseUUIDPipe()) UserId: string) {
     return this.StatsService.getUserStats(UserId);
   }
 

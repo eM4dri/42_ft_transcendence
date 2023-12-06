@@ -113,8 +113,15 @@ export class ChatComponent  {
         return  (this.selectedTab === EnumChatSidebarSelectedTab.CHAT_TAB);
     }
 
-    public  manageChannel(channel: Channel){
-        this.currentChannel = channel;
+    public  manageChannel(channel?: Channel){
+        this.currentChannel = channel || { channelId: 'none', channelName: '', isLocked: false} ;
         this.typeChat = EnumChatWindowTypeSeleted.MANAGE_CHANNEL;
+    }
+    public goBackToChannel() {
+        if (this.currentChannel.channelId !== 'none') {
+            this.typeChat = EnumChatWindowTypeSeleted.CHANNEL;
+        } else {
+            this.typeChat = EnumChatWindowTypeSeleted.NONE;
+        }
     }
 }

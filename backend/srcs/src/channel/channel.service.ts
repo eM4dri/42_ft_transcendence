@@ -1,4 +1,4 @@
-import { ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateChannelDto, CreateChannelMessageDto, JoinChannelDto, ResponseChannelDto, ResponseChannelUserDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -7,6 +7,7 @@ import { ChannelAdminService } from './admin/channel.admin.service';
 import { plainToInstance } from 'class-transformer';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AvatarConstants } from 'src/utils/avatar.contants';
+import { UpdateChannelDto } from './dto/updateChannel.dto';
 
 @Injectable()
 export class ChannelService {
@@ -17,7 +18,7 @@ export class ChannelService {
     ){
     }
 
-    //! Just for website owner &  website moderators 
+    //! Just for website owner &  website moderators
     getAllChannels(){
         return this.prisma.channel.findMany();
     }
@@ -28,6 +29,12 @@ export class ChannelService {
         }));
     }
 
+    async getFullChannelByChannelId(channelId: string){
+        return this.prisma.channel.findFirst({
+            where: { channelId: channelId },
+        });
+    }
+
     async getChannelsUsersIds(channelsId: string[]){
         return this.prisma.channelUser.findMany({
             where: {
@@ -35,11 +42,11 @@ export class ChannelService {
             },
         });
     }
-    
+
     async getChannelsJoinedByUserId(userId: string){
         const joinedChannels: string[] = (await this.prisma.channelUser.findMany({
             select: { channelId: true, },
-            where: { 
+            where: {
                 AND: {
                     userId: userId,
                     leaveAt: null,
@@ -56,7 +63,7 @@ export class ChannelService {
     async getChannelsAvailablesByUserId(userId: string){
         const joinedChannels: string[] = (await this.prisma.channelUser.findMany({
             select: { channelId: true, },
-            where: { 
+            where: {
                 AND: {
                     userId: userId,
                     leaveAt: null,
@@ -65,7 +72,7 @@ export class ChannelService {
         })).map(x=>x.channelId);
         const bannedChannels: string[] = (await this.prisma.channelUser.findMany({
             select: { channelId: true, },
-            where: { 
+            where: {
                 AND: {
                     userId: userId,
                     isBanned: true,
@@ -107,12 +114,12 @@ export class ChannelService {
                 },
             });
             if (dto.password!==undefined) {
-                this.channelAdminService.setChannelPass({ 
-                    channelId: channel.channelId, 
-                    password: dto.password 
+                this.channelAdminService.setChannelPass({
+                    channelId: channel.channelId,
+                    password: dto.password
                 }, creator);
             }
-            return plainToInstance(ResponseChannelDto, channel);
+            return {channel: plainToInstance(ResponseChannelDto, channel), channelUser: channelUser};
         } catch (error) {
             if (
                 error instanceof
@@ -129,7 +136,7 @@ export class ChannelService {
         }
     }
 
-    //! Just for website owner &  website moderators 
+    //! Just for website owner &  website moderators
     async destroyChannel(channelId: string) {
         try {
             const message =
@@ -184,7 +191,7 @@ export class ChannelService {
              }
             this.channelAdminService.reOwningChannel(channelUser.channelId);
             const response : ResponseChannelUserDto = plainToInstance(ResponseChannelUserDto , channelUser);
-            this.eventEmitter.emit('user_join_channel', response);     
+            this.eventEmitter.emit('user_join_channel', response);
             return response;
         } catch (error) {
             if (
@@ -215,7 +222,7 @@ export class ChannelService {
             throw (error);
         }
     }
-    
+
     async getChannelUsers(channelId: string) {
         try {
             const channelUsers = await this.prisma.channelUser.findMany({
@@ -230,7 +237,7 @@ export class ChannelService {
     async getMyChannelUser(channelId: string, userId: string) {
         try {
             return await this.prisma.channelUser.findFirstOrThrow({
-                where: { 
+                where: {
                     channelId: channelId,
                     userId: userId,
                     leaveAt: null
@@ -274,6 +281,29 @@ export class ChannelService {
                 }
             });
             return message;
+        } catch (error) {
+            if (error.code === 'P2025') {
+                throw new NotFoundException({response:  'Not Found'});
+            }
+            throw (error);
+        }
+    }
+
+    async updateChannelPassword(channelId: string, dto: UpdateChannelDto) {
+        try {
+            const channel = await this.prisma.channel.findFirst({
+                where: { channelId: channelId }
+            });
+            if (dto.currentPassword) {
+                const same = await argon.verify(channel.password, dto.currentPassword);
+                if (!same) {
+                    throw new BadRequestException();
+                }
+            }
+            return this.channelAdminService.setChannelPass({
+                channelId: channel.channelId,
+                password: dto.password
+            }, channel.createdBy);
         } catch (error) {
             if (error.code === 'P2025') {
                 throw new NotFoundException({response:  'Not Found'});

@@ -49,12 +49,14 @@ export class ProfileInfoComponent implements OnInit {
         next: (res: any) => {
             this.friend = res !== null ? true : false;
             console.log('friend')
-            console.log(this.friend)  
         },
         error: error => {
             this.processError(error);
         },
       });
+      this.getUserStats(this.userId);
+    } else {
+      this.getUserStats();
     }
 
   };
@@ -69,6 +71,7 @@ export class ProfileInfoComponent implements OnInit {
   formGroup: FormGroup
   avatarUrl: string = '';
   friend: boolean = false;
+  stats: any;
 
   alertConfig = new AlertModel.AlertaClass(
     false,
@@ -112,7 +115,6 @@ export class ProfileInfoComponent implements OnInit {
 
   enableAvatarEdition(): void {
     this.editingAvatar = true;
-    console.log(this.editingAvatar)
   }
 
   public alertConfiguration(severity: 'ERROR' | 'SUCCESS', msg: string) {
@@ -171,6 +173,26 @@ export class ProfileInfoComponent implements OnInit {
 
   public openAlert() {
     this.alertConfig.open = true;
+  }
+
+  public getUserStats(userId?: string) {
+    const url: string = userId ? `${UriConstants.USER_STATS}/${this.userId}` : `${UriConstants.USER_STATS}`;
+    this.apiService.getService({
+      url: url
+    }).subscribe({
+      next: (res: any) => {
+          console.log(res)
+          this.stats = res;
+      },
+      error: error => {
+          this.processError(error);
+      },
+    });
+  }
+
+  public disableEdition() {
+    this.editingUser = false;
+    this.qrCode = '';
   }
 
   processError(error: any){

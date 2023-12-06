@@ -80,6 +80,10 @@ export class ChannelsCache {
     this._joinedChannelsMap.set(channel.channelId, channel);
   }
 
+  addChannelUser(channelId: string, channelUserExtended: ChannelUsersExtended){
+    this._myChannelsUser.set(channelId, channelUserExtended);
+  }
+
   getChannelsMessages(){
     return this._channelsMessages;
   }
