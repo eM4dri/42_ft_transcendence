@@ -1,7 +1,8 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { UsersCache } from 'src/app/cache';
 import { User } from 'src/app/models';
-import { ChallengeService } from 'src/app/services/challenge.service';
+import { ApiService } from 'src/app/services';
+import { UriConstants } from 'src/app/utils';
 
 @Component({
   selector: 'app-challenge-info',
@@ -11,25 +12,29 @@ import { ChallengeService } from 'src/app/services/challenge.service';
 export class ChallengeInfoComponent implements OnInit {
   @Input() newChallengerUserId!: string;
   user: User = {
-    userId: '42',
-    username: 'ramdon',
-    avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=ramdon'
+    userId: '',
+    username: '',
   }
 
   private cachedUsers = inject(UsersCache);
+  private apiService = inject(ApiService);
 
   ngOnInit(): void {
     this.user = this.cachedUsers.getUser(this.newChallengerUserId);
   }
 
-  private challengeService = inject(ChallengeService);
 
   acceptChallenge(){
-    this.challengeService.acceptChallenge(this.newChallengerUserId);
+    this.apiService.getService({
+      url: `${UriConstants.CHALLENGE}/accept/${this.newChallengerUserId}`,
+    }).subscribe();
   }
   
-  rejectChallenge(){
-    this.challengeService.rejectChallenge(this.newChallengerUserId);
+  rejectChallenge(){;
+    this.apiService.getService({
+      url: `${UriConstants.CHALLENGE}/reject/${this.newChallengerUserId}`,
+    }).subscribe();
   }
 
 }
+

@@ -1,4 +1,4 @@
-<h4>Here comes a new challenger...</h4>
+<h4>Challenging...</h4>
 <div class="user-info">
     <app-shared-avatar
         [avatar]="user.avatar"
@@ -7,7 +7,6 @@
         {{ user.username }}
     </span>
     <div class="challenge-buttons">
-        <button (click)="acceptChallenge()">Accept</button>
-        <button (click)="rejectChallenge()">Reject</button>
+        <button (click)="cancelChallenge()">Cancel</button>
     </div>
 </div>

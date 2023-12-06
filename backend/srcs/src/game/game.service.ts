@@ -9,6 +9,7 @@ import { StatsService } from '../stats/stats.service'
 import { Update_statsDto } from 'src/stats/dto';
 import { stat } from 'fs';
 import { stats_user } from "@prisma/client";
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 var ball_radius: number = 5;
 var paddle_radius: number = 10;
@@ -210,7 +211,11 @@ class GameItem {
 @Injectable()
 export class GameService {
 	allgames = new Map<number, Game>();
-	constructor(private readonly historicGamesService: HistoricGamesService, private readonly statsService: StatsService){
+	constructor(
+		private readonly historicGamesService: HistoricGamesService, 
+		private readonly statsService: StatsService,
+		private readonly eventemitter: EventEmitter2
+		){
 		// this.allgames.set(new, new Game(newuid))
 	}
 
@@ -218,7 +223,8 @@ export class GameService {
 	{
 		let current_time: number = Date.now();
 		let newuid = Math.round(Math.random() * 100000);
-		
+
+		this.eventemitter.emit('addUserIdsPlaying',[blueid, redid]);
 		this.allgames.set(newuid, new Game(newuid, blueid, redid, room, current_time + 6000, bluesocket, redsocket, ismodded, prev_blue, prev_red, friendlygame))
 		bluesocket.emit('teamblue', true)
 		redsocket.emit('teamblue', false)
@@ -309,6 +315,7 @@ export class GameService {
 
 					}
 					this.statsService.update_stats(newStat_red);
+					this.eventemitter.emit('deleteUserIdsPlaying',[value.redid, value.blueid]);
 					
 					value.bluesocket.emit('gameresult', new GameResult(value.bluescore, value.redscore, value.prev_blue_stats.points, newStat_blue.points, true))
 					value.redsocket.emit('gameresult', new GameResult(value.redscore, value.bluescore, value.prev_red_stats.points, newStat_red.points, false))

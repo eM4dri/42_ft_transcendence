@@ -18,6 +18,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { GameModule } from './game/game.module';
 import { TfaModule } from './tfa/tfa.module';
 import { UserFriendsModule } from './user/friends/user.friends.module';
+import { ChallengeModule } from './challenge/challenge.module';
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import { UserFriendsModule } from './user/friends/user.friends.module';
     EventEmitterModule.forRoot(),
     GameModule,
     TfaModule,
-    UserFriendsModule
+    UserFriendsModule,
+    ChallengeModule
   ],
   controllers: [AppController],
   providers: [AppService],

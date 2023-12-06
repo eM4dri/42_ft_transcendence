@@ -244,23 +244,33 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         this.server.to(socketId).emit('users_to_cache', users);
     }
 
-    @SubscribeMessage('challenge_userid')
-    async challengeUserId(@GetUser() user: JwtPayload, @MessageBody() challengeUserId: string) {
-        const socketId: string = this.socketsIdMap.get(challengeUserId);
-        this._usersToCache(socketId, [user.sub]).then(() => {
-            this.server.to(socketId).emit(`here_comes_a_new_challenger_for_${challengeUserId}`, user.sub);
+    @OnEvent('hereComesANewChallenger')
+    async hereComesANewChallenger(challengerUserId:string, challengedUserId: string) {
+        const socketId: string = this.socketsIdMap.get(challengedUserId);
+        this._usersToCache(socketId, [challengerUserId]).then(() => {
+            this.server.to(socketId).emit(`here_comes_a_new_challenger_for_${challengedUserId}`, challengerUserId);
         });
     }
 
-    @SubscribeMessage('accept_challenge')
-    async acceptChallenge(@GetUser() user: JwtPayload ,@ConnectedSocket() socket : Socket, @MessageBody() challengeUserId: string) {
-        socket.emit("challengeStart", true)
-        this.socketsMap.get(challengeUserId).emit("challengeStart", true)
-        this.eventEmitter.emit('startChallenge', user.sub, challengeUserId, socket, this.socketsMap.get(challengeUserId),false);  
+    @OnEvent('acceptChallenge')
+    acceptChallenge(userId1: string, userId2: string){
+        const socket1 = this.socketsMap.get(userId1);
+        const socket2 = this.socketsMap.get(userId2);
+        if(socket1!==undefined) {
+            socket1.emit("start_challenge", true);
+        }
+        if(socket2!==undefined) {
+            socket2.emit("start_challenge", true);
+        }
+        this.eventEmitter.emit('startChallenge', userId1, userId2, socket1, socket2, true);
     }
 
-    @SubscribeMessage('reject_challenge')
-    async rejectChallenge(@GetUser() user: JwtPayload ,@ConnectedSocket() socket : Socket) {
-        console.log('challenge_rejected');
+    @OnEvent('clearChallenges')
+    clearChallenges(userIds: string[]){
+        console.log('userIds',userIds); 
+        for (const userId of userIds) {
+            const socketId: string = this.socketsIdMap.get(userId);
+            this.server.to(socketId).emit('clear_challenges', userId)
+        }
     }
 }

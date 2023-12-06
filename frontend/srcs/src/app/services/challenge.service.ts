@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { MySocket } from './web-socket.service';
 import { map } from 'rxjs/operators';
-import { User } from '../models';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChallengeService {
-
+  
   constructor(
     private readonly mysocket: MySocket,
   ) { }
@@ -24,16 +24,29 @@ export class ChallengeService {
     this.mysocket.emit('accept_challenge', userId);
   }
 
+  cancelChallenge(userId: string) {
+    this.mysocket.emit('cancel_challenge', userId);
+  }
+
   hereComesANewChallenger(userId: string) {
     return this.mysocket.fromEvent<string>(`here_comes_a_new_challenger_for_${userId}`).pipe(map((data) => data));
   }
 
-  startChallenge_front() {
-    return this.mysocket.fromEvent<boolean>('challengeStart').pipe(map((data) => data));
+  clearChallenges() {
+    return this.mysocket.fromEvent<string>('clear_challenges').pipe(map((data) => data));
   }
 
+  startChallenge_front() {
+    return this.mysocket.fromEvent<boolean>('start_challenge').pipe(map((data) => data));
+  }
+
+  private challengingUserIdSub = new Subject<string>();
+  sendChallengingUserIdSub(challengingUserId: string) {
+      this.challengingUserIdSub.next(challengingUserId);
+  }
+  getChallengingUserIdSub() {
+    return this.challengingUserIdSub.asObservable();
+  }  
 
 }
-
-
 

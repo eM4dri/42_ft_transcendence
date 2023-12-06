@@ -119,7 +119,18 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
   }
 
   challengeUserid(userId: string){
-    this.challengeService.challengeUserId(userId);
+    this.apiService.getService({
+        url: `${UriConstants.CHALLENGE}/${userId}`,
+      }).subscribe({
+        next: () => {
+          this.challengeService.sendChallengingUserIdSub(userId);
+          },
+          error: error => {
+            this.alertConfiguration('ERROR', error);
+            this.openAlert();
+            this.loading = true;
+          },
+    });
   }
 
   isOnline(userId: string): boolean {

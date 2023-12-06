@@ -24,6 +24,7 @@ export class UriConstants {
   public static readonly TFA = apiBasePath + '/tfa/qrcode';
   public static readonly VALID_TFA = apiBasePath + '/login/tfa/validate';
   public static readonly BLOCK = apiBasePath + '/block';
+  public static readonly CHALLENGE = apiBasePath + '/challenge';
   public static readonly HISTORIC = apiBasePath + '/historic-games'
   public static readonly RANK = apiBasePath + '/stats/rank'
 

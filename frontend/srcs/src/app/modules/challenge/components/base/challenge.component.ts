@@ -1,9 +1,10 @@
 import { Component, OnInit, TemplateRef, inject } from '@angular/core';
-import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import {  NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ChallengeInfoComponent } from '../challenge-info/challenge-info.component';
 import { ChallengeService } from 'src/app/services/challenge.service';
 import { AuthService } from 'src/app/services';
 import { Router } from '@angular/router';
+import { ChallengingComponent } from '../challenging/challenging.component';
 
 @Component({
   selector: 'app-challenge',
@@ -14,6 +15,8 @@ export class ChallengeComponent implements OnInit{
   private modalService = inject(NgbModal);
   private challengeService = inject(ChallengeService);
   private authService = inject(AuthService);
+  private router = inject(Router);
+
   closeResult = '';
   modalReference: NgbModalRef[] = [];
 
@@ -21,50 +24,40 @@ export class ChallengeComponent implements OnInit{
     this.challengeService.hereComesANewChallenger(this.authService.getMyUserId()).subscribe(newChallengerUserId => {
       this.openModal(newChallengerUserId);
     });
-  
-  }
-
-  constructor(private readonly router: Router)
-  {
-
+    this.challengeService.getChallengingUserIdSub().subscribe(challengingUserId => {
+      this.openModalChallenging(challengingUserId);
+    });
     this.challengeService.startChallenge_front().subscribe(ctrl => {
       if (ctrl) {
         for (const modal of this.modalReference){
           modal.close();
         }
         this.modalReference = [];
-        router.navigate(["/game"]);
+        this.router.navigate(["/game"]);
       }
+    });
+    this.challengeService.clearChallenges().subscribe(()=>{
+      for (const modal of this.modalReference){
+        modal.close();
+      }
+      this.modalReference = [];
     });
   }
 
   openModal(newChallengerUserId: string) {
-    this.modalReference.push(this.modalService.open(ChallengeInfoComponent));
+    this.modalReference.push(this.modalService.open(ChallengeInfoComponent,{ backdrop: 'static' }));
     this.modalReference[0].componentInstance.newChallengerUserId = newChallengerUserId;
   }
-  
-  
+
+  openModalChallenging(challengingUserId: string) {
+    this.modalReference.push(this.modalService.open(ChallengingComponent, { backdrop: 'static' }));
+    this.modalReference[0].componentInstance.challengingUserId = challengingUserId;
+  }
+    
   open(content: TemplateRef<any>) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
-      (result) => {
-        this.closeResult = `Closed with: ${result}`;
-      },
-      (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      },
-    );
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
   
-  private getDismissReason(reason: any): string {
-    switch (reason) {
-      case ModalDismissReasons.ESC:
-        return 'by pressing ESC';
-      case ModalDismissReasons.BACKDROP_CLICK:
-        return 'by clicking on a backdrop';
-      default:
-        return `with: ${reason}`;
-    }
-  }
 }
 
 

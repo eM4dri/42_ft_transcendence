@@ -32,9 +32,16 @@ response: {
 - [x] Web static assets like game images should be available at a front container in an assets directory, NOT using temporary solution of Static Profile Images Container, in PRODUCTION version of the container, I think that this should be a nginx container exposing ONE file in JS with all the info to run the webpage plus this assets folder with this static files.
 - [] Convert front chat  into standalone module.
 - [] Implement front lazy loading to load page as the client browse through itself
-- [] Challenge Bellow
-- [] Modal at app.module can navigate to other routes on accept
-- [] Modal triggered/opened on ws call
-- [] Modal answer ws to cancell chanllenge
-- [] Modal answer ws to accept chanllenge
+- [x] Challenge Bellow
+- [x] Modal at app.module can navigate to other routes on accept
+- [x] Modal triggered/opened on ws call
+- [x] Modal answer ws to cancell chanllenge
+- [x] Modal answer ws to accept chanllenge
+
 - [] Use truncate pipe or avoid limitless username
+
+- [] moving between view create channels messages duplicate 
+- [] creating new channel dont upload new messages till you move between views
+- [] time out modal challenge
+- [] To long chat messages go out beyond bubble-> look how to continue in next line
+- [] New people chats don't send new messages if you are inside chat
