@@ -14,30 +14,30 @@ export class UsersCache {
 
   constructor(
     private readonly userService: UserService
-  ){
+  ) {
     this.userService.usersConnected().subscribe(users => {
-        users.forEach(user =>{
-            this._conectedUsers.add(user);
-        });
+      users.forEach(user => {
+        this._conectedUsers.add(user);
+      });
     });
     this.userService.userDisconnects().subscribe(user => {
-        this._conectedUsers.delete(user);
+      this._conectedUsers.delete(user);
     });
     this.userService.userConnects().subscribe(user => {
-        this._conectedUsers.add(user);
+      this._conectedUsers.add(user);
     });
     this.userService.usersToCache().subscribe(users => {
-      users.forEach(user =>{
+      users.forEach(user => {
         this.setCachedUser(user);
       });
     });
     this.userService.friendUserIds().subscribe(users => {
-      users.forEach(user =>{
+      users.forEach(user => {
         this._friendUserIds.add(user);
       });
     });
     this.userService.blockedUserIds().subscribe(users => {
-      users.forEach(user =>{
+      users.forEach(user => {
         this._blockedUserIds.add(user);
       });
     });
@@ -51,11 +51,11 @@ export class UsersCache {
     this._blockedUserIds.delete(userId);
   }
 
-  getBlockedUserIds(){
+  getBlockedUserIds() {
     return this._blockedUserIds;
   }
 
-  isUserBlocked(userId:string): boolean {
+  isUserBlocked(userId: string): boolean {
     return this._blockedUserIds.has(userId)
   }
 
@@ -67,22 +67,27 @@ export class UsersCache {
     this._friendUserIds.delete(userId);
   }
 
-  getFriendUserIds(){
+  getFriendUserIds() {
     return this._blockedUserIds;
   }
 
   setCachedUser(user: User) {
-    localStorage.setItem(user.userId, JSON.stringify(user));
+    const userdata = {
+      userId: user.userId,
+      username: user.username,
+      avatar: user.avatar,
+    };
+    localStorage.setItem(user.userId, JSON.stringify(userdata));
     // if (this._cachedUsers.has(user.userId) === false) {
     //   this._cachedUsers.set(user.userId, user);
     // }
   }
 
-  getConnectedUsers(){
+  getConnectedUsers() {
     return this._conectedUsers;
   }
-  
-  isUserConnected(userId:string): boolean {
+
+  isUserConnected(userId: string): boolean {
     return this._conectedUsers.has(userId)
   }
   // getUser(userId: string): User | undefined {
@@ -91,7 +96,7 @@ export class UsersCache {
   getUser(userId: string): User {
     const item: string | null = localStorage.getItem(userId);
     if (item !== null) {
-      const user:User = JSON.parse(item);
+      const user: User = JSON.parse(item);
       return user;
     }
     return {
@@ -101,11 +106,11 @@ export class UsersCache {
   }
 
   getUserImage(userId: string): string {
-    return this.getUser(userId)?.avatar || "https://api.dicebear.com/avatar.svg"; 
+    return this.getUser(userId)?.avatar || "https://api.dicebear.com/avatar.svg";
   }
 
   getUsername(userId: string): string {
-    return this.getUser(userId)?.username || "noName"; 
+    return this.getUser(userId)?.username || "noName";
   }
 
 
