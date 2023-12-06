@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService, AuthService } from 'src/app/services';
 import { TotalHistoricData } from 'src/app/models/historic/historic.model'
 import { BaseComponent } from 'src/app/modules';
+import { UriConstants } from 'src/app/utils';
 
 @Component({
   selector: 'app-historic-table',
@@ -26,18 +27,20 @@ export class HistoricTableComponent extends BaseComponent<TotalHistoricData, {},
 
   getdataHistoric(id: string, skip?: string, take?: string) {
     this.getService({
-      url: `http://localhost:3000/historic-games?userId=${id}`
+      url: `${UriConstants.HISTORIC}?userId=${id}`
     }).subscribe({
       next: (response) => {
         this.games = response.response
-        console.log("games", this.games)
-        console.log("response", response.response)
-        //  console.log(this.data_list)
-      }
-    },
-      //error => {
-      //  // Handle error
-      //  console.error('Error fetching data:', error);
-    )
+      },
+      error: error => {
+        this.processError(error);
+      },
+    });
+  }
+
+  processError(error: any) {
+    this.alertConfiguration('ERROR', error);
+    this.openAlert();
+    this.loading = true;
   }
 }
