@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0.566 15.213 1337.2839 867.574" width="1337.2839" height="867.574" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="paint0_linear_10_211" x1="944.819" y1="-22.139" x2="562.451" y2="987.377" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1, 0, 0, 1, 0, 15)">
+      <stop offset="0.0677" stop-color="#FB0A6B">
+        <animate attributeName="offset" values="0.0677;0.268;0.0677" dur="4s" fill="freeze" keyTimes="0; 0.5; 1" repeatCount="indefinite" calcMode="spline" keySplines="0.42 0 1 1; 0.42 0 1 1"/>
+      </stop>
+      <stop offset="1" stop-color="#2929FD">
+        <animate attributeName="offset" values="1;0.8;1" dur="4s" fill="freeze" keyTimes="0; 0.5; 1" begin="2s" repeatCount="indefinite" calcMode="spline" keySplines="0.42 0 1 1; 0.42 0 1 1"/>
+      </stop>
+    </linearGradient>
+  </defs>
+  <path d="M 819.278 15.213 L 1337.77 163.563 L 1337.85 366.525 L 549.665 882.787 L 0.566 725.852 L 0.566 514.503 L 819.278 15.213 Z" fill="url(#paint0_linear_10_211)"/>
+  <ellipse cx="1058.79" cy="341.3" rx="23.739" ry="11.001" fill="white" style="transform-origin: 1058.79px 341.3px;">
+    <animateTransform type="translate" additive="sum" attributeName="transform" values="0 0;0 -200;-500 -150;-325 400;-650 425;-800 35;10 180;0 0" begin="0s" dur="9s" repeatCount="indefinite" keyTimes="0; 0.11057; 0.22253; 0.42243; 0.48902; 0.66638; 0.8887; 1" fill="freeze"/>
+    <animateTransform type="scale" additive="sum" attributeName="transform" values="1 1;0.85 0.85;0.85 0.85;1.25 1.25;1.25 1.25;1.1 1.1;1.15 1.15;1 1" begin="0s" dur="9s" fill="freeze" repeatCount="indefinite" keyTimes="0; 0.11089; 0.22222; 0.42248; 0.48893; 0.66676; 0.88927; 1"/>
+  </ellipse>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M 978.18 85.551 C 975 84.658 971.236 84.163 967.207 84.211 C 955.883 84.343 946.753 88.705 946.815 93.953 C 946.857 97.532 951.164 100.599 957.492 102.145 L 1085.91 137.297 L 1085.91 137.296 C 1089.1 138.191 1092.87 138.687 1096.9 138.64 C 1108.22 138.507 1117.35 134.145 1117.29 128.897 C 1117.25 125.62 1113.64 122.773 1108.17 121.129 L 1108.18 121.124 L 1107.89 121.045 C 1107.61 120.962 1107.31 120.882 1107.02 120.806 L 978.19 85.543 L 978.18 85.551 Z" fill="white">
+    <animateTransform type="translate" additive="sum" attributeName="transform" values="0 0;94 26;-100 -28;30 9;0 0" begin="0s" dur="9s" fill="freeze" keyTimes="0; 0.14483; 0.44412; 0.83333; 1" repeatCount="indefinite" calcMode="spline" keySplines="0.25 0.1 0.25 1; 0 0 1 1; 0 0 1 1; 0.25 0.1 0.25 1"/>
+  </path>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M 265.297 742.768 C 261.248 741.58 256.447 740.892 251.299 740.892 C 236.831 740.892 225.102 746.327 225.102 753.032 C 225.102 757.605 230.557 761.587 238.615 763.657 L 402.153 810.491 L 402.155 810.49 C 406.208 811.681 411.015 812.371 416.17 812.371 C 430.638 812.371 442.367 806.935 442.367 800.231 C 442.367 796.043 437.793 792.351 430.835 790.169 L 430.842 790.164 L 430.494 790.064 C 430.117 789.95 429.732 789.84 429.341 789.734 L 265.31 742.759 L 265.297 742.768 Z" fill="white">
+    <animateTransform type="translate" additive="sum" attributeName="transform" values="0 0;-150 -43;100 28;100 28;60 19;50 15;0 0" begin="0s" dur="9s" fill="freeze" repeatCount="indefinite" keyTimes="0; 0.22222; 0.52222; 0.645913; 0.78889; 0.85515; 1" calcMode="spline" keySplines="0 0 1 1; 0.25 0.1 0.25 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0.25 0.1 0.25 1"/>
+  </path>
+</svg>

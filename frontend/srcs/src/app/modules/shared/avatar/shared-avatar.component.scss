@@ -1,7 +1,5 @@
 .avatar {
     padding: 5px;
-    width: 40px;
-    height: 40px;
     border-radius: 50%; // This value should be half of the width/height to create a perfect circle
     overflow: hidden; // This ensures the image stays within the rounded boundaries
     background-color: var(--bg-secondary);

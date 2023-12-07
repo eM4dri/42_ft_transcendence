@@ -45,17 +45,17 @@ export class ChallengeComponent implements OnInit{
   }
 
   openModal(newChallengerUserId: string) {
-    this.modalReference.push(this.modalService.open(ChallengeInfoComponent,{ backdrop: 'static' }));
+    this.modalReference.push(this.modalService.open(ChallengeInfoComponent, { modalDialogClass: 'custom-modal-background', backdrop: 'static' } ));
     this.modalReference[0].componentInstance.newChallengerUserId = newChallengerUserId;
   }
 
   openModalChallenging(challengingUserId: string) {
-    this.modalReference.push(this.modalService.open(ChallengingComponent, { backdrop: 'static' }));
+    this.modalReference.push(this.modalService.open(ChallengingComponent, { backdrop: 'static', modalDialogClass: 'custom-modal-background' }));
     this.modalReference[0].componentInstance.challengingUserId = challengingUserId;
   }
     
   open(content: TemplateRef<any>) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', modalDialogClass: 'custom-modal-background' });
   }
   
 }

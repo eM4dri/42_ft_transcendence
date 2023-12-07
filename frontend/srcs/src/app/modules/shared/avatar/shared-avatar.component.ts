@@ -8,6 +8,7 @@ import { UriConstants } from '../../../utils';
 })
 export class SharedAvatarComponent {
   @Input() avatar?: string = UriConstants.USER_AVATAR_DEFAULT;
+  @Input() picturesize?: number = 30;
 
   handleImageError(event: any){
     event.target.src =  UriConstants.USER_AVATAR_DEFAULT;

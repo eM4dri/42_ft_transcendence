@@ -1,0 +1,46 @@
+.whole-thing {
+    display: flex;
+    flex-direction: column;
+    background-color: #242430;
+    border-radius: 15px;
+    vertical-align: middle;
+	align-items: center;
+    padding: 50px;
+}
+
+button.cancelbutton {
+	position: relative;
+	background-color: #302F3F;
+	border-radius: 50vh;
+	box-shadow: #242430 0px 4px 0px 0px;
+	padding: 5px;
+	background-repeat: no-repeat;
+	box-sizing: border-box;
+	width: 154px;
+	height: 80px;
+	color: #fff;
+	border: none;
+	font-size: 25px;
+	transition: all .3s ease-in-out;
+	z-index: 1;
+	overflow: hidden;
+    box-shadow: 0 0 25px rgb(255,0,0);
+  }
+  
+button.cancelbutton::before {
+	content: "";
+	background: rgb(2,0,36);
+	background-image: linear-gradient(30deg, #900, #F00);
+	width: 0;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	transition: width 700ms ease-in-out;
+	display: inline-block;
+  }
+  
+button.cancelbutton:hover::before {
+	width: 100%;
+  }

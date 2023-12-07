@@ -1,6 +1,8 @@
 <div class='avatar' >
     <img
         src="{{ avatar }}"
+        height="{{ picturesize }}"
+        width="{{ picturesize }}"
         alt="avatar"
         (error)="handleImageError($event)"
     />

@@ -74,6 +74,7 @@ export class GameComponent implements AfterViewInit, OnDestroy
 	@ViewChild('ball_aura') ballaura!: ElementRef;
 	@ViewChild('powerup1') powerup1!: ElementRef;
 
+	private canvasdiv!: HTMLElement;
 	//matchmaking
 	/** Canvas 2d context */
 	private context!: CanvasRenderingContext2D;
@@ -128,13 +129,21 @@ export class GameComponent implements AfterViewInit, OnDestroy
 	ngAfterViewInit()
 	{
 		introtime = 3000;
+
 		const aux = (
 			this.canvasEl.nativeElement as HTMLCanvasElement
 		).getContext('2d');
+		const aux2 = (
+			this.canvasEl.nativeElement as HTMLElement
+		)
 		if (aux)
 			this.context = aux;
-			this.startPeriodicExecution();
-		}
+		if (aux2)
+			this.canvasdiv = aux2;
+		this.canvasdiv.hidden = true;
+		this.startPeriodicExecution();
+	}
+
 		
 		sendKeypress(msg: number) {
 			this.gameService.sendKeyPress(msg);
@@ -178,6 +187,14 @@ export class GameComponent implements AfterViewInit, OnDestroy
 
 	private drawComponents()
 	{
+		if (this.htmlstatus > 1)
+		{
+			this.canvasdiv.hidden = false;
+		}
+		else
+		{
+			this.canvasdiv.hidden = true;
+		}
 		//*		Linking the introduction interface with the frame rate of the backend (players only).
 		if (this.router.url != "/game/spectate")
 		{
@@ -591,12 +608,6 @@ export class GameComponent implements AfterViewInit, OnDestroy
 		if (this.gameClass.status == gameStatus.goalanimation_blue || this.gameClass.status == gameStatus.goalanimation_red)
 		{
 
-			// const redgradient = this.context.createLinearGradient(900 + (introtime - 2750) * 8, 250, 2000 + (introtime - 2750) * 8, 750);
-			// redgradient.addColorStop(0, "#f330")
-			// redgradient.addColorStop(1, "#f33c")
-
-			// this.context.fillStyle = redgradient;
-			// this.context.fillRect(0, 0, 2000, 1000);
 			if (this.gameClass.status == gameStatus.goalanimation_blue)
 			{
 				if (this.gameClass.waitEnd > 1500)
@@ -672,39 +683,12 @@ export class GameComponent implements AfterViewInit, OnDestroy
 	}
 
 	
-	/*front_updater(){
-		this.gameClass.bluepaddle.y += paddledirection;
-	}*/
-	
-	//!		requestAnimationFrame()
-	
 	startPeriodicExecution(): void {
-		// Use interval from RxJS to run the function every 20ms
 		const interval$ = interval(20);
-		
-		// Use take to limit the number of executions (optional)
-/*		interval$.pipe().subscribe(() => {
-			this.front_updater();
-		});*/
-	}
-	
 
-//	setInterval(front_updater, 20): void;
+	}
+
 }
-
-/*
-window.addEventListener('load', function(){
-	var maincanvas = document.getElementById("main_game");
-	if (maincanvas != undefined)
-	{
-		console.log("HIIIIIIII1")
-		maincanvas.style.width = "2000px";
-	}
-	else
-	{
-		console.log("BYEEEEEE1")
-	}
-});*/
 
 var up_pressed: boolean = false;
 var down_pressed: boolean = false;

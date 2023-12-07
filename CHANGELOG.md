@@ -6,10 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-12-06 - jvacaris
+### Added
+- Challenge modal decoration.
+- Minor styling tweaks on some pages.
 
 ## 2023-12-06 - emadriga
 ### Added
 - Challenge match modal workflow through API REST dissmissing in case of player currently playing
+
+## 2023-12-05 - jvacaris
+### Added
+- Home screen.
 
 ## 2023-12-04 - jvacaris
 - Game starts after a challenge request is accepted.
