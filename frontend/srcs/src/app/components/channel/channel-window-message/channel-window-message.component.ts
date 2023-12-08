@@ -1,7 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { ChannelMessages } from 'src/app/models';
-import { DateMutations } from 'src/app/utils';
-import { ChannelUsersData } from '../channel-window/channel-window.component';
+import { Component, Input, inject } from '@angular/core';
+import { ChannelMessages, User } from 'src/app/models';
+import { DateMutations, UriConstants } from 'src/app/utils';
 
 @Component({
   selector: 'app-channel-window-message',
@@ -10,15 +9,16 @@ import { ChannelUsersData } from '../channel-window/channel-window.component';
 })
 export class ChannelWindowMessageComponent {
   @Input() msg!: ChannelMessages;
-  @Input() channelUser?: ChannelUsersData;
   @Input() isBlocked!: boolean;
-  constructor(
-    private readonly dateMutations : DateMutations
-  )
-  {}
+  @Input() user?:User;
+  
+  private readonly dateMutations = inject(DateMutations);
 
-  public toTimeLocale(date: string){
+  toTimeLocale(date: string){
     return this.dateMutations.toTimeLocale(date);
   }
 
+  handleImageError(event: any){
+    event.target.src =  UriConstants.USER_AVATAR_DEFAULT;
+  }
 }

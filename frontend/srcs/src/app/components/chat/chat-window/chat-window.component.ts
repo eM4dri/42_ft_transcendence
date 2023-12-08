@@ -1,4 +1,5 @@
-import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ChatsCache, UsersCache } from 'src/app/cache';
 import { Chat, ChatMessages, User } from 'src/app/models';
 import { BaseComponent, ChatComponent } from 'src/app/modules';
@@ -17,32 +18,36 @@ export interface PostMessage  {
   styleUrls: ['./chat-window.component.scss']
 })
 
-export class ChatWindowComponent extends BaseComponent<{},PostMessage> implements OnInit, OnChanges, AfterViewChecked {
+export class ChatWindowComponent extends BaseComponent<{},PostMessage> implements OnInit, OnChanges, AfterViewChecked, OnDestroy{
   @Input() user!: User;
   @Input() chat?: Chat;
   @ViewChild('chatContainer') private chatContainer!: ElementRef;
 
   chatMessages: Map<number,ChatMessages[]> = new Map<number,ChatMessages[]>();
 
+  subscriptions: Subscription[] = [];
+
   ngOnInit(): void {
     if (this.chat !== undefined ) {
-      this.cachedChats.getChatMessagesSub().subscribe(res=>{
-        if (res.chatId === this.chat!.chatId) {
-          const messages = res.chatMessages;
-          for (const m of messages){
-            const dayMessages = this.chatMessages.get(m[0]);
-            if (dayMessages !== undefined){
-              for (const dm of m[1]){   // iter through subscribed messages received
-                if (dayMessages.find(x=>x.chatMessageId !== dm.chatMessageId)){ // avoid duplicates checking if I haven't got msg earlier
-                  this.chatMessages.set(m[0], dayMessages?.concat(m[1]));
-                }
-              } 
-            } else {
-              this.chatMessages.set(m[0], m[1]);
+      this.subscriptions.push(
+        this.cachedChats.getChatMessagesSub().subscribe(res=>{
+          if (res.chatId === this.chat!.chatId) {
+            const messages = res.chatMessages;
+            for (const m of messages){
+              const dayMessages = this.chatMessages.get(m[0]);
+              if (dayMessages !== undefined){
+                for (const dm of m[1]){   // iter through subscribed messages received
+                  if (dayMessages.find(x=>x.chatMessageId !== dm.chatMessageId)){ // avoid duplicates checking if I haven't got msg earlier
+                    this.chatMessages.set(m[0], dayMessages?.concat(m[1]));
+                  }
+                } 
+              } else {
+                this.chatMessages.set(m[0], m[1]);
+              }
             }
           }
-        }
-      });
+        })
+      );
     }
   }
 
@@ -58,6 +63,9 @@ export class ChatWindowComponent extends BaseComponent<{},PostMessage> implement
 
   ngAfterViewChecked() {
     this.scrollToBottom();
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   constructor(

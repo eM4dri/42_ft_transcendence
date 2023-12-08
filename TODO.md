@@ -40,8 +40,8 @@ response: {
 
 - [] Use truncate pipe or avoid limitless username
 
-- [] moving between view create channels messages duplicate 
-- [] creating new channel dont upload new messages till you move between views
+- [x] moving between view create channels messages duplicate 
+- [x] creating new channel dont upload new messages till you move between views
 - [] time out modal challenge
-- [] To long chat messages go out beyond bubble-> look how to continue in next line
-- [] New people chats don't send new messages if you are inside chat
+- [x] To long chat messages go out beyond bubble-> look how to continue in next line
+- [x] New people channel don't send new messages if you are inside channel

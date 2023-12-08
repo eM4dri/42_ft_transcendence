@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models';
 import { UserService } from '../services';
+import { UriConstants } from '../utils';
 
 @Injectable({
   providedIn: 'root'
@@ -106,7 +107,7 @@ export class UsersCache {
   }
 
   getUserImage(userId: string): string {
-    return this.getUser(userId)?.avatar || "https://api.dicebear.com/avatar.svg";
+    return this.getUser(userId)?.avatar || UriConstants.USER_AVATAR_DEFAULT;
   }
 
   getUsername(userId: string): string {

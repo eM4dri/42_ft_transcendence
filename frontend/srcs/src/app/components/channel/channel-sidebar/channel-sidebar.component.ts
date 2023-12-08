@@ -3,7 +3,7 @@ import {  NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Channel } from 'src/app/models';
 import { ChatComponent } from 'src/app/modules/chat/chat.component';
 import { BaseComponent } from 'src/app/modules/shared';
-import { ApiService, ChannelService } from 'src/app/services';
+import { ApiService } from 'src/app/services';
 import { UriConstants } from 'src/app/utils';
 import { ChannelsCache } from 'src/app/cache';
 
@@ -18,7 +18,6 @@ export class ChannelSidebarComponent extends BaseComponent<Channel, {}> implemen
   constructor(
     private readonly api: ApiService<Channel, {}>,
     private readonly chatComponent: ChatComponent,
-    private readonly channelService: ChannelService,
     private readonly modalService: NgbModal,
     private readonly channelsCache: ChannelsCache
   ) {
@@ -42,7 +41,7 @@ export class ChannelSidebarComponent extends BaseComponent<Channel, {}> implemen
   modalReference: NgbModalRef[] = [];
 
   joinChannel(channel: Channel) {
- this.createService({
+    this.createService({
         url: `${UriConstants.CHANNEL}/join`,
         data: { channelId: channel.channelId }
       }).subscribe({

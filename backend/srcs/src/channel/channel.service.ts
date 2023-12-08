@@ -35,12 +35,16 @@ export class ChannelService {
         });
     }
 
-    async getChannelsUsersIds(channelsId: string[]){
-        return this.prisma.channelUser.findMany({
+    async getUsersIds(channelsId: string[]):Promise<string[]>{
+        const result= await this.prisma.channelUser.findMany({
+            select: {
+                userId: true
+            },
             where: {
                 channelId : { in: channelsId },
             },
         });
+        return result.map(x=>x.userId);
     }
 
     async getChannelsJoinedByUserId(userId: string){
@@ -119,7 +123,9 @@ export class ChannelService {
                     password: dto.password
                 }, creator);
             }
-            return {channel: plainToInstance(ResponseChannelDto, channel), channelUser: channelUser};
+            const responseChannel = plainToInstance(ResponseChannelDto, channel);
+            this.eventEmitter.emit('susbcribe_created_channel', responseChannel, plainToInstance(ResponseChannelUserDto, channelUser));
+            return {channel: responseChannel, channelUser: channelUser};
         } catch (error) {
             if (
                 error instanceof

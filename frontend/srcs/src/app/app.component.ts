@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService } from './services';
+import { AuthService, UserService } from './services';
+import { ChannelsCache, ChatsCache, UsersCache } from './cache';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +10,14 @@ import { AuthService } from './services';
 export class AppComponent {
   darkMode: boolean = true;
   constructor(
-    private readonly authService: AuthService
-  ){ }
+    private readonly cachedChats: ChatsCache,               // 
+    private readonly cachedChannels: ChannelsCache,
+    private readonly cachedUsers: UsersCache,
+    private readonly authService: AuthService,
+    private readonly userService: UserService
+  ){ 
+    this.userService.clientReady();
+  }
 
   public isLoggedIn() {
     return this.authService.isLoggedIn();

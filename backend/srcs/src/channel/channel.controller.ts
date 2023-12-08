@@ -51,7 +51,6 @@ export class ChannelController {
       example: "903af193-666f-47eb-9b37-35ca3d58d4ec",
     })
     async getIsChannelLockedById(@Param('uuid', new ParseUUIDPipe()) channelId: string) {
-      console.log(await this.channelService.getFullChannelByChannelId(channelId));
       return { response: (await this.channelService.getChannelByChannelId(channelId)).password !== null ? true : false};
     }
 
@@ -96,7 +95,6 @@ export class ChannelController {
       @GetUser('id') userId: string,
       @Body() dto: JoinChannelDto
     ) {
-      console.log('Hola', dto);
       return { 
         response: await this.channelService.joinChannel(userId, dto )
       };

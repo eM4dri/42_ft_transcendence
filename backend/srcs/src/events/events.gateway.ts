@@ -17,7 +17,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { JwtPayload } from 'src/auth/strategy';
 import { ChatUserMessage } from '@prisma/client';
 import { ChannelService } from 'src/channel/channel.service';
-import { CreateChannelMessageDto, JoinChannelDto, ResponseChannelDto, ResponseChannelUserDto } from 'src/channel/dto';
+import { CreateChannelMessageDto, ResponseChannelDto, ResponseChannelUserDto } from 'src/channel/dto';
 import { UserService } from 'src/user/user.service';
 import { ChannelUser } from '@prisma/client';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
@@ -77,18 +77,27 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     @SubscribeMessage('client_ready')
     async clientReadyForData(@GetUser() user: JwtPayload ,@ConnectedSocket() socket : Socket) {
         this._usersConnected(user.sub, socket.id);
+        const channelsIds = await this._channelsJoinedByUser(user.sub);
         const blockedUserIds = await this._blockedUserIds(user.sub, socket.id);
         const friendUserIds = await this._friendUserIds(user.sub, socket.id);
         const chatUserIds = await this._chatsAvailables(user.sub);
-        const usersIds:string [] = chatUserIds.concat(blockedUserIds,friendUserIds);
+        const channelUserId = await this.channelService.getUsersIds(channelsIds);
+        const usersIds:string [] = chatUserIds.concat(blockedUserIds,friendUserIds, channelUserId);
         this._usersToCache(socket.id, usersIds.filter(x=>x));
-        this._channelsJoinedByUser(user.sub);
         this._loadUserChats(user.sub);
     }
 
     @SubscribeMessage('susbcribe_channel')
     subscribeChannel(@GetUser() user: JwtPayload , @ConnectedSocket() socket : Socket, @MessageBody() channelId: string) {
         this._loadUserChannel(channelId, user.sub, socket);
+    }
+
+    @OnEvent('susbcribe_created_channel')
+    subscribeCreatedChannel(channel: ResponseChannelDto, channelUser: ResponseChannelUserDto) {
+        const socket = this.socketsMap.get(channelUser.userId);
+        this.server.to(socket.id).emit('joined_channels', [channel]);
+        console.log('susbcribe_created_channel',channelUser, socket.id);
+        this._loadUserChannel(channelUser.channelId, channelUser.userId, socket);
     }
 
     @SubscribeMessage('send_channel_message')
@@ -137,6 +146,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         const channels: ResponseChannelDto[] = await this.channelService.getChannelsJoinedByUserId(userId);
         const socket = this.socketsIdMap.get(userId);
         this.server.to(socket).emit('joined_channels', channels);
+        return channels.map(x=>x.channelId);
     }
 
     @OnEvent('user_join_channel')
@@ -144,16 +154,23 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         const channels: ResponseChannelDto[] = [await this.channelService.getChannelByChannelId(channelUser.channelId)];
         const socket: Socket = this.socketsMap.get(channelUser.userId);
         const channelId: string = channelUser.channelId;
-        // Add channel into joined_channels ws for socket
-        this.server.to(socket.id).emit('joined_channels', channels);
-        // load user data to show
-        this._channelUsersToCache(socket.id, [channelId]);
-        // load users to its {channelId}_users ws for socket
-       this._loadChannelUsers(socket.id, channelId);
-        // load messages to its {channelId}_users ws for socket
-        this._loadChannelMessages(socket.id, channelId);
-        // join the socket to the room
-        socket.join(`${channelId}_room`);
+        const channels_userIds = await this.channelService.getUsersIds([channelUser.channelId]);
+        for (const userId of channels_userIds){
+            const socketId = this.socketsIdMap.get(userId);
+            this._usersToCache(socketId, [channelUser.userId]);            
+        }
+        if (socket !== undefined) {
+            // Add channel into joined_channels ws for socket
+            this.server.to(socket.id).emit('joined_channels', channels);
+            // load user data to show
+            this._usersToCache(socket.id, channels_userIds);
+            // load users to its {channelId}_users ws for socket
+            this._loadChannelUsers(socket.id, channelId);
+            // load messages to its {channelId}_users ws for socket
+            this._loadChannelMessages(socket.id, channelId);
+            // join the socket to the room
+            socket.join(`${channelId}_room`);
+        }
         // anounce to the room new joined user
         this.server.to(`${channelId}_room`).emit(`${channelId}_users`, [channelUser] );
     }
@@ -235,8 +252,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     }
 
     private async _channelUsersToCache(socketId: string, channelsId: string[]) {
-        const channelsUsers = Array.from(await this.channelService.getChannelsUsersIds(channelsId)).map(x=>x.userId);
-        this._usersToCache(socketId, channelsUsers);
+        const userIds = await this.channelService.getUsersIds(channelsId);
+        this._usersToCache(socketId, userIds);
     }
 
     private async _usersToCache(socketId: string, usersId: string[]) {

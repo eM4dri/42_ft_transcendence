@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-12-07 - emadriga
+### Fixed
+- Moving between view create channels messages duplicate, fixing mapping messages on channel, and also it seems like is bad practice not unsubscribing since every time you load a channel you re gonna subscribe again ([6-ways-to-unsubscribe-from-observables-in-angular](https://blog.bitsrc.io/6-ways-to-unsubscribe-from-observables-in-angular-ab912819a78f))
+- New people channels don't send new messages if you are inside channel fixed
+- To long chat messages go out beyond bubble fixed
+- creating new channel don't upload new messages till you move between views fixed
+
 ## 2023-12-06 - pmedina
 ### Added
 - Changes in error management (profile info)

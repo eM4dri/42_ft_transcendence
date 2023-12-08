@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AdministrationComponent, ChallengeModule, ChatComponent, FriendListComponent, GameComponent, HistoryComponent, HomeComponent, LoginModule, NavbarComponent, ProfileComponent, SharedAlertModule, SharedAvatarModule, SpectateModule } from './modules';
+import { AdministrationComponent, ChallengeModule, ChatComponent, FriendListComponent, GameComponent, HomeComponent, LoginModule, NavbarComponent, ProfileComponent, SharedAlertModule, SharedAvatarModule, SpectateModule } from './modules';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
@@ -22,7 +22,6 @@ import { OtherProfileComponent } from './modules/profile/other-profile.component
 import { ProfileAvatarComponent } from './components/avatar/profile-avatar/profile-avatar.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { RankTableModule } from './modules/rank-table/rank-table.module'
-import { RankTableComponent } from './modules/rank-table/rank-table/rank-table.component'
 import { TruncatePipe } from './pipes/truncate.pipe';
 //import { PongTVComponent } from './modules/pongtv/pongtv.component';
 import { ChannelAvatarEditorComponent } from './components/avatar/channel-avatar-editor/channel-avatar-editor.component';
@@ -60,7 +59,6 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     ChannelManagementActionsComponent,
     ChannelHeaderComponent,
     AdministrationComponent,
-    FriendListComponent,
     FriendListComponent,
     ChatSidebarComponent,
     FriendSidebarComponent,

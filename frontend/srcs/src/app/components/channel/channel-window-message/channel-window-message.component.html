@@ -1,6 +1,6 @@
 <ng-container
 *ngIf="
-channelUser === undefined;
+user === undefined;
 then alignRight;
 else alignLeft
 "
@@ -25,9 +25,9 @@ else alignLeft
     <div class='avatar-grid'>
         <div class='avatar'>
             <img
-                src="{{ channelUser?.user?.avatar }}"
+                src="{{ user?.avatar }}"
                 alt="avatar"
-                onerror="https://api.dicebear.com/avatar.svg"
+                (error)="handleImageError($event)"
             />
         </div>
         <div class="chat-grid left">
@@ -39,7 +39,7 @@ else alignLeft
                         </p>    
                     } @else {
                         <p class="msg">
-                            {{ channelUser?.user?.username }}
+                            {{ user?.username }}
                         </p>
                         <p class="msg">
                             {{ msg.message }}

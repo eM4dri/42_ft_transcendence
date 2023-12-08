@@ -1,66 +1,73 @@
-import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, inject } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ChannelsCache, UsersCache } from 'src/app/cache';
 import { Channel, ChannelMessages, ChannelUsers, ChannelUsersExtended, User } from 'src/app/models';
 import { ChannelService } from 'src/app/services';
 import { DateMutations } from 'src/app/utils';
-
-export interface ChannelUsersData extends ChannelUsers {
-  user?: User;
-}
-
 
 @Component({
   selector: 'app-channel-window',
   templateUrl: './channel-window.component.html',
   styleUrls: ['./channel-window.component.scss']
 })
-export class ChannelWindowComponent implements OnInit, OnChanges, AfterViewChecked {
+export class ChannelWindowComponent implements OnInit, OnChanges, AfterViewChecked, OnDestroy{
   @Input() channel!: Channel;
   @ViewChild('channelContainer') private channelContainer!: ElementRef;
 
   channelMessages: Map<number,ChannelMessages[]> = new Map<number,ChannelMessages[]>();
-  channelUsers: Map<string,ChannelUsersData> = new Map<string,ChannelUsersData>();
+  channelUsers: Map<string,ChannelUsers> = new Map<string,ChannelUsers>();
   blockedChannelUsers: Set<string> = new Set<string>();
   myChannelUser!: ChannelUsersExtended;
+  inputValue: string = '';
+
+  private readonly channelService = inject(ChannelService);
+  private readonly cachedChannels = inject(ChannelsCache);
+  private readonly cachedUsers = inject(UsersCache);
+  private readonly dateMutations = inject(DateMutations);
+
+  subscriptions: Subscription[] = [];
+
 
   ngOnInit(): void {
-    this.cachedChannels.getChannelMessagesSub().subscribe(res=>{
-      if (res.channelId === this.channel.channelId) {
-        let messages = res.channelMessages;
-        for (let m of messages){
-          let dayMessages = this.channelMessages.get(m[0]);
-          if (dayMessages !== undefined){
-            this.channelMessages.set(m[0], dayMessages?.concat(m[1]));
-          } else {
-            this.channelMessages.set(m[0], m[1]);
+    this.subscriptions.push(
+      this.cachedChannels.getChannelMessagesSub().subscribe(res=>{
+        if (res.channelId === this.channel.channelId) {
+          const messages = res.channelMessages;
+          for (const m of messages){
+            const dayMessages = this.channelMessages.get(m[0]);
+            if (dayMessages !== undefined){
+              for (const dm of m[1]){   // iter through subscribed messages received
+                if (dayMessages.find(x=>x.channelMessageId === dm.channelMessageId) === undefined){ // avoid duplicates checking if I haven't got msg earlier
+                  this.channelMessages.set(m[0], dayMessages?.concat(m[1]));
+                }
+              } 
+            } else {
+              this.channelMessages.set(m[0], m[1]);
+            }
           }
         }
-      }
-    });
-    this.cachedChannels.getChannelUsersSub().subscribe(res=>{
-      if (res.channelId === this.channel.channelId) {
-        let channelUsers = res.channelUsers;
-        for (let c of channelUsers){
-          if (this.cachedUsers.isUserBlocked(c.userId)) {
-            this.blockedChannelUsers.add(c.channelUserId);
+      })
+    );
+    this.subscriptions.push(
+      this.cachedChannels.getChannelUsersSub().subscribe(res=>{
+        if (res.channelId === this.channel.channelId) {
+          let channelUsers = res.channelUsers;
+          for (let c of channelUsers){
+            if (this.cachedUsers.isUserBlocked(c.userId)) {
+              this.blockedChannelUsers.add(c.channelUserId);
+            }
+            this.channelUsers.set(c.channelUserId, c);
           }
-          const user = this.cachedUsers.getUser(c.userId);
-          const channelUsersData: ChannelUsersData = {
-            channelUserId: c.channelUserId,
-            leaveAt: c.leaveAt,
-            userId: c.userId,
-            joinedAt: c.joinedAt,
-            user: user
-          };
-          this.channelUsers.set(c.channelUserId, channelUsersData);
         }
-      }
-    });
-    this.cachedChannels.getmyChannelUserSub().subscribe(res=>{
-      if (res.channelId === this.channel.channelId) {
-        this.myChannelUser = res.myChannelUser;
-      }
-    })
+      })
+    );
+    this.subscriptions.push(
+      this.cachedChannels.getmyChannelUserSub().subscribe(res=>{
+        if (res.channelId === this.channel.channelId) {
+          this.myChannelUser = res.myChannelUser;
+        }
+      })
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -75,15 +82,7 @@ export class ChannelWindowComponent implements OnInit, OnChanges, AfterViewCheck
       if (this.cachedUsers.isUserBlocked(c.userId)) {
         this.blockedChannelUsers.add(c.channelUserId);
       }
-      const user = this.cachedUsers.getUser(c.userId);
-      const channelUsersData: ChannelUsersData = {
-        channelUserId: c.channelUserId,
-        leaveAt: c.leaveAt,
-        userId: c.userId,
-        joinedAt: c.joinedAt,
-        user: user
-      };
-      this.channelUsers.set(c.channelUserId, channelUsersData);
+      this.channelUsers.set(c.channelUserId, c);
       const  myChannelUser =  this.cachedChannels.getMyChannelUser(this.channel.channelId);
       if (myChannelUser !== undefined)  {
         this.myChannelUser = myChannelUser;
@@ -96,17 +95,9 @@ export class ChannelWindowComponent implements OnInit, OnChanges, AfterViewCheck
     this.scrollToBottom();
   }
 
-  constructor(
-    private readonly channelService: ChannelService,
-    private readonly cachedChannels: ChannelsCache,
-    private readonly cachedUsers: UsersCache,
-    private readonly dateMutations: DateMutations
-    ) {  
-
-     }
-
-  counter=0;
-  inputValue: string = ''; 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
 
   public toDayLocale(time: number):string {
     return this.dateMutations.toDayLocale(time);
@@ -122,13 +113,10 @@ export class ChannelWindowComponent implements OnInit, OnChanges, AfterViewCheck
     }
   }
 
-  public getChannelUser(channelUserId:string): ChannelUsersData {
-      return this.channelUsers.get(channelUserId) || {
-              userId: '',
-              channelUserId: '',
-              joinedAt: new Date(),
-              leaveAt: new Date(),
-        };
+  public getUser(channelUserId:string) {
+    const user = this.channelUsers.get(channelUserId);
+    const userId =  user?.userId || 'unKnown'
+    return this.cachedUsers.getUser(userId);
   }
 
   public getInputPlaceHolder() {
@@ -153,3 +141,4 @@ export class ChannelWindowComponent implements OnInit, OnChanges, AfterViewCheck
     } catch(err) { }
   }
 }
+

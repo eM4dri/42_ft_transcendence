@@ -76,8 +76,8 @@ export class ChannelManagementComponent extends BaseComponent<{},PostChannel> im
         }).subscribe({
           next: (res) => {
             const {channel, channelUser} = res.response
-            this.cachedChannels.addJoinedChannel(channel)
-            this.cachedChannels.addChannelUser(channel.channelId, channelUser);
+            // this.cachedChannels.addJoinedChannel(channel)
+            // this.cachedChannels.addChannelUser(channel.channelId, channelUser);
             this.alertConfiguration('SUCCESS', "Changes applied sucessfully");
             this.openAlert();
             this.loading = false;
