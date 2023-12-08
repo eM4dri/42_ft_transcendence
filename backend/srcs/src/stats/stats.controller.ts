@@ -39,19 +39,6 @@ export class StatsController {
     return this.StatsService.getUserStats(UserId);
   }
 
-  @Get(':uuid')
-  @ApiParam({
-    name: "uuid",
-    type: String,
-    required: true,
-    description: "Uuid of the user",
-    example: "903af193-666f-47eb-9b37-35ca3d58d4ec",
-  })
-  @ApiOperation({ description: "Get stats by user id" })
-  getById(@Param('uuid', new ParseUUIDPipe()) UserId: string) {
-    return this.StatsService.getUserStats(UserId);
-  }
-
   @Patch()
   @HttpCode(200)
   @ApiOperation({ description: "Update user stats" })
@@ -123,4 +110,18 @@ export class StatsController {
     console.log(result)
     return { response: await result };
   }
+
+  @Get(':uuid')
+  @ApiParam({
+    name: "uuid",
+    type: String,
+    required: true,
+    description: "Uuid of the user",
+    example: "903af193-666f-47eb-9b37-35ca3d58d4ec",
+  })
+  @ApiOperation({ description: "Get stats by user id" })
+  getById(@Param('uuid', new ParseUUIDPipe()) UserId: string) {
+    return this.StatsService.getUserStats(UserId);
+  }
+
 }

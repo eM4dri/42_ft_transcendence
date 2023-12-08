@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-12-06 - pmedina
+### Added
+- Changes in error management (profile info)
+- Changes in css (profile info)
+- Stats controller reorganized
+- Small changes 
+
 ## 2023-12-06 - jvacaris
 ### Added
 - Challenge modal decoration.
@@ -71,7 +78,7 @@ and this project adheres to
 - Added boostrap icons
 
 ### Fixed
-- Update some css problems after boostrap instalation 
+- Update some css problems after boostrap instalation
 - Use frontend assets to serve images instead of nginx static images
 - Improve look & feel of menú icons
 
@@ -120,7 +127,7 @@ and this project adheres to
 
 ## 2023-11-25 - emadriga
 ### Added
-- Mock up Interface spectate games 
+- Mock up Interface spectate games
 
 ## 2023-11-25 - tommy
 ### Added
@@ -163,7 +170,7 @@ Started the room system to allow multiple games.
 
 ### Changed
 - Schedule WS in new chats info in order to handle in front properly
-- Updating chat workflow to use REST instead of WS 
+- Updating chat workflow to use REST instead of WS
 
 ## 2023-11-18 - jvacaris
 ### Added
@@ -175,7 +182,7 @@ Started the room system to allow multiple games.
 
 ## 2023-11-16 - tomartin
 ### Added
-- 2fa back authorization 
+- 2fa back authorization
 - New bbdd User columns
 - New tfa controller
 - Added qrcode & speakeasy to handle tfa with a QR
@@ -196,7 +203,7 @@ Started the room system to allow multiple games.
 ## 2023-11-13 - emadriga
 ### Changed
 - Updated to Angular 17
-- Using `npm ci --legacy-peer-deps` following [Stop using “npm install” in your CI/CD pipeline](https://blog.bitsrc.io/stop-using-npm-install-in-your-ci-cd-pipeline-ba0378bbebfb) 
+- Using `npm ci --legacy-peer-deps` following [Stop using “npm install” in your CI/CD pipeline](https://blog.bitsrc.io/stop-using-npm-install-in-your-ci-cd-pipeline-ba0378bbebfb)
 
 ## 2023-11-13 - jvacaris
 ### Added
@@ -205,7 +212,7 @@ Started the room system to allow multiple games.
 
 ## 2023-11-12 - emadriga
 ### Added
-- Solved redirections from diferent 42 host 
+- Solved redirections from diferent 42 host
 
 ### Changed
 - Cleaning workflow avatar workflow with constants, creating avatars at new user or channel, using default svg images

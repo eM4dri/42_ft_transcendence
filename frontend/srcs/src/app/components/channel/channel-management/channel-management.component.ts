@@ -37,29 +37,24 @@ export class ChannelManagementComponent extends BaseComponent<{},PostChannel> im
   }
 
   ngOnInit(): void {
-    console.log(this.channel.avatar);
     if (this.channel.channelId !== 'none') {
       this.getService({
         url: `${UriConstants.CHANNEL}/${this.channel.channelId}/isLocked`
       }).subscribe({
         next: (res: any) => {
           this.channel.isLocked = res.response;
-          console.log(this.channel.isLocked);
         },
-        error: error => {
-          // TODO gestionar el error
-            //this.processError(error);
+        error: () => {
+            this.processError('Error retrieving channel information');
         },
       });
     }
   }
 
   saveChannel(){
-    console.log('aqui')
     if (this.isFormValid()) {
       const { channelName, currentPassword, password, confirmPassword} = this.formGroup.value;
       if (password !== confirmPassword) {
-        console.log('ERROR!');
         this.alertConfiguration('ERROR', 'Passwords must be the same.');
         this.openAlert();
         this.loading = true;
@@ -88,7 +83,6 @@ export class ChannelManagementComponent extends BaseComponent<{},PostChannel> im
             this.loading = false;
           },
           error: error => {
-            console.log('ERROR!');
             this.alertConfiguration('ERROR', error);
             this.openAlert();
             this.loading = true;
@@ -120,7 +114,6 @@ export class ChannelManagementComponent extends BaseComponent<{},PostChannel> im
         this.loading = false;
       },
       error: error => {
-        console.log('ERROR!');
         this.alertConfiguration('ERROR', error);
         this.openAlert();
         this.loading = true;
@@ -130,5 +123,11 @@ export class ChannelManagementComponent extends BaseComponent<{},PostChannel> im
 
   updateAvatar(url: string) {
     this.channel.avatar = url;
+    this.avatarUrl = url
+  }
+
+  processError(error: any){
+    this.alertConfiguration('ERROR', error);
+    this.openAlert();
   }
 }

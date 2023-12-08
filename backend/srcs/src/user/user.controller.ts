@@ -42,7 +42,6 @@ export class UserController {
     description: 'Get user by uuid',
   })
   async getMyUser(@GetUser('id') userId: string) {
-    console.log(userId);
     return this.userService.getByUserId(
       userId,
     );

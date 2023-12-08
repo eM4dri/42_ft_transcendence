@@ -1,24 +1,27 @@
 .profile-info-app {
   display: grid;
-  grid-template-columns: 10fr 2200fr 100fr;
-  // grid-template-columns: repeat(3 , 1fr);
-  gap:10px;
+  grid-template-columns: 1fr 100fr 1fr;
+  gap: 10px;
   min-height: calc(100vh - 2rem);
+  justify-items: center;
 }
 
+
 .container {
-    margin-top: 10%;
-    margin-left: 100%;
-    position: relative;
-    width: 100%;
-    height: 80%;
+    margin-top: 5%;
+    margin-right: 5%;
+    position: absolute;
+    max-width: 45%;
+    height: 70%;
     transition: 200ms;
     grid-column: 2;
     grid-area: span;
   }
 
+
   #card {
     position: absolute;
+    max-width: 100%;
     inset: 0;
     z-index: 0;
     display: flex;
@@ -35,7 +38,7 @@
     color: rgb(57, 46, 97);
     font-weight: bold;
     text-align: center;
-    font-size: 2vw; /* Utiliza vw (viewport width) para hacerlo responsive */
+    font-size: 4vw; /* Utiliza vw (viewport width) para hacerlo responsive */
     max-width: 100%; /* Evita que el texto se desborde de la tarjeta */
     padding: 1rem; /* Agrega relleno según sea necesario */
   }
@@ -53,21 +56,6 @@
     color: white;
   }
 
-  @media (min-width: 768px) {
-    /* Cuando la pantalla sea más grande (por ejemplo, en dispositivos con al menos 768px de ancho) */
-    .title {
-      bottom: 5%; /* Ajusta la posición desde la parte inferior según tus necesidades */
-      font-size: 0.5vw; /* Ajusta el tamaño de fuente para pantallas más grandes */
-    }
-  }
-
-  @media (min-width: 1024px) {
-    /* Cuando la pantalla sea aún más grande (por ejemplo, en tabletas y pantallas de escritorio) */
-    .title {
-      bottom: 10%; /* Ajusta la posición desde la parte inferior según tus necesidades */
-      font-size: 1vw; /* Ajusta el tamaño de fuente para pantallas aún más grandes */
-    }
-  }
 
   .avatar {
     top: 5%;
@@ -486,10 +474,10 @@
 
 /* Ajusta el tamaño de los elementos de entrada en el formulario */
 .form input[type="text"] {
-  width: 90%; /* Haz que los campos de entrada ocupen todo el ancho disponible */
-  padding: 10px; /* Ajusta el relleno según tus necesidades */
+  width: 100%; /* Haz que los campos de entrada ocupen todo el ancho disponible */
   margin-bottom: 10px; /* Añade espacio entre los campos */
   height: 1.5rem;
+  display: block;
   margin: 0 auto; /* Centra horizontalmente */
 }
 
@@ -535,12 +523,6 @@ form .submit:hover {
   background-color: var(--clr);
   color: var(--bg-dark);
 }
-
-// .avatar {
-//   flex: 1; /* El avatar ocupará el 50% del ancho del contenedor */
-//   padding: 20px; /* Ajusta el relleno según tus necesidades */
-//   text-align: center; /* Centra el contenido en el avatar */
-// }
 
 // 2FA BUTTON
 
@@ -604,17 +586,39 @@ form .submit:hover {
 
 .achievements img {
   padding: 1rem;
-  width: 4rem; /* Establece el ancho de la imagen en 100 píxeles */
-  height: auto; /* Ajusta automáticamente la altura para mantener la proporción */
+  width: 4rem;
+  height: auto;
 }
 
 .achievements button {
-  width: 80%; /* Establece el ancho de la imagen en 100 píxeles */
+  width: 80%;
 }
 
-.friend-button {
-  grid-column: 1;
-  position: absolute;
-  top: 40%;
-  left: 15%;
+@media (max-width: 1080px) {
+  .achievements {
+    display: none;
+  }
+
+  .edit-button {
+    display: none;
+  }
+
+  .twofa {
+    display: none;
+  }
+
+  .editing-avatar {
+    display: none;
+  }
+
+  .avatar {
+    height: 30%;
+  }
+
+  .container {
+    top:20%;
+    max-width: 70%;
+    max-height: 50%;
+  }
+
 }

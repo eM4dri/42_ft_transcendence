@@ -5,11 +5,18 @@ import { UriConstants } from 'src/app/utils';
 import { FormBuilder } from '@angular/forms';
 import { BaseComponent } from 'src/app/modules';
 import { ChannelManagementComponent } from '../../channel';
-
+import { delay } from 'rxjs';
 
 export type POST= {
   imageUrl: string
 }
+
+export const DropdownOptions: { [key: string]: string } = {
+  pixel: "pixel-art",
+  avatar: "avataaars",
+  bot: "bottts",
+  emoji: "fun-emoji",
+};
 
 @Component({
   selector: 'app-channel-avatar-editor',
@@ -26,15 +33,7 @@ export class ChannelAvatarEditorComponent extends BaseComponent<{},POST> impleme
       super(api);
     }
 
-  DropdownOptions : { [key: string]: string } = {
-    pixel: "pixel-art",
-    avatar: "avataaars",
-    bot: "bottts",
-    emoji: "fun-emoji",
-
-  }
   @Input() channel! : Channel;
-  loadingPage = false;
   editingUser: boolean = false;
   channelAvatar: string | undefined;
   seed: string = '';
@@ -44,66 +43,54 @@ export class ChannelAvatarEditorComponent extends BaseComponent<{},POST> impleme
 
   ngOnInit(): void {
     this.channelAvatar = this.channel.avatar;
-    console.log(this.channelAvatar)
   }
 
-
-  changeAvatar() {
-    console.log(this.previousAvatar)
-    console.log(this.channelAvatar)
+  public changeAvatar(): void {
     const dropdown = document.getElementById('dropdown') as HTMLSelectElement;
-    this.channelAvatar = UriConstants.RAMDON_AVATAR_URL + this.DropdownOptions[dropdown.value] + UriConstants.RAMDON_AVATAR_PATH;
+    this.channelAvatar = UriConstants.RAMDON_AVATAR_URL + DropdownOptions[dropdown.value] + UriConstants.RAMDON_AVATAR_PATH;
     this.parent.updateAvatar(this.channelAvatar);
   }
 
-  cancelAvatarEdition(): void {
+  public cancelAvatarEdition(): void {
     this.parent.channel.avatar = this.previousAvatar;
     this.parent.editingAvatar = false;
   }
 
-  rollDice() {
+  public rollDice(): void {
     this.seed = this.generateRandomString(5);
     this.channelAvatar = this.channelAvatar + this.seed;
     this.parent.updateAvatar(this.channelAvatar);
-    console.log(this.channelAvatar);
   }
 
-  onFileSelected(event: any) {
-    console.log('entra')
+  public onFileSelected(event: any) {
     const selectedFile: File | null = event.target.files[0];
-
     if (selectedFile) {
-      console.log('Archivo seleccionado:', selectedFile);
-
-      console.log('Nombre del archivo:', selectedFile.name);
-      console.log('Tipo de archivo:', selectedFile.type);
-      console.log('Tamaño del archivo (bytes):', selectedFile.size);
-
       const formData = new FormData();
       formData.append('file', selectedFile);
       formData.append('channelId', this.channel.channelId);
-
-      this.createService({
-        url: `${UriConstants.PROFILE_IMAGES_CHANNELS}/upload_file`,
-        data: formData
-      }).subscribe({
-          next: (res: any) => {
-            // Arreglar
-            this.channelAvatar = res.imageUrl;
-            this.parent.editingAvatar = false;
-            this.parent.updateAvatar(res.imageUrl);
-          },
-          error: error => {
-              this.processError(error);
-          },
-      });
-
-
+      this.saveFileImage(formData);
     }
   }
 
-  uploadUrl(url: string): void {
+  public uploadUrl(url: string): void {
+    this.saveUrlImage(url);
+  }
 
+  // PRIVATE METHODS
+
+
+  private generateRandomString(length: number): string {
+    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    const charsetLength = charset.length;
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charsetLength);
+      result += charset.charAt(randomIndex);
+    }
+    return result;
+  }
+
+  private saveUrlImage(url: string): void {
     const dto = {
       url: url,
       channelId: this.channel.channelId
@@ -121,27 +108,26 @@ export class ChannelAvatarEditorComponent extends BaseComponent<{},POST> impleme
             this.processError(error);
         },
     });
-
   }
 
-  generateRandomString(length: number): string {
-    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    const charsetLength = charset.length;
-
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * charsetLength);
-      result += charset.charAt(randomIndex);
-    }
-
-    return result;
+  private saveFileImage(formData: FormData): void {
+    this.createService({
+      url: `${UriConstants.PROFILE_IMAGES_CHANNELS}/upload_file`,
+      data: formData
+    }).subscribe({
+        next: (res: any) => {
+          this.channelAvatar = res.response.imageUrl;
+          this.parent.updateAvatar(res.response.imageUrl);
+          this.parent.editingAvatar = false;
+        },
+        error: error => {
+            this.processError(error);
+        },
+    });
   }
-
 
   processError(error: any){
-    // console.log('ERROR!',error);
     this.alertConfiguration('ERROR', error);
     this.openAlert();
-    this.loadingPage = true;
   }
 }

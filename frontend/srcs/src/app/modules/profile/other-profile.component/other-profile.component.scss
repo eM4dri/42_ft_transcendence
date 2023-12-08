@@ -1,14 +1,19 @@
 .other-profile-app {
-    // position: relative;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    // grid-template-columns: repeat(3 , 1fr);
-    gap:10px;
-    min-height: calc(100vh - 2rem);
-  }
-  
-  $primary-color: #FF6600;
-  $tab-background: #555555;
-  $tab-text-color: #FFFFFF;
-  
-  
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 10px;
+  min-height: calc(100vh - 2rem);
+}
+
+.content {
+  grid-column: 2;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+$primary-color: #FF6600;
+$tab-background: #555555;
+$tab-text-color: #FFFFFF;

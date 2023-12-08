@@ -1,5 +1,5 @@
 <div class="avatar">
-  <app-avatar (click)="editingAvatar = true" [channel]="channel"></app-avatar>
+  <app-avatar *ngIf="channel.channelId !== 'none'" (click)="editingAvatar = true" [channel]="channel"></app-avatar>
   <app-channel-avatar-editor *ngIf="editingAvatar" [channel]="channel"></app-channel-avatar-editor>
 </div>
 
