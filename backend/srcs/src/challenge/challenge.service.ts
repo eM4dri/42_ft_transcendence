@@ -43,6 +43,16 @@ export class ChallengeService {
         this._cleanUsersIdOnChallenge(userIds);
     }
 
+    @OnEvent('disconnectChallenges')
+    disconnectChallenges(userId: string) {
+        const userIds =  this._getUserIds(userId, '');
+        if (userIds.length !== 0)
+        {
+            this.eventEmitter.emit('clearChallenges', userIds);
+            this._cleanUsersIdOnChallenge(userIds);
+        }
+    }
+
     @OnEvent('addUserIdsPlaying')
     addUserIdsPlaying(userIds: string[]){
         for (const userId of userIds){         

@@ -25,6 +25,7 @@ import { RankTableModule } from './modules/rank-table/rank-table.module'
 import { TruncatePipe } from './pipes/truncate.pipe';
 //import { PongTVComponent } from './modules/pongtv/pongtv.component';
 import { ChannelAvatarEditorComponent } from './components/avatar/channel-avatar-editor/channel-avatar-editor.component';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 //import { PongTVComponent } from './modules/pongtv/pongtv.component';
 
 
@@ -83,7 +84,8 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     SplitButtonModule,
     TooltipModule,
     RankTableModule,
-    ChallengeModule
+    ChallengeModule,
+    NgbDatepickerModule
   ],
   providers: [
     CookieService,

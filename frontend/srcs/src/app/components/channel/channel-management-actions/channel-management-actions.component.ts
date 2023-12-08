@@ -1,11 +1,12 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, inject } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ChannelManagementUsersComponent, ChannelUsersToAdmin } from '../channel-management-users/channel-management-users.component';
 import { BaseComponent } from 'src/app/modules';
 import { ApiService, AuthService } from 'src/app/services';
 import { UriConstants } from 'src/app/utils';
 import { ChannelUsersExtended } from 'src/app/models';
+import { NgbCalendar, NgbDateStruct, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-channel-management-actions',
@@ -15,6 +16,7 @@ import { ChannelUsersExtended } from 'src/app/models';
 export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},ChannelUsersToAdmin> implements OnInit {
     @Input() userChannel!: ChannelUsersToAdmin;
     @Input() myChannelUser?: ChannelUsersExtended;
+    modalReference: NgbModalRef[] = [];
 
     items: MenuItem[]=[];
     readonly promoteItem: MenuItem =  {
@@ -79,10 +81,28 @@ export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},Ch
     constructor(
         private readonly api: ApiService<{},{},{},ChannelUsersToAdmin>,
         private readonly authService: AuthService,
+        private readonly modalService: NgbModal,
         private readonly parent: ChannelManagementUsersComponent
     ) {
         super(api);
     }
+
+    today = inject(NgbCalendar).getToday();
+	mutedUntill: NgbDateStruct= this.today;
+
+    open(content: TemplateRef<any>) {
+        this.modalReference.push(this.modalService.open(content));
+    }
+
+    muteUntillDate(){
+        console.log('muteUntillDate', this.mutedUntill);
+        for (const modal of this.modalReference){
+            modal.close();
+          }
+        const date = new Date(this.mutedUntill.year, this.mutedUntill.month - 1, this.mutedUntill.day);
+        this.muteUser(new Date(date));
+        this.mutedUntill = this.today;
+    }  
 
     patchUser(method: string){
         this.apiService.patchService({

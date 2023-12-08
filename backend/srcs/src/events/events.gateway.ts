@@ -68,6 +68,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
             this.socketsIdMap.delete(user.sub);
             this.socketsMap.delete(user.sub);
             this.server.sockets.emit('user_disconnects', user.sub);
+            this.eventEmitter.emit('disconnectChallenges',user.sub);
         } catch (error) {
             // TODO handle WS errors conections
             console.log('TODO handle WS errors conections')
@@ -284,7 +285,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
 
     @OnEvent('clearChallenges')
     clearChallenges(userIds: string[]){
-        console.log('userIds',userIds); 
         for (const userId of userIds) {
             const socketId: string = this.socketsIdMap.get(userId);
             this.server.to(socketId).emit('clear_challenges', userId)

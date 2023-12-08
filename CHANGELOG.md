@@ -9,6 +9,9 @@ and this project adheres to
 ## 2023-12-08 - emadriga
 ### Changed
 - Change ngPrisma splitbutton (channel-magnagement-actions) into icons
+- Include datepicker for muteduntill
+- Add localize ass datepicker boostrap demands
+- On disconnect now user challenges are cancelled
 
 ## 2023-12-07 - emadriga
 ### Fixed

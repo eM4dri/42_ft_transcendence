@@ -11,3 +11,43 @@
     gap: 0.5rem;
   }
   
+
+
+  .muted-input-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .muted-input {
+    flex-grow: 1;
+    min-height: 50px;
+    padding: 0 1rem;
+    color: var(--text-primary);
+    font-size: 15px;
+    border: 1px solid #5e4dcd;
+    border-radius: 6px 0 0 6px;
+    background-color: var(--bg-secondary);
+  }
+
+
+.button--date {
+  flex-grow: 1;
+  min-height: 50px;
+  padding: .5em 1em;
+  border: none;
+  border-radius: 0 6px 6px 0;
+  background-color: #5e4dcd;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color .3s ease-in-out;
+}
+
+.button--date:hover {
+  background-color: #5e5dcd;
+}
+
+.muted-input:focus, .muted-input:focus-visible {
+  border-color: #3898EC;
+  outline: none;
+}
