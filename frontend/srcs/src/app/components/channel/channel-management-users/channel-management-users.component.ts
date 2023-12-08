@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { UsersCache } from 'src/app/cache';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChannelsCache, UsersCache } from 'src/app/cache';
 import { Channel, ChannelUsersExtended, User } from 'src/app/models';
 import { BaseComponent } from 'src/app/modules';
 import { ApiService } from 'src/app/services';
@@ -16,16 +16,22 @@ export interface ChannelUsersToAdmin extends ChannelUsersExtended {
   templateUrl: './channel-management-users.component.html',
   styleUrls: ['./channel-management-users.component.scss']
 })
-export class ChannelManagementUsersComponent extends BaseComponent<ChannelUsersToAdmin> implements OnInit {
+export class ChannelManagementUsersComponent extends BaseComponent<ChannelUsersToAdmin> implements OnInit, OnChanges {
   @Input() channel!: Channel;
   constructor(
     private readonly api :ApiService<ChannelUsersToAdmin>,
     private readonly cachedUsers: UsersCache,
+    private readonly cachedChannels: ChannelsCache,
     private readonly dateMutations: DateMutations
   ){
     super(api);
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.myChannelUser = this.cachedChannels.getMyChannelUser(this.channel.channelId);
+  }
   
+  myChannelUser: ChannelUsersExtended | undefined; 
   channelUsers: Map<string,ChannelUsersToAdmin> = new Map<string,ChannelUsersToAdmin>();
   checked: boolean = true;
   sidebarVisible: boolean = false;

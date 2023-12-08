@@ -1,5 +1,33 @@
 
-<p-splitButton label="actions" [disabled]="disableActions()" [model]="items"></p-splitButton>
+<div class="icon-actions">
+    @if(myChannelUser !== undefined || !userChannel.isOwner) { 
+        @if (myChannelUser?.isOwner) {
+            @if (userChannel.isAdmin) {
+                <i class="bi bi-person-down" pTooltip="demote" tooltipPosition="left" placeholder="Left"></i>
+            } @else {
+                <i class="bi bi-person-up" pTooltip="promote" tooltipPosition="left" placeholder="Left"></i>
+            }
+        }
+        @if (myChannelUser?.isOwner || myChannelUser?.isAdmin) {
+            @if (!userChannel.isAdmin && !userChannel.isOwner) {
+                @if (userChannel.isBanned){
+                    <i class="bi bi-person-check" pTooltip="unban" tooltipPosition="left" placeholder="Left"></i>
+                } @else {
+                    <i class="bi bi-person-slash" pTooltip="ban" tooltipPosition="left" placeholder="Left"></i>
+                }
+                @if (isMuted(userChannel)) {
+                    <i class="bi bi-mic" pTooltip="unmute" tooltipPosition="left" placeholder="Left"></i>
+                } @else {
+                    <i class="bi bi-mic-mute" pTooltip="mute" tooltipPosition="left" placeholder="Left"></i>
+                }
+                @if (userChannel.leaveAt !== null) {
+                    <i class="bi bi-person-x" pTooltip="kick" tooltipPosition="left" placeholder="Left"></i>
+                }
+            }
+        }
+    }
+</div>
+
 <app-alert
     [open]="alertConfig.open"
     [singleMessage]="alertConfig.singleMessage"

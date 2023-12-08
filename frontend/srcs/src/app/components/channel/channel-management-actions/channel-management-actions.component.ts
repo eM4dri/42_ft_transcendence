@@ -5,6 +5,7 @@ import { ChannelManagementUsersComponent, ChannelUsersToAdmin } from '../channel
 import { BaseComponent } from 'src/app/modules';
 import { ApiService, AuthService } from 'src/app/services';
 import { UriConstants } from 'src/app/utils';
+import { ChannelUsersExtended } from 'src/app/models';
 
 @Component({
   selector: 'app-channel-management-actions',
@@ -13,6 +14,7 @@ import { UriConstants } from 'src/app/utils';
 })
 export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},ChannelUsersToAdmin> implements OnInit {
     @Input() userChannel!: ChannelUsersToAdmin;
+    @Input() myChannelUser?: ChannelUsersExtended;
 
     items: MenuItem[]=[];
     readonly promoteItem: MenuItem =  {
@@ -130,6 +132,9 @@ export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},Ch
             (this.userChannel.leaveAt !== null && !this.userChannel.isBanned));
     }
 
+    isMuted(channelUser: ChannelUsersToAdmin): boolean{
+        return this.parent.isMuted(channelUser);
+    }
 
 
 }

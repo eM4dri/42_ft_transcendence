@@ -1,9 +1,6 @@
 <div *ngIf="channelUsers.size">
     <div *ngFor="let u of channelUsers | keyvalue" >
         <div *ngIf="u.value.user" class="channelUser-row">
-            <app-channel-management-actions
-                [userChannel]="u.value"
-             ></app-channel-management-actions>
             <app-chat-info
                 [user]="u.value.user"
             ></app-chat-info>
@@ -22,6 +19,10 @@
                     <p-tag [value]="u.value.status" [severity]="getSeverity(u.value)"></p-tag>
                 </ng-template>
             </ng-template>
+            <app-channel-management-actions
+                [userChannel]="u.value"
+                [myChannelUser]="myChannelUser"
+         ></app-channel-management-actions>
         </div>
     </div>
 </div>

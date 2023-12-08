@@ -1,0 +1,13 @@
+.bi{
+    font-size: 2rem;
+    &:hover {
+      color: var(--icon-secondary);
+    }
+  }
+  
+  .icon-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  

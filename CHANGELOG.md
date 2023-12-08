@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-12-08 - emadriga
+### Changed
+- Change ngPrisma splitbutton (channel-magnagement-actions) into icons
+
 ## 2023-12-07 - emadriga
 ### Fixed
 - Moving between view create channels messages duplicate, fixing mapping messages on channel, and also it seems like is bad practice not unsubscribing since every time you load a channel you re gonna subscribe again ([6-ways-to-unsubscribe-from-observables-in-angular](https://blog.bitsrc.io/6-ways-to-unsubscribe-from-observables-in-angular-ab912819a78f))
