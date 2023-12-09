@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 2000 1000" width="2000" height="1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <linearGradient id="gradient-3-0" gradientUnits="userSpaceOnUse" x1="985" y1="500" x2="1015" y2="500" gradientTransform="matrix(1, 0, 0, 0.950718, 0, 19.712988)" xlink:href="#gradient-3"/>
+    <linearGradient id="gradient-3">
+      <title>rectangle</title>
+      <stop style="stop-color: rgba(255, 255, 255, 0);" offset="0"/>
+      <stop style="stop-color: rgba(255, 255, 255, 0.8);" offset="0.25"/>
+      <stop style="stop-color: rgba(255, 255, 255, 0.067);" offset="0.5"/>
+      <stop style="stop-color: rgba(255, 255, 255, 0.8);" offset="0.75"/>
+      <stop style="stop-color: rgba(255, 255, 255, 0);" offset="1"/>
+    </linearGradient>
+    <radialGradient id="gradient-0-0" gradientUnits="userSpaceOnUse" cx="1000" cy="500" r="180" xlink:href="#gradient-0"/>
+    <linearGradient id="gradient-0" bx:pinned="true">
+      <title>arc_big</title>
+      <stop offset="0.833333" style="stop-color: rgba(255, 255, 255, 0);"/>
+      <stop offset="0.875" style="stop-color: rgba(255, 255, 255, 0.8);"/>
+      <stop offset="0.91666666" style="stop-color: rgba(255, 255, 255, 0.067);"/>
+      <stop offset="0.9583333" style="stop-color: rgba(255, 255, 255, 0.8);"/>
+      <stop offset="1" style="stop-color: rgba(255, 255, 255, 0);"/>
+    </linearGradient>
+    <radialGradient id="gradient-2-2" gradientUnits="userSpaceOnUse" cx="965" cy="303.086" r="50" xlink:href="#gradient-2"/>
+    <linearGradient id="gradient-2">
+      <title>arc_small</title>
+      <stop style="stop-color: rgba(255, 255, 255, 0);" offset="0.4"/>
+      <stop style="stop-color: rgba(255, 255, 255, 0.8);" offset="0.55"/>
+      <stop style="stop-color: rgba(255, 255, 255, 0.067);" offset="0.7"/>
+      <stop style="stop-color: rgba(255, 255, 255, 0.8);" offset="0.85"/>
+      <stop style="stop-color: rgba(255, 255, 255, 0);" offset="1"/>
+    </linearGradient>
+    <radialGradient id="gradient-4-0" gradientUnits="userSpaceOnUse" cx="1000" cy="90" r="15" xlink:href="#gradient-4"/>
+    <linearGradient id="gradient-4">
+      <title>circle</title>
+      <stop style="stop-color: rgba(255, 255, 255, 0.067);" offset="0"/>
+      <stop style="stop-color: rgba(255, 255, 255, 0.8);" offset="0.5"/>
+      <stop style="stop-color: rgba(255, 255, 255, 0);" offset="1"/>
+    </linearGradient>
+    <radialGradient id="gradient-4-1" gradientUnits="userSpaceOnUse" cx="1000" cy="910" r="15" xlink:href="#gradient-4"/>
+    <radialGradient id="gradient-2-3" gradientUnits="userSpaceOnUse" cx="1035" cy="374.8" r="50" xlink:href="#gradient-2"/>
+    <radialGradient id="gradient-4-2" gradientUnits="userSpaceOnUse" cx="960" cy="660.078" r="15" xlink:href="#gradient-4"/>
+    <radialGradient id="gradient-4-3" gradientUnits="userSpaceOnUse" cx="1040" cy="660.078" r="15" xlink:href="#gradient-4"/>
+  </defs>
+  <rect x="985" y="90" width="30" height="213.086" style="fill: url('#gradient-3-0'); fill-opacity: 0.35; stroke-width: 0px; stroke-opacity: 0; stroke: rgba(0, 0, 0, 0);"/>
+  <rect x="985" y="374.8" width="30" height="535.2" style="fill-opacity: 0.35; fill: url('#gradient-3-0'); stroke-width: 0px; stroke-opacity: 0; stroke: rgba(0, 0, 0, 0);"/>
+  <path d="M 1180 500 C 1180 584.493 1121.783 655.389 1043.274 674.764 L 1000 500 L 956.726 674.764 C 878.217 655.389 820 584.493 820 500 C 820 411.337 884.105 337.646 968.495 322.748 L 1000 500 L 1049.053 326.765 C 1124.624 348.121 1180 417.594 1180 500 Z M 1000 680 C 985.082 680 970.588 678.185 956.726 674.764 L 910.86 860 L 1089.14 860 L 1043.274 674.764 C 1029.412 678.185 1014.918 680 1000 680 Z" style="fill: url('#gradient-0-0'); fill-opacity: 0.35; stroke-width: 0px; stroke-opacity: 0; stroke: rgba(0, 0, 0, 0);"/>
+  <ellipse style="fill-opacity: 0.35; fill: rgba(216, 216, 216, 0); stroke-width: 0px; stroke-opacity: 0; stroke: rgba(0, 0, 0, 0);" cx="1000" cy="500" rx="150" ry="150"/>
+  <path d="M 965 303.086 L 1015 303.086 C 1015 327.715 997.193 348.184 973.751 352.323 Z" style="fill: url('#gradient-2-2'); fill-opacity: 0.35; stroke-width: 0px; stroke-opacity: 0; stroke: rgba(0, 0, 0, 0);"/>
+  <path d="M 1015 90 C 1015 98.284 1008.284 105 1000 105 C 991.716 105 985 98.284 985 90 C 985 81.716 991.716 75 1000 75 C 1008.284 75 1015 81.716 1015 90 Z M 1015 90 L 985 90 C 985 98.284 991.716 105 1000 105 C 1008.284 105 1015 98.284 1015 90 Z" style="fill: url('#gradient-4-0'); fill-opacity: 0.35; stroke-width: 0px; stroke-opacity: 0; stroke: rgba(0, 0, 0, 0);"/>
+  <path d="M 1015 910 C 1015 918.284 1008.284 925 1000 925 C 991.716 925 985 918.284 985 910 C 985 901.716 991.716 895 1000 895 C 1008.284 895 1015 901.716 1015 910 Z M 985 910 L 1015 910 C 1015 901.716 1008.284 895 1000 895 C 991.716 895 985 901.716 985 910 Z" style="fill: url('#gradient-4-1'); fill-opacity: 0.35; stroke-width: 0px; stroke-opacity: 0; stroke: rgba(0, 0, 0, 0);"/>
+  <path d="M 985 374.8 C 985 347.186 1007.386 324.8 1035 324.8 C 1039.825 324.8 1044.491 325.484 1048.906 326.759 L 1035 374.8 L 985 374.8 C 985 374.8 985 374.8 985 374.8 Z" style="fill-opacity: 0.35; fill: url('#gradient-2-3'); stroke-width: 0px; stroke-opacity: 0; stroke: rgba(0, 0, 0, 0);"/>
+  <path d="M 975 660.078 C 975 668.362 968.284 675.078 960 675.078 C 958.879 675.078 957.787 674.955 956.737 674.722 L 963.947 645.603 C 970.316 647.335 975 653.16 975 660.078 Z" style="fill: url('#gradient-4-2'); fill-opacity: 0.35; stroke-width: 0px; stroke-opacity: 0; stroke: rgba(0, 0, 0, 0);"/>
+  <path d="M 1040 675.078 C 1031.716 675.078 1025 668.362 1025 660.078 C 1025 653.16 1029.684 647.335 1036.053 645.603 L 1043.263 674.722 C 1042.213 674.955 1041.121 675.078 1040 675.078 Z" style="fill: url('#gradient-4-3'); fill-opacity: 0.35; stroke-width: 0px; stroke-opacity: 0; stroke: rgba(0, 0, 0, 0);"/>
+</svg>

@@ -39,6 +39,7 @@ export class Powerup
 	x: number = 100;		//	← 0  |  200 →
 	y: number = 50;			//	↑ 0  |  100 ↓
 	speed: number = 0;	
+	spawntime: number = 0;
 	type: number = 1;		//	1: Speed
 	visible: boolean = false;
 }

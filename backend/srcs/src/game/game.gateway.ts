@@ -115,10 +115,8 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 	async listenForMatchmaking(@GetUser() user: JwtPayload, @ConnectedSocket() socket : Socket, @MessageBody() ismodded: boolean) {
 		if (!ismodded)
 		{
-			console.log("[[1]]")
 			if (!this.matchmaking_queue.has(user.sub))
 			{
-				console.log(this.matchmaking_queue)
 				this.matchmaking_queue.set(user.sub, socket);
 				console.log(">>>>>>>>", user.sub, "\x1b[0;32mJOINED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
 			}
@@ -127,7 +125,6 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		}
 		else
 		{
-			console.log("[[2]]")
 			if (!this.modded_matchmaking_queue.has(user.sub))
 			{
 				this.modded_matchmaking_queue.set(user.sub, socket);
@@ -138,7 +135,6 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		}
 		if (!ismodded && this.matchmaking_queue.size >= 2)
 		{
-			console.log("[[3]]")
 			let  keyblue: string = Array.from(this.matchmaking_queue)[0][0];
 			let  keyred: string = Array.from(this.matchmaking_queue)[1][0];
 			let  valblue: Socket = Array.from(this.matchmaking_queue)[0][1];
@@ -164,7 +160,6 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		}
 		else if (ismodded && this.modded_matchmaking_queue.size >= 2)
 		{
-			console.log("[[4]]")
 			let  keyblue: string = Array.from(this.modded_matchmaking_queue)[0][0];
 			let  keyred: string = Array.from(this.modded_matchmaking_queue)[1][0];
 			let  valblue: Socket = Array.from(this.modded_matchmaking_queue)[0][1];
@@ -309,7 +304,6 @@ class GameList {
 	constructor(themap: Map<number, Game>)
 	{
 		this.finalist = []
-//		this.finalist.push(new GameItem(8766, "I'm BLUE", "I'm RED", 2, 4, 87, "roooommmm"))	//! DELETE
 		themap.forEach((value: Game, key: number) =>
 		{
 			this.finalist.push(new GameItem(key, value.blueid, value.redid, value.bluescore, value.redscore, value.gametime, value.room, value.modsenabled))

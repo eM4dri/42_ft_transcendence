@@ -11,6 +11,7 @@ import { UpperCasePipe } from '@angular/common';
 import { GameResult } from 'src/app/models/game/gameresult.model';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { Subscription } from 'rxjs';
 
 let gcomp: GameComponent;
 
@@ -18,6 +19,7 @@ let myUserId: string;
 let fallingball: number = 0;
 let introtime: number = 3000;
 let ball_shockwave: number = 0;
+let powerup_shockwave: number = 0;
 let lastcollision_x: number = 0;
 let lastcollision_y: number = 0;
 let ball_last_locations_x: number[] = [];
@@ -53,8 +55,11 @@ powerup2img.src = "assets/powerup_invis.svg"
 var powerup3img = new Image();
 powerup3img.src = "assets/powerup_shrink.svg"
 
-var backgroundimg = new Image();
-backgroundimg.src = "assets/TEMP_gamebgdebug.png"
+var backgroundborderimg = new Image();
+backgroundborderimg.src = "assets/fieldborder.svg"
+
+var backgroundmiddleimg = new Image();
+backgroundmiddleimg.src = "assets/fieldmiddle.svg"
 
 @Component({
 	selector: 'app-game',
@@ -63,6 +68,7 @@ backgroundimg.src = "assets/TEMP_gamebgdebug.png"
 })
 export class GameComponent implements AfterViewInit, OnDestroy
 {
+	allsubscriptions: Subscription[] = [];
 	gameClass = new Game();
 
 	@ViewChild('canvasEl') canvasEl!: ElementRef;
@@ -91,17 +97,15 @@ export class GameComponent implements AfterViewInit, OnDestroy
 			console.log(myUserId)
 			console.log("~~ ~~~~ ~~~~ ~~")
 
-//			if (router.url == "/game/spectate" && this.htmlstatus == 0)//
-//				router.navigate(["/live"]);
+
 			gcomp = this;
+			this.allsubscriptions.push(
 			this.gameService.listeningToHelloSignal().subscribe(paddle => {
-				console.log('paddle is', paddle);
 				this.gameClass.bluepaddle.y = paddle.y;
-				console.log('paddle found', this.gameClass.bluepaddle);
-//				this.drawBluePaddle()
 				this.drawComponents();
-			});
+			}));
 			
+			this.allsubscriptions.push(
 			this.gameService.listeningToStatusUpdate().subscribe(game => {
 				this.htmlstatus = 2;
 				if (game.status == gameStatus.gameout)
@@ -110,20 +114,24 @@ export class GameComponent implements AfterViewInit, OnDestroy
 					this.htmlstatus = 2;
 				this.gameClass = game;
 				this.drawComponents();
-			});
+			}));
 	
+			this.allsubscriptions.push(
 			this.gameService.listeningToGameResult().subscribe(result => {
 				gameresult = result;
-			});
 
+			}));
+
+			this.allsubscriptions.push(
 			this.gameService.listeningToTeamBlue().subscribe(_areyoublue => {
 				areyoublue = _areyoublue;
 				introtime = 3000;
 				gameresult = {yourscore: 0, theirscore: 0, prev_points: 0, earned_points: 0, are_you_blue: false};
-			});
+			}));
 		}
 		ngOnDestroy(): void {
 			this.gameService.sendDisconnected();
+			this.allsubscriptions.forEach((subscription) => subscription.unsubscribe());
 		}
 
 	ngAfterViewInit()
@@ -217,7 +225,8 @@ export class GameComponent implements AfterViewInit, OnDestroy
 		
 		//*		Clearing the canvas
 		this.context.clearRect(0, 0, 2000, 1000);
-		this.context.drawImage(backgroundimg, 0, 0, 2000, 1000);
+		this.context.drawImage(backgroundmiddleimg, 0, 0, 2000, 1000);
+		this.context.drawImage(backgroundborderimg, 0, 0, 2000, 1000);
 		
 
 		//*		Score in the background
@@ -235,9 +244,9 @@ export class GameComponent implements AfterViewInit, OnDestroy
 		
 		this.context.fillStyle = `rgb(255, 255, 255, 1)`
 		if (this.gameClass.gametime > 0)
-			this.context.fillText(((this.gameClass.gametime / 1000).toFixed(this.gameClass.gametime <= 9950 ? 1 : 0)).toString(), 1000, 70);
+			this.context.fillText(((this.gameClass.gametime / 1000).toFixed(this.gameClass.gametime <= 9950 ? 1 : 0)).toString(), 1000, 75);
 		else
-			this.context.fillText("0", 1000, 70);
+			this.context.fillText("0", 1000, 75);
 
 
 		//*		When ball collides with a wall
@@ -287,7 +296,7 @@ export class GameComponent implements AfterViewInit, OnDestroy
 
 
 			let idx: number = 0;
-			this.context.globalAlpha = 0.5;
+			this.context.globalAlpha = 0.5 * this.gameClass.ball.opacity;
 			while (idx < ball_last_locations_y.length)
 			{
 				if (idx % 2 == 0)
@@ -304,9 +313,9 @@ export class GameComponent implements AfterViewInit, OnDestroy
 			{
 				this.context.globalAlpha -= 0.05;
 				if (idx > 0 && bluepaddle_last_locations[idx] != bluepaddle_last_locations[idx - 1])
-					this.context.drawImage(blue_paddleauraimg, 0, bluepaddle_last_locations[idx] * 10 - this.gameClass.bluepaddle.radius * 10, 66.67, this.gameClass.bluepaddle.radius * 20)
+					this.context.drawImage(blue_paddleauraimg, 0, bluepaddle_last_locations[idx] * 10 - this.gameClass.bluepaddle.radius * 10, 74.42, this.gameClass.bluepaddle.radius * 20)
 				if (idx > 0 && redpaddle_last_locations[idx] != redpaddle_last_locations[idx - 1])
-					this.context.drawImage(red_paddleauraimg, 1933.33, redpaddle_last_locations[idx] * 10 - this.gameClass.redpaddle.radius * 10, 66.67, this.gameClass.redpaddle.radius * 20)
+					this.context.drawImage(red_paddleauraimg, 1933.33, redpaddle_last_locations[idx] * 10 - this.gameClass.redpaddle.radius * 10, 74.42, this.gameClass.redpaddle.radius * 20)
 				idx++;
 			}
 			this.context.globalAlpha = 1;
@@ -321,16 +330,16 @@ export class GameComponent implements AfterViewInit, OnDestroy
 
 
 		//*		Auras (always displayed, unlike the trailing auras)
-		this.context.drawImage(blue_paddleauraimg, 0, this.gameClass.bluepaddle.y * 10 - this.gameClass.bluepaddle.radius * 10, 66.67, this.gameClass.bluepaddle.radius * 20)
-		this.context.drawImage(red_paddleauraimg, 1933.33, this.gameClass.redpaddle.y * 10 - this.gameClass.redpaddle.radius * 10, 66.67, this.gameClass.redpaddle.radius * 20)
+		this.context.drawImage(blue_paddleauraimg, 0, this.gameClass.bluepaddle.y * 10 - this.gameClass.bluepaddle.radius * 10, 74.42, this.gameClass.bluepaddle.radius * 20)
+		this.context.drawImage(red_paddleauraimg, 1933.33, this.gameClass.redpaddle.y * 10 - this.gameClass.redpaddle.radius * 10, 74.42, this.gameClass.redpaddle.radius * 20)
 		this.context.globalAlpha = Math.floor(this.gameClass.ball.opacity) * (1 - fallingball / 200);
 		if (this.gameClass.status != gameStatus.goalanimation_blue && this.gameClass.status != gameStatus.goalanimation_red && this.gameClass.status != gameStatus.pregame)
 			this.context.drawImage(ballauraimg, this.gameClass.ball.x * 10 - 50 - (fallingball * this.gameClass.ball.direction), this.gameClass.ball.y * 10 - 50, 100, 100)
 		this.context.globalAlpha = 1;
 		
 		//*		Objects
-		this.context.drawImage(blue_paddleimg, 0, this.gameClass.bluepaddle.y * 10  - this.gameClass.bluepaddle.radius * 10, 66.67, this.gameClass.bluepaddle.radius * 20)
-		this.context.drawImage(red_paddleimg, 1933.33, this.gameClass.redpaddle.y * 10 - this.gameClass.redpaddle.radius * 10, 66.67, this.gameClass.redpaddle.radius * 20)
+		this.context.drawImage(blue_paddleimg, 0, this.gameClass.bluepaddle.y * 10  - this.gameClass.bluepaddle.radius * 10, 74.42, this.gameClass.bluepaddle.radius * 20)
+		this.context.drawImage(red_paddleimg, 1933.33, this.gameClass.redpaddle.y * 10 - this.gameClass.redpaddle.radius * 10, 74.42, this.gameClass.redpaddle.radius * 20)
 		this.context.globalAlpha = this.gameClass.ball.opacity;
 		if (this.gameClass.status != gameStatus.goalanimation_blue && this.gameClass.status != gameStatus.goalanimation_red && this.gameClass.status != gameStatus.pregame)
 			this.context.drawImage(ballimg, this.gameClass.ball.x * 10 - 50 - fallingball/2 - (fallingball * this.gameClass.ball.direction * 2), this.gameClass.ball.y * 10 - 50 - fallingball/2, 100 + fallingball, 100 + fallingball)
@@ -339,12 +348,31 @@ export class GameComponent implements AfterViewInit, OnDestroy
 		//*		Power Up
 		if (this.gameClass.powerup.visible)
 		{
+			let pwupsize = 80 + this.gameClass.powerup.spawntime * 8;
 			if (this.gameClass.powerup.type == 1)
-			this.context.drawImage(powerup1img, this.gameClass.powerup.x * 10 - 40, this.gameClass.powerup.y * 10 - 40, 80, 80)
+				this.context.drawImage(powerup1img, this.gameClass.powerup.x * 10 - pwupsize/2, this.gameClass.powerup.y * 10 - pwupsize/2, pwupsize, pwupsize)
 			if (this.gameClass.powerup.type == 2)
-			this.context.drawImage(powerup2img, this.gameClass.powerup.x * 10 - 40, this.gameClass.powerup.y * 10 - 40, 80, 80)
+				this.context.drawImage(powerup2img, this.gameClass.powerup.x * 10 - pwupsize/2, this.gameClass.powerup.y * 10 - pwupsize/2, pwupsize, pwupsize)
 			if (this.gameClass.powerup.type == 3)
-			this.context.drawImage(powerup3img, this.gameClass.powerup.x * 10 - 40, this.gameClass.powerup.y * 10 - 40, 80, 80)
+				this.context.drawImage(powerup3img, this.gameClass.powerup.x * 10 - pwupsize/2, this.gameClass.powerup.y * 10 - pwupsize/2, pwupsize, pwupsize)
+		}
+
+		if (this.gameClass.powerup.spawntime == 1)
+		{
+			powerup_shockwave = 500;			// ms
+		}
+		if (powerup_shockwave > 0)
+		{
+			this.context.beginPath();
+			this.context.ellipse(this.gameClass.powerup.x * 10, this.gameClass.powerup.y * 10, 250, 250, 0, 0, Math.PI * 2);
+			const collisiongradient = this.context.createRadialGradient(this.gameClass.powerup.x * 10, this.gameClass.powerup.y * 10, 0, this.gameClass.powerup.x * 10, this.gameClass.powerup.y * 10, (500 - powerup_shockwave) / 2)
+			collisiongradient.addColorStop((500 - powerup_shockwave) / 500, "rgb(50, 255, 50, 0)")
+			collisiongradient.addColorStop(Math.pow(500 - powerup_shockwave, 2) / 500000 + 0.5, "rgb(50, 255, 50," + (powerup_shockwave / 500 + 0.5).toString() + ")")
+			collisiongradient.addColorStop(1, "rgb(50, 255, 50, 0)")
+			this.context.fillStyle = collisiongradient;
+			this.context.closePath()
+			this.context.fill();
+			powerup_shockwave -= 20;
 		}
 
 
@@ -517,7 +545,6 @@ export class GameComponent implements AfterViewInit, OnDestroy
 		}
 
 		//*		Introduction screen overlay. May be displayed in the middle of a game to spectators.
-		console.log(introtime)
 		if (introtime > 0)
 		{
 			if (introtime > 2750)

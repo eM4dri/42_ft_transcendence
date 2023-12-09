@@ -6,11 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
 ## 2023-12-09 - emadriga
 ### Fixed
 - Added missing migration of banlist
 - Silence front build warning , browserTarget deprecated -> use buildTarget
+
+## 2023-12-08 - jvacaris
+### Added
+- New background
+- Home page responsiveness improved.
+- Powerup fade-in animation. They can now move when spawned (40% chance).
+- Firefox shows all assets properly.
 
 ## 2023-12-08 - emadriga
 ### Changed

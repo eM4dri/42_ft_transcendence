@@ -59,6 +59,7 @@ export class Powerup
 	x: number = 100;		//	← 0  |  200 →
 	y: number = 50;			//	↑ 0  |  100 ↓
 	speed: number = 0;	
+	spawntime: number = 0;
 	type: number = 1;		//	1: Speed
 	visible: boolean = false;
 }
@@ -79,7 +80,7 @@ export class Game
 	bluescore: number = 0;
 	bluesocket: Socket;
 	redsocket: Socket;
-	gametime: number = 12000;	// Time in ms
+	gametime: number = 60000;	// Time in ms
 	modsenabled: boolean;
 	prev_blue_stats: stats_user;
 	prev_red_stats: stats_user;
@@ -328,36 +329,37 @@ export class GameService {
 				}
 			}
 
-			//*		vvv  POWER-UPS  vvv
-			if (value.modsenabled && !value.powerup.visible && Math.random() < 0.01)
+			//*		vvv  POWER-UP Spawning  vvv
+			if (value.modsenabled && !value.powerup.visible && Math.random() < 0.008 && !(value.ball.x > 900 && value.ball.x < 1100))
 			{
-				let poweruplocation = Math.random() * 90 + 5;
-				if (poweruplocation > 50 - ball_radius && poweruplocation < 50 + ball_radius)
-				{
-					poweruplocation += Math.random() > 0.5 ? 1 : -1 * (Math.random() + 1) * 20; 
-				}
+				let poweruplocation = Math.random() * 80 + 10;
 				value.powerup.y = poweruplocation;
 				value.powerup.x = 100;
 				value.powerup.visible = true;
 				value.powerup.speed = 0;
-				value.powerup.type = 3/*(Math.round(Math.random() * 10) % 3) + 1*/;
+				value.powerup.type = (Math.round(Math.random() * 10) % 3) + 1;
+				if (Math.random() < 0.4)
+				{
+					value.powerup.speed = 1;
+				}
+				value.powerup.spawntime = 20;
 			}
-			//*		^^^  POWER-UPS  ^^^
+			//*		^^^  POWER-UP Spawning  ^^^
 			
 			if (value.status == gameStatus.game)	//?		Ongoing game
 			{
 				value.ball.x += value.ball.speed * Math.cos(value.ball.angle * Math.PI / 180) * value.ball.direction;	//?	Calculating new position for this frame
 				value.ball.y += value.ball.speed * Math.sin(value.ball.angle * Math.PI / 180);
 				value.gametime -= refreshRate;
-				if (value.ball.y - ball_radius <= 0 || value.ball.y + ball_radius >= 100)
+				if (value.ball.y - ball_radius <= 5 || value.ball.y + ball_radius >= 95)
 				{
 					//?		Bounced with a wall
 					value.ball.just_collided = true;
 					value.ball.angle *= -1; 
-					if (value.ball.y + value.ball.speed * Math.sin(value.ball.angle * Math.PI / 180) - ball_radius <= 0)
-						value.ball.y = ball_radius;
-						else if (value.ball.y + value.ball.speed * Math.sin(value.ball.angle * Math.PI / 180) + ball_radius >= 100)
-						value.ball.y = 100 - ball_radius;
+					if (value.ball.y + value.ball.speed * Math.sin(value.ball.angle * Math.PI / 180) - ball_radius <= 5)
+						value.ball.y = 5 + ball_radius;
+					else if (value.ball.y + value.ball.speed * Math.sin(value.ball.angle * Math.PI / 180) + ball_radius >= 95)
+						value.ball.y = 95 - ball_radius;
 				}
 				//*		vvv  Power-Up Applications  vvv
 				if (value.ball.speed > ball_normal_speed)
@@ -380,25 +382,38 @@ export class GameService {
 				if (value.redpaddle.radius > value.redpaddle.usual_radius)
 					value.redpaddle.radius = value.redpaddle.usual_radius;
 				
-				if (value.modsenabled && value.powerup.visible && Math.sqrt(Math.pow(value.powerup.x - value.ball.x, 2) + Math.pow(value.powerup.y - value.ball.y, 2)) < ball_radius)
+				if (value.modsenabled && value.powerup.visible)
 				{
-					if (value.powerup.type == 1)
+					if (Math.sqrt(Math.pow(value.powerup.x - value.ball.x, 2) + Math.pow(value.powerup.y - value.ball.y, 2)) < ball_radius && value.powerup.spawntime <= 0)
 					{
-						value.ball.speed = ball_normal_speed * 3;
+						if (value.powerup.type == 1)
+						{
+							value.ball.speed = ball_normal_speed * 3;
+						}
+						else if (value.powerup.type == 2)
+						{
+							value.ball.invis_len = 500;
+							value.ball.opacity = 1;
+						}
+						else if (value.powerup.type == 3)
+						{
+							if (value.ball.direction == -1)
+								value.bluepaddle.radius = 3;
+							else if (value.ball.direction == 1)
+								value.redpaddle.radius = 3;
+						}
+						value.powerup.visible = false;
 					}
-					else if (value.powerup.type == 2)
+					else
+						value.powerup.spawntime--;
+					if (value.powerup.spawntime < 0)
+						value.powerup.spawntime = 0;
+					if (value.powerup.speed)
 					{
-						value.ball.invis_len = 500;
-						value.ball.opacity = 1;
+						value.powerup.y += value.powerup.speed;
+						if (value.powerup.y <= 5 || value.powerup.y >= 95)
+							value.powerup.speed *= -1;
 					}
-					else if (value.powerup.type == 3)
-					{
-						if (value.ball.direction == -1)
-							value.bluepaddle.radius = 3;
-						else if (value.ball.direction == 1)
-							value.redpaddle.radius = 3;
-					}
-					value.powerup.visible = false;
 				}
 				if (value.ball.x - ball_radius <= paddle_distanceToMargin && !value.ball.passedLimit)		//? If ball touched the limit line on the left side
 				{
@@ -408,6 +423,11 @@ export class GameService {
 						value.ball.direction = 1;
 						value.ball.passedLimit = false;
 						value.ball.angle = 50 * ((value.ball.y - value.bluepaddle.y) / (value.bluepaddle.radius))
+						if (value.ball.angle > 80)
+							value.ball.angle = 80;
+						else if (value.ball.angle < -80)
+							value.ball.angle = -80;
+
 					}
 					else
 					{

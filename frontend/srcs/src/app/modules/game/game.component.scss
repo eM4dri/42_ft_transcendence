@@ -11,27 +11,66 @@
 
 .pongtitle {
   font-family: 'Luckiest Guy';
+  color: var(--text-secondary);
+
+  @media only screen and (min-width: 900px)
+  {
+    font-size: 250px;
+    @media only screen and (max-height: 799px)
+    {
+      font-size: 100px;
+    }
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 899px)
+  {
+    font-size: 150px;
+  }
+
+  @media only screen and (min-width: 300px) and (max-width: 599px)
+  {
+    font-size: 100px;
+  }
+
+  @media only screen and (max-width: 599px)
+  {
+    font-size: 50px;
+  }
 }
 
-button {
-    position: relative;
-    background-color: #302F3F;
-    border-radius: 50vh;
-    box-shadow: #242430 0px 4px 0px 0px;
-    padding: 15px;
-    background-repeat: no-repeat;
-    box-sizing: border-box;
-    width: 154px;
-    height: 49px;
-    color: #fff;
-    border: none;
-    font-size: 20px;
-    transition: all .3s ease-in-out;
-    z-index: 1;
-    overflow: hidden;
-  }
-  
-  button::before {
+//*   Large screen
+@media only screen and (min-width: 600px)
+{
+  button {
+      position: relative;
+      background-color: #302F3F;
+      border-radius: 50vh;
+      box-shadow: #242430 0px 4px 0px 0px;
+      padding: 15px;
+      background-repeat: no-repeat;
+      box-sizing: border-box;
+      width: 50%;
+      margin: 15px;
+      margin-left: 25%;
+      @media only screen and (max-height: 799px)
+      {
+        height: 40px;
+        font-size: 20px;
+      }
+      @media only screen and (min-height: 800px)
+      {
+        height: 90px;
+        font-size: 50px;
+      }
+      color: #fff;
+      border: none;
+      transition: all .3s ease-in-out;
+      z-index: 1;
+      overflow: hidden;
+    }
+    
+  button::before
+  {
     content: "";
     background: rgb(2,0,36);
     background-image: linear-gradient(60deg, #2929FD, #FB0A6B);
@@ -45,13 +84,15 @@ button {
     display: inline-block;
   }
   
-  button:hover::before {
+  button:hover::before
+  {
     width: 100%;
   }
 
 
 
-  button.tutorialbutton {
+  button.tutorialbutton
+  {
     position: relative;
     background-color: #302F3F;
     border-radius: 50vh;
@@ -59,17 +100,28 @@ button {
     padding: 15px;
     background-repeat: no-repeat;
     box-sizing: border-box;
-    width: 154px;
-    height: 49px;
+    width: 50%;
+    @media only screen and (max-height: 799px)
+    {
+      height: 40px;
+      font-size: 20px;
+    }
+    @media only screen and (min-height: 800px)
+    {
+      height: 90px;
+      font-size: 50px;
+    }
+    margin: 15px;
+    margin-left: 25%;
     color: #fff;
     border: none;
-    font-size: 20px;
     transition: all .3s ease-in-out;
     z-index: 1;
     overflow: hidden;
   }
   
-  button.tutorialbutton::before {
+  button.tutorialbutton::before
+  {
     content: "";
     background: rgb(2,0,36);
     background-color: #66f;
@@ -83,11 +135,13 @@ button {
     display: inline-block;
   }
   
-  button.tutorialbutton:hover::before {
+  button.tutorialbutton:hover::before
+  {
     width: 100%;
   }
 
-  button.cancelbutton {
+  button.cancelbutton
+  {
     position: relative;
     background-color: #f00;
     border-radius: 50vh;
@@ -95,17 +149,18 @@ button {
     padding: 15px;
     background-repeat: no-repeat;
     box-sizing: border-box;
-    width: 154px;
-    height: 49px;
+    width: 50%;
+    height: 90px;
     color: #fff;
     border: none;
-    font-size: 20px;
+    font-size: 50px;
     transition: all .3s ease-in-out;
     z-index: 1;
     overflow: hidden;
   }
   
-  button.cancelbutton::before {
+  button.cancelbutton::before
+  {
     content: "";
     background: rgb(2,0,36);
     background-color: #a00;
@@ -119,29 +174,42 @@ button {
     display: inline-block;
   }
   
-  button.cancelbutton:hover::before {
+  button.cancelbutton:hover::before
+  {
     width: 100%;
   }
 
-  button.backbutton {
+  button.backbutton
+  {
     position: relative;
     background-color: rgb(255, 182, 47);
     border-radius: 50vh;
     box-shadow: rgb(128, 91, 24) 0px 4px 0px 0px;
-    padding: 15px;
+    @media only screen and (max-width: 1199px)
+    {
+      padding: 10px;
+      width: 60%;
+      height: 60px;
+      font-size: 30px;
+    }
+    @media only screen and (min-width: 1200px)
+    {
+      padding: 15px;
+      width: 50%;
+      height: 90px;
+      font-size: 50px;
+    }
     background-repeat: no-repeat;
     box-sizing: border-box;
-    width: 154px;
-    height: 49px;
     color: #fff;
     border: none;
-    font-size: 20px;
     transition: all .3s ease-in-out;
     z-index: 1;
     overflow: hidden;
   }
   
-  button.backbutton::before {
+  button.backbutton::before
+  {
     content: "";
     background: rgb(2,0,36);
     background-color: rgb(230, 160, 42);
@@ -155,6 +223,199 @@ button {
     display: inline-block;
   }
   
-  button.backbutton:hover::before {
+  button.backbutton:hover::before
+  {
     width: 100%;
   }
+}
+
+
+//*   Hehe ur screen tiny
+@media only screen and (max-width: 599px)
+{
+  button {
+      position: relative;
+      background-color: #302F3F;
+      border-radius: 50vh;
+      box-shadow: #242430 0px 4px 0px 0px;
+      padding: 15px;
+      background-repeat: no-repeat;
+      box-sizing: border-box;
+      width: 80%;
+      @media only screen and (max-height: 799px)
+      {
+        height: 50px;
+        font-size: 10px;
+      }
+      @media only screen and (min-height: 800px)
+      {
+        height: 120px;
+        font-size: 20px;
+      }
+      margin: 15px;
+      margin-left: 10%;
+      color: #fff;
+      border: none;
+      transition: all .3s ease-in-out;
+      z-index: 1;
+      overflow: hidden;
+    }
+    
+  button::before
+  {
+    content: "";
+    background: rgb(2,0,36);
+    background-image: linear-gradient(60deg, #2929FD, #FB0A6B);
+    width: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: width 700ms ease-in-out;
+    display: inline-block;
+  }
+  
+  button:hover::before
+  {
+    width: 100%;
+  }
+
+
+
+  button.tutorialbutton
+  {
+    position: relative;
+    background-color: #302F3F;
+    border-radius: 50vh;
+    box-shadow: #242430 0px 4px 0px 0px;
+    padding: 15px;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    width: 80%;
+    @media only screen and (max-height: 799px)
+    {
+      height: 50px;
+      font-size: 10px;
+    }
+    @media only screen and (min-height: 800px)
+    {
+      height: 120px;
+      font-size: 20px;
+    }
+    margin: 15px;
+    margin-left: 10%;
+    color: #fff;
+    border: none;
+    transition: all .3s ease-in-out;
+    z-index: 1;
+    overflow: hidden;
+  }
+  
+  button.tutorialbutton::before
+  {
+    content: "";
+    background: rgb(2,0,36);
+    background-color: #66f;
+    width: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: width 700ms ease-in-out;
+    display: inline-block;
+  }
+  
+  button.tutorialbutton:hover::before
+  {
+    width: 100%;
+  }
+
+  button.cancelbutton
+  {
+    position: relative;
+    background-color: #f00;
+    border-radius: 50vh;
+    box-shadow: #700 0px 4px 0px 0px;
+    padding: 15px;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    width: 80%;
+    height: 120px;
+    color: #fff;
+    border: none;
+    font-size: 20px;
+    transition: all .3s ease-in-out;
+    z-index: 1;
+    overflow: hidden;
+  }
+  
+  button.cancelbutton::before
+  {
+    content: "";
+    background: rgb(2,0,36);
+    background-color: #a00;
+    width: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: width 700ms ease-in-out;
+    display: inline-block;
+  }
+  
+  button.cancelbutton:hover::before
+  {
+    width: 100%;
+  }
+
+  button.backbutton
+  {
+    position: relative;
+    background-color: rgb(255, 182, 47);
+    border-radius: 50vh;
+    box-shadow: rgb(128, 91, 24) 0px 4px 0px 0px;
+    padding: 5px;
+    @media only screen and (max-width: 299px)
+    {
+      width: 80%;
+      height: 20px;
+      font-size: 10px;
+    }
+    @media only screen and (min-width: 300px)
+    {
+      width: 60%;
+      height: 30px;
+      font-size: 15px;
+    }
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    color: #fff;
+    border: none;
+    transition: all .3s ease-in-out;
+    z-index: 1;
+    overflow: hidden;
+  }
+  
+  button.backbutton::before
+  {
+    content: "";
+    background: rgb(2,0,36);
+    background-color: rgb(230, 160, 42);
+    width: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: width 700ms ease-in-out;
+    display: inline-block;
+  }
+  
+  button.backbutton:hover::before
+  {
+    width: 100%;
+  }
+}
