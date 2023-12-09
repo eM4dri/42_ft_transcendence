@@ -1,7 +1,7 @@
 <!-- app.component.html -->
 <div class="chat-app">
     <!-- Barra lateral con la lista de usuarios disponibles -->
-    <div class="chat-sidebar">
+    <div class="chat-sidebar" [ngClass]="{'mobile-hidden': typeChat !== 'NONE'}">
         <nav class="nav-tabs">
             <a class="nav-tab" [class.active]="isChatTabSeleted()" (click)="showChatTab()">Chat</a>
             <a class="nav-tab" [class.active]="!isChatTabSeleted()" (click)="showChannelTab()">Channels</a>
@@ -20,7 +20,7 @@
         </ng-template>
     </div>
     <!-- Ventana de chat -->
-    <div class="chat-window">
+    <div class="chat-window" [ngClass]="{'mobile-hidden': typeChat === 'NONE', 'mobile-visible': typeChat !== 'NONE'}">
         <div [ngSwitch]="typeChat">
             <div *ngSwitchCase="'NEW_CHAT'">
                  <app-chat-window

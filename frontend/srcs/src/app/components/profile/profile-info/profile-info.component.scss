@@ -348,6 +348,7 @@
   .link {
     left: 50%; /* Establece la mitad del ancho del contenedor como posición izquierda */
     top: 5%;
+    font-size: 3vw;
     transform: translate(-50%, -50%); /* Centra el elemento con respecto a su propio tamaño */
     position: absolute; /* Asegura que la posición sea absoluta */
     cursor: pointer;
@@ -540,7 +541,11 @@ form .submit:hover {
   box-shadow: 0 0 10px rgb(104, 134, 218);
 }
 
-.box::before {
+.box-active {
+  background-color: rgb(218, 203, 177);
+}
+
+.box-active::before {
   content: "";
   position: absolute;
   width: 15px;
@@ -549,6 +554,22 @@ form .submit:hover {
   background: linear-gradient(#00ccff,#d400d4);
   animation: amm 4s linear infinite;
 }
+
+.box-inactive {
+  background-color: rgb(94, 92, 92);
+  height: 10%;
+}
+
+.box-inactive::before {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 200px;
+  margin-top: -92px;
+  background: linear-gradient(#000000,#000000);
+  animation: amm 4s linear infinite;
+}
+
 
 @keyframes amm {
   0% {
@@ -600,7 +621,15 @@ form .submit:hover {
   }
 
   .edit-button {
-    display: none;
+    bottom: 10%;
+    top: unset;
+    width: 20%;
+    height: 7%;
+    left: 40%;
+  }
+
+  .edit-button:hover {
+    width: 20%;
   }
 
   .twofa {
@@ -612,13 +641,29 @@ form .submit:hover {
   }
 
   .avatar {
-    height: 30%;
+    height: 50%;
+    width: 70%;
+    left: 30%;
   }
 
   .container {
-    top:20%;
-    max-width: 70%;
-    max-height: 50%;
+    left: 10%;
+    top:15%;
+    max-width: 80%;
+    max-height: 63%;
+  }
+
+  .link {
+    top: 10%;
+    font-size: 6vw;
+  }
+
+  .subtitle {
+    font-size: 8vw;
+  }
+
+  .title {
+    font-size: 5vw;
   }
 
 }

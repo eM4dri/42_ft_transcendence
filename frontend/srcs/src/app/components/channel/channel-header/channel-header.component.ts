@@ -16,11 +16,16 @@ export class ChannelHeaderComponent extends BaseComponent {
   constructor(
     private readonly api: ApiService,
     private readonly chatComponent: ChatComponent,
-    private readonly cachedChannels: ChannelsCache
-  ) 
-  { 
+    private readonly cachedChannels: ChannelsCache,
+    private readonly parent: ChatComponent
+  )
+  {
     super(api);
    }
+
+  getOutOfChannel(){
+    this.parent.goBackToNoChannel();
+  }
 
   manageChannel(){
     this.chatComponent.manageChannel(this.channel);

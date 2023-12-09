@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Channel, ChannelUsersExtended } from 'src/app/models';
 import { ChannelsCache } from 'src/app/cache';
@@ -17,7 +17,7 @@ export interface PostChannel {
   templateUrl: './channel-management.component.html',
   styleUrls: ['./channel-management.component.scss']
 })
-export class ChannelManagementComponent extends BaseComponent<{},PostChannel> implements OnInit {
+export class ChannelManagementComponent extends BaseComponent<{},PostChannel> implements OnInit, OnChanges {
   @Input() channel!: Channel;
   isLocked: boolean = false;
   avatarUrl!: string;
@@ -37,25 +37,24 @@ export class ChannelManagementComponent extends BaseComponent<{},PostChannel> im
   }
 
   ngOnInit(): void {
-    if (this.channel.channelId !== 'none') {
-      this.getService({
-        url: `${UriConstants.CHANNEL}/${this.channel.channelId}/isLocked`
-      }).subscribe({
-        next: (res: any) => {
-          this.channel.isLocked = res.response;
-        },
-        error: () => {
-            this.processError('Error retrieving channel information');
-        },
-      });
-    }
+    this.isChannelLocked();
   }
 
-  saveChannel(){
+  ngOnChanges(changes: SimpleChanges): void {
+    this.isChannelLocked();
+  }
+
+  public saveChannel(): void{
     if (this.isFormValid()) {
       const { channelName, currentPassword, password, confirmPassword} = this.formGroup.value;
       if (password !== confirmPassword) {
         this.alertConfiguration('ERROR', 'Passwords must be the same.');
+        this.openAlert();
+        this.loading = true;
+        return ;
+      }
+      if (channelName.length > 40) {
+        this.alertConfiguration('ERROR', 'Channel name too long');
         this.openAlert();
         this.loading = true;
         return ;
@@ -94,7 +93,7 @@ export class ChannelManagementComponent extends BaseComponent<{},PostChannel> im
     }
   }
 
-  updateChannel(channelId: string, password: string, currentPassword: string) {
+  public updateChannel(channelId: string, password: string, currentPassword: string): void {
     const headers = new HttpHeaders()
     .set("Content-Type", "application/json");
     const data  = {
@@ -121,12 +120,30 @@ export class ChannelManagementComponent extends BaseComponent<{},PostChannel> im
     });
   }
 
-  updateAvatar(url: string) {
+  public updateAvatar(url: string): void {
     this.channel.avatar = url;
     this.avatarUrl = url
   }
 
-  processError(error: any){
+  // PRIVATE METHODS
+
+
+  private isChannelLocked(): void {
+    if (this.channel.channelId !== 'none') {
+      this.getService({
+        url: `${UriConstants.CHANNEL}/${this.channel.channelId}/isLocked`
+      }).subscribe({
+        next: (res: any) => {
+          this.channel.isLocked = res.response;
+        },
+        error: () => {
+            this.processError('Error retrieving channel information');
+        },
+      });
+    }
+  }
+
+  private processError(error: any): void {
     this.alertConfiguration('ERROR', error);
     this.openAlert();
   }

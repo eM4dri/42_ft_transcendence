@@ -25,7 +25,7 @@ and this project adheres to
 - Changes in error management (profile info)
 - Changes in css (profile info)
 - Stats controller reorganized
-- Small changes 
+- Small changes
 
 ## 2023-12-06 - jvacaris
 ### Added

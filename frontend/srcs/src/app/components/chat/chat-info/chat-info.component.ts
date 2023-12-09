@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { User } from 'src/app/models';
 import { Router, NavigationExtras } from '@angular/router';
+import { ChatComponent } from 'src/app/modules';
 
 
 @Component({
@@ -13,6 +14,7 @@ export class ChatInfoComponent {
 
   constructor(
     private readonly router: Router,
+    protected readonly parent: ChatComponent
   ) { }
 
   public goToUserInfo(userId: string) : void {
@@ -23,6 +25,10 @@ export class ChatInfoComponent {
 
     this.router.navigate(['/profile/', this.user.username], navigationExtras);
 
+  }
+
+  public goBackToChat() {
+    this.parent.goBackToNoChannel()
   }
 
 }

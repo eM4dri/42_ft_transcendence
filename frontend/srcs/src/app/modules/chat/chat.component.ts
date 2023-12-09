@@ -157,4 +157,12 @@ export class ChatComponent implements OnInit, OnChanges, OnDestroy {
             this.typeChat = EnumChatWindowTypeSeleted.NONE;
         }
     }
+
+    public goBackToNoChannel() {
+        this.typeChat = EnumChatWindowTypeSeleted.NONE;
+    }
+
+    public getTypeChat() {
+        return this.typeChat;
+    }
 }

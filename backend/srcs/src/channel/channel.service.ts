@@ -29,11 +29,18 @@ export class ChannelService {
         }));
     }
 
-    async getFullChannelByChannelId(channelId: string){
-        return this.prisma.channel.findFirst({
-            where: { channelId: channelId },
+    async isChannelPasswordSet(channelId: string) {
+        const channel = await this.prisma.channel.findFirst({
+          where: {
+            channelId: channelId,
+            NOT: {
+              password: null,
+            },
+          },
         });
-    }
+
+        return !!channel;
+      }
 
     async getUsersIds(channelsId: string[]):Promise<string[]>{
         const result= await this.prisma.channelUser.findMany({

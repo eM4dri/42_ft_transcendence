@@ -103,11 +103,15 @@
 
         <div *ngIf="editingUser" class="twofa">
 
-            <ng-container *ngIf="!user.twofa">
-                <button (click)="showQRCode()" class="box">
+            @if (!user.twofa) {
+                <button (click)="showQRCode()" class="box box-active">
                     <p class="text-button">2FA</p>
-                  </button>
-            </ng-container>
+                </button>
+            }@else {
+                <button class="box box-inactive">
+                    <p class="text-button">2FA enabled</p>
+                </button>
+            }
             <div class="qr-code-container">
                 <ng-container *ngIf="qrCode !== ''">
                     <img [src]="qrCode" alt="Imagen">

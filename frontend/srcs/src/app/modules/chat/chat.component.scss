@@ -133,3 +133,17 @@ $tab-text-color: #FFFFFF;
   transition: .4s;
   transform: translateX(-56px);
 }
+
+@media screen and (max-width: 767px) {
+  .mobile-hidden {
+    display: none;
+  }
+
+  .mobile-visible {
+    display: block;
+  }
+
+  .chat-app {
+    grid-template-columns: unset;
+  }
+}
