@@ -1,8 +1,9 @@
 .channelUser-row  {
     display: flex;
-    align-items: center;
+    flex-direction: row;
+    align-items: stretch;
     justify-content: space-between;
-    width: 40rem;
+    width: auto;
 }
 
 .channelUser-row>div{
@@ -12,6 +13,8 @@
 .tag-username-pair {
     display: flex;
     align-items: center;
+    flex-direction: row;
+    width: auto;
 }
 
 .red-box {
@@ -19,6 +22,6 @@
     background-color: red;
     color: white;
     padding: 10px;
-    width: 40rem;
+    width: auto;
     justify-content: center;
   }

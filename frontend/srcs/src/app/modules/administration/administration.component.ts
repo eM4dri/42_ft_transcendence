@@ -71,6 +71,10 @@ export class AdministrationComponent extends BaseComponent<Channel> implements O
     this.ManageOption = EnumAdminPanelTypeSelected.NONE;
   }
 
+  public goBackToChannelList() {
+    this.ManageOption = EnumAdminPanelTypeSelected.NONE;
+  }
+
   showChannelsTab() {
     this.selectedTab = "channels";
     this.ManageOption = EnumAdminPanelTypeSelected.NONE;

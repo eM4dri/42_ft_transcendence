@@ -44,9 +44,10 @@ background-color: var(--bg-secondary);
 
 .channelUser-row  {
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  align-items: stretch;
   justify-content: space-between;
-  width: 40rem;
+  width: auto;
 }
 
 .channelUser-row>div{
@@ -56,4 +57,6 @@ background-color: var(--bg-secondary);
 .tag-username-pair {
   display: flex;
   align-items: center;
+  flex-direction: row;
+  width: auto;
 }
