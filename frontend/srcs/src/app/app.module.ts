@@ -130,7 +130,8 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     UsersCache,
     ChatsCache,
     ChannelsCache,
-    DateMutations
+    DateMutations,
+    ChatComponent
   ],
   bootstrap: [AppComponent]
 })
