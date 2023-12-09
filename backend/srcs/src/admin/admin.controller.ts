@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Delete, Param, ParseUUIDPipe, Patch, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
@@ -167,6 +167,17 @@ export class AdminController {
       return { response: await this.channelAdminService.kickChannelUser(
         channelUserId,
         )};
+    }
+
+    @Delete('/channel/:uuid')
+    @Roles(Role.Admin, Role.Owner)
+    destroyChannel(
+      @Param('uuid', new ParseUUIDPipe()) channelId: string,
+    ) {
+      //!validate user is website moderator or website owner
+      return this.adminService.destroyChannel(
+        channelId
+      );
     }
 
 }

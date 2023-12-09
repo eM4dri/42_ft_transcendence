@@ -80,16 +80,6 @@ export class ChannelController {
       };
     }
 
-    @Delete('/:uuid')
-    destroyChannel(
-      @Param('uuid', new ParseUUIDPipe()) channelId: string,
-    ) {
-      //!validate user is website moderator or website owner
-      return this.channelService.destroyChannel(
-        channelId
-      );
-    }
-
     @Post('/join')
     async joinChannel(
       @GetUser('id') userId: string,

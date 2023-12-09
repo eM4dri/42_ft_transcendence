@@ -149,27 +149,6 @@ export class ChannelService {
         }
     }
 
-    //! Just for website owner &  website moderators
-    async destroyChannel(channelId: string) {
-        try {
-            const message =
-              await this.prisma.channel.delete({
-                where: { channelId },
-              });
-            return message;
-          } catch (error) {
-            if (
-              error instanceof
-              PrismaClientKnownRequestError
-            ) {
-              if (error.code === 'P2025') {
-                throw new NotFoundException({response:  'Not Found'});
-              }
-            }
-            throw error;
-          }
-    }
-
     async joinChannel(userId: string, dto: JoinChannelDto) {
         try {
             const channel = await this.prisma.channel.findUnique({

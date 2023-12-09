@@ -1,15 +1,19 @@
-import { Injectable, UnauthorizedException, HttpException, HttpStatus, ForbiddenException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, NotFoundException, HttpException, HttpStatus, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { BannedList } from "@prisma/client";
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { UserService } from 'src/user/user.service';
 import { Role } from 'src/auth/role.enum';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { ChannelService } from 'src/channel/channel.service';
 
 
 @Injectable()
 export class AdminService {
     constructor(
-        private prisma: PrismaService
+        private prisma: PrismaService,
+        private eventEmitter: EventEmitter2,
+        private channelService: ChannelService
     ){}
 
     // Nada que no sea un User puede ser baneado.
@@ -158,6 +162,48 @@ export class AdminService {
                   throw new HttpException(
                     {response:  'User does not exist'},
                     HttpStatus.NOT_FOUND);
+                }
+            }
+            throw error;
+        }
+    }
+
+    // Esto es lo mismo que hace el leaveChanell de channelService
+    // pero sin hacer reOwning, que se nos pueden ir los tiempos si
+    // el canal es grande y lo unico que queremos hacer es sacar fuera
+    // a todo el mundo antes de borrar el canal.
+    async allUsersLeaveChannel(channelId: string) {
+        try {
+            const response = await this.prisma.channelUser.updateMany({
+                where: { channelId: channelId },
+                data: { leaveAt: new Date( Date.now() ) }
+            });
+            return response;
+        } catch (error) {
+            throw (error);
+        }
+    }
+
+    async destroyChannel(channelId: string) {
+        try {
+            // POnemos a todos los usuarios del canal en leaveAt != null
+            // y emitimos a channel_user_leaves sus usuarios
+            this.allUsersLeaveChannel(channelId);
+            const channelUsers = await this.channelService.getChannelUsers(channelId);
+            for (const channelUser of channelUsers) {
+                this.eventEmitter.emit('channel_user_leaves', channelUser);
+            }
+            const message = await this.prisma.channel.delete({
+                    where: { channelId },
+            });
+            return message;
+        } catch (error) {
+            if (
+                error instanceof
+                PrismaClientKnownRequestError
+            ) {
+                if (error.code === 'P2025') {
+                throw new NotFoundException({response:  'Not Found'});
                 }
             }
             throw error;
