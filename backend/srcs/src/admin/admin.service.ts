@@ -1,8 +1,6 @@
-import { Injectable, UnauthorizedException, NotFoundException, HttpException, HttpStatus, ForbiddenException } from '@nestjs/common';
+import { Injectable,  NotFoundException, HttpException, HttpStatus, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { BannedList } from "@prisma/client";
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { UserService } from 'src/user/user.service';
 import { Role } from 'src/auth/role.enum';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ChannelService } from 'src/channel/channel.service';
@@ -66,6 +64,7 @@ export class AdminService {
                     userId: userId
                 }
             });
+            this.eventEmitter.emit('userBanned', userId);
             return response;
         } catch (error) {
             if (error instanceof PrismaClientKnownRequestError) {
@@ -125,6 +124,7 @@ export class AdminService {
                     role: newRole
                 }
             });
+            this.eventEmitter.emit('userPromoted', userId);
             return response;
         } catch (error){
             if (error instanceof PrismaClientKnownRequestError) {
@@ -155,6 +155,7 @@ export class AdminService {
                     role: newRole
                 }
             });
+            this.eventEmitter.emit('userDemoted', userId);
             return response;
         } catch (error){
             if (error instanceof PrismaClientKnownRequestError) {

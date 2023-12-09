@@ -6,12 +6,14 @@ import { JwtService } from "@nestjs/jwt";
 import { JwtPayload } from "./strategy";
 import { User } from "@prisma/client";
 import { UserService } from "src/user/user.service";
+import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService, 
-    private userService: UserService
+    private userService: UserService,
+    private prisma: PrismaService
     ) { }
 
   async login(user: User) {
@@ -66,5 +68,11 @@ export class AuthService {
     return (await this.userService.getByUserId(userId)).twofa; 
   }
 
+  async isBanned(userId: string){
+    const isBanned = await this.prisma.bannedList.findFirst({
+      where: {  userId  },
+    });
+    return (isBanned !== null);
+  }
 
 }

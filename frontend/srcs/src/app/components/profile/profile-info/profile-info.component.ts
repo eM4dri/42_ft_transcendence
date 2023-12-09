@@ -38,7 +38,7 @@ export class ProfileInfoComponent implements OnInit {
   stats: any;
   alertConfig = new AlertModel.AlertaClass(
     false,
-    'Ha ocurrido un error',
+    'An error has occurred',
     AlertModel.AlertSeverity.ERROR
   );
 

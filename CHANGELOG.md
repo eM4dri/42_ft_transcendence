@@ -7,6 +7,10 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## 2023-12-09 - emadriga
+### Added
+- Finished auth workflow
+- Broadcast promote/demote/ban via WS
+
 ### Fixed
 - Added missing migration of banlist
 - Silence front build warning , browserTarget deprecated -> use buildTarget

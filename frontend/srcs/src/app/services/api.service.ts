@@ -96,10 +96,7 @@ export class ApiService<GET = {}, POST = {}, PUT = {}, PATCH = {}, DELETE = {}> 
 
 
   refreshToken() {
-		// return this.http.get<IResponseRefreshToken>(UriConstants.AUTH_REFRESH).pipe(delay(5000));
-		const result = this.http.get<IResponseRefreshToken>(UriConstants.AUTH_REFRESH);
-    console.log('result',result);
-    return result;
+    return  this.http.get<IResponseRefreshToken>(UriConstants.AUTH_REFRESH);
 	}
 
 }

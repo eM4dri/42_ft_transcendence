@@ -58,4 +58,8 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  refreshTokens(){
+    this.cookieService.delete(CookieConstants.USER_TOKEN);
+  }
+
 }

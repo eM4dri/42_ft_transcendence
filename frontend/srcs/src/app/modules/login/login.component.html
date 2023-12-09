@@ -1,4 +1,4 @@
-<button (click)="login()"> 
+<button (click)="login()" > 
     LOGIN
 </button>
 
@@ -7,10 +7,17 @@
     <br>
     <br>
     <input
-        placeholder="Search"
+        placeholder="2FA authenticator"
         type="text"
         [(ngModel)]="tfaToken"
     />
+}
+
+@if(unAthorizedToken!=='')
+{
+    <br>
+    <br>
+    <label>"Unauthorized You've banned"</label>
 }
 
 <app-alert
@@ -20,6 +27,4 @@
     (eventCloseToast)="closeAlert()"
     >
 </app-alert>
-
-
 

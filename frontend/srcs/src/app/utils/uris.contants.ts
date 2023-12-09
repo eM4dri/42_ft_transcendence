@@ -8,6 +8,7 @@ const apiBasePath = environment.apiUrl + apiVersion;
 const staticImgBase = environment.staticImagesUrl + '/static_images';
 export class UriConstants {
   public static readonly AUTH_REFRESH = apiBasePath + '/refresh';
+  public static readonly AUTH_PING = apiBasePath + '/ping';
   public static readonly USERS = apiBasePath + '/user';
   public static readonly USER_FRIENDS = apiBasePath + '/userFriends';
   public static readonly CHAT = apiBasePath + '/chat';

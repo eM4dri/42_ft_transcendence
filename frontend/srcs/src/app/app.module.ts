@@ -15,7 +15,8 @@ import { AdministrationComponent,
          SharedAlertModule,
          SharedAvatarModule,
          SpectateModule,
-         ChallengeModule } from './modules';
+         ChallengeModule, 
+         AdminAlertsComponent} from './modules';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
@@ -100,8 +101,8 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     ChatSidebarComponent,
     FriendSidebarComponent,
     BlockSidebarComponent,
-    TruncatePipe
-    //    PongTVComponent,
+    TruncatePipe,
+    AdminAlertsComponent
   ],
   imports: [
     RankTableModule,
@@ -121,7 +122,8 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     TooltipModule,
     RankTableModule,
     ChallengeModule,
-    NgbDatepickerModule
+    NgbDatepickerModule,    
+
   ],
   providers: [
     CookieService,

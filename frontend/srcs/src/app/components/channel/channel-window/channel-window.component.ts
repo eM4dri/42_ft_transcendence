@@ -97,6 +97,7 @@ export class ChannelWindowComponent implements OnInit, OnChanges, AfterViewCheck
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions = [];
   }
 
   public toDayLocale(time: number):string {

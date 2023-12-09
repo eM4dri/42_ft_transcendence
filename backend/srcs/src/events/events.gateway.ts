@@ -292,4 +292,22 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
             this.server.to(socketId).emit('clear_challenges', userId)
         }
     }
+
+    @OnEvent('userBanned')
+    private _userBanned(userId: string){
+        const socketId: string = this.socketsIdMap.get(userId);
+        this.server.to(socketId).emit('user_banned', userId)
+    }
+
+    @OnEvent('userPromoted')
+    private _userPromoted(userId: string){
+        const socketId: string = this.socketsIdMap.get(userId);
+        this.server.to(socketId).emit('user_promoted', userId)
+    }
+
+    @OnEvent('userDemoted')
+    private _userDemoted(userId: string){
+        const socketId: string = this.socketsIdMap.get(userId);
+        this.server.to(socketId).emit('user_demoted', userId)
+    }
 }

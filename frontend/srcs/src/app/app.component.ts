@@ -10,7 +10,7 @@ import { ChannelsCache, ChatsCache, UsersCache } from './cache';
 export class AppComponent {
   darkMode: boolean = true;
   constructor(
-    private readonly cachedChats: ChatsCache,               // 
+    private readonly cachedChats: ChatsCache,
     private readonly cachedChannels: ChannelsCache,
     private readonly cachedUsers: UsersCache,
     private readonly authService: AuthService,

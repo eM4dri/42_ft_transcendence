@@ -66,6 +66,7 @@ export class ChatWindowComponent extends BaseComponent<{},PostMessage> implement
   }
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions = [];
   }
 
   constructor(

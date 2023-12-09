@@ -19,6 +19,7 @@ export interface PostTokens {
 export class LoginComponent extends BaseComponent<{},PostTokens> {
   tfaId: string = '';
   tfaToken: string = '';
+  unAthorizedToken: string = '';
 
   constructor(
     private readonly api: ApiService<{},PostTokens>,
@@ -27,10 +28,12 @@ export class LoginComponent extends BaseComponent<{},PostTokens> {
   ){ 
     super(api);
     this.tfaId = this.cookieService.get(CookieConstants.TFA_TOKEN);
+    this.unAthorizedToken = this.cookieService.get(CookieConstants.UNAUTHORIZED_TOKEN);
   }
-  
+
   login(){
     if (this.tfaId===''){
+      this.cookieService.delete(CookieConstants.UNAUTHORIZED_TOKEN);
       window.location.href = environment.loginUrl;
     }else {
       this.createService({
@@ -42,6 +45,7 @@ export class LoginComponent extends BaseComponent<{},PostTokens> {
           this.cookieService.set(CookieConstants.USER_TOKEN, accessToken);
           this.cookieService.set(CookieConstants.REFRESH_TOKEN, refreshToken);
           this.cookieService.delete(CookieConstants.TFA_TOKEN);
+          this.cookieService.delete(CookieConstants.UNAUTHORIZED_TOKEN);
           this.router.navigate(['/home']);
         },
         error: error => {

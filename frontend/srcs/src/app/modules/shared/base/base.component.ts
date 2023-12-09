@@ -25,7 +25,7 @@ export class BaseComponent<GET = {}, POST = {}, PUT = {}, PATCH = {}, DELETE = {
   loading = false;
   alertConfig = new AlertModel.AlertaClass(
     false,
-    'Ha ocurrido un error',
+    'An error has occurred',
     AlertModel.AlertSeverity.ERROR
   );
   formGroup: FormGroup = new FormGroup({});

@@ -28,7 +28,7 @@ export class AlertComponent implements OnChanges {
       this.messageService.add(
         {
           severity: this.severity,
-          summary: this.severity === AlertModel.AlertSeverity.ERROR ? AlertModel.AlertMessage.ERROR :  AlertModel.AlertMessage.SUCCESS,
+          summary: this.severity,
           detail: this.singleMessage
         }
       );

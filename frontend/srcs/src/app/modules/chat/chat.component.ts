@@ -49,8 +49,7 @@ export class ChatComponent implements OnInit, OnChanges, OnDestroy {
     };
 
     subscriptions: Subscription[] = [];
-
-    // private readonly userService = inject(UserService);
+    
     private readonly cachedChats = inject(ChatsCache);
     private readonly cachedChannels = inject(ChannelsCache);
     private readonly cachedUsers = inject(UsersCache);
@@ -85,7 +84,6 @@ export class ChatComponent implements OnInit, OnChanges, OnDestroy {
                 }
             })
         );
-        // this.userService.clientReady();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -97,16 +95,9 @@ export class ChatComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+        this.subscriptions = [];
     }
     
-    // constructor(
-    //     private readonly userService: UserService,
-    //     private readonly cachedChats: ChatsCache,
-    //     private readonly cachedChannels: ChannelsCache,
-    //     private readonly cachedUsers: UsersCache,
-    //   ) {
-
-    // }
 
     public loadNewChat(user: User) {
         const chat = this.chatsAvailables.find( x=> x.userId === user.userId ) || undefined;

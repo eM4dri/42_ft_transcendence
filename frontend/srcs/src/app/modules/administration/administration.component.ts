@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ApiService, UserService } from 'src/app/services';
-import { UsersCache, ChannelsCache } from 'src/app/cache';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from 'src/app/services';
+import { ChannelsCache } from 'src/app/cache';
 import { Channel, User } from 'src/app/models';
 import { BaseComponent } from '../shared';
 import { UriConstants } from 'src/app/utils';
@@ -34,13 +34,10 @@ export class AdministrationComponent extends BaseComponent<Channel> implements O
   };
 
   constructor(
-    private readonly userService: UserService,
     private readonly cachedChannels: ChannelsCache,
-    private readonly cachedUsers: UsersCache,
     private readonly api: ApiService<Channel>,
   ) {
     super(api);
-    this.userService.clientReady();
     this.cachedChannels.getresetChannelSub().subscribe();
   }
 

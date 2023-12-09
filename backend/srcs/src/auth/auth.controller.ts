@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Res, Req, UseGuards, Post, Body, HttpStatus } from "@nestjs/common";
 import { Response } from "express";
-import { FortyTwoGuard, RefreshGuard } from "./guard";
+import { FortyTwoGuard, JwtGuard, RefreshGuard } from "./guard";
 import { AuthService } from "./auth.service";
 import { ApiExcludeController } from "@nestjs/swagger";
 import { GetUser } from "./decorator";
@@ -9,6 +9,7 @@ import { FakeAuthService } from "./fake.auth.service";
 import { TokenConstants } from "src/utils";
 import { ValidateDto } from "src/tfa/dto";
 import { TfaService } from "src/tfa/tfa.service";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 
 @ApiExcludeController()
 @Controller()
@@ -16,7 +17,8 @@ export class AuthController {
   constructor(
     private authService: AuthService,
     private fakeAuthService: FakeAuthService,
-    private tfaService: TfaService
+    private tfaService: TfaService,
+    private eventEmitter: EventEmitter2
   ) { }
   @Get(process.env.FORTYTWO_CLIENT_URL)
   @UseGuards(FortyTwoGuard)
@@ -31,13 +33,19 @@ export class AuthController {
     @GetUser() user42: User,
     @Res() res: Response,
   ) {
-    const needTfa: boolean = await this.authService.tfaNeeded(user42.userId);
-    if ( !needTfa ){
-      const { accessToken, refreshToken } = await this.authService.login(user42);
-      res.cookie(TokenConstants.USER_TOKEN, accessToken);
-      res.cookie(TokenConstants.REFRESH_TOKEN, refreshToken);
-    } else {
-      res.cookie(TokenConstants.TFA_TOKEN, user42.userId);
+    const isBanned = await this.authService.isBanned(user42.userId);
+    if (isBanned) {
+      res.cookie(TokenConstants.UNAUTHORIZED_TOKEN, user42.userId);
+    }
+    else {
+      const needTfa: boolean = await this.authService.tfaNeeded(user42.userId);
+      if ( !needTfa ){
+        const { accessToken, refreshToken } = await this.authService.login(user42);
+        res.cookie(TokenConstants.USER_TOKEN, accessToken);
+        res.cookie(TokenConstants.REFRESH_TOKEN, refreshToken);
+      } else {
+        res.cookie(TokenConstants.TFA_TOKEN, user42.userId);
+      }
     }
     const hostName = new URL(`http://${req.headers['host']}`).hostname;
     res.redirect(`http://${hostName}:${process.env.WEB_PORT}`);
@@ -64,12 +72,17 @@ export class AuthController {
   @Get('refresh')
   @UseGuards(RefreshGuard)
   async refresh(@GetUser('sub') userId): Promise<{ accessToken, refreshToken }> {
-    const { accessToken, refreshToken } = await this.authService.refreshToken(userId);
-    const response = {
-      accessToken: accessToken,
-      refreshToken: refreshToken
-    };
-    return response;
+    const isBanned = await this.authService.isBanned(userId);
+    if (isBanned) {
+      this.eventEmitter.emit('userBanned', userId);
+    } else {
+      const { accessToken, refreshToken } = await this.authService.refreshToken(userId);
+      const response = {
+        accessToken: accessToken,
+        refreshToken: refreshToken
+      };
+      return response;
+    }
   }
 
   @Post('login/tfa/validate')
@@ -83,5 +96,11 @@ export class AuthController {
       return res.status(HttpStatus.OK).json({ response : { accessToken:accessToken, refreshToken:refreshToken} });
      } 
      return res;
+  }
+
+  @Get('ping')
+  @UseGuards(JwtGuard)
+  ping(@GetUser('role') rol)  {
+    return `Your new Role is ${rol}`;
   }
 }
