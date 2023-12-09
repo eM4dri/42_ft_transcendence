@@ -14,7 +14,7 @@
 </ng-template>
 
 <div class="icon-actions">
-    @if(!userChannel.isOwner && !isThisMyself() && !userIsKicked()) {
+    @if(!userChannel.isOwner && !isThisMyself() && (!userIsKicked() || userChannel.isBanned)) {
         <!-- Gestion de permisos (de canal) -->
         @if (!userChannel.isBanned){
             @if (userChannel.isAdmin) {

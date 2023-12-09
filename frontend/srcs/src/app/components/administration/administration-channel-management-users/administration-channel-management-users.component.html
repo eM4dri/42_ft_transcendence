@@ -12,6 +12,12 @@
                                 'background': 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'
                             }"
                     ></p-tag>
+                } @else if (u.value.isBanned) {
+                    <p-tag [value]="u.value.status"
+                        [style]="{
+                            'background': 'linear-gradient(-225deg, #ff5050 0%, #ff0000 48%, #cc0000 100%)',
+                            }"
+                    ></p-tag>
                 } @else if (u.value.leaveAt !== null) {
                     <p-tag [value]="'OUT'"
                         [style]="{
