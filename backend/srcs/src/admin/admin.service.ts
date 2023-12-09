@@ -168,10 +168,6 @@ export class AdminService {
         }
     }
 
-    // Esto es lo mismo que hace el leaveChanell de channelService
-    // pero sin hacer reOwning, que se nos pueden ir los tiempos si
-    // el canal es grande y lo unico que queremos hacer es sacar fuera
-    // a todo el mundo antes de borrar el canal.
     async allUsersLeaveChannel(channelId: string) {
         try {
             const response = await this.prisma.channelUser.updateMany({

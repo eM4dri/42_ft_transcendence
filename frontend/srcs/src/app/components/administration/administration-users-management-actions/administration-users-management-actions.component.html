@@ -3,35 +3,41 @@
         @if (userIsAdmin() || userIsOwner()) {
             <i class="bi bi-person-down"
                 pTooltip="demote"
-                tooltipPosition="left"
-                placeholder="Left"
+                tooltipPosition="bottom"
+                placeholder="Bottom"
                 (click)="patchUser('demote')"
             ></i>
+        } @else {
+            <i class="bi bi-person-down" style="visibility: hidden;"></i>
         }
-        @if (!userIsOwner()) {
+        @if (!userIsOwner() && !userExtended.isBanned) {
             <i class="bi bi-person-up"
                 pTooltip="promote"
-                tooltipPosition="left"
-                placeholder="Left"
+                tooltipPosition="bottom"
+                placeholder="Bottom"
                 (click)="patchUser('promote')"
             ></i>
+        } @else {
+            <i class="bi bi-person-down" style="visibility: hidden;"></i>
         }
         @if (!userIsAdmin() && !userIsOwner()) {
             @if (userExtended.isBanned){
                 <i class="bi bi-person-check"
                     pTooltip="unban"
-                    tooltipPosition="left"
-                    placeholder="Left"
+                    tooltipPosition="bottom"
+                    placeholder="Bottom"
                     (click)="patchUser('unban')"
                 ></i>
             } @else {
                 <i class="bi bi-person-slash"
                     pTooltip="ban"
-                    tooltipPosition="left"
-                    placeholder="Left"
+                    tooltipPosition="bottom"
+                    placeholder="Bottom"
                     (click)="patchUser('ban')"
                 ></i>
             }
+        } @else {
+            <i class="bi bi-person-down" style="visibility: hidden;"></i>
         }
     }
 </div>
