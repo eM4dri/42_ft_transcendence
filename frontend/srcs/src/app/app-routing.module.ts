@@ -33,9 +33,9 @@ const routes: Routes = [
   { path: "live", component: SpectateComponent, canActivate: [AuthGuard] },
   { path: "friends", component: FriendListComponent, canActivate: [AuthGuard] },
   {
-    path: "administration", component: AdministrationComponent, canActivate: [AuthGuard], data: {
-      role: Role.Admin
-    }
+    // TODO esta mierda esta bien porque no les deja entrar en administracion, pero ellos (los no admins y no owners)
+    // siguen pudiendo ver que existe esa pestaña.
+    path: "administration", component: AdministrationComponent, canActivate: [AuthGuard], data: { role: [Role.Admin, Role.Owner] }
   },
   { path: "login", component: LoginComponent },
 ];

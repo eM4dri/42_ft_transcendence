@@ -1,45 +1,59 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { ChannelsCache, UsersCache } from 'src/app/cache';
+import { UsersCache } from 'src/app/cache';
 import { Channel, ChannelUsersExtended, User } from 'src/app/models';
 import { BaseComponent } from 'src/app/modules';
 import { ApiService } from 'src/app/services';
 import { DateMutations, UriConstants } from 'src/app/utils';
+import { ChannelUsersToAdmin } from '../../channel';
 
-
-export interface ChannelUsersToAdmin extends ChannelUsersExtended {
-  user?: User;
-  status?: string;
-}
 
 @Component({
-  selector: 'app-channel-management-users',
-  templateUrl: './channel-management-users.component.html',
-  styleUrls: ['./channel-management-users.component.scss']
+  selector: 'app-administration-channel-management-users',
+  templateUrl: './administration-channel-management-users.component.html',
+  styleUrls: ['./administration-channel-management-users.component.scss']
 })
-export class ChannelManagementUsersComponent extends BaseComponent<ChannelUsersToAdmin> implements OnInit, OnChanges {
+export class AdministrationChannelManagementUsersComponent extends BaseComponent<ChannelUsersToAdmin> implements OnInit, OnChanges {
   @Input() channel!: Channel;
   constructor(
     private readonly api :ApiService<ChannelUsersToAdmin>,
     private readonly cachedUsers: UsersCache,
-    private readonly cachedChannels: ChannelsCache,
     private readonly dateMutations: DateMutations
   ){
     super(api);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.myChannelUser = this.cachedChannels.getMyChannelUser(this.channel.channelId);
+  showButtonsState: { [userId: string]: boolean } = {};
+
+  setShowButtons(user: User, value : boolean) {
+    this.showButtonsState[user.userId] = value;
   }
 
-  myChannelUser: ChannelUsersExtended | undefined;
+  isShowButtons(user: User) {
+      return this.showButtonsState[user.userId];
+  }
+
   channelUsers: Map<string,ChannelUsersToAdmin> = new Map<string,ChannelUsersToAdmin>();
   checked: boolean = true;
   sidebarVisible: boolean = false;
 
   async ngOnInit(): Promise<void> {
+    await this.updateComponentForNewChannel(this.channel);
+  }
+
+  async ngOnChanges(changes: SimpleChanges) {
+    if ('channel' in changes) {
+      // Channel has changed, update the component
+      await this.updateComponentForNewChannel(changes['channel'].currentValue);
+    }
+  }
+
+  private async updateComponentForNewChannel(newChannel: Channel): Promise<void> {
+    // Fetch channel users or perform any necessary actions
     const channelUsers = (await this.searchArrAsync({
-        url: `${UriConstants.MANAGE_CHANNELS}/${this.channel.channelId}/users`,
+      url: `${UriConstants.ADMIN_MANAGE_CHANNELS}/${newChannel.channelId}/users`,
     })).response;
+    // Update the component state with the new channel users
+    this.channelUsers.clear();
     for (let u of channelUsers){
       u.user = this.cachedUsers.getUser(u.userId);
       if (u.user !== undefined) {

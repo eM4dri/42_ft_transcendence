@@ -17,6 +17,7 @@ import { ProfileImagesModule } from './profile_images/profile_images.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { GameModule } from './game/game.module';
 import { TfaModule } from './tfa/tfa.module';
+import { AdminModule } from './admin/admin.module';
 import { UserFriendsModule } from './user/friends/user.friends.module';
 import { ChallengeModule } from './challenge/challenge.module';
 
@@ -38,6 +39,7 @@ import { ChallengeModule } from './challenge/challenge.module';
     EventEmitterModule.forRoot(),
     GameModule,
     TfaModule,
+    AdminModule,
     UserFriendsModule,
     ChallengeModule
   ],

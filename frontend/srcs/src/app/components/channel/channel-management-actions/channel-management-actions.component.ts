@@ -1,6 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit, TemplateRef, inject } from '@angular/core';
-import { MenuItem } from 'primeng/api';
 import { ChannelManagementUsersComponent, ChannelUsersToAdmin } from '../channel-management-users/channel-management-users.component';
 import { BaseComponent } from 'src/app/modules';
 import { ApiService, AuthService } from 'src/app/services';
@@ -18,64 +17,7 @@ export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},Ch
     @Input() myChannelUser?: ChannelUsersExtended;
     modalReference: NgbModalRef[] = [];
 
-    items: MenuItem[]=[];
-    readonly promoteItem: MenuItem =  {
-        label: 'Promote',
-        command: () => {
-            this.patchUser('promote');
-        }
-    };
-    readonly demoteItem: MenuItem =  {
-        label: 'Demote',
-        command: () => {
-            this.patchUser('demote');
-        }
-    };
-    readonly banItem: MenuItem =  {
-        label: 'Ban',
-        command: () => {
-            this.patchUser('ban');
-        }
-    };
-    readonly unbanItem: MenuItem =  {
-        label: 'Unban',
-        command: () => {
-            this.patchUser('unban');
-        }
-    };
-    readonly unmuteItem: MenuItem =  {
-        label: 'Unmute',
-        command: () => {
-            this.patchUser('unmute');
-        }
-    };
-    readonly muteItem: MenuItem =  {
-        label: 'Mute',
-        items: [
-            {
-                label: '42 mins',
-                command: () => {
-                    this.muteUser(new Date(Date.now() +  42 * 60000));
-                }
-            },
-            {
-                label: '42 hours',
-                command: () => {
-                    this.muteUser(new Date(Date.now() +  42 * 60000 * 60));
-                }
-            },
-            {
-                label: '42 days',
-                command: () => {
-                    this.muteUser(new Date(Date.now() +  42 * 60000 * 60 * 24));
-                }
-            },
-        ]
-    };
     ngOnInit(): void {
-        this.items.push(this.userChannel.isAdmin ? this.demoteItem : this.promoteItem);
-        this.items.push(this.parent.isMuted(this.userChannel) ? this.unmuteItem : this.muteItem);
-        this.items.push(this.userChannel.isBanned ? this.unbanItem : this.banItem);
     }
 
     constructor(
@@ -102,7 +44,7 @@ export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},Ch
         const date = new Date(this.mutedUntill.year, this.mutedUntill.month - 1, this.mutedUntill.day);
         this.muteUser(new Date(date));
         this.mutedUntill = this.today;
-    }  
+    }
 
     patchUser(method: string){
         this.apiService.patchService({
@@ -139,7 +81,7 @@ export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},Ch
             },
         });
     }
- 
+
     processError(error: any){
         // console.log('ERROR!',error);
         this.alertConfiguration('ERROR', error);
@@ -148,13 +90,18 @@ export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},Ch
     }
 
     disableActions(){
-        return ( this.userChannel.userId === this.authService.getMyUserId() ||
-            (this.userChannel.leaveAt !== null && !this.userChannel.isBanned));
+        // Actions are disabled if:
+        return (
+            // 1. Target user is myself
+            this.userChannel.userId === this.authService.getMyUserId()
+            // 2. Target user has left at somepoint and is not banned
+        ||  (this.userChannel.leaveAt !== null && !this.userChannel.isBanned))
+            // 3. Target user is an Owner
+        ||  (this.userChannel.isOwner);
     }
 
     isMuted(channelUser: ChannelUsersToAdmin): boolean{
         return this.parent.isMuted(channelUser);
     }
-
 
 }

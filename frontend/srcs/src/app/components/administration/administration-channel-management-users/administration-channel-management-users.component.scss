@@ -1,0 +1,15 @@
+.channelUser-row  {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 40rem;
+}
+
+.channelUser-row>div{
+    gap:10px;
+}
+
+.tag-username-pair {
+    display: flex;
+    align-items: center;
+}

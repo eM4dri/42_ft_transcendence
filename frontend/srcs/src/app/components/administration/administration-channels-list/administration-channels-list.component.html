@@ -1,0 +1,23 @@
+
+<div class="sidebar">
+    <div class="chat-input">
+        <input
+            placeholder="Search"
+            type="text"
+            [(ngModel)]="channelSearchInput"
+            (keyup)="filterChannels()"
+        />
+    </div>
+    <div class="chat-list">
+        @for (channel of filteredChannels; track channel.channelName) {
+            <div class="channel-info" (click)="channelClicked(channel)">
+                <app-channel-avatar
+                    [channel]="channel"
+                ></app-channel-avatar>
+                <p class="channelname">
+                    {{ channel.channelName }}
+                </p>
+            </div>
+        }
+    </div>
+</div>

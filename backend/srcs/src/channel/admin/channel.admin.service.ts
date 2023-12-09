@@ -11,13 +11,69 @@ export enum ChannelRol {
     OWNER,
 }
 
+// CYAB NORMA : ADMIN ARG[0], USER ARG[1]
+// (En el controller se hace igual)
 @Injectable()
 export class ChannelAdminService {
+
     constructor(
-        private prisma: PrismaService, 
+        private prisma: PrismaService,
         private eventEmitter: EventEmitter2
     ){
     }
+
+    /*
+     * LA RAZON POR LA QUE ESTO ES TAN RARO:
+     *
+     * Executor: userId
+     * Target: channelUserId
+     *
+     * ===> El userId del executor, de forma directa, no nos sirve de nada.
+     * ===> Se necesita conseguir el channelUserId del Executor para comprobar permisos.
+     */
+
+    private async _getChannelIdFromChannelUserId(channelUserId: string) {
+        const channelUser: ChannelUser = (await this.prisma.channelUser.findUniqueOrThrow({
+            where: { channelUserId: channelUserId, }
+        }));
+        return channelUser.channelId;
+    }
+
+    private async _getChannelUserIdFromChannelIdAndUserId(userId: string, channelId: string) {
+        const channelUser: ChannelUser = await this.prisma.channelUser.findFirstOrThrow({
+            where: {
+                channelId: channelId,
+                userId: userId,
+                leaveAt: null
+            }
+        });
+        return channelUser.channelUserId;
+    }
+
+    private async _userIsChannelRole(userId: string, anyChannelUserId: string, role: ChannelRol) {
+        const channelId : string = await this._getChannelIdFromChannelUserId(anyChannelUserId);
+        const channelUserId : string = await this._getChannelUserIdFromChannelIdAndUserId(userId, channelId);
+        return this._channelUserIsChannelRole(channelUserId, role);
+    }
+
+    private async _getChannelRoleFromChannelUserId(channelUserId: string) {
+        const channelUser : ChannelUser = (await this.prisma.channelUser.findUniqueOrThrow({
+            where: { channelUserId: channelUserId, }
+        }));
+        if (channelUser.isOwner) {
+            return ChannelRol.OWNER;
+        } else if (channelUser.isAdmin) {
+            return ChannelRol.ADMIN;
+        }
+        return ChannelRol.USER;
+    }
+
+    private async _channelUserIsChannelRole(channelUserId: string, role: ChannelRol) {
+        //console.log("me piden el role", role);
+        //console.log("ahh pero usted posee el rol ", await this._getChannelRoleFromChannelUserId(channelUserId));
+        return await this._getChannelRoleFromChannelUserId(channelUserId) === role;
+    }
+
     async getChannelUsers(channelId: string) {
         try {
             return await this.prisma.channelUser.findMany({
@@ -28,13 +84,12 @@ export class ChannelAdminService {
         }
     }
 
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *                 Admin/Owner interface                     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    async demoteChannelUser(channelUserId: string, channelAdmin: string) {
+    async demoteChannelUser(channelUserId: string) {
         try {
-            //! Web owners & moderators can demote ann promote users
-            if (await this._havePermisionRightsOverChannelUser(channelAdmin, channelUserId) !== ChannelRol.OWNER) {
-                throw new ForbiddenException({ response: 'Forbidden'});
-            }
             const channelUser = await this.prisma.channelUser.update({
                 where: { channelUserId: channelUserId, },
                 data: { isAdmin: false }
@@ -45,12 +100,8 @@ export class ChannelAdminService {
         }
     }
 
-    async promoteChannelUser(channelUserId: string, channelAdmin: string) {
+    async promoteChannelUser(channelUserId: string) {
         try {
-             //! Web owners & moderators can demote ann promote users
-            if (await this._havePermisionRightsOverChannelUser(channelAdmin, channelUserId) !== ChannelRol.OWNER) {
-                throw new ForbiddenException({ response: 'Forbidden'});
-            }
             const channelUser = await this.prisma.channelUser.update({
                 where: { channelUserId: channelUserId, },
                 data: { isAdmin: true }
@@ -61,14 +112,11 @@ export class ChannelAdminService {
         }
     }
 
-    async banChannelUser(channelUserId: string, channelAdmin: string) {
+    async banChannelUser(channelUserId: string) {
         try {
-            if (await this._havePermisionRightsOverChannelUser(channelAdmin, channelUserId) === ChannelRol.USER) {
-                throw new ForbiddenException({ response: 'Forbidden'});
-            }
-            const channelUser = await this.prisma.channelUser.update({
+            const channelUser : ChannelUser = await this.prisma.channelUser.update({
                 where: { channelUserId: channelUserId, },
-                data: { 
+                data: {
                         isBanned: true,
                         leaveAt: new Date(Date.now()),
                     }
@@ -80,11 +128,8 @@ export class ChannelAdminService {
         }
     }
 
-    async unBanChannelUser(channelUserId: string, channelAdmin: string) {
+    async unBanChannelUser(channelUserId: string) {
         try {
-            if (await this._havePermisionRightsOverChannelUser(channelAdmin, channelUserId) === ChannelRol.USER) {
-                throw new ForbiddenException({ response: 'Forbidden'});
-            }
             const channelUser = await this.prisma.channelUser.update({
                 where: { channelUserId: channelUserId, },
                 data: { isBanned: false }
@@ -95,11 +140,8 @@ export class ChannelAdminService {
         }
     }
 
-    async muteChannelUser(dto: MuteChannelUserDto, channelAdmin: string) {
+    async muteChannelUser(dto: MuteChannelUserDto) {
         try {
-            if (await this._havePermisionRightsOverChannelUser(channelAdmin,  dto.channelUserId) === ChannelRol.USER) {
-                throw new ForbiddenException({ response: 'Forbidden'});
-            }
             const channelUser = await this.prisma.channelUser.update({
                 where: { channelUserId: dto.channelUserId, },
                 data: { mutedUntill: dto.mutedUntill }
@@ -111,11 +153,8 @@ export class ChannelAdminService {
         }
     }
 
-    async unMuteChannelUser(channelUserId: string, channelAdmin: string) {
+    async unMuteChannelUser(channelUserId: string) {
         try {
-            if (await this._havePermisionRightsOverChannelUser(channelAdmin, channelUserId) === ChannelRol.USER) {
-                throw new ForbiddenException({ response: 'Forbidden'});
-            }
             const channelUser = await this.prisma.channelUser.update({
                 where: { channelUserId: channelUserId, },
                 data: { mutedUntill: null }
@@ -127,26 +166,131 @@ export class ChannelAdminService {
         }
     }
 
-    async kickChannelUser(channelUserId: string, channelAdmin: string) {
+    async kickChannelUser(channelUserId: string) {
         try {
-            if (await this._havePermisionRightsOverChannelUser(channelAdmin, channelUserId) === ChannelRol.USER) {
-                throw new ForbiddenException({ response: 'Forbidden'});
-            }
             const channelUser = await this.prisma.channelUser.update({
                             where: { channelUserId: channelUserId, },
                             data: { leaveAt: new Date( Date.now() ) }
                         });
-                        this.reOwningChannel(channelUser.channelId);
+            this.reOwningChannel(channelUser.channelId);
             return channelUser;
         } catch (error) {
             throw (error);
         }
     }
 
-    async setChannelPass(dto: CreateChannelPassDto, channelOwner: string){
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *             Protected interface                           *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    // ANY ACTION CAN ONLY BE DONE OVER Users, Except Demoting, which is ONLY
+    // done over Admins.
+
+    // Only Owners.
+    async protectedDemoteChannelUser(executorUserId: string, targetChannelUserId: string) {
         try {
-            if (await this._isChannelOwner(channelOwner, dto.channelId) === ChannelRol.USER) {
+            if (await this._userIsChannelRole(executorUserId, targetChannelUserId, ChannelRol.OWNER)
+                && await this._channelUserIsChannelRole(targetChannelUserId, ChannelRol.ADMIN))
+            {
+                return await this.demoteChannelUser(targetChannelUserId);
+            } else {
                 throw new ForbiddenException({ response: 'Forbidden'});
+            }
+        } catch (error) {
+            throw (error);
+        }
+    }
+
+    async protectedPromoteChannelUser(executorUserId: string, targetChannelUserId: string) {
+        try {
+            if (await this._userIsChannelRole(executorUserId, targetChannelUserId, ChannelRol.OWNER)
+                && await this._channelUserIsChannelRole(targetChannelUserId, ChannelRol.USER))
+            {
+                return await this.promoteChannelUser(targetChannelUserId);
+            } else {
+                throw new ForbiddenException({ response: 'Forbidden'});
+            }
+        } catch (error) {
+            throw (error);
+        }
+    }
+
+    async protectedBanChannelUser(executorUserId: string, targetChannelUserId: string) {
+        try {
+            if ((!await this._userIsChannelRole(executorUserId, targetChannelUserId, ChannelRol.USER))
+                && await this._channelUserIsChannelRole(targetChannelUserId, ChannelRol.USER))
+            {
+                return await this.banChannelUser(targetChannelUserId);
+            } else {
+                throw new ForbiddenException({ response: 'Forbidden'});
+            }
+        } catch (error) {
+            throw (error);
+        }
+    }
+
+    async protectedUnBanChannelUser(executorUserId: string, targetChannelUserId: string) {
+        try {
+            if ((!await this._userIsChannelRole(executorUserId, targetChannelUserId, ChannelRol.USER))
+                && await this._channelUserIsChannelRole(targetChannelUserId, ChannelRol.USER))
+            {
+                return await this.unBanChannelUser(targetChannelUserId);
+            } else {
+                throw new ForbiddenException({ response: 'Forbidden'});
+            }
+        } catch (error) {
+            throw (error);
+        }
+    }
+
+    async protectedMuteChannelUser(dto: MuteChannelUserDto, executorUserId: string) {
+        try {
+            if ((!await this._userIsChannelRole(executorUserId, dto.channelUserId, ChannelRol.USER))
+                && await this._channelUserIsChannelRole(dto.channelUserId, ChannelRol.USER))
+            {
+                return await this.muteChannelUser(dto);
+            } else {
+                throw new ForbiddenException({ response: 'Forbidden'});
+            }
+        } catch (error) {
+            throw (error);
+        }
+    }
+
+    async protectedUnMuteChannelUser(executorUserId: string, targetChannelUserId: string) {
+        try {
+            if ((! await this._userIsChannelRole(executorUserId, targetChannelUserId, ChannelRol.USER))
+                && await this._channelUserIsChannelRole(targetChannelUserId, ChannelRol.USER))
+            {
+                return await this.unMuteChannelUser(targetChannelUserId);
+            } else {
+                throw new ForbiddenException({ response: 'Forbidden'});
+            }
+        } catch (error) {
+            throw (error);
+        }
+    }
+
+    async protectedKickChannelUser(executorUserId: string, targetChannelUserId: string) {
+        try {
+            if ((!await this._userIsChannelRole(executorUserId, targetChannelUserId, ChannelRol.USER))
+                && await this._channelUserIsChannelRole(targetChannelUserId, ChannelRol.USER))
+            {
+                return await this.kickChannelUser(targetChannelUserId);
+            } else {
+                throw new ForbiddenException({ response: 'Forbidden'});
+            }
+        } catch (error) {
+            throw (error);
+        }
+    }
+
+    async setChannelPass(dto: CreateChannelPassDto, executorUserId: string) {
+        try {
+            const channelUserId : string = await this._getChannelUserIdFromChannelIdAndUserId(executorUserId, dto.channelId);
+            if (! await this._channelUserIsChannelRole(channelUserId, ChannelRol.OWNER)) {
+                throw new ForbiddenException();
             }
             const hash: string | null =  dto.password ? await argon.hash(dto.password) : null;
             const channel = await this.prisma.channel.update({
@@ -159,55 +303,18 @@ export class ChannelAdminService {
         }
     }
 
-    private async _havePermisionRightsOverChannelUser(userId: string, channelUserId: string) {        
-        const channelUser: ChannelUser = (await this.prisma.channelUser.findUniqueOrThrow({
-            where: { channelUserId: channelUserId, }
-        }));
-        const possibleAdmin: ChannelUser = await this.prisma.channelUser.findFirstOrThrow({
-            where: {
-                channelId: channelUser.channelId,
-                userId: userId,
-                leaveAt: null
-            }
-        });
-        // It's a made up role because ADMINS can do one thing and OWNERS these thing and one more but depens on being in a superior hierarchy
-        // let's say that is the role of the issuer(posible admin) compared with the receptor 
-        if ( !channelUser.isOwner && possibleAdmin.isOwner ){
-            return ChannelRol.OWNER;
-        } else if ( !channelUser.isOwner && !channelUser.isAdmin && ( possibleAdmin.isAdmin || possibleAdmin.isOwner )){
-            return ChannelRol.ADMIN;
-        } else {
-            return ChannelRol.USER
-        }
-    }
-
-    private async _isChannelOwner(userId: string, channelId: string) {
-        const possibleAdmin: ChannelUser = await this.prisma.channelUser.findFirstOrThrow({
-            where: {
-                channelId: channelId,
-                userId: userId,
-                leaveAt: null
-            }
-        });
-        if ( possibleAdmin.isOwner ){
-            return ChannelRol.OWNER;
-        } else {
-            return ChannelRol.USER
-        }
-    }
-
     async reOwningChannel(channelId: string) {
         const owner: ChannelUser = await this.prisma.channelUser.findFirst({
-            where: { 
-                channelId: channelId, 
+            where: {
+                channelId: channelId,
                 leaveAt: null,
                 isOwner: true,
             }
         });
         if (owner === undefined) {
             let newOwner: ChannelUser = await this.prisma.channelUser.findFirst({
-                where: { 
-                    channelId: channelId, 
+                where: {
+                    channelId: channelId,
                     leaveAt: null,
                     isAdmin: true,
                 },
@@ -217,8 +324,8 @@ export class ChannelAdminService {
             });
             if (newOwner === undefined) {
                 newOwner = await this.prisma.channelUser.findFirst({
-                    where: { 
-                        channelId: channelId, 
+                    where: {
+                        channelId: channelId,
                         leaveAt: null,
                     },
                     orderBy: {
@@ -228,12 +335,12 @@ export class ChannelAdminService {
             }
             if (newOwner !== undefined) {
                 const newOwnerUpdated = await this.prisma.channelUser.update({
-                    where: { channelUserId: newOwner.channelUserId }, 
+                    where: { channelUserId: newOwner.channelUserId },
                     data: { isOwner: true }
                 });
                 return newOwner;
             }
-        }   
+        }
     }
-    
+
 }

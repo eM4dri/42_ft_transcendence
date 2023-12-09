@@ -4,21 +4,26 @@
             <app-chat-info
                 [user]="u.value.user"
             ></app-chat-info>
-            <ng-container *ngIf="u.value.isOwner; then isOwner; else notOwner"   >
-            </ng-container>
-            <ng-template #isOwner>
-                <p-tag [value]="u.value.status" [style]="{ 'background': 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}"></p-tag>
-            </ng-template>
-            <ng-template #notOwner>
-                <ng-container *ngIf="u.value.status==='MUTED'; then isMuted; else notMuted"   >
-                </ng-container>
-                <ng-template #isMuted>
-                    <p-tag [value]="u.value.status" [pTooltip]="getTimeMuted(u.value)" [severity]="getSeverity(u.value)"></p-tag>
-                </ng-template>
-                <ng-template #notMuted>
-                    <p-tag [value]="u.value.status" [severity]="getSeverity(u.value)"></p-tag>
-                </ng-template>
-            </ng-template>
+            @if (u.value.isOwner) {
+                <p-tag [value]="u.value.status"
+                       [style]="{
+                            'background': 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'
+                        }"
+                ></p-tag>
+            } @else {
+                @if (u.value.status==='MUTED') {
+                    <p-tag
+                        [value]="u.value.status"
+                        [pTooltip]="getTimeMuted(u.value)"
+                        [severity]="getSeverity(u.value)"
+                    ></p-tag>
+                } @else {
+                    <p-tag
+                        [value]="u.value.status"
+                        [severity]="getSeverity(u.value)"
+                    ></p-tag>
+                }
+            }
             <app-channel-management-actions
                 [userChannel]="u.value"
                 [myChannelUser]="myChannelUser"

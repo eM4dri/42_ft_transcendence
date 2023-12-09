@@ -42,7 +42,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         private readonly blockService: BlockService,
         private readonly userfriendsService: UserFriendsService,
         private readonly userService: UserService,
-        private readonly eventEmitter: EventEmitter2   
+        private readonly eventEmitter: EventEmitter2
     ){}
     @WebSocketServer( )
     server: Server;
@@ -223,8 +223,10 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     async channelUserLeaves(channelUser: ChannelUser){
         const socketId: string = this.socketsIdMap.get(channelUser.userId);
         const socket: Socket = this.socketsMap.get(channelUser.userId);
-        socket.leave(`${channelUser.channelId}_room`);
-        this.server.to(socketId).emit('channel_user_leaves', channelUser.channelId);
+        if (socket) {
+            socket.leave(`${channelUser.channelId}_room`);
+            this.server.to(socketId).emit('channel_user_leaves', channelUser.channelId);
+        }
     }
 
     private async _loadMyChannelUser(socketId: string, channelId: string, userId: string,){

@@ -5,7 +5,6 @@ import { JwtGuard } from 'src/auth/guard';
 import { MuteChannelUserDto, CreateChannelPassDto } from '../dto';
 import { ChannelAdminService } from './channel.admin.service';
 
-
 @Controller('channel/admin')
 @ApiTags('channel/admin')
 @ApiBearerAuth()
@@ -25,78 +24,78 @@ export class ChannelAdminController {
 
     @Patch('/demote/:uuid')
     async demote(
-      @GetUser('id') channelAdmin: string,
-      @Param('uuid', new ParseUUIDPipe()) channelUserId: string,
+      @GetUser('id') executorUserId: string,
+      @Param('uuid', new ParseUUIDPipe()) targetChannnelUserId: string,
     ) {
-      return { response: await this.channelAdminService.demoteChannelUser(
-        channelUserId,
-        channelAdmin,
-      )};
+      return { response: await this.channelAdminService.protectedDemoteChannelUser(
+        executorUserId,
+        targetChannnelUserId,
+        )};
     }
 
     @Patch('/promote/:uuid')
     async promote(
-      @GetUser('id') channelAdmin: string,
-      @Param('uuid', new ParseUUIDPipe()) channelUserId: string,
+      @GetUser('id') executorUserId: string,
+      @Param('uuid', new ParseUUIDPipe()) targetChannnelUserId: string,
     ) {
-      return { response: await this.channelAdminService.promoteChannelUser(
-        channelUserId,
-        channelAdmin,
+      return { response: await this.channelAdminService.protectedPromoteChannelUser(
+        executorUserId,
+        targetChannnelUserId,
       )};
     }
 
     @Patch('/ban/:uuid')
     async ban(
-      @GetUser('id') channelAdmin: string,
-      @Param('uuid', new ParseUUIDPipe()) channelUserId: string,
+      @GetUser('id') executorUserId: string,
+      @Param('uuid', new ParseUUIDPipe()) targetChannnelUserId: string,
     ) {
-      return { response: await this.channelAdminService.banChannelUser(
-        channelUserId,
-        channelAdmin,
-      )};
+      return { response: await this.channelAdminService.protectedBanChannelUser(
+        executorUserId,
+        targetChannnelUserId,
+        )};
     }
 
     @Patch('/unban/:uuid')
     async unBan(
-      @GetUser('id') channelAdmin: string,
-      @Param('uuid', new ParseUUIDPipe()) channelUserId: string,
+      @GetUser('id') executorUserId: string,
+      @Param('uuid', new ParseUUIDPipe()) targetChannnelUserId: string,
     ) {
-      return { response: await this.channelAdminService.unBanChannelUser(
-        channelUserId,
-        channelAdmin,
+      return { response: await this.channelAdminService.protectedUnBanChannelUser(
+        executorUserId,
+        targetChannnelUserId,
       )};
     }
 
     @Patch('/mute')
     async mute(
-      @GetUser('id') channelAdmin: string,
+      @GetUser('id') executorUserId: string,
       @Body() dto: MuteChannelUserDto
     ) {
-      return { response : await this.channelAdminService.muteChannelUser(
+      return { response : await this.channelAdminService.protectedMuteChannelUser(
         dto,
-        channelAdmin,
+        executorUserId,
       )};
     }
 
     @Patch('/unmute/:uuid')
     async unMute(
-      @GetUser('id') channelAdmin: string,
-      @Param('uuid', new ParseUUIDPipe()) channelUserId: string,
+      @GetUser('id') executorUserId: string,
+      @Param('uuid', new ParseUUIDPipe()) targetChannnelUserId: string,
     ) {
-      return { response: await this.channelAdminService.unMuteChannelUser(
-        channelUserId,
-        channelAdmin,
-      )};
+      return { response: await this.channelAdminService.protectedUnMuteChannelUser(
+        executorUserId,
+        targetChannnelUserId,
+        )};
     }
 
     @Patch('/kick/:uuid')
     async kick(
-      @GetUser('id') channelAdmin: string,
-      @Param('uuid', new ParseUUIDPipe()) channelUserId: string,
+      @GetUser('id') executorUserId: string,
+      @Param('uuid', new ParseUUIDPipe()) targetChannnelUserId: string,
     ) {
-      return { response: await this.channelAdminService.kickChannelUser(
-        channelUserId,
-        channelAdmin,
+      return { response: await this.channelAdminService.protectedKickChannelUser(
+        executorUserId,
+        targetChannnelUserId,
       )};
     }
 

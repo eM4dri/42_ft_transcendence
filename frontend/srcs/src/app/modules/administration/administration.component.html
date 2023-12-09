@@ -1,1 +1,37 @@
-<p>administration works!</p>
+<div class="admin-panel">
+  <!-- Barra lateral con la lista de usuarios disponibles -->
+  <div class="admin-panel-sidebar">
+      <nav class="admin-panel-nav-tabs">
+        <a class="admin-panel-nav-tab"
+            [class.active]="isUsersTabSeleted()"
+            (click)="showUsersTab()">
+            Users
+        </a>
+        <a class="admin-panel-nav-tab"
+            [class.active]="!isUsersTabSeleted()"
+            (click)="showChannelsTab()">
+            Channels
+        </a>
+      </nav>
+      <!-- channelTabSelected -->
+      @if (selectedTab === "users" ) {
+          <administration-users-list
+            [currentUser]="currentUser"
+          ></administration-users-list>
+      } @else {
+          <administration-channels-list
+            [currentChannel]="currentChannel"
+          ></administration-channels-list>
+      }
+  </div>
+  <div class="admin-window">
+    @switch (ManageOption) {
+        @case ("NONE") { }
+        @case ("MANAGE_CHANNEL") {
+            <app-administration-channel-management-users
+                [channel]="currentChannel"
+            ></app-administration-channel-management-users>
+        }
+    }
+  </div>
+</div>

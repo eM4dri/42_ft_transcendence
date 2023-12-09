@@ -1,0 +1,50 @@
+
+<div class="sidebar">
+    <div class="user-search-input">
+        <input
+            placeholder="Search"
+            type="text"
+            [(ngModel)]="userSearchInput"
+            (keyup)="filterUsersIfNeeded()"
+        />
+    </div>
+    <div class="user-list">
+        @for (user of filteredUsers; track user.isBanned || user.role) {
+            <div class="channelUser-row"
+                (mouseover)="setShowButtons(user,true)"
+                (mouseleave)="setShowButtons(user,false)"
+            >
+            <div class="tag-username-pair" >
+            @if (user.isBanned) {
+                <p-tag
+                [value]="'BANNED'"
+                [style]="{
+                    'display': 'flex',
+                    'background': 'linear-gradient(-225deg, #ff5050 0%, #ff0000 48%, #cc0000 100%)',
+                    'justify-content' : 'center'
+                }"
+                ></p-tag>
+            } @else {
+                <p-tag
+                [value]="user.role"
+                [style]="{
+                    'display': 'flex',
+                    'background': getBackgroundColor(user.role),
+                    'align-items' : 'center',
+                    'justify-content' : 'center'
+                }"
+                ></p-tag>
+            }
+                <app-chat-info
+                    [user]="user"
+                ></app-chat-info>
+            </div>
+            @if (isShowButtons(user)) {
+                <app-administration-users-management-actions
+                    [userExtended]="user"
+                ></app-administration-users-management-actions>
+            }
+        </div>
+        }
+    </div>
+</div>

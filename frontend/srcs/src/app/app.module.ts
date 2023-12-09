@@ -3,7 +3,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AdministrationComponent, ChallengeModule, ChatComponent, FriendListComponent, GameComponent, HomeComponent, LoginModule, NavbarComponent, ProfileComponent, SharedAlertModule, SharedAvatarModule, SpectateModule } from './modules';
+import { AdministrationComponent,
+         ChatComponent,
+         FriendListComponent,
+         GameComponent,
+         HistoryComponent,
+         HomeComponent,
+         LoginModule,
+         NavbarComponent,
+         ProfileComponent,
+         SharedAlertModule,
+         SharedAvatarModule,
+         SpectateModule,
+         ChallengeModule } from './modules';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
@@ -11,7 +23,27 @@ import { environment } from 'src/environments/environment';
 import { ApiInterceptor, ErrorApiInterceptor } from './core';
 import { MySocket } from './services/web-socket.service';
 import { ChannelsCache, ChatsCache, UsersCache } from './cache';
-import { AvatarComponent, BlockSidebarComponent, ChannelAvatarComponent, ChannelHeaderComponent, ChannelInfoComponent, ChannelManagementActionsComponent, ChannelManagementComponent, ChannelManagementUsersComponent, ChannelSidebarComponent, ChannelWindowComponent, ChannelWindowMessageComponent, ChatInfoComponent, ChatSidebarComponent, ChatWindowComponent, ChatWindowMessageComponent, FriendSidebarComponent } from './components';
+import { AvatarComponent,
+         BlockSidebarComponent,
+         ChannelAvatarComponent,
+         ChannelHeaderComponent,
+         ChannelInfoComponent,
+         ChannelManagementActionsComponent,
+         ChannelManagementComponent,
+         ChannelManagementUsersComponent,
+         ChannelSidebarComponent,
+         ChannelWindowComponent,
+         ChannelWindowMessageComponent,
+         ChatInfoComponent,
+         ChatSidebarComponent,
+         ChatWindowComponent,
+         ChatWindowMessageComponent,
+         FriendSidebarComponent,
+         AdminstrationUsersListComponent,
+         AdminstrationChannelsComponent,
+         AdministrationChannelManagementUsersComponent,
+         AdministrationChannelManagementActionsComponent,
+         AdministrationUsersManagementActionsComponent } from './components';
 import { DateMutations } from './utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TagModule } from 'primeng/tag';
@@ -27,7 +59,6 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { ChannelAvatarEditorComponent } from './components/avatar/channel-avatar-editor/channel-avatar-editor.component';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 //import { PongTVComponent } from './modules/pongtv/pongtv.component';
-
 
 const config: SocketIoConfig = { url: environment.apiUrl };
 
@@ -60,6 +91,11 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     ChannelManagementActionsComponent,
     ChannelHeaderComponent,
     AdministrationComponent,
+    AdminstrationUsersListComponent,
+    AdminstrationChannelsComponent,
+    AdministrationChannelManagementUsersComponent,
+    AdministrationChannelManagementActionsComponent,
+    AdministrationUsersManagementActionsComponent,
     FriendListComponent,
     ChatSidebarComponent,
     FriendSidebarComponent,

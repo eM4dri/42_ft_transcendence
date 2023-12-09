@@ -19,8 +19,8 @@ export class ChannelService {
     }
 
     //! Just for website owner &  website moderators
-    getAllChannels(){
-        return this.prisma.channel.findMany();
+    async getAllChannels(){
+        return await this.prisma.channel.findMany();
     }
 
     async getChannelByChannelId(channelId: string){

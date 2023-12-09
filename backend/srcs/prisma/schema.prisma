@@ -35,7 +35,6 @@ model User {
   // Esto no son campos, son relaciones que necesita el prisma para poderse montar su visualizador.
   // De verdad, no imagiinarse esto como un campo que tiene contenido, sino como una "puerta" que te lleva
   // a la tabla BannedList.
-  banning_users BannedList[] @relation("banning_user")
   banned_user BannedList[] @relation("banned_user")
   blocker BlockedList[] @relation("blocker")
   blockedUsers BlockedList[] @relation("blocked")
@@ -56,14 +55,12 @@ enum Role {
   OWNER
 }
 
+//
 model BannedList {
   banListId String @id @default(uuid())
 
-  banning_user User @relation("banning_user", fields:[userId_banning], references: [userId], onDelete: Cascade)
-  userId_banning String
-
-  banned_user User @relation("banned_user", fields:[userId_banned], references: [userId], onDelete: Cascade)
-  userId_banned String
+  banned_user User @relation("banned_user", fields:[userId], references: [userId], onDelete: Cascade)
+  userId String @unique
 
   @@map("banned_list")
 }

@@ -1,0 +1,44 @@
+<div class="icon-actions">
+    @if(!disableActions()) {
+        @if (userIsAdmin() || userIsOwner()) {
+            <i class="bi bi-person-down"
+                pTooltip="demote"
+                tooltipPosition="left"
+                placeholder="Left"
+                (click)="patchUser('demote')"
+            ></i>
+        }
+        @if (!userIsOwner()) {
+            <i class="bi bi-person-up"
+                pTooltip="promote"
+                tooltipPosition="left"
+                placeholder="Left"
+                (click)="patchUser('promote')"
+            ></i>
+        }
+        @if (!userIsAdmin() && !userIsOwner()) {
+            @if (userExtended.isBanned){
+                <i class="bi bi-person-check"
+                    pTooltip="unban"
+                    tooltipPosition="left"
+                    placeholder="Left"
+                    (click)="patchUser('unban')"
+                ></i>
+            } @else {
+                <i class="bi bi-person-slash"
+                    pTooltip="ban"
+                    tooltipPosition="left"
+                    placeholder="Left"
+                    (click)="patchUser('ban')"
+                ></i>
+            }
+        }
+    }
+</div>
+<app-alert
+    [open]="alertConfig.open"
+    [singleMessage]="alertConfig.singleMessage"
+    [severity]="alertConfig.severity"
+    (eventCloseToast)="closeAlert()"
+    >
+</app-alert>

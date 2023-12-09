@@ -15,28 +15,29 @@
 </ng-template>
 
 <div class="icon-actions">
-    @if(myChannelUser !== undefined || !userChannel.isOwner) { 
-        @if (myChannelUser?.isOwner) {
+    @if(myChannelUser !== undefined && !userChannel.isOwner) {
+        @if (myChannelUser.isOwner) {
             @if (userChannel.isAdmin) {
-                <i class="bi bi-person-down" pTooltip="demote" tooltipPosition="left" placeholder="Left"></i>
+                <i class="bi bi-person-down" pTooltip="demote" tooltipPosition="left" placeholder="Left" (click)="patchUser('demote')"></i>
             } @else {
-                <i class="bi bi-person-up" pTooltip="promote" tooltipPosition="left" placeholder="Left"></i>
+                <i class="bi bi-person-up" pTooltip="promote" tooltipPosition="left" placeholder="Left" (click)="patchUser('promote')"></i>
             }
         }
-        @if (myChannelUser?.isOwner || myChannelUser?.isAdmin) {
+        <!-- solo owners pueden ver tema baneos de canal -->
+        @if (myChannelUser.isOwner || myChannelUser.isAdmin) {
             @if (!userChannel.isAdmin && !userChannel.isOwner) {
                 @if (userChannel.isBanned){
-                    <i class="bi bi-person-check" pTooltip="unban" tooltipPosition="left" placeholder="Left"></i>
+                    <i class="bi bi-person-check" pTooltip="unban" tooltipPosition="left" placeholder="Left" (click)="patchUser('unban')"></i>
                 } @else {
-                    <i class="bi bi-person-slash" pTooltip="ban" tooltipPosition="left" placeholder="Left"></i>
+                    <i class="bi bi-person-slash" pTooltip="ban" tooltipPosition="left" placeholder="Left" (click)="patchUser('ban')"></i>
                 }
                 @if (isMuted(userChannel)) {
-                    <i class="bi bi-mic" pTooltip="unmute" tooltipPosition="left" placeholder="Left"></i>
+                    <i class="bi bi-mic" pTooltip="unmute" tooltipPosition="left" placeholder="Left" (click)="patchUser('unmute')"></i>
                 } @else {
                     <i class="bi bi-mic-mute" pTooltip="mute" tooltipPosition="left" placeholder="Left" (click)="open(content)"></i>
                 }
                 @if (userChannel.leaveAt !== null) {
-                    <i class="bi bi-person-x" pTooltip="kick" tooltipPosition="left" placeholder="Left"></i>
+                    <i class="bi bi-person-x" pTooltip="kick" tooltipPosition="left" placeholder="Left" (click)="patchUser('kick')"></i>
                 }
             }
         }

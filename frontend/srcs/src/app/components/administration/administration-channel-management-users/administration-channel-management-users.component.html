@@ -1,0 +1,40 @@
+<div *ngIf="channelUsers.size">
+    <div *ngFor="let u of channelUsers | keyvalue" >
+        <div *ngIf="u.value.user"
+              class="channelUser-row"
+              (mouseover)="setShowButtons(u.value.user,true)"
+              (mouseleave)="setShowButtons(u.value.user,false)"
+        >
+            <div class="tag-username-pair" >
+                @if (u.value.isOwner) {
+                    <p-tag [value]="u.value.status"
+                        [style]="{
+                                'background': 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'
+                            }"
+                    ></p-tag>
+                } @else {
+                    @if (u.value.status==='MUTED') {
+                        <p-tag
+                            [value]="u.value.status"
+                            [pTooltip]="getTimeMuted(u.value)"
+                            [severity]="getSeverity(u.value)"
+                        ></p-tag>
+                    } @else {
+                        <p-tag
+                            [value]="u.value.status"
+                            [severity]="getSeverity(u.value)"
+                        ></p-tag>
+                    }
+                }
+                <app-chat-info
+                    [user]="u.value.user"
+                ></app-chat-info>
+            </div>
+            @if (isShowButtons(u.value.user)) {
+                <app-administration-channel-management-actions
+                    [userChannel]="u.value"
+                ></app-administration-channel-management-actions>
+            }
+        </div>
+    </div>
+</div>

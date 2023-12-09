@@ -18,9 +18,9 @@ export class ChannelController {
     @ApiOperation({
       description: 'Get all channels',
     })
-    getAllChannels(@GetUser() user: User) {
+    async getAllChannels(@GetUser() user: User) {
         //!validate user is website moderator or website owner
-        return this.channelService.getAllChannels();
+        return { response : await this.channelService.getAllChannels() } ;
     }
 
     @Get('/joined')
