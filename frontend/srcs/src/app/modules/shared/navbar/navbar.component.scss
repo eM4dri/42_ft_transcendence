@@ -98,7 +98,7 @@
   }
   
   /* Small screens */
-  @media only screen and (max-width: 599px) {
+  @media only screen and (max-width: 809px) {
     .site-navbar {
       bottom: 0;
       width: 100vw;
@@ -122,8 +122,8 @@
   
   }
   
-  /* Large screens */
-  @media only screen and (min-width: 600px) {
+  /* Medium screens */
+  @media only screen and (min-width: 810px) and (max-width:2000px) {
     .site-navbar {
       top: 0;
       width: 5rem;
@@ -146,6 +146,33 @@
     .site-navbar:hover .logo-text
     {
       left: 0px;
+    }
+  }
+  
+  /* Large screens */
+  @media only screen and (min-width: 2000px) {
+    .site-navbar {
+      top: 0;
+      width: 16rem;
+      height: 100vh;
+    }
+  
+    .site-navbar:hover .link-text {
+      display: inline;
+    }
+  
+    .site-navbar:hover .logo svg
+    {
+      margin-left: 11rem;
+    }
+  
+    .site-navbar:hover .logo-text
+    {
+      left: 0px;
+    }
+    
+    .link-text {
+      display: unset;
     }
   }
     

@@ -4,11 +4,13 @@ import {
   IsEmail,
   IsOptional,
   IsString,
+  Length
 } from 'class-validator';
 
 export class PatchUserDto {
   @IsString()
   @IsOptional()
+  @Length(1, 10)
   @ApiProperty({
     name: 'username',
     type: String,
@@ -18,6 +20,7 @@ export class PatchUserDto {
 
   @IsEmail()
   @IsOptional()
+  @Length(1, 30)
   @ApiProperty({
     name: 'email',
     type: String,
@@ -27,6 +30,7 @@ export class PatchUserDto {
 
   @IsString()
   @IsOptional()
+  @Length(1, 15)
   @ApiProperty({
     name: 'firstName',
     type: String,
@@ -36,6 +40,7 @@ export class PatchUserDto {
 
   @IsString()
   @IsOptional()
+  @Length(1, 15)
   @ApiProperty({
     name: 'lastName',
     type: String,

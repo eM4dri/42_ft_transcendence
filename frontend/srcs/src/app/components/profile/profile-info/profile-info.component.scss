@@ -73,9 +73,9 @@
 
 
   .editing-avatar {
-    grid-column: 10;
-    top: 5%;
-    left: 7%;
+    width: 20%;
+    top: 10%;
+    left: 7rem;
     position: absolute;
   }
 
@@ -615,7 +615,7 @@ form .submit:hover {
   width: 80%;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 810px) {
   .achievements {
     display: none;
   }

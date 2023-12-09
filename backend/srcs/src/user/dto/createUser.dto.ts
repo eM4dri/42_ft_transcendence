@@ -7,6 +7,7 @@ import {
   IsString,
   IsUrl,
   IsBoolean,
+  Length
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -21,6 +22,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
+  @Length(1, 10)
   @ApiProperty({
     name: 'username',
     type: String,
@@ -30,6 +32,7 @@ export class CreateUserDto {
 
   @IsEmail()
   @IsNotEmpty()
+  @Length(1, 30)
   @ApiProperty({
     name: 'email',
     type: String,
@@ -48,6 +51,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsOptional()
+  @Length(1, 15)
   @ApiProperty({
     name: 'firstName',
     type: String,
@@ -57,6 +61,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsOptional()
+  @Length(1, 15)
   @ApiProperty({
     name: 'lastName',
     type: String,

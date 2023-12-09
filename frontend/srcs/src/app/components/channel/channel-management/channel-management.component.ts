@@ -53,7 +53,7 @@ export class ChannelManagementComponent extends BaseComponent<{},PostChannel> im
         this.loading = true;
         return ;
       }
-      if (channelName.length > 40) {
+      if (channelName.length > 20) {
         this.alertConfiguration('ERROR', 'Channel name too long');
         this.openAlert();
         this.loading = true;

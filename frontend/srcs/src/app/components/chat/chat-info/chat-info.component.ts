@@ -11,6 +11,7 @@ import { ChatComponent } from 'src/app/modules';
 })
 export class ChatInfoComponent {
   @Input() user!: User;
+  @Input() showButton!: boolean;
 
   constructor(
     private readonly router: Router,

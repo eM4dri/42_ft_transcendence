@@ -5,7 +5,7 @@
     <div class="username">
         {{ user.username }}
     </div>
-    @if (parent.getTypeChat() === 'CHAT' || parent.getTypeChat() === 'NEW_CHAT') {
+    @if ((parent.getTypeChat() === 'CHAT' || parent.getTypeChat() === 'NEW_CHAT') && showButton) {
         <div class="usericons" >
             <i class="bi bi-x-square-fill" (click)="goBackToChat()"></i>
         </div>
