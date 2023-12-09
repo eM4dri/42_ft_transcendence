@@ -1,5 +1,5 @@
 <div class="icon-actions">
-    @if(!disableActions()) {
+    @if(!isThisMyself()) {
         @if (userIsAdmin() || userIsOwner()) {
             <i class="bi bi-person-down"
                 pTooltip="demote"

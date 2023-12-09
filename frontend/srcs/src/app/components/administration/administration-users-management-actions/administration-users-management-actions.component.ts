@@ -62,7 +62,7 @@ export class AdministrationUsersManagementActionsComponent
     }
 
     // Desactivamos las acciones sobre nosotros mismos
-    disableActions(){
+    isThisMyself(){
         return this.userExtended.userId === this.authService.getMyUserId();
     }
 

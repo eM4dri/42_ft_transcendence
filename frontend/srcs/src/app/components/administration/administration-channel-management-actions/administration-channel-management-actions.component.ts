@@ -1,10 +1,11 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, inject } from '@angular/core';
 import { AdministrationChannelManagementUsersComponent } from '../administration-channel-management-users/administration-channel-management-users.component';
 import { ChannelUsersToAdmin } from '../../channel';
 import { BaseComponent } from 'src/app/modules';
 import { ApiService, AuthService } from 'src/app/services';
 import { UriConstants } from 'src/app/utils';
+import { NgbCalendar, NgbDateStruct, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-administration-channel-management-actions',
@@ -13,6 +14,7 @@ import { UriConstants } from 'src/app/utils';
 })
 export class AdministrationChannelManagementActionsComponent extends BaseComponent<{},{},{},ChannelUsersToAdmin> implements OnInit {
     @Input() userChannel!: ChannelUsersToAdmin;
+    modalReference: NgbModalRef[] = [];
 
     ngOnInit(): void {
     }
@@ -20,9 +22,27 @@ export class AdministrationChannelManagementActionsComponent extends BaseCompone
     constructor(
         private readonly api: ApiService<{},{},{},ChannelUsersToAdmin>,
         private readonly authService: AuthService,
+        private readonly modalService: NgbModal,
         private readonly parent: AdministrationChannelManagementUsersComponent
     ) {
         super(api);
+    }
+
+    today = inject(NgbCalendar).getToday();
+	mutedUntill: NgbDateStruct= this.today;
+
+    open(content: TemplateRef<any>) {
+        this.modalReference.push(this.modalService.open(content));
+    }
+
+    muteUntillDate(){
+        console.log('muteUntillDate', this.mutedUntill);
+        for (const modal of this.modalReference){
+            modal.close();
+          }
+        const date = new Date(this.mutedUntill.year, this.mutedUntill.month - 1, this.mutedUntill.day);
+        this.muteUser(new Date(date));
+        this.mutedUntill = this.today;
     }
 
     patchUser(method: string){
@@ -46,7 +66,7 @@ export class AdministrationChannelManagementActionsComponent extends BaseCompone
             mutedUntill: date
         }
         this.patchService({
-            url: `${UriConstants.ADMIN_MANAGE_CHANNELS}/mute/${this.userChannel.channelUserId}`,
+            url: `${UriConstants.MANAGE_CHANNELS}/mute`,
             data: data,
             params: {
                 headers
@@ -69,7 +89,7 @@ export class AdministrationChannelManagementActionsComponent extends BaseCompone
     }
 
     // Desactivamos las acciones sobre nosotros mismos
-    disableActions(){
+    isThisMyself(){
         return this.userChannel.userId === this.authService.getMyUserId()
     }
 

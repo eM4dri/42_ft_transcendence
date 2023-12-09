@@ -164,7 +164,7 @@ export class AdminController {
     async kick(
       @Param('uuid', new ParseUUIDPipe()) channelUserId: string,
     ) {
-      return { response: await this.channelAdminService.unMuteChannelUser(
+      return { response: await this.channelAdminService.kickChannelUser(
         channelUserId,
         )};
     }
