@@ -46,7 +46,7 @@
             <i class="bi bi-mic" style="visibility: hidden;"></i>
         }
         <!-- Kick -->
-        @if (userChannel.leaveAt === null) {
+        @if (userChannel.leaveAt === null && !userChannel.isAdmin && !userChannel.isOwner) {
             <i class="bi bi-person-x" pTooltip="kick" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('kick')"></i>
         } @else {
             <i class="bi bi-person-x" style="visibility: hidden;"></i>
