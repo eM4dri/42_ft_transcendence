@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { UserService } from 'src/app/services';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ApiService, UserService } from 'src/app/services';
 import { UsersCache, ChannelsCache } from 'src/app/cache';
 import { Channel, User } from 'src/app/models';
+import { BaseComponent } from '../shared';
+import { UriConstants } from 'src/app/utils';
 
 export class EnumAdminPanelTypeSelected {
   public static readonly NONE = "NONE";
@@ -14,9 +16,10 @@ export class EnumAdminPanelTypeSelected {
   templateUrl: './administration.component.html',
   styleUrls: ['./administration.component.scss']
 })
-export class AdministrationComponent {
+export class AdministrationComponent extends BaseComponent<Channel> implements OnInit {
 
   public ManageOption : string = EnumAdminPanelTypeSelected.NONE;
+  channels : Channel [] = [];
 
   currentUser: User = {
     userId: '',
@@ -33,19 +36,31 @@ export class AdministrationComponent {
   constructor(
     private readonly userService: UserService,
     private readonly cachedChannels: ChannelsCache,
-    private readonly cachedUsers: UsersCache
+    private readonly cachedUsers: UsersCache,
+    private readonly api: ApiService<Channel>,
   ) {
+    super(api);
     this.userService.clientReady();
-    this.cachedChannels.getresetChannelSub().subscribe((data) => {
-      if (this.currentChannel.channelId === data.channelId ){
-          this.currentChannel = {
-              channelId: 'none',
-              channelName: '0',
-              avatar: '',
-              isLocked: true
-          };
-      }
-  });
+    this.cachedChannels.getresetChannelSub().subscribe();
+  }
+
+  async ngOnInit() {
+    this.channels =(await this.searchArrAsync({
+      url: `${UriConstants.CHANNEL}/all`,
+    })).response;
+  }
+
+  removeChannel(channelId: string) {
+    this.channels = this.channels.filter(
+      (x) => x.channelId !== channelId
+    )
+    this.currentChannel = {
+      channelId: 'none',
+      channelName: '0',
+      avatar: '',
+      isLocked: true
+    };
+    this.ManageOption = EnumAdminPanelTypeSelected.NONE;
   }
 
   public loadChannel(channel: Channel){

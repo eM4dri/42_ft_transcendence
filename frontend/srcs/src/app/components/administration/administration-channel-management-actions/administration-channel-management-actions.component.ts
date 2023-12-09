@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnInit, TemplateRef, inject } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, TemplateRef, inject } from '@angular/core';
 import { AdministrationChannelManagementUsersComponent } from '../administration-channel-management-users/administration-channel-management-users.component';
 import { ChannelUsersToAdmin } from '../../channel';
 import { BaseComponent } from 'src/app/modules';
@@ -12,11 +12,15 @@ import { NgbCalendar, NgbDateStruct, NgbModal, NgbModalRef } from '@ng-bootstrap
   templateUrl: './administration-channel-management-actions.component.html',
   styleUrls: ['./administration-channel-management-actions.component.scss']
 })
-export class AdministrationChannelManagementActionsComponent extends BaseComponent<{},{},{},ChannelUsersToAdmin> implements OnInit {
+export class AdministrationChannelManagementActionsComponent extends BaseComponent<{},{},{},ChannelUsersToAdmin> implements OnInit, OnChanges {
     @Input() userChannel!: ChannelUsersToAdmin;
     modalReference: NgbModalRef[] = [];
 
     ngOnInit(): void {
+    }
+
+    ngOnChanges(): void {
+        this.parent.updateChannelUser(this.userChannel);
     }
 
     constructor(
@@ -95,5 +99,9 @@ export class AdministrationChannelManagementActionsComponent extends BaseCompone
 
     isMuted(channelUser: ChannelUsersToAdmin): boolean {
         return this.parent.isMuted(channelUser);
+    }
+
+    userIsKicked() :boolean{
+        return this.userChannel.leaveAt !== null;
     }
 }

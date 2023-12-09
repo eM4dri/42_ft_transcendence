@@ -15,8 +15,7 @@ import {AdministrationComponent} from 'src/app/modules/administration/administra
 export class AdminstrationChannelsComponent extends BaseComponent<Channel> implements OnChanges, OnInit {
 
   @Input() currentChannel!: Channel;
-
-  channels : Channel [] = [];
+  @Input() channels : Channel [] = [];
   filteredChannels : Channel [] = [];
 
   constructor(
@@ -25,21 +24,22 @@ export class AdminstrationChannelsComponent extends BaseComponent<Channel> imple
     private readonly adminstrationComponent :AdministrationComponent
   ) {
     super(api);
-    this.filteredChannels = this.channels;
   }
 
   async ngOnInit() : Promise<void>{
-    await this.updateAllChannels();
+    this.assignFilteredChannelsToSortedChannels();
   }
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    await this.updateAllChannels();
+    this.assignFilteredChannelsToSortedChannels();
+    this.filterChannels();
   }
 
-  async updateAllChannels() {
-    this.channels =(await this.searchArrAsync({
-      url: `${UriConstants.CHANNEL}/all`,
-          })).response;
+  isCurrentChannel(channel: Channel){
+    return this.currentChannel.channelId === channel.channelId;
+  }
+
+  assignFilteredChannelsToSortedChannels() {
     this.filteredChannels = this.channels.sort(
       (a,b) => a.channelName.localeCompare(b.channelName)
     );
@@ -52,10 +52,11 @@ export class AdminstrationChannelsComponent extends BaseComponent<Channel> imple
       this.filteredChannels = this.channels.filter(item =>
         item.channelName.toLowerCase().includes(this.channelSearchInput.toLowerCase())
       );
-    } else {
-      this.filteredChannels = this.channels.sort(
+      this.filteredChannels = this.filteredChannels.sort(
         (a,b) => a.channelName.localeCompare(b.channelName)
       );
+    } else {
+      this.assignFilteredChannelsToSortedChannels();
     }
   }
 

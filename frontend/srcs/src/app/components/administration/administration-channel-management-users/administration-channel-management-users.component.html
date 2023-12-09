@@ -12,6 +12,12 @@
                                 'background': 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'
                             }"
                     ></p-tag>
+                } @else if (u.value.leaveAt !== null) {
+                    <p-tag [value]="'OUT'"
+                        [style]="{
+                                'background': 'linear-gradient(-225deg, #FF6B9C 0%, #FF4181 48%, #E7006B 100%)'
+                            }"
+                    ></p-tag>
                 } @else {
                     @if (u.value.status==='MUTED') {
                         <p-tag
@@ -36,5 +42,8 @@
                 ></app-administration-channel-management-actions>
             }
         </div>
+    </div>
+    <div class="red-box" (click)="deleteChannel()">
+        DELETE CHANNEL
     </div>
 </div>

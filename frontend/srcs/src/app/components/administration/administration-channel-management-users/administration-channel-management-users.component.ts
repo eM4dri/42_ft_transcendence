@@ -1,23 +1,25 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { UsersCache } from 'src/app/cache';
 import { Channel, ChannelUsersExtended, User } from 'src/app/models';
-import { BaseComponent } from 'src/app/modules';
+import { AdministrationComponent, BaseComponent } from 'src/app/modules';
 import { ApiService } from 'src/app/services';
 import { DateMutations, UriConstants } from 'src/app/utils';
 import { ChannelUsersToAdmin } from '../../channel';
+import { AdminstrationChannelsComponent } from '../administration-channels-list/administration-channels-list.component';
 
 
 @Component({
   selector: 'app-administration-channel-management-users',
   templateUrl: './administration-channel-management-users.component.html',
-  styleUrls: ['./administration-channel-management-users.component.scss']
+  styleUrls: ['./administration-channel-management-users.component.scss'],
 })
-export class AdministrationChannelManagementUsersComponent extends BaseComponent<ChannelUsersToAdmin> implements OnInit, OnChanges {
+export class AdministrationChannelManagementUsersComponent extends BaseComponent<ChannelUsersToAdmin, {}, {}, {}, Channel> implements OnInit, OnChanges {
   @Input() channel!: Channel;
   constructor(
-    private readonly api :ApiService<ChannelUsersToAdmin>,
+    private readonly api :ApiService<ChannelUsersToAdmin, {}, {}, {}, Channel>,
     private readonly cachedUsers: UsersCache,
-    private readonly dateMutations: DateMutations
+    private readonly dateMutations: DateMutations,
+    private parent: AdministrationComponent
   ){
     super(api);
   }
@@ -48,11 +50,11 @@ export class AdministrationChannelManagementUsersComponent extends BaseComponent
   }
 
   private async updateComponentForNewChannel(newChannel: Channel): Promise<void> {
+    // Update the component state with the new channel users
     // Fetch channel users or perform any necessary actions
     const channelUsers = (await this.searchArrAsync({
       url: `${UriConstants.ADMIN_MANAGE_CHANNELS}/${newChannel.channelId}/users`,
     })).response;
-    // Update the component state with the new channel users
     this.channelUsers.clear();
     for (let u of channelUsers){
       u.user = this.cachedUsers.getUser(u.userId);
@@ -61,6 +63,23 @@ export class AdministrationChannelManagementUsersComponent extends BaseComponent
         this.channelUsers.set(u.channelUserId, u);
       }
     }
+  }
+
+  async deleteChannel() {
+    const dto = {
+      channelId: this.channel.channelId
+    }
+    await this.apiService.deleteService({
+      url: `${UriConstants.ADMIN_MANAGE_CHANNELS}/${this.channel.channelId}`,
+      data: dto
+    }).subscribe({
+      next: (res) => {
+          this.parent.removeChannel(this.channel.channelId);
+      },
+      error: error => {
+          this.processError(error);
+      },
+    });
   }
 
   private _getStatus(user: ChannelUsersToAdmin) {
@@ -87,6 +106,13 @@ export class AdministrationChannelManagementUsersComponent extends BaseComponent
       result = 'warning'
     }
     return result;
+  }
+
+  processError(error: any){
+    // console.log('ERROR!',error);
+    this.alertConfiguration('ERROR', error);
+    this.openAlert();
+    this.loading = true;
   }
 
   updateChannelUser(channelUser: ChannelUsersToAdmin){

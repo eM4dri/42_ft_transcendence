@@ -13,3 +13,12 @@
     display: flex;
     align-items: center;
 }
+
+.red-box {
+    display: flex;
+    background-color: red;
+    color: white;
+    padding: 10px;
+    width: 40rem;
+    justify-content: center;
+  }

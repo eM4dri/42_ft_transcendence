@@ -9,12 +9,13 @@
         />
     </div>
     <div class="chat-list">
-        @for (channel of filteredChannels; track channel.channelName) {
-            <div class="channel-info" (click)="channelClicked(channel)">
+        @for (channel of filteredChannels; track channel) {
+            <div [class.selected]=isCurrentChannel(channel) class="channel-info" (click)="channelClicked(channel)">
                 <app-channel-avatar
                     [channel]="channel"
                 ></app-channel-avatar>
-                <p class="channelname">
+                <p class="channelname" [style]="{
+                    'text-align': 'center'}">
                     {{ channel.channelName }}
                 </p>
             </div>
