@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { HistoricTableComponent } from 'src/app/components/historic-table/historic-table.component';
 import { NgModule } from '@angular/core';
 import { TooltipModule } from 'primeng/tooltip';
+import { OffCanvasFullStats } from 'src/app/modules/fullstats/fullstats.modulle';
 
 @Component({
   selector: 'app-history',
@@ -13,6 +14,6 @@ export class HistoryComponent { }
 
 @NgModule({
   declarations: [HistoryComponent, HistoricTableComponent],
-  imports: [CommonModule, TooltipModule],
+  imports: [CommonModule, TooltipModule, OffCanvasFullStats],
 })
 export class HistoryModule { }

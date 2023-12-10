@@ -1,0 +1,27 @@
+.offcanvas-header{
+  color: var(--text-secondary);
+  background-color: var(--bg-primary);
+}
+
+.offcanvas-body{
+  color: var(--text-primary);
+  background: var(--bg-primary);
+}
+
+.table{
+  background: var(--bg-secondary);
+  --bs-table-bg: var(--bg-secondary);
+  --bs-table-striped-bg: var(--bg-primary);
+  --bs-table-color: var(--text-secondary);
+  --bs-table-striped-color: var(--text-primary);
+}
+
+.card-img-top{
+  background: var(--bg-primary);
+  //background: red;
+}
+
+.card-body{
+  color: var(--text-secondary);
+  background-color: var(--bg-secondary);
+}

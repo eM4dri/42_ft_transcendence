@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService, AuthService } from 'src/app/services';
 import { TotalHistoricData } from 'src/app/models/historic/historic.model'
 import { BaseComponent } from 'src/app/modules';
 import { UriConstants } from 'src/app/utils';
+import { OffCanvasFullStatsComponent } from 'src/app/modules/fullstats/offcanvas/offcanvas.component';
 
 @Component({
   selector: 'app-historic-table',
@@ -16,6 +17,7 @@ export class HistoricTableComponent extends BaseComponent<TotalHistoricData, {},
     take: 0,
     result: [],
   };
+  @ViewChild('childComponent', { static: true }) childComponent!: OffCanvasFullStatsComponent;
   constructor(
     private readonly authService: AuthService,
     private api: ApiService<TotalHistoricData>,) {
@@ -38,6 +40,10 @@ export class HistoricTableComponent extends BaseComponent<TotalHistoricData, {},
     });
   }
 
+  abrirOffcanvas(id: string) {
+    // Llamar al método del componente hijo para abrir el offcanvas
+    this.childComponent.openOffcanvas(id);
+  }
   processError(error: any) {
     this.alertConfiguration('ERROR', error);
     this.openAlert();

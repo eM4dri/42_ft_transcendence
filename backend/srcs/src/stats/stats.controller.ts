@@ -39,6 +39,20 @@ export class StatsController {
     return this.StatsService.getUserStats(UserId);
   }
 
+  @Get('list/:uuid')
+  @ApiParam({
+    name: "uuid",
+    type: String,
+    required: true,
+    description: "Uuid of the user",
+    example: "903af193-666f-47eb-9b37-35ca3d58d4ec",
+  })
+  @ApiOperation({ description: "Get stats by user id" })
+  async getFullById(@Param('uuid', new ParseUUIDPipe()) UserId: string) {
+    const res = this.StatsService.getFullUserStats(UserId);
+    return { response: await res }
+  }
+
   @Patch()
   @HttpCode(200)
   @ApiOperation({ description: "Update user stats" })
@@ -107,7 +121,6 @@ export class StatsController {
   @ApiOperation({ description: "Get rank list" })
   async get_rank_list(): Promise<{ response: stats_user[] }> {
     const result: Promise<stats_user[]> = this.StatsService.get_rank_list()
-    console.log(result)
     return { response: await result };
   }
 

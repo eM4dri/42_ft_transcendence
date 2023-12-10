@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-12-10
+### Added
+- OffCanvas para mostrar stats detalladas
+
 ## 2023-12-09 - emadriga
 ### Added
 - 1st login workflow 'When first logged, user is prompted to add informations on his account (display name, avatar...)'

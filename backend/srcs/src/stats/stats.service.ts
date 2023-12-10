@@ -5,6 +5,12 @@ import { stats_user } from "@prisma/client";
 import { plainToInstance } from 'class-transformer';
 
 
+export interface datas extends stats_user {
+  login: string,
+  avatar: string,
+  position: number,
+  total: number
+}
 @Injectable()
 export class StatsService {
   constructor(private prisma: PrismaService) { }
@@ -15,6 +21,34 @@ export class StatsService {
         userId: UserId,
       },
     });
+  }
+
+  async getFullUserStats(UserId: string): Promise<datas> {
+
+    const user_stats = await this.prisma.stats_user.findUnique({
+      where: {
+        userId: UserId,
+      },
+    });
+    const nameavat = await this.prisma.user.findUnique({
+      where: {
+        userId: UserId,
+      },
+      select: {
+        username: true,
+        avatar: true,
+      }
+    })
+    const position = await this.get_rank(UserId);
+    const datas: datas = {
+      ...user_stats,
+      login: nameavat.username,
+      avatar: nameavat.avatar,
+      position: position.pos,
+      total: position.total,
+    }
+
+    return datas;
   }
 
   async update_stats(dto: Update_statsDto): Promise<{}> {

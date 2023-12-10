@@ -1,3 +1,5 @@
+<app-full-rank #childComponent>
+</app-full-rank>
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -40,11 +42,13 @@
         <td scope="row">{{game.gameDate | date:'dd:MM:yy HH:mm:ss'}}</td>
         <td scope="row">{{game.pointsLocal}}
         <td scope="row">
+        	<div (click)="abrirOffcanvas(game.localId)" >
 					{{game.localName }}
         	<img src={{game.localAvatar}}
 						class="me-2"
 						style="width: 25px"
 					/>
+					</div>
 				</td>
         <td scope="row">
 					@if(game.winLocal){
@@ -61,11 +65,13 @@
 					</div>
 					}
 				</td>
-        <td scope="row">
+        <td scope="row" >
+        	<div (click)="abrirOffcanvas(game.visitorId)" >
         	<img src={{game.visitorAvatar}}
 						class="me-2"
 						style="width: 25px"
 					/>{{game.visitorName }}
+					</div>
 				</td>
         <td scope="row">{{game.pointsVisitor}}</td>
       </tr>

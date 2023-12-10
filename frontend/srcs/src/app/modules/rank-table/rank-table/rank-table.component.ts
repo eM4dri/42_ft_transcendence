@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { BaseComponent } from 'src/app/modules';
 import { ApiService, AuthService } from 'src/app/services';
 import { rankData } from 'src/app/models';
 import { UriConstants } from 'src/app/utils';
+import { OffCanvasFullStatsComponent } from '../../fullstats/offcanvas/offcanvas.component';
 
 interface rankList extends rankData {
   position: number;
@@ -18,7 +19,7 @@ export class RankTableComponent extends BaseComponent<rankData[], {}, {}, {}> im
   ranks: rankData[] = [];
   rank_ext: rankList[] = [];
   filterPost = "";
-
+  @ViewChild('childComponent', { static: true }) childComponent!: OffCanvasFullStatsComponent;
   constructor(
     private readonly authService: AuthService,
     private api: ApiService<rankData[]>,) {
@@ -46,6 +47,10 @@ export class RankTableComponent extends BaseComponent<rankData[], {}, {}, {}> im
     });
   }
 
+  abrirOffcanvas(id: string) {
+    // Llamar al método del componente hijo para abrir el offcanvas
+    this.childComponent.openOffcanvas(id);
+  }
   processError(error: any) {
     this.alertConfiguration('ERROR', error);
     this.openAlert();
