@@ -14,7 +14,7 @@ import { NgbCalendar, NgbDateStruct, NgbModal, NgbModalRef } from '@ng-bootstrap
 })
 export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},ChannelUsersToAdmin> implements OnInit {
     @Input() userChannel!: ChannelUsersToAdmin;
-    @Input() myChannelUser?: ChannelUsersExtended;
+    @Input() myChannelUser!: ChannelUsersExtended | undefined;
     modalReference: NgbModalRef[] = [];
 
     ngOnInit(): void {
@@ -100,8 +100,16 @@ export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},Ch
         ||  (this.userChannel.isOwner);
     }
 
+    isThisMyself() {
+        return this.userChannel.userId === this.authService.getMyUserId();
+    }
+
     isMuted(channelUser: ChannelUsersToAdmin): boolean{
         return this.parent.isMuted(channelUser);
+    }
+
+    userIsKicked() :boolean{
+        return this.userChannel.leaveAt !== null;
     }
 
 }

@@ -17,6 +17,12 @@
                         [pTooltip]="getTimeMuted(u.value)"
                         [severity]="getSeverity(u.value)"
                     ></p-tag>
+                } @else if (u.value.leaveAt !== null) {
+                    <p-tag [value]="'OUT'"
+                        [style]="{
+                                'background': 'linear-gradient(-225deg, #FF6B9C 0%, #FF4181 48%, #E7006B 100%)'
+                            }"
+                    ></p-tag>
                 } @else {
                     <p-tag
                         [value]="u.value.status"

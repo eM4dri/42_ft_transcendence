@@ -203,6 +203,7 @@ export class ChannelAdminService {
                         });
             this.eventEmitter.emit('channel_user_leaves', channelUser);
             this.reOwningChannel(channelUser.channelId);
+            this.eventEmitter.emit('channel_user_leaves', channelUser);
             return channelUser;
         } catch (error) {
             throw (error);
