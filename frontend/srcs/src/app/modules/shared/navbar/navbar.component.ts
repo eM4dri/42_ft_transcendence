@@ -78,7 +78,12 @@ export class NavbarComponent {
   }
 
   public changeVisibility(): void {
-    this.appComponent.darkMode = !this.appComponent.darkMode;
+    if (this.appComponent.theme !== 'dark') {
+      this.appComponent.theme = 'dark';
+    } else {
+      this.appComponent.theme = 'light';
+    }
+    localStorage.setItem('theme', this.appComponent.theme);
   }
 
   public isAdmin() {

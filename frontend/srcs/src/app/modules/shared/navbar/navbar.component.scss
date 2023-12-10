@@ -23,8 +23,8 @@
   .nav-item {
     width: 100%;
   }
-  
-  .nav-item:last-child {
+   
+  .nav-item:nth-last-child(2) {
     margin-top: auto;
   }
   

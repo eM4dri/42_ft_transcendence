@@ -9,6 +9,7 @@ import { ChannelsCache, ChatsCache, UsersCache } from './cache';
 })
 export class AppComponent {
   darkMode: boolean = true;
+  theme: string = localStorage.getItem('theme') || 'dark';
   constructor(
     private readonly cachedChats: ChatsCache,
     private readonly cachedChannels: ChannelsCache,

@@ -13,6 +13,7 @@ and this project adheres to
 
 ### Changed
 - Some css fixes
+- Display navbar logout, appearance
 
 ## 2023-12-09 - emadriga
 ### Added
