@@ -27,8 +27,22 @@ export class ChannelManagementUsersComponent extends BaseComponent<ChannelUsersT
     super(api);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  async ngOnChanges(changes: SimpleChanges) {
     this.myChannelUser = this.cachedChannels.getMyChannelUser(this.channel.channelId);
+    if ('channel' in changes) {
+      this.channelUsers.clear();
+      const channelUsers = (await this.searchArrAsync({
+        url: `${UriConstants.MANAGE_CHANNELS}/${this.channel.channelId}/users`,
+      })).response;
+      for (let u of channelUsers){
+        u.user = this.cachedUsers.getUser(u.userId);
+        if (u.user !== undefined) {
+          u.status = this._getStatus(u);
+          this.channelUsers.set(u.channelUserId, u);
+        }
+      }
+    }
+
   }
 
   myChannelUser: ChannelUsersExtended | undefined;

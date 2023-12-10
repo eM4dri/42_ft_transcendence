@@ -46,8 +46,9 @@
                         [channel]="channel.value"
                         (click)="loadChannel(channel.value)"
                      ></app-channel-info>
-                        <i *ngIf="channel.value && amIChannelAdmin(channel.value.channelId)" class="bi bi-gear-fill"
-                        style="font-size: 1.75rem" (click)="manageChannel(channel.value)"></i>
+                     @if (channel.value !== null && amIChannelAdmin(channel.value.channelId) ) {
+                        <i class="bi bi-gear-fill" style="font-size: 1.75rem" (click)="manageChannel(channel.value)"></i>
+                     }
                 </div>
             </div>
         </ng-template>
