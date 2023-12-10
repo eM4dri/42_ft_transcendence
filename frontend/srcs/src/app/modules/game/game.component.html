@@ -42,7 +42,7 @@
 	<h1 style="text-align: center;">Game Controls</h1>
 	<p style="text-align: center;">Use the up and down keys on your keyboard to move the paddle in that direction.</p>
 
-	<svg style="margin-left: 45%; margin-right: 45%;" viewBox="0 0 300 200" width="10%" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+	<svg style="margin-left: 30%; margin-right: 30%; max-height: 200px;" viewBox="0 0 300 200" width="40%" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
 		<rect x="105" y="5" width="90" height="90" style="stroke-linejoin: round; stroke: rgb(255, 255, 255); stroke-width: 5px; fill: rgb(255, 255, 255); fill-opacity: 0.66;"/>
 		<rect x="5" y="105" width="90" height="90" style="stroke-linejoin: round; stroke: rgb(255, 255, 255); stroke-width: 5px; fill: rgb(255, 255, 255); fill-opacity: 0.1; stroke-opacity: 0.2;"/>
 		<rect x="105" y="105" width="90" height="90" style="stroke-linejoin: round; stroke: rgb(255, 255, 255); stroke-width: 5px; fill: rgb(255, 255, 255); fill-opacity: 0.66;"/>
@@ -58,10 +58,11 @@
 			<p style="text-align: center;">Regular game. The ball has a constant speed and the game ends after 2 minutes (+ animation time).</p>
 		<h3 style="text-align: center;">Modded Game</h3>
 			<p style="text-align: center;">Classic game, but <font color="#20ff20">Power-Ups</font> may appear every now and then.<br>They can be activated by touching them with the ball and will have different effects:</p>
-			<p style="text-align: center;"><font color="#20ff20"><b>Super Speed</b></font><br>The ball will gain a lot of speed for a short time.</p>
-			<p style="text-align: center;"><font color="#20ff20"><b>Invisibility</b></font><br>The ball will turn invisible intermittently.</p>
-			<p style="text-align: center;"><font color="#20ff20"><b>Shrinkage</b></font><br>The other player's paddle will become shorter but will recover over time.</p>
-
+			<div class="moditems" style="display:flex; width: 80%; margin-left: 10%">
+				<p class="singleitem" style="text-align: center; padding: 10px;"><font color="#20ff20"><b>Super Speed</b></font><br><img src="../../assets/powerup_speed.svg" width="150px" height="200px"><br>The ball will gain a lot of speed for a short time.</p>
+				<p class="singleitem" style="text-align: center; padding: 10px;"><font color="#20ff20"><b>Invisibility</b></font><br><img src="../../assets/powerup_invis.svg" width="150px" height="200px"><br>The ball will turn invisible intermittently.</p>
+				<p class="singleitem" style="text-align: center; padding: 10px;"><font color="#20ff20"><b>Shrinkage</b></font><br><img src="../../assets/powerup_shrink.svg" width="150px" height="200px"><br>The other player's paddle will become shorter but will recover over time.</p>
+			</div>
 	<button class="backbutton" (click)="backtomenu()" style="background-color: rgb(255, 182, 47);text-align: center;height:100px;width:25%;display: block;margin-left: 37.5%;margin-bottom: 20px">BACK</button>
 </div>
 <div  style="width:100%; overflow: hidden; background-color: #23232d;">

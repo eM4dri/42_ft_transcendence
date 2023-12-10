@@ -16,8 +16,9 @@ and this project adheres to
 - Orbitron as default font
 
 ## 2023-12-10 - jvacaris
-- **Fontend tweaks:** Delete channel button, channel usernames, new favicon.
+- **Fontend tweaks:** Delete channel button, channel usernames, new favicon, rank medals.
 - GameId shared with the list of playing players. 
+- Tutorial powerup images.
 
 ## 2023-12-10 - tomartin
 ### Added

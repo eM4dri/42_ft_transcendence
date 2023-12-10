@@ -432,3 +432,37 @@
     width: 100%;
   }
 }
+
+
+
+
+@media only screen and (min-width: 700px)
+{
+  .moditems
+  {
+    width: 80%;
+    margin-left: 10%;
+    flex-direction: row;
+  }
+  
+  .singleitem
+  {
+    width: 33.33%
+  }
+}
+@media only screen and (max-width: 699px)
+{
+  .moditems
+  {
+    width: 90%;
+    margin-left: 5%;
+    flex-direction: column;
+  }
+
+  .singleitem
+  {
+    width: 100%
+  }
+}
+
+
