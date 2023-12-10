@@ -225,7 +225,7 @@ export class GameService {
 		let current_time: number = Date.now();
 		let newuid = Math.round(Math.random() * 100000);
 
-		this.eventemitter.emit('addUserIdsPlaying',[blueid, redid]);
+		this.eventemitter.emit('addUserIdsPlaying',[blueid, redid], newuid);
 		this.allgames.set(newuid, new Game(newuid, blueid, redid, room, current_time + 6000, bluesocket, redsocket, ismodded, prev_blue, prev_red, friendlygame))
 		bluesocket.emit('teamblue', true)
 		redsocket.emit('teamblue', false)

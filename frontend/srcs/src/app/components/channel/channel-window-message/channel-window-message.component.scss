@@ -66,6 +66,13 @@
     padding: 0;
 }
 
+.msg-title {
+    grid-area: a;
+    margin: 0;
+    padding: 0;
+    font-weight: 900;
+}
+
 .time {
     font-size: 75%;
     grid-area: c;

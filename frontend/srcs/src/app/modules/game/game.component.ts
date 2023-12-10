@@ -93,10 +93,6 @@ export class GameComponent implements AfterViewInit, OnDestroy
 		) { 
 			this.sendMatchOngoing();
 			myUserId = this.auth.readFromCookie(CookieConstants.USER_TOKEN).sub
-			console.log("~~ YOUR USER ~~")
-			console.log(myUserId)
-			console.log("~~ ~~~~ ~~~~ ~~")
-
 
 			gcomp = this;
 			this.allsubscriptions.push(

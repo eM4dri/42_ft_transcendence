@@ -7,7 +7,7 @@ export class ChallengeService {
         private eventEmitter: EventEmitter2
         ) {}
 
-    private _usersIdPlaying: Set<string> = new Set<string>();
+    private _usersIdPlaying: Map<string, string> = new Map<string, string>();
     private _usersIdOnChallenge: Map<string, string> = new Map<string, string>();
 
     createChallenge(challengerUserId: string, challengedUserId: string){
@@ -54,10 +54,10 @@ export class ChallengeService {
     }
 
     @OnEvent('addUserIdsPlaying')
-    addUserIdsPlaying(userIds: string[]){
+    addUserIdsPlaying(userIds: string[], gameId: string){
         for (const userId of userIds){         
             if (this._usersIdPlaying.has(userId) === false) {
-                this._usersIdPlaying.add(userId);
+                this._usersIdPlaying.set(userId, gameId);
             }
             this._removeUserIdFromChallenging(userId);
         }
