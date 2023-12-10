@@ -115,13 +115,13 @@ export class ChannelController {
     @ApiOperation({
       description: 'Get channel users',
     })
-    getMyUserChannel(
+    async getMyUserChannel(
       @GetUser('id') userId: string,
       @Param('uuid', new ParseUUIDPipe()) channelId: string,
     ) {
-      return this.channelService.getMyChannelUser(
-        channelId, userId
-      );
+      return { response: 
+        await this.channelService.getMyChannelUser(channelId, userId)
+      };
     }
 
     @Get(':uuid/messages')

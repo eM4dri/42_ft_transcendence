@@ -1,9 +1,11 @@
 import { ForbiddenException,  Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import {  MuteChannelUserDto, CreateChannelPassDto } from '../dto';
+import {  MuteChannelUserDto, CreateChannelPassDto, ResponseChannelUserDto } from '../dto';
 import { ChannelUser } from '@prisma/client';
 import * as argon from 'argon2';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { plainToInstance } from 'class-transformer';
+import { ResponseUserMinDto } from 'src/user/dto';
 
 export enum ChannelRol {
     USER,
@@ -84,6 +86,33 @@ export class ChannelAdminService {
         }
     }
 
+    async getChannelMessages(channelId: string) {
+        try {
+            const channelUsersRaw = await this.getChannelUsers(channelId);
+            const channelUserIds: string[] = channelUsersRaw.map(x=>x.channelUserId).filter(x=>x);
+            const userIds: string[] = channelUsersRaw.map(x=>x.userId).filter(x=>x);
+            const channelMessages = plainToInstance( ResponseChannelUserDto, await this.prisma.channelUserMessage.findMany({
+                where:{ channelUserId: { in: channelUserIds } }
+            }));
+            const users = plainToInstance(ResponseUserMinDto, await this.prisma.user.findMany({
+                where:{ userId: { in: userIds } }
+            }));
+            const channelUsers = await channelUsersRaw.map((channelUser) => {
+                const user = users.filter((user) => user.userId == channelUser.userId)[0];
+                return {
+                    channelId: channelUser.channelId,
+                    channelUserId: channelUser.channelUserId,
+                    userId: channelUser.userId,
+                    joinedAt: channelUser.joinedAt,
+                    leaveAt: channelUser.leaveAt,
+                    user: user,
+                }
+            });
+            return {channelUsers: channelUsers, channelMessages: channelMessages};
+        } catch (error) {
+            throw (error);
+        }
+    }
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *                 Admin/Owner interface                     *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -172,6 +201,7 @@ export class ChannelAdminService {
                             where: { channelUserId: channelUserId, },
                             data: { leaveAt: new Date( Date.now() ) }
                         });
+            this.eventEmitter.emit('channel_user_leaves', channelUser);
             this.reOwningChannel(channelUser.channelId);
             return channelUser;
         } catch (error) {

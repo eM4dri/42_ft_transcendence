@@ -1,10 +1,14 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ChannelsCache, UsersCache } from 'src/app/cache';
-import { Channel, ChannelMessages, ChannelUsers, ChannelUsersExtended } from 'src/app/models';
+import { Channel, ChannelMessages, ChannelUsers, User } from 'src/app/models';
 import { AdministrationComponent } from 'src/app/modules';
 import { ApiService } from 'src/app/services';
 import { DateMutations, UriConstants } from 'src/app/utils';
+
+export interface ChannelUsersExtended  extends ChannelUsers{
+  user: User;
+}
 
 @Component({
   selector: 'app-administration-channel-window',
@@ -13,9 +17,9 @@ import { DateMutations, UriConstants } from 'src/app/utils';
 })
 export class AdministrationChannelWindowComponent implements OnInit, OnChanges, OnDestroy {
   @Input() channel!: Channel;
-  channelUsers:ChannelUsers[] =[];
+  channelUsers:ChannelUsersExtended[] =[];
   channelMessages: Map<number,ChannelMessages[]> = new Map<number,ChannelMessages[]>();
-  myChannelUser!: ChannelUsersExtended;
+  // myChannelUser!: ChannelUsersExtended;
   subscriptions: Subscription[] = [];
 
   private readonly cachedChannels = inject(ChannelsCache);
@@ -24,16 +28,12 @@ export class AdministrationChannelWindowComponent implements OnInit, OnChanges, 
   private readonly api = inject(ApiService);
   private readonly parent = inject(AdministrationComponent)
 
-  ngOnInit() {  
+  ngOnInit() {
     this._getMessages();
-    this._getUsers();
-    this._getMychannelUser();
    
   }
   ngOnChanges(changes: SimpleChanges): void {
     this._getMessages();
-    this._getUsers();
-    this._getMychannelUser();
   }
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
@@ -43,42 +43,28 @@ export class AdministrationChannelWindowComponent implements OnInit, OnChanges, 
   private _getMessages(){
     this.subscriptions.push(
       this.api.getListService({
-        url: `${UriConstants.CHANNEL}/${this.channel.channelId}/messages`,
+        url: `${UriConstants.ADMIN_MANAGE_CHANNELS}/${this.channel.channelId}/messages`,
       }).subscribe({
         next: (res: any) => {
-          this.channelMessages = this.dateMutations.toDateMap(res);
+          this.channelMessages = this.dateMutations.toDateMap(res.response.channelMessages);          
+          this.channelUsers = res.response.channelUsers;
         },
       })
     );
   }
 
-  private _getUsers(){
-    this.subscriptions.push(
-        this.api.getListService({
-          url: `${UriConstants.CHANNEL}/${this.channel.channelId}/users`,
-        }).subscribe({
-          next: (res: any) => {
-            this.channelUsers = res;
-          },
-        })
-    );
-  }
 
-  private _getMychannelUser(){
-    const  myChannelUser =  this.cachedChannels.getMyChannelUser(this.channel.channelId);
-    if (myChannelUser !== undefined)  {
-      this.myChannelUser = myChannelUser;
-    }
-  }
 
   public toDayLocale(time: number):string {
     return this.dateMutations.toDayLocale(time);
   }
 
   public getUser(channelUserId: string) {
-    const user = this.channelUsers.find(user => user.channelUserId === channelUserId);
-    const userId =  user?.userId || 'unKnown'
-    return this.cachedUsers.getUser(userId);
+    const channelUser = this.channelUsers.find(user => user.channelUserId === channelUserId);
+    if (channelUser !== undefined) {
+      return channelUser.user;
+    }
+    return undefined
   }
 
   public exitChannel(){

@@ -14,16 +14,10 @@
                     <p class="channel-day-group">{{ toDayLocale(dayMsgs[0]) }}</p>
                 </div>
                 @for (msg of dayMsgs[1]; track msg.channelMessageId) {
-                    @if (myChannelUser.channelUserId !== undefined && msg.channelUserId !== myChannelUser.channelUserId) {
-                        <app-channel-window-message
-                            [msg] = "msg"
-                            [user] = getUser(msg.channelUserId)
-                        ></app-channel-window-message>
-                    } @else {
-                        <app-channel-window-message
-                            [msg] = "msg"
-                        ></app-channel-window-message>
-                    }
+                    <app-channel-window-message
+                        [msg] = "msg"
+                        [user] = "getUser(msg.channelUserId)"
+                    ></app-channel-window-message>
                 }
             }
         </div>

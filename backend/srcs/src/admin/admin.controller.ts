@@ -88,6 +88,18 @@ export class AdminController {
      *                        Channel Actions                        *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+
+    @Get('/channel/:uuid/messages')
+    @Roles(Role.Admin, Role.Owner)
+    @ApiOperation({
+      description: 'Get channel messages including username avatars',
+    })
+    async getChannelMessages(
+      @Param('uuid', new ParseUUIDPipe()) chatId: string,
+    ) {
+      return { response: await this.channelAdminService.getChannelMessages(chatId) };
+    }
+
     @Get('/channel/:uuid/users')
     @Roles(Role.Admin, Role.Owner)
     @ApiOperation({
