@@ -1,3 +1,16 @@
+.container-game{
+    height: calc(100vh - 5rem);
+}
+
+.game-homeScreen{
+  width: inherit;
+  height:inherit;
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: cover; 
+  overflow: hidden;
+}
+
 #main_canvas
 {
     height: 100%;

@@ -62,7 +62,7 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 			}
 		})
 //		const newpaddle: Paddle = this.allgames.get(100000).bluepaddle;
-//		console.log(user.sub, 'is pressing a key. (', message, ")");
+////		console.log(user.sub, 'is pressing a key. (', message, ")");
 //		this.allgames.get(100000).bluepaddle.direction = message;	//TODO  This is temporary. Need to find the game and player that's being affected!!
 //		this.server.emit("HelloSignal", newpaddle).
 	}
@@ -76,7 +76,7 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		this.matchmaking_queue.forEach((value: Socket, key: string) => {
 			if (socket == value)
 			{
-				console.log(">>>>>", key, "\x1b[0;31mDISCONNECTED\x1b[0m <<<<<", this.matchmaking_queue.size)
+				//console.log(">>>>>", key, "\x1b[0;31mDISCONNECTED\x1b[0m <<<<<", this.matchmaking_queue.size)
 				this.matchmaking_queue.delete(key);
 				return ;
 			}
@@ -84,7 +84,7 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		this.modded_matchmaking_queue.forEach((value: Socket, key: string) => {
 			if (socket == value)
 			{
-				console.log(">>>>>", key, "\x1b[0;31mDISCONNECTED\x1b[0m <<<<<", this.modded_matchmaking_queue.size)
+				//console.log(">>>>>", key, "\x1b[0;31mDISCONNECTED\x1b[0m <<<<<", this.modded_matchmaking_queue.size)
 				this.modded_matchmaking_queue.delete(key);
 				return ;
 			}
@@ -93,7 +93,7 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		this.allspectators.forEach((value: Socket) => {
 			if (socket == value)
 			{
-				console.log(">>>>> Spectator #", idx, "\x1b[0;31mDISCONNECTED\x1b[0m <<<<<")
+				//console.log(">>>>> Spectator #", idx, "\x1b[0;31mDISCONNECTED\x1b[0m <<<<<")
 				delete(this.allspectators[idx]);
 				return ;
 			}
@@ -118,20 +118,20 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 			if (!this.matchmaking_queue.has(user.sub))
 			{
 				this.matchmaking_queue.set(user.sub, socket);
-				console.log(">>>>>>>>", user.sub, "\x1b[0;32mJOINED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
+				//console.log(">>>>>>>>", user.sub, "\x1b[0;32mJOINED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
 			}
-			else
-				console.log(">>>", user.sub, "\x1b[0;33mWAS ALREADY HERE\x1b[0m <<<", this.matchmaking_queue.size)
+			// else
+				//console.log(">>>", user.sub, "\x1b[0;33mWAS ALREADY HERE\x1b[0m <<<", this.matchmaking_queue.size)
 		}
 		else
 		{
 			if (!this.modded_matchmaking_queue.has(user.sub))
 			{
 				this.modded_matchmaking_queue.set(user.sub, socket);
-				console.log(">>>>>>>>", user.sub, "\x1b[0;32mJOINED\x1b[0m <<<<<<<<", this.modded_matchmaking_queue.size)
+				//console.log(">>>>>>>>", user.sub, "\x1b[0;32mJOINED\x1b[0m <<<<<<<<", this.modded_matchmaking_queue.size)
 			}
-			else
-				console.log(">>>", user.sub, "\x1b[0;33mWAS ALREADY HERE\x1b[0m <<<", this.modded_matchmaking_queue.size)
+			// else
+				//console.log(">>>", user.sub, "\x1b[0;33mWAS ALREADY HERE\x1b[0m <<<", this.modded_matchmaking_queue.size)
 		}
 		if (!ismodded && this.matchmaking_queue.size >= 2)
 		{
@@ -188,13 +188,13 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 
 	@SubscribeMessage('wannawatch')
 	listenForWannaWatch(@ConnectedSocket() socket: Socket, @MessageBody() gameid: number) {
-		console.log(">>>>>>>> Someone \x1b[0;34mWANNA WATCH\x1b[0m", gameid, "<<<<<<<<")
+		//console.log(">>>>>>>> Someone \x1b[0;34mWANNA WATCH\x1b[0m", gameid, "<<<<<<<<")
 		if (this.allgames.has(gameid))
 		{
 			socket.join(this.allgames.get(gameid).room);
 			this.allgames.get(gameid).spectators++;
 			this.allcurrentspectators.set(socket, this.allgames.get(gameid).room);
-			console.log(">>>>> Someone joined room ", this.allgames.get(gameid).room, " <<<<<")
+			//console.log(">>>>> Someone joined room ", this.allgames.get(gameid).room, " <<<<<")
 		}
 		else
 		{
@@ -208,20 +208,20 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		if (this.matchmaking_queue.has(user.sub))
 		{
 			this.matchmaking_queue.delete(user.sub);
-			console.log(">>>>>>>>", user.sub, "\x1b[0;31mCANCELED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
+			//console.log(">>>>>>>>", user.sub, "\x1b[0;31mCANCELED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
 		}
 		else if (this.modded_matchmaking_queue.has(user.sub))
 		{
 			this.modded_matchmaking_queue.delete(user.sub);
-			console.log(">>>>>>>>", user.sub, "\x1b[0;31mCANCELED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
+			//console.log(">>>>>>>>", user.sub, "\x1b[0;31mCANCELED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
 		}
-		else
-			console.log(">>>>>>", user.sub, "\x1b[0;33mNOT CANCELED\x1b[0m <<<<<<", this.matchmaking_queue.size)
+		// else
+			//console.log(">>>>>>", user.sub, "\x1b[0;33mNOT CANCELED\x1b[0m <<<<<<", this.matchmaking_queue.size)
 	}
 
 	@SubscribeMessage('getgamelist')
 	listenForGetGameList(@ConnectedSocket() socket : Socket){
-		console.log(">>> SENDING GAMELIST...")
+		//console.log(">>> SENDING GAMELIST...")
 		socket.emit('gamelist', new GameList(this.allgames))
 		socket.join("all_spectators")
 		let userid_list = []
@@ -280,7 +280,7 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
     private async _usersToCacheIndividual(socket: Socket, usersId: string[]) {
 		if (usersId.length > 1)
 		{
-			console.log(usersId)
+			//console.log(usersId)
 			//const users = await this.userService.getUsers(usersId);
 			const users = await this.userService.getUsers(usersId);
 			socket.emit('individual_users_to_cache', users);
@@ -290,7 +290,7 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
     private async _usersToCacheIndividual_byRoom(roomname: string, usersId: string[]) {
 		if (usersId.length > 1)
 		{
-			console.log(usersId)
+			//console.log(usersId)
 			//const users = await this.userService.getUsers(usersId);
 			const users = await this.userService.getUsers(usersId);
 			this.server.to(roomname).emit('individual_users_to_cache', users);
