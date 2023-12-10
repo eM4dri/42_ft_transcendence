@@ -39,6 +39,8 @@ const routes: Routes = [
     path: "administration", component: AdministrationComponent, canActivate: [AuthGuard], data: { role: [Role.Admin, Role.Owner] }
   },
   { path: "login", component: LoginComponent },
+  { path: "**", component: HomeComponent, canActivate: [AuthGuard] },
+
 ];
 
 @NgModule({
