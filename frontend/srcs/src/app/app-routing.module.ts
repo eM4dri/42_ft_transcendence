@@ -28,6 +28,7 @@ const routes: Routes = [
   { path: "history", component: HistoryComponent, canActivate: [AuthGuard] },
   { path: "chat", component: ChatComponent, canActivate: [AuthGuard] },
   { path: "profile", component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: "profile/new", component: ProfileComponent, canActivate: [AuthGuard] },
   //  { path: "pongtv", component: PongTVComponent, canActivate: [AuthGuard] },
   { path: "profile/:username", component: OtherProfileComponent, canActivate: [AuthGuard] },
   { path: "live", component: SpectateComponent, canActivate: [AuthGuard] },

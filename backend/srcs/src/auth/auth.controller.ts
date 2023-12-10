@@ -41,7 +41,7 @@ export class AuthController {
     }
     else {
       if (user42.isNew) {
-        navigate = '/profile';
+        navigate = '/profile/new';
       }
       const needTfa: boolean = await this.authService.tfaNeeded(user42.userId);
       if ( !needTfa ){

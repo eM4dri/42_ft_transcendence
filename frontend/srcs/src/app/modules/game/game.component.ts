@@ -227,7 +227,7 @@ export class GameComponent implements AfterViewInit, OnDestroy
 		
 
 		//*		Score in the background
-		this.context.font = "600px monospace";
+		this.context.font = "810px monospace";
 		
 		this.context.fillStyle = `rgb(50, 50, 255, 0.2)`
 		this.context.fillText(this.gameClass.bluescore.toString(), 500, 700);

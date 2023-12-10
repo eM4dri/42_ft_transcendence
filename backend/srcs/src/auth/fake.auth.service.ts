@@ -4,6 +4,7 @@ import { User } from '@prisma/client';
 import { UserService } from 'src/user/user.service';
 import { CreateUserDto } from 'src/user/dto';
 import { AuthService } from './auth.service';
+import { UserConstants } from 'src/utils/user.constants';
 
 @Injectable()
 export class FakeAuthService {
@@ -38,7 +39,7 @@ export class FakeAuthService {
         id: min - 1,
         username: fakeUsername,
         email: userEmail,
-        url: `https://profile.intra.42.fr/users/${fakeUsername}`,
+        url: `${UserConstants.INTRA_URL}/${fakeUsername}`,
         firstName: fakeUsername,
         lastName: fakeUsername,
         twofa: false,

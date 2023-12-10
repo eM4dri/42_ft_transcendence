@@ -51,13 +51,13 @@ input[type="text"] {
 }
 
 /* Small screens */
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: 809px) {
   .channel-container {
     height: calc(100vh - 14rem ); /* Usa 100vh para ocupar todo el alto visible */
   }
 }
 /* Large screens */
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 810px) {
   .channel-container {
     height: calc(100vh - 10rem ); /* Usa 100vh para ocupar todo el alto visible */
   }

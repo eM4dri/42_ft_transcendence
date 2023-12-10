@@ -35,24 +35,24 @@
     }
   }
 
-  @media only screen and (min-width: 600px) and (max-width: 899px)
+  @media only screen and (min-width: 810px) and (max-width: 899px)
   {
     font-size: 150px;
   }
 
-  @media only screen and (min-width: 300px) and (max-width: 599px)
+  @media only screen and (min-width: 300px) and (max-width: 809px)
   {
     font-size: 100px;
   }
 
-  @media only screen and (max-width: 599px)
+  @media only screen and (max-width: 809px)
   {
     font-size: 50px;
   }
 }
 
 //*   Large screen
-@media only screen and (min-width: 600px)
+@media only screen and (min-width: 810px)
 {
   button {
       position: relative;
@@ -244,7 +244,7 @@
 
 
 //*   Hehe ur screen tiny
-@media only screen and (max-width: 599px)
+@media only screen and (max-width: 809px)
 {
   button {
       position: relative;

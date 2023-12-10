@@ -36,4 +36,8 @@ export class ChannelHeaderComponent extends BaseComponent {
     this.patch({ url: `${UriConstants.CHANNEL}/leave/${channelUserId}`});
   }
 
+  amIChannelAdmin(channelId: string) : boolean {
+    return this.cachedChannels.getMyChannelUser(channelId)?.isAdmin || this.cachedChannels.getMyChannelUser(channelId)?.isOwner ? true : false;
+ }
+
 }

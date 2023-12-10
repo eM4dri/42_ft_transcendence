@@ -1,27 +1,30 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApiService, AuthService } from 'src/app/services';
-import { AlertModel } from 'src/app/models';
 import { UriConstants } from 'src/app/utils';
 import { PatchUserDto } from 'src/app/models/user/patch-user.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { HttpHeaders } from '@angular/common/http';
+import { BaseComponent } from 'src/app/modules';
+import { UsersCache } from 'src/app/cache';
 
 @Component({
   selector: 'app-profile-info',
   templateUrl: './profile-info.component.html',
   styleUrls: ['./profile-info.component.scss']
 })
-export class ProfileInfoComponent implements OnInit {
+export class ProfileInfoComponent extends BaseComponent<string> implements OnInit {
 
   constructor(
-    private readonly apiService: ApiService,
+    private readonly api: ApiService<string>,
     private readonly fb: FormBuilder,
     private readonly authService: AuthService,
+    private readonly cachedUsers: UsersCache,
     ) {
+      super(api);
       this.formGroup = this.fb.group({
         username: [''],
         firstName: [''],
         lastName: [''],
-        email: [''],
         disableTfa: ['']
       });
     }
@@ -32,21 +35,20 @@ export class ProfileInfoComponent implements OnInit {
   qrCode = '';
   editingUser: boolean = false;
   editingAvatar: boolean = false;
-  formGroup: FormGroup
+  override formGroup: FormGroup
   avatarUrl: string = '';
   friend: boolean = false;
   stats: any;
-  alertConfig = new AlertModel.AlertaClass(
-    false,
-    'An error has occurred',
-    AlertModel.AlertSeverity.ERROR
-  );
 
 
   ngOnInit(): void {
+    if (window.location.pathname === '/profile/new') {
+      this.editingUser = true;
+    }
     this.getUserInfo();
     if (this.myUserId !== this.userId) {
       this.getUserStats(this.userId);
+      this.isUserMyFriend();
     } else {
       this.getUserStats();
     }
@@ -54,9 +56,9 @@ export class ProfileInfoComponent implements OnInit {
 
   public patchUser(): void {
     this.editingUser = true;
-    const dto: PatchUserDto = this.fillPatchUserDTO(this.formGroup);
+    const dto: PatchUserDto = this.fillPatchUserDTO();
     if (!this.checkFormErrors(dto)) {
-      this.apiService.patchService({
+      this.patchService({
         url: `${UriConstants.USERS}/${this.userId}`,
         data: dto
       }).subscribe({
@@ -67,8 +69,8 @@ export class ProfileInfoComponent implements OnInit {
             this.openAlert();
             this.closeAlert();
         },
-        error: () => {
-            this.processError('Error updating user information');
+        error: (error) => {
+            this.processError(error);
         },
       });
     }
@@ -80,11 +82,6 @@ export class ProfileInfoComponent implements OnInit {
 
   public enableAvatarEdition(): void {
     this.editingAvatar = true;
-  }
-
-  public alertConfiguration(severity: 'ERROR' | 'SUCCESS', msg: string) {
-    this.alertConfig.severity = AlertModel.AlertSeverity[severity];
-    this.alertConfig.singleMessage = msg;
   }
 
   public showQRCode(): void {
@@ -100,8 +97,49 @@ export class ProfileInfoComponent implements OnInit {
     });
   }
 
-  public openAlert() {
-    this.alertConfig.open = true;
+  public addFriend(): void {
+    const headers = new HttpHeaders()
+      .set("Content-Type", "application/json");
+    const data  = {
+      friendId: this.user.userId
+    }
+    this.createService({
+      url: `${UriConstants.USER_FRIENDS}`,
+      data: data,
+      params: {
+          headers
+      }
+    }).subscribe({
+      next: () => {
+          this.cachedUsers.setCachedUser(this.user);
+          this.friend = true;
+      },
+      error: error => {
+          this.processError(error);
+      },
+    });
+  }
+
+  public deleteFriend(): void {
+    const headers = new HttpHeaders()
+      .set("Content-Type", "application/json");
+    const data  = {
+      friendId: this.user.userId
+    }
+    this.apiService.deleteService({
+      url: `${UriConstants.USER_FRIENDS}`,
+      data: data,
+      params: {
+          headers
+      }
+    }).subscribe({
+      next: () => {
+          this.friend = false;
+      },
+      error: error => {
+          this.processError(error);
+      },
+    });
   }
 
   public disableEdition() {
@@ -109,17 +147,13 @@ export class ProfileInfoComponent implements OnInit {
     this.qrCode = '';
   }
 
-  public closeAlert() {
-    this.alertConfig.open = false;
-  }
-
   // PRIVATE METHODS
 
   private getUserInfo() {
-    this.apiService.getService({
+    this.getService({
       url: `${UriConstants.USERS}/${this.userId}`
     }).subscribe({
-      next: (res) => {
+      next: (res: any) => {
           this.user = res;
           this.avatarUrl = this.user.avatar;
       },
@@ -131,7 +165,7 @@ export class ProfileInfoComponent implements OnInit {
 
   private getUserStats(userId?: string) {
     const url: string = userId ? `${UriConstants.USER_STATS}/${this.userId}` : `${UriConstants.USER_STATS}`;
-    this.apiService.getService({
+    this.getService({
       url: url
     }).subscribe({
       next: (res: any) => {
@@ -143,13 +177,25 @@ export class ProfileInfoComponent implements OnInit {
     });
   }
 
-  private fillPatchUserDTO(form: FormGroup){
+  private isUserMyFriend(): void {
+    this.getService({
+      url: `${UriConstants.USER_FRIENDS}/${this.userId}`
+    }).subscribe({
+      next: (res: any) => {
+        this.friend = res.response !== null;
+      },
+      error: (error) => {
+        this.processError(error);
+      },
+    });
+  }
+
+  private fillPatchUserDTO(){
     const twofa: boolean = this.formGroup.get('disableTfa')?.value
     return {
       username: this.formGroup.get('username')?.value ? this.formGroup.get('username')?.value : undefined,
       firstName: this.formGroup.get('firstName')?.value ?  this.formGroup.get('firstName')?.value : undefined,
       lastName: this.formGroup.get('lastName')?.value ? this.formGroup.get('lastName')?.value : undefined,
-      email: this.formGroup.get('email')?.value ? this.formGroup.get('email')?.value : undefined,
       twofa: twofa === true ? false : undefined,
       twofa_code: twofa === true ? '' : undefined
     }

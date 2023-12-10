@@ -615,12 +615,61 @@ form .submit:hover {
   width: 80%;
 }
 
+.lock-checkbox {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.lock-checkbox input[type="checkbox"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.lock-icon {
+  fill: #777;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 34px;
+  height: 34px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.lock-checkbox input[type="checkbox"]:checked + .lock-icon {
+  fill: #ff0000;
+}
+
+
+
+.action-buttons {
+  position: absolute;
+  //display: grid;
+  margin-top: 25%;
+  //grid-template-rows: 1fr 1fr;
+  left: 7rem;
+}
+
+
 @media (max-width: 810px) {
   .achievements {
     display: none;
   }
 
   .edit-button {
+    bottom: 10%;
+    top: unset;
+    width: 20%;
+    height: 7%;
+    left: 40%;
+  }
+  
+  .action-buttons {
     bottom: 10%;
     top: unset;
     width: 20%;

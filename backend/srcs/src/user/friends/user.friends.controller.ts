@@ -49,10 +49,9 @@ export class UserFriendsController {
     example: "903af193-666f-47eb-9b37-35ca3d58d4ec",
   })
   async getFriendById(@GetUser('id') userId: string, @Param('uuid') friendUuid : string) {
-    return this.userFriendsService.getFriendById(
-      userId,
-      friendUuid
-    );
+    return {
+      response: await this.userFriendsService.getFriendById(userId, friendUuid)
+    };
   }
 
   @Post()

@@ -118,7 +118,7 @@ export class UserService {
       ) {
         if (error.code === "P2002") {
           throw new HttpException(
-            "User already in use",
+            {response:  'Username already in use'},
             HttpStatus.CONFLICT,
           );
         }

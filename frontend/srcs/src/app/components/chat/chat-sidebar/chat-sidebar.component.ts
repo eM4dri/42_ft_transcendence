@@ -73,6 +73,7 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
                   })).response.filter(
                     (x) =>
                         x.userId !== this.authService.getMyUserId()
+                        && !this.cachedUsers.isUserBlocked(x.userId)
                 );
     this.filteredUsers = this.users;
     this.users.forEach( user => {

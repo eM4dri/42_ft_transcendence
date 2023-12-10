@@ -9,6 +9,7 @@ import { UserService } from '../../user/user.service';
 import { CreateUserDto } from 'src/user/dto';
 import { ResponseIntraUserDto } from '../dto';
 import { plainToInstance } from 'class-transformer';
+import { UserConstants } from 'src/utils/user.constants';
 
 @Injectable()
 export class FortyTwoStrategy extends PassportStrategy(
@@ -44,7 +45,7 @@ export class FortyTwoStrategy extends PassportStrategy(
         id: id,
         username: profile.username,
         email: userEmail,
-        url: profile.profileUrl,
+        url: `${UserConstants.INTRA_URL}/${profile.username}`,
         firstName: profile.name.givenName,
         lastName:
           profile.name.familyName.split(' ')[0],
