@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateChannelDto, CreateChannelMessageDto, JoinChannelDto, ResponseChannelDto, ResponseChannelUserDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import * as argon from 'argon2';
-import { ChannelAdminService } from './admin/channel.admin.service';
+import { ChannelAdminService, ChannelRol } from './admin/channel.admin.service';
 import { plainToInstance } from 'class-transformer';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AvatarConstants } from 'src/utils/avatar.contants';
@@ -205,9 +205,12 @@ export class ChannelService {
         try {
             const channelUser = await this.prisma.channelUser.update({
                 where: { channelUserId: channelUserId, },
-                data: { leaveAt: new Date( Date.now() ) }
+                data: { leaveAt: new Date( Date.now() ),
+                        isOwner: false,
+                        isAdmin: false
+                    }
             });
-            this.channelAdminService.reOwningChannel(channelUser.channelId);
+            await this.channelAdminService.reOwningChannel(channelUser.channelId);
             this.eventEmitter.emit('channel_user_leaves', channelUser);
             return channelUser;
         } catch (error) {

@@ -71,8 +71,6 @@ export class ChannelAdminService {
     }
 
     private async _channelUserIsChannelRole(channelUserId: string, role: ChannelRol) {
-        //console.log("me piden el role", role);
-        //console.log("ahh pero usted posee el rol ", await this._getChannelRoleFromChannelUserId(channelUserId));
         return await this._getChannelRoleFromChannelUserId(channelUserId) === role;
     }
 
@@ -342,7 +340,7 @@ export class ChannelAdminService {
                 isOwner: true,
             }
         });
-        if (owner === undefined) {
+        if (owner === null) {
             let newOwner: ChannelUser = await this.prisma.channelUser.findFirst({
                 where: {
                     channelId: channelId,
@@ -353,7 +351,7 @@ export class ChannelAdminService {
                     joinedAt: 'desc',
                 },
             });
-            if (newOwner === undefined) {
+            if (newOwner === null) {
                 newOwner = await this.prisma.channelUser.findFirst({
                     where: {
                         channelId: channelId,
@@ -364,7 +362,7 @@ export class ChannelAdminService {
                     },
                 });
             }
-            if (newOwner !== undefined) {
+            if (newOwner !== null) {
                 const newOwnerUpdated = await this.prisma.channelUser.update({
                     where: { channelUserId: newOwner.channelUserId },
                     data: { isOwner: true }
