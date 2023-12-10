@@ -1,24 +1,9 @@
-<button (click)="login()" > 
-    LOGIN
-</button>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+</head>
 
-@if(tfaId!=='')
-{
-    <br>
-    <br>
-    <input
-        placeholder="2FA authenticator"
-        type="text"
-        [(ngModel)]="tfaToken"
-    />
-}
-
-@if(unAthorizedToken!=='')
-{
-    <br>
-    <br>
-    <label>"Unauthorized You've banned"</label>
-}
 
 <app-alert
     [open]="alertConfig.open"
@@ -27,4 +12,44 @@
     (eventCloseToast)="closeAlert()"
     >
 </app-alert>
+
+
+
+
+<!-- <div (window:resize)="onResize()"></div> -->
+
+    <!-- <div #newmenu style="width:95.95hh; height:95.95vh;" width="1337px"> -->
+    <div #loginmenu style="width:95.95hh; height:95.95vh; background-image: url('assets/menubackground.svg'); background-position: center; background-repeat: no-repeat; background-size: cover; overflow: hidden;" width="1000px" height="1000px">
+    
+        <div style="width:100%; height:100%; display: flex; flex-direction: column; align-items:center; justify-content: center;">
+    
+            <h1 class="pongtitle" style="text-align: center;">Pong</h1>
+            @if(tfaId=='')
+            {
+                <h2 style="text-align: center;">Hey look, a Login button!</h2>
+            }
+            @if(tfaId!=='')
+            {
+                <h2 style="text-align: center;">Introduce your 2FA code</h2>
+            }
+           
+    
+            <div style="width:100%; display:flex; flex-direction: column;  align-content: center; padding: auto">
+                @if(unAthorizedToken!=='')
+                {
+                    <h3 style="text-align: center;"><font color="#f00">Access denied</font></h3>
+                }
+                @if(tfaId!=='')
+                {
+                    <input
+                        placeholder="2FA"
+                        class="input2fa"
+                        type="text"
+                        [(ngModel)]="tfaToken"
+                    />
+                }
+                <button #newplaybutton class="button" (click)="login()" style="padding: 5px;">Login</button>
+            </div>
+        </div>
+    </div>
 

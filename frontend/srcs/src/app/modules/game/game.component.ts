@@ -132,6 +132,7 @@ export class GameComponent implements AfterViewInit, OnDestroy
 		ngOnDestroy(): void {
 			this.gameService.sendDisconnected();
 			this.allsubscriptions.forEach((subscription) => subscription.unsubscribe());
+			this.allsubscriptions = [];
 		}
 
 	ngAfterViewInit()

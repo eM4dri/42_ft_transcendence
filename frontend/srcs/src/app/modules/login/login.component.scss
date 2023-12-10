@@ -1,15 +1,152 @@
-button {
-    padding: 0.6em 1em;
-    border: 4px solid #fa725a;
-    transition: ease-in-out 0.3s;
-    background-color: transparent;
-    color: #fa725a;
-    font-weight: bolder;
-    font-size: 16px;
-   }
-   
-   button:hover {
-    transform: scale(1.2) rotate(10deg);
-    background-color: #fa725a;
-    color: white;
-   }
+
+.input2fa {
+    position: relative;
+    margin: 15px;
+    @media only screen and (min-width: 600px)
+    {
+        margin-left: 25%;
+        width: 50%;
+        font-size: 50px;
+    }
+    @media only screen and (max-width: 599px)
+    {
+        margin-left: 10%;
+        width: 80%;
+        font-size: 30px;
+
+    }
+}
+
+.pongtitle {
+    font-family: 'Luckiest Guy';
+    color: var(--text-secondary);
+  
+    @media only screen and (min-width: 900px)
+    {
+      font-size: 250px;
+      @media only screen and (max-height: 799px)
+      {
+        font-size: 100px;
+      }
+    }
+  
+    @media only screen and (min-width: 600px) and (max-width: 899px)
+    {
+      font-size: 150px;
+    }
+  
+    @media only screen and (min-width: 300px) and (max-width: 599px)
+    {
+      font-size: 100px;
+    }
+  
+    @media only screen and (max-width: 599px)
+    {
+      font-size: 50px;
+    }
+  }
+  
+  //*   Large screen
+  @media only screen and (min-width: 600px)
+  {
+    button {
+        position: relative;
+        background-color: #302F3F;
+        border-radius: 50vh;
+        box-shadow: #242430 0px 4px 0px 0px;
+        padding: 15px;
+        background-repeat: no-repeat;
+        box-sizing: border-box;
+        width: 50%;
+        margin: 15px;
+        margin-left: 25%;
+        @media only screen and (max-height: 799px)
+        {
+          height: 40px;
+          font-size: 20px;
+        }
+        @media only screen and (min-height: 800px)
+        {
+          height: 90px;
+          font-size: 50px;
+        }
+        color: #fff;
+        border: none;
+        transition: all .3s ease-in-out;
+        z-index: 1;
+        overflow: hidden;
+      }
+      
+    button::before
+    {
+      content: "";
+      background: rgb(2,0,36);
+      background-image: linear-gradient(60deg, #2929FD, #FB0A6B);
+      width: 0;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      transition: width 700ms ease-in-out;
+      display: inline-block;
+    }
+    
+    button:hover::before
+    {
+      width: 100%;
+    }
+  
+  }  
+
+  @media only screen and (max-width: 599px)
+  {
+
+    button {
+        position: relative;
+        background-color: #302F3F;
+        border-radius: 50vh;
+        box-shadow: #242430 0px 4px 0px 0px;
+        padding: 15px;
+        background-repeat: no-repeat;
+        box-sizing: border-box;
+        width: 80%;
+        @media only screen and (max-height: 799px)
+        {
+          height: 50px;
+          font-size: 10px;
+        }
+        @media only screen and (min-height: 800px)
+        {
+          height: 120px;
+          font-size: 20px;
+        }
+        margin: 15px;
+        margin-left: 10%;
+        color: #fff;
+        border: none;
+        transition: all .3s ease-in-out;
+        z-index: 1;
+        overflow: hidden;
+      }
+      
+    button::before
+    {
+      content: "";
+      background: rgb(2,0,36);
+      background-image: linear-gradient(60deg, #2929FD, #FB0A6B);
+      width: 0;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      transition: width 700ms ease-in-out;
+      display: inline-block;
+    }
+    
+    button:hover::before
+    {
+      width: 100%;
+    }
+  }  

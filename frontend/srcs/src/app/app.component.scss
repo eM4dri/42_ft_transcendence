@@ -33,6 +33,9 @@ body::-webkit-scrollbar-thumb {
 main {
   margin-left: 16rem;
   padding: 1rem;
+  display: stretch;
+  background-color: var(--bg-primary);
+  height: calc(100vh - 1rem);
 }
 
 
