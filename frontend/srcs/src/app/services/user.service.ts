@@ -2,18 +2,23 @@ import { Injectable } from '@angular/core';
 import { MySocket } from './web-socket.service';
 import { map } from 'rxjs/operators';
 import { User } from '../models';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-
+  clientIsReady: boolean = false;
   constructor(
     private readonly mysocket: MySocket,
+    private authService: AuthService
   ) { }
 
   clientReady() {
-    this.mysocket.emit('client_ready');
+    if (!this.clientIsReady && this.authService.isLoggedIn()) {
+      this.mysocket.emit('client_ready');
+      this.clientIsReady = true;
+    }
   }
 
   blockedUserIds() {

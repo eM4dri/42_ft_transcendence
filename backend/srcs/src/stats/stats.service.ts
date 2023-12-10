@@ -101,7 +101,6 @@ export class StatsService {
       orderBy: { points: 'desc' },
     });
 
-    console.log(result_data)
     const Ids = Array.from(result_data.map(x => x.userId));
 
     const users_data = await plainToInstance(ResponseStatsDto, await this.prisma.user.findMany({

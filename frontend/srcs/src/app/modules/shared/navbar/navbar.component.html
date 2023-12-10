@@ -154,7 +154,7 @@
         </li>
         <li class="nav-item" id="themeButton">
             <a class="nav-link" (click)="changeVisibility()">
-                <svg *ngIf="!this.appComponent.darkMode"  class="theme-icon" id="lightIcon"
+                <svg *ngIf="this.appComponent.theme === 'light'"  class="theme-icon" id="lightIcon"
                     aria-hidden="true" focusable="false" data-prefix="fad" data-icon="moon-stars" role="img"
                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="">
                     <g>
@@ -166,7 +166,7 @@
                             class="fa-primary"></path>
                     </g>
                 </svg>
-                <svg *ngIf="this.appComponent.darkMode"  class="theme-icon" id="solarIcon"
+                <svg *ngIf="this.appComponent.theme === 'dark'"  class="theme-icon" id="solarIcon"
                     aria-hidden="true" focusable="false" data-prefix="fad" data-icon="sun" role="img"
                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="">
                     <g>

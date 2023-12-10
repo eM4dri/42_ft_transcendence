@@ -23,6 +23,9 @@ and this project adheres to
 - Some css fixes
 - Display navbar logout, appearance
 
+### Fixed
+- Clean some WS unauthorized workflows, client can't be ready to recieve data if he is unauthorized
+
 ## 2023-12-09 - emadriga
 ### Added
 - Finished auth workflow
