@@ -10,14 +10,14 @@
     </div>
     <div class="chat-list">
         @for (channel of filteredChannels; track channel) {
-            <div [class.selected]=isCurrentChannel(channel) class="channel-info" (click)="channelClicked(channel)">
-                <app-channel-avatar
+            <div [class.selected]=isCurrentChannel(channel) class="channel-header">
+                <app-channel-info
                     [channel]="channel"
-                ></app-channel-avatar>
-                <p class="channelname" [style]="{
-                    'text-align': 'center'}">
-                    {{ channel.channelName }}
-                </p>
+                ></app-channel-info>
+                <div class="icon-actions">
+                    <i class="bi bi-chat" pTooltip="Read messages" (click)="seeChannelMessages(channel)"></i>
+                    <i class="bi bi-gear" pTooltip="Manage" (click)="channelClicked(channel)"></i>
+                </div>
             </div>
         }
     </div>

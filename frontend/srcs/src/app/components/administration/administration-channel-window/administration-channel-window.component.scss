@@ -1,0 +1,84 @@
+.channel-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+        "a b c"
+}
+.channel-day-group {
+    background-color: #f2f2f2;
+    padding: 8px 16px;
+    margin: 0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    grid-area: b;
+    justify-self: center;
+}
+
+.channel-container {
+  // max-width: 400px;
+  // background-color: #fff;
+  grid-auto-rows: min-content; /* Altura automática basada en el contenido */
+  overflow-y: auto; /* Agrega desplazamiento vertical cuando los mensajes exceden la altura del contenedor */
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  // overflow: hidden;
+}
+
+.channel-messages {
+  // max-height: 300px;
+  overflow-y: scroll;
+  padding: 10px;
+}
+
+.channel-input {
+  background-color: #fff;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #ccc;
+  bottom: 0;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+/* Small screens */
+@media only screen and (max-width: 599px) {
+  .channel-container {
+    height: calc(100vh - 12rem ); /* Usa 100vh para ocupar todo el alto visible */
+  }
+}
+/* Large screens */
+@media only screen and (min-width: 600px) {
+  .channel-container {
+    height: calc(100vh - 8rem ); /* Usa 100vh para ocupar todo el alto visible */
+  }
+}
+
+.channel-header {
+  display: flex;
+  justify-content: space-between;
+  max-width: calc(50vw);
+  align-items: center;
+}
+
+.bi{
+  font-size: 2rem;
+  &:hover {
+    color: var(--icon-secondary);
+  }
+}
+
+.icon-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}

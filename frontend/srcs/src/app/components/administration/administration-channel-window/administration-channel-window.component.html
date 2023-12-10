@@ -1,0 +1,31 @@
+<div>
+    <div class="channel-header">
+        <app-channel-info
+            [channel]="channel"
+        ></app-channel-info>
+        <div class="icon-actions">
+            <i class="bi bi-x-square" pTooltip="Exit channel" (click)="exitChannel()"></i>
+        </div>
+    </div>
+    <div #channelContainer class="channel-container">
+        <div class="channel-messages">
+            @for (dayMsgs of channelMessages; track dayMsgs[0]) {
+                <div class="channel-grid">
+                    <p class="channel-day-group">{{ toDayLocale(dayMsgs[0]) }}</p>
+                </div>
+                @for (msg of dayMsgs[1]; track msg.channelMessageId) {
+                    @if (myChannelUser.channelUserId !== undefined && msg.channelUserId !== myChannelUser.channelUserId) {
+                        <app-channel-window-message
+                            [msg] = "msg"
+                            [user] = getUser(msg.channelUserId)
+                        ></app-channel-window-message>
+                    } @else {
+                        <app-channel-window-message
+                            [msg] = "msg"
+                        ></app-channel-window-message>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>

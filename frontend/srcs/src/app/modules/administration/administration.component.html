@@ -27,7 +27,15 @@
   </div>
   <div class="admin-window">
     @switch (ManageOption) {
-        @case ("NONE") { }
+        @case ("NONE") { 
+        }
+        @case ("SEE_CHANNEL_MESSAGES") { 
+          <app-administration-channel-window
+           [channel]="currentChannel"
+          >
+          </app-administration-channel-window>
+
+        }
         @case ("MANAGE_CHANNEL") {
             <app-administration-channel-management-users
                 [channel]="currentChannel"

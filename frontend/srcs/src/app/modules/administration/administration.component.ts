@@ -8,6 +8,7 @@ import { UriConstants } from 'src/app/utils';
 export class EnumAdminPanelTypeSelected {
   public static readonly NONE = "NONE";
   public static readonly MANAGE_CHANNEL = "MANAGE_CHANNEL"
+  public static readonly SEE_CHANNEL_MESSAGES = "SEE_CHANNEL_MESSAGES"
   public static readonly MANAGE_USER = "MANAGE_USER"
 }
 
@@ -26,12 +27,14 @@ export class AdministrationComponent extends BaseComponent<Channel> implements O
     username: '',
   }
 
-  currentChannel: Channel = {
+  noneChannel: Channel = {
     channelId: 'none',
     channelName: '0',
     avatar: '',
     isLocked: true
   };
+
+  currentChannel: Channel = this.noneChannel;
 
   constructor(
     private readonly cachedChannels: ChannelsCache,
@@ -89,8 +92,18 @@ export class AdministrationComponent extends BaseComponent<Channel> implements O
     this.ManageOption = EnumAdminPanelTypeSelected.MANAGE_CHANNEL;
   }
 
+  seeChannelMessages(channel: Channel) {
+    this.currentChannel = channel;
+    this.ManageOption = EnumAdminPanelTypeSelected.SEE_CHANNEL_MESSAGES;
+  }
+
   userClicked(user : User) {
     this.currentUser = user;
     this.ManageOption = EnumAdminPanelTypeSelected.MANAGE_USER;
+  }
+
+  exitChannel(){
+    this.ManageOption = EnumAdminPanelTypeSelected.NONE;
+    this.currentChannel = this.noneChannel;
   }
 }

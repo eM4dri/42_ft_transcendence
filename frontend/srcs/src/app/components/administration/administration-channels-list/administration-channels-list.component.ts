@@ -64,4 +64,7 @@ export class AdminstrationChannelsComponent extends BaseComponent<Channel> imple
     this.adminstrationComponent.channelClicked(channel);
   }
 
+  seeChannelMessages(channel : Channel) {
+    this.adminstrationComponent.seeChannelMessages(channel);
+  }
 }

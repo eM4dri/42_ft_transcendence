@@ -16,22 +16,32 @@ input[type="text"] {
 }
 
 .chat-list {
-display: grid;
-gap: 1px;
-overflow-y: auto;
-max-height: calc(100vh - 7rem );
+  display: grid;
+  gap: 1px;
+  overflow-y: auto;
+  max-height: calc(100vh - 8rem );
 }
 
 .selected {
-background-color: var(--bg-secondary);
+  background-color: var(--bg-secondary);
 }
 
-.channel-info {
+.channel-header {
   display: flex;
+  justify-content: space-between;
+  max-width: calc(50vw);
   align-items: center;
 }
 
-.channelname {
-  font-size: 24px;
-  margin-left: 20px;
+.bi{
+  font-size: 2rem;
+  &:hover {
+    color: var(--icon-secondary);
+  }
+}
+
+.icon-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
 }

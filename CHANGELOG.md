@@ -9,6 +9,10 @@ and this project adheres to
 ## 2023-12-09 - emadriga
 ### Added
 - 1st login workflow 'When first logged, user is prompted to add informations on his account (display name, avatar...)'
+- See all chat channels (without joining) from administration panel
+
+### Changed
+- Some css fixes
 
 ## 2023-12-09 - emadriga
 ### Added
