@@ -5,8 +5,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
 </head>
 <!-- <div #newmenu style="width:95.95hh; height:95.95vh;" width="1337px"> -->
-<div class="container-game">
-	<div class="game-homeScreen" #newmenu *ngIf="htmlstatus < 2" style="background-image: url('assets/menubackground.svg')" >
+<div #newmenu *ngIf="htmlstatus < 2" class="container-game">
+	<div class="game-homeScreen"  style="background-image: url('assets/menubackground.svg')" >
 		<div #matchmakingOngoing *ngIf="htmlstatus === 1" style="width:100%; height:100%; padding:15%" width="2000px">
 			<h1 style="text-align: center;">Looking for a match...</h1>
 			<button class="cancelbutton" (click)="cancelmatchmaking()" style="background-color: red;text-align: center;height:100px;width:50%;display: block;margin-left: 25%;"><h1><font color="#fff">Cancel</font></h1></button>
