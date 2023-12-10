@@ -6,8 +6,9 @@ import {
   VerifyCallBack,
 } from 'passport-42';
 import { UserService } from '../../user/user.service';
-import { User } from '@prisma/client';
 import { CreateUserDto } from 'src/user/dto';
+import { ResponseIntraUserDto } from '../dto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class FortyTwoStrategy extends PassportStrategy(
@@ -34,9 +35,9 @@ export class FortyTwoStrategy extends PassportStrategy(
   ): Promise<any> {
     request.session.accessToken = accessToken;
     const userEmail = profile.emails[0].value;
-    let userdb: User = await this.userService.getByEmail(
+    let userdb: ResponseIntraUserDto = plainToInstance(ResponseIntraUserDto,await this.userService.getByEmail(
       userEmail,
-    );
+    ));
     if (!userdb) {
       const id: number = +profile.id;
       const newUser: CreateUserDto = {
@@ -49,9 +50,10 @@ export class FortyTwoStrategy extends PassportStrategy(
           profile.name.familyName.split(' ')[0],
         twofa: false,
       };
-      userdb = await this.userService.new(
+      userdb = plainToInstance(ResponseIntraUserDto, await this.userService.new(
         newUser,
-      );
+      ));
+      userdb.isNew = true;
     }
     return cb(null, userdb);
   }

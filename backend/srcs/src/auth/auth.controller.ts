@@ -4,12 +4,13 @@ import { FortyTwoGuard, JwtGuard, RefreshGuard } from "./guard";
 import { AuthService } from "./auth.service";
 import { ApiExcludeController } from "@nestjs/swagger";
 import { GetUser } from "./decorator";
-import { User } from "@prisma/client";
+// import { User } from "@prisma/client";
 import { FakeAuthService } from "./fake.auth.service";
 import { TokenConstants } from "src/utils";
 import { ValidateDto } from "src/tfa/dto";
 import { TfaService } from "src/tfa/tfa.service";
 import { EventEmitter2 } from "@nestjs/event-emitter";
+import { ResponseIntraUserDto } from "./dto";
 
 @ApiExcludeController()
 @Controller()
@@ -30,14 +31,19 @@ export class AuthController {
   @UseGuards(FortyTwoGuard)
   async redirect(
     @Req() req: Request,
-    @GetUser() user42: User,
+    @GetUser() user42: ResponseIntraUserDto,
     @Res() res: Response,
   ) {
+    console.log('FORTYTWO_CLIENT_URL_CALLBACK',user42);
     const isBanned = await this.authService.isBanned(user42.userId);
+    let navigate :string = ''; 
     if (isBanned) {
       res.cookie(TokenConstants.UNAUTHORIZED_TOKEN, user42.userId);
     }
     else {
+      if (user42.isNew) {
+        navigate = '/profile';
+      }
       const needTfa: boolean = await this.authService.tfaNeeded(user42.userId);
       if ( !needTfa ){
         const { accessToken, refreshToken } = await this.authService.login(user42);
@@ -48,7 +54,7 @@ export class AuthController {
       }
     }
     const hostName = new URL(`http://${req.headers['host']}`).hostname;
-    res.redirect(`http://${hostName}:${process.env.WEB_PORT}`);
+    res.redirect(`http://${hostName}:${process.env.WEB_PORT}${navigate}`);
   }
 
   @Get(`${process.env.FAKE_LOGIN_URL}/:username`)

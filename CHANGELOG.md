@@ -8,6 +8,10 @@ and this project adheres to
 
 ## 2023-12-09 - emadriga
 ### Added
+- 1st login workflow 'When first logged, user is prompted to add informations on his account (display name, avatar...)'
+
+## 2023-12-09 - emadriga
+### Added
 - Finished auth workflow
 - Broadcast promote/demote/ban via WS
 
