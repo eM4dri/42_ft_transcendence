@@ -4,7 +4,6 @@ import { FortyTwoGuard, JwtGuard, RefreshGuard } from "./guard";
 import { AuthService } from "./auth.service";
 import { ApiExcludeController } from "@nestjs/swagger";
 import { GetUser } from "./decorator";
-// import { User } from "@prisma/client";
 import { FakeAuthService } from "./fake.auth.service";
 import { TokenConstants } from "src/utils";
 import { ValidateDto } from "src/tfa/dto";
