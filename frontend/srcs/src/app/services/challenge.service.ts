@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { MySocket } from './web-socket.service';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { GameUser } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,14 @@ export class ChallengeService {
 
   clearChallenges() {
     return this.mysocket.fromEvent<string>('clear_challenges').pipe(map((data) => data));
+  }
+
+  usersStartPlaying() {
+    return this.mysocket.fromEvent<GameUser>('user_start_playing').pipe(map((data) => data));
+  }
+
+  usersStopPlaying() {
+    return this.mysocket.fromEvent<string[]>('users_stop_playing').pipe(map((data) => data));
   }
 
   startChallenge_front() {

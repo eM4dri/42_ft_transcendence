@@ -223,7 +223,7 @@ export class GameService {
 	public	createMatch(blueid: string, redid: string, room: string, bluesocket: Socket, redsocket: Socket, ismodded: boolean, prev_blue: stats_user, prev_red: stats_user, friendlygame: boolean)
 	{
 		let current_time: number = Date.now();
-		let newuid = Math.round(Math.random() * 100000);
+		let newuid:number = Math.round(Math.random() * 100000);
 
 		this.eventemitter.emit('addUserIdsPlaying',[blueid, redid], newuid);
 		this.allgames.set(newuid, new Game(newuid, blueid, redid, room, current_time + 6000, bluesocket, redsocket, ismodded, prev_blue, prev_red, friendlygame))

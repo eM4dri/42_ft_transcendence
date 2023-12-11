@@ -1,9 +1,10 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { NavigationExtras, Router } from '@angular/router';
 import { UsersCache } from 'src/app/cache';
 import { Chat, User } from 'src/app/models';
 import { ChatComponent } from 'src/app/modules/chat/chat.component';
 import { BaseComponent } from 'src/app/modules/shared';
-import { ApiService, AuthService } from 'src/app/services';
+import { ApiService, AuthService, GameService } from 'src/app/services';
 import { ChallengeService } from 'src/app/services/challenge.service';
 import { UriConstants } from 'src/app/utils';
 
@@ -24,7 +25,9 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
     private readonly chatComponent: ChatComponent,
     private readonly cachedUsers: UsersCache,
     private readonly authService: AuthService,
-    private readonly challengeService: ChallengeService
+    private readonly challengeService: ChallengeService,
+    private readonly gameService: GameService,
+    private readonly router: Router
 
 
     ) {
@@ -136,6 +139,21 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
 
   isOnline(userId: string): boolean {
     return this.cachedUsers.isUserConnected(userId);
+  }
+
+  canSpectate(userId: string): boolean {
+    return this.cachedUsers.isUserPlaying(userId);
+  }
+
+  spectateGame(userId: string){
+    const gameId = this.cachedUsers.getLiveGameId(userId);
+
+    const navigationExtras: NavigationExtras = {
+      state: { data: { spectate: true  } }
+    };
+
+    this.gameService.sendWannaWatch(Number(gameId));
+    this.router.navigate(["/game/spectate"], navigationExtras);
   }
 
 }

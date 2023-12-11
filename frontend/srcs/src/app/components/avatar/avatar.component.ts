@@ -3,6 +3,12 @@ import { UsersCache } from 'src/app/cache';
 import { Channel, User } from 'src/app/models';
 import { UriConstants } from 'src/app/utils';
 
+export class EnumAvatarClasses {
+  public static readonly ONLINE = 'online';
+  public static readonly OFFLINE = 'offline';
+  public static readonly BUSY = 'busy';
+}
+
 @Component({
   selector: 'app-avatar',
   templateUrl: './avatar.component.html',
@@ -16,8 +22,13 @@ export class AvatarComponent {
     private readonly cachedUsers: UsersCache
   ){ }
 
-  isOnline(userId: string): boolean {
-    return this.cachedUsers.isUserConnected(userId);
+  getStatus(userId: string): string {
+    if (this.cachedUsers.isUserPlaying(userId)) {
+      return EnumAvatarClasses.BUSY;
+    } else if ( this.cachedUsers.isUserConnected(userId)) {
+      return EnumAvatarClasses.ONLINE;
+    } 
+    return EnumAvatarClasses.OFFLINE;
   }
 
   handleImageError(event: any){

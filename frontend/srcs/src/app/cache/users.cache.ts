@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../models';
 import { UserService } from '../services';
 import { UriConstants } from '../utils';
+import { ChallengeService } from '../services/challenge.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +11,11 @@ export class UsersCache {
   private _conectedUsers = new Set<string>();
   private _blockedUserIds = new Set<string>();
   private _friendUserIds = new Set<string>();
-
-  // private _cachedUsers = new Map<string, User>();
+  private _playingUserIds = new Map<string, number>();
 
   constructor(
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly challengeService: ChallengeService
   ) {
     this.userService.usersConnected().subscribe(users => {
       users.forEach(user => {
@@ -40,6 +41,15 @@ export class UsersCache {
     this.userService.blockedUserIds().subscribe(users => {
       users.forEach(user => {
         this._blockedUserIds.add(user);
+      });
+    });
+    this.challengeService.usersStartPlaying().subscribe(gameUser => {
+      console.log('usersStartPlaying',gameUser);
+      this._playingUserIds.set(gameUser.userId, gameUser.gameId);
+    });
+    this.challengeService.usersStopPlaying().subscribe(users => {
+      users.forEach(user => {
+        this._blockedUserIds.delete(user);
       });
     });
   }
@@ -90,6 +100,22 @@ export class UsersCache {
 
   isUserConnected(userId: string): boolean {
     return this._conectedUsers.has(userId)
+  }
+
+  isUserPlaying(userId: string): boolean {
+    return this._playingUserIds.has(userId)
+  }
+
+  getLiveGameId(userId: string): number {
+    // let gameId:number = -42;
+    // if (this._playingUserIds.has(userId)){
+    //   gameId = this._playingUserIds.get(userId)!;
+    // }
+    
+    const gameId = this.isUserPlaying(userId) ? this._playingUserIds.get(userId)! : -42;
+    console.log('getLiveGameId', this.isUserPlaying(userId));
+    console.log('getLiveGameId', this._playingUserIds.get(userId));
+    return gameId;
   }
   // getUser(userId: string): User | undefined {
   //   return this._cachedUsers.get(userId) || undefined;

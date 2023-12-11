@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-12-11 - emadriga
+### Added
+- Red circle on avatar to show status busy on users playing
+- You can spectate and duel from friends and chat interface
+
 ## 2023-12-10 - jvacaris
 - **Fontend tweaks:** Delete channel button, channel usernames, new favicon.
 - GameId shared with the list of playing players. 
@@ -14,7 +19,7 @@ and this project adheres to
 ### Added
 - OffCanvas para mostrar stats detalladas
 
-## 2023-12-09 - emadriga
+## 2023-12-10 - emadriga
 ### Added
 - 1st login workflow 'When first logged, user is prompted to add informations on his account (display name, avatar...)'
 - See all chat channels (without joining) from administration panel

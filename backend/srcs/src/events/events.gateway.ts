@@ -310,4 +310,15 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
         const socketId: string = this.socketsIdMap.get(userId);
         this.server.to(socketId).emit('user_demoted', userId)
     }
+
+    @OnEvent('userStartPlaying')
+    private _userStartPlaying(userId: string, gameId: number){
+        const gameUser = { userId: userId, gameId: gameId };
+        this.server.sockets.emit('user_start_playing', gameUser);
+    }
+
+    @OnEvent('usersStopPlaying')
+    private _usersStopPlaying(userIds: string[]){
+        this.server.sockets.emit('users_stop_playing', userIds);
+    }
 }

@@ -1,9 +1,5 @@
 <div *ngIf="user" class='avatar'
-        [ngClass]="
-            isOnline(user.userId)
-            ? 'online'
-            : 'offline'
-">
+        [ngClass]="getStatus(user.userId)">
     <img
         src="{{ user.avatar }}"
         alt="avatar"

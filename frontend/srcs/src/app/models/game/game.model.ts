@@ -21,3 +21,9 @@ export type Game = {
 	blueserve: boolean, //?		true: blue's serving  |  false: red's serving
 	spectators: number
 }
+
+export type GameUser ={
+	userId: string,
+	gameId: number,
+  }
+  

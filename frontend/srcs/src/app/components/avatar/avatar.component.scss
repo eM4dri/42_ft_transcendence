@@ -11,6 +11,9 @@
     &.online {
         border: 4px solid #4CAF50; // Green border for online users
     }
+    &.busy {
+        border: 4px solid darkred; // Green border for online users
+    }
     &.offline {
         filter: grayscale(100%); // Grayscale effect for offline users
     }

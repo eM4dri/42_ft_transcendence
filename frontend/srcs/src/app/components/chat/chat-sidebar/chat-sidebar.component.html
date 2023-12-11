@@ -27,9 +27,11 @@
                         (click)="loadChat(user[0])"
                     ></app-chat-info>
                     <div class="icon-actions">
-                        @if (isOnline(user[1].userId)){
+                        @if (canSpectate(user[1].userId)) {
+                            <i class="bi bi-eye" pTooltip="Spectate" placeholder="Left" (click)="spectateGame(user[1].userId)"></i>
+                        } @else if (isOnline(user[1].userId)) {
                             <i class="bi bi-joystick" pTooltip="Challenge" placeholder="Left" (click)="challengeUserid(user[1].userId)"></i>
-                        }
+                        } 
                     </div>
                 </div>
             } @empty {
