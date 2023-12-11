@@ -38,6 +38,7 @@ export class ProfileInfoComponent extends BaseComponent<string> implements OnIni
   override formGroup: FormGroup
   avatarUrl: string = '';
   friend: boolean = false;
+  blocked: boolean = false;
   stats: any;
 
 
@@ -49,6 +50,7 @@ export class ProfileInfoComponent extends BaseComponent<string> implements OnIni
     if (this.myUserId !== this.userId) {
       this.getUserStats(this.userId);
       this.isUserMyFriend();
+      this.isUserBlocked();
     } else {
       this.getUserStats();
     }
@@ -141,6 +143,52 @@ export class ProfileInfoComponent extends BaseComponent<string> implements OnIni
       },
     });
   }
+  
+  public reverseBlock(): void {
+    if (this.blocked) {
+      const headers = new HttpHeaders()
+        .set("Content-Type", "application/json") ;
+      const data  = {
+        userId_blocked: this.user.userId
+      }
+      this.apiService.deleteService({
+          url: `${UriConstants.BLOCK}`,
+          data: data,
+          params: {
+            headers
+          }
+      }).subscribe({
+          next: (res) => {
+            this.blocked = false;
+            this.cachedUsers.deleteBlockedUserId(this.userId);
+          },
+          error: error => {
+            this.processError(error);
+          },
+      });
+    } else {
+      const headers = new HttpHeaders()
+        .set("Content-Type", "application/json");
+      const data  = {
+        userId_blocked: this.user.userId
+      }
+      this.createService({
+          url: `${UriConstants.BLOCK}`,
+          data: data,
+          params: {
+            headers
+          }
+      }).subscribe({
+          next: (res) => {
+            this.blocked = true;
+            this.cachedUsers.addBlockedUserId(this.userId);
+          },
+          error: error => {
+            this.processError(error);
+          },
+      });
+    }
+  }
 
   public disableEdition() {
     this.editingUser = false;
@@ -189,6 +237,10 @@ export class ProfileInfoComponent extends BaseComponent<string> implements OnIni
       },
     });
   }
+  
+  private isUserBlocked(): void {
+    this.blocked = [...this.cachedUsers.getBlockedUserIds()].filter((x) => x === this.userId).length === 1;
+  }  
 
   private fillPatchUserDTO(){
     const twofa: boolean = this.formGroup.get('disableTfa')?.value

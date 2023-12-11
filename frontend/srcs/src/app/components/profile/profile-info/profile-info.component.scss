@@ -615,46 +615,20 @@ form .submit:hover {
   width: 80%;
 }
 
-.lock-checkbox {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
-}
-
-.lock-checkbox input[type="checkbox"] {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.lock-icon {
-  fill: #777;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 34px;
-  height: 34px;
-  transition: all 0.3s;
-  cursor: pointer;
-}
-
-.lock-checkbox input[type="checkbox"]:checked + .lock-icon {
-  fill: #ff0000;
-}
-
-
-
 .action-buttons {
   position: absolute;
-  //display: grid;
-  margin-top: 25%;
-  //grid-template-rows: 1fr 1fr;
-  left: 7rem;
+  font-size: 3rem;
+  display: grid;
+  top: 5rem;
+  grid-template-rows: 1fr 1fr;
+  right: 78%;
+  left: 22%;
+  justify-content: space-between;
 }
 
+.lock-icon-active {
+  color: #f00;
+}
 
 @media (max-width: 810px) {
   .achievements {
@@ -672,9 +646,14 @@ form .submit:hover {
   .action-buttons {
     bottom: 10%;
     top: unset;
-    width: 20%;
+    display: inline-grid;
+    grid-template-rows: unset;
+    grid-template-columns: 1fr 1fr;
+    width: 30%;
     height: 7%;
     left: 40%;
+    align-items: baseline;
+    justify-items: start;
   }
 
   .edit-button:hover {
