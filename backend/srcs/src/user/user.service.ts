@@ -103,7 +103,6 @@ export class UserService {
         },
         data: {
           username: dto.username,
-          email: dto.email,
           firstName: dto.firstName,
           lastName: dto.lastName,
           twofa: dto.twofa,

@@ -42,7 +42,7 @@ export class BlockService {
             if (error instanceof PrismaClientKnownRequestError) {
                 if (error.code == 'P2002') {
                     throw new HttpException(
-                        { response:'Channel already in blocked' },
+                        { response:'User is already blocked' },
                         HttpStatus.CONFLICT,
                     );
                 }

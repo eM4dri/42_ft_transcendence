@@ -129,13 +129,11 @@ export class UserController {
       example1: {
         value: {
           username: "marvin",
-          email: "marvin@mail.com"
         },
       },
       example2: {
         value: {
           username: "santana",
-          email: "santana@mail.com",
           firstName: "Eduardo",
           lastName: "Santana",
         },

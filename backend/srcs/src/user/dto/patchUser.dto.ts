@@ -18,16 +18,6 @@ export class PatchUserDto {
   })
   username: string;
 
-  @IsEmail()
-  @IsOptional()
-  @Length(1, 30)
-  @ApiProperty({
-    name: 'email',
-    type: String,
-    required: false,
-  })
-  email: string;
-
   @IsString()
   @IsOptional()
   @Length(1, 15)

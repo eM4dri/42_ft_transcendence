@@ -2,17 +2,6 @@
     <ng-container *ngIf="user && stats">
 
 
-        <div *ngIf="editingUser" class="editing-avatar">
-            <app-avatar
-            [user]="user" (click)="enableAvatarEdition()">
-        </app-avatar>
-        <ng-container class="avatar-editor" *ngIf="editingAvatar">
-            <app-user-avatar-editor
-                [userAvatar]="user.avatar">
-            </app-user-avatar-editor>
-        </ng-container>
-
-        </div>
         <a *ngIf="!editingUser" class="link" href="{{user.url}}">{{user.login}}</a>
 
         <div class="container noselect">
@@ -59,8 +48,25 @@
 
 
                     <div id="card">
+                        
+                        @if (editingUser) {
+                            @if (!editingAvatar) {
+                                <app-avatar pTooltip="Edit avatar" tooltipPosition="left" placeholder="Left"
+                                    class="editing-avatar" [user]="user" (click)="enableAvatarEdition()">
+                                </app-avatar>
+                            } @else {
+                                <app-profile-avatar class="avatar"
+                                    [user]="user">
+                                </app-profile-avatar>
+                                <div class="avatar-editor">
+                                    <app-user-avatar-editor
+                                        [userAvatar]="user.avatar">
+                                    </app-user-avatar-editor>
+                                </div>
+                            }
+                        }
 
-                        <form [formGroup]="formGroup" class="form" (submit)="patchUser()">
+                        <form *ngIf="!editingAvatar" [formGroup]="formGroup" class="form" (submit)="patchUser()">
 
                             <span class="input-span">
                             <label for="username" class="label">Username</label>
@@ -74,14 +80,13 @@
                             <label for="lastName" class="label">Last Name</label>
                             <input type="text" formControlName="lastName" placeholder="LastName"/>
                             </span>
-
-
+                            <br>
                             <ng-container *ngIf="user.twofa">
-                                <input type="checkbox" formControlName="disableTfa" placeholder="DisableTfa"/>
                                 <label for="disableTfa" class="label">Disable Two Factor Authentication</label>
+                                <input type="checkbox" formControlName="disableTfa" placeholder="DisableTfa"/>
                             </ng-container>
 
-                            <div class="form button">
+                            <div class="form">
                                 <input class="submit" type="submit" [disabled]="formGroup.invalid" value="Save">
                                 <button type="button" class="cancel" (click)="disableEdition()">Cancel</button>
                             </div>
@@ -170,14 +175,14 @@
     @if (myUserId !== userId) {
         <div class="action-buttons">
             @if (!friend) {
-                <i (click)="addFriend()" class="bi bi-person-plus"></i>
+                <i (click)="addFriend()" pTooltip="Add friend" tooltipPosition="left" placeholder="Left" class="bi bi-person-plus"></i>
             } @else {
-                <i (click)="deleteFriend()" class="bi bi-person-x-fill"></i>
+                <i (click)="deleteFriend()" pTooltip="Delete friend" tooltipPosition="left" placeholder="Left" class="bi bi-person-x-fill"></i>
             }
             @if (blocked) {
-                <i (click)="reverseBlock()" class="bi bi-lock-fill lock-icon-active"></i>
+                <i (click)="reverseBlock()" pTooltip="Unblock user" tooltipPosition="left" placeholder="Left" class="bi bi-lock-fill lock-icon-active"></i>
             } @else {
-                <i (click)="reverseBlock()" class="bi bi-unlock-fill"></i>
+                <i (click)="reverseBlock()" pTooltip="Block user" tooltipPosition="left" placeholder="Left" class="bi bi-unlock-fill"></i>
             }
         </div>
     }

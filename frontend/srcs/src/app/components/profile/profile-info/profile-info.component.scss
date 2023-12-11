@@ -73,14 +73,18 @@
 
 
   .editing-avatar {
-    width: 20%;
-    top: 10%;
-    left: 7rem;
+    top: 5%;
+    left: 5%;
+    width: 90%;
     position: absolute;
   }
 
   .avatar-editor {
     display: block;
+    position: absolute;
+    left: 5%;
+    width: 90%;
+    top: 40%;
   }
 
   .button-content {
@@ -466,16 +470,21 @@
 
 /* Establece un ancho máximo para el formulario */
 .form {
+  margin-top: 20rem;
   grid-column: 2;
-  max-width: 30rem; /* Cambia este valor según tus necesidades */
-  margin: 0 auto; /* Centra horizontalmente */
+  width: 70%;
+  margin: 0 auto;
   text-align: center;
   align-items: center;
 }
 
+.form label {
+  font-size: 1.5vw;
+}
+
 /* Ajusta el tamaño de los elementos de entrada en el formulario */
 .form input[type="text"] {
-  width: 100%; /* Haz que los campos de entrada ocupen todo el ancho disponible */
+  width: 100%;
   margin-bottom: 10px; /* Añade espacio entre los campos */
   height: 1.5rem;
   display: block;
@@ -486,6 +495,8 @@
 .form input[type="checkbox"] {
   display: block;
   margin: 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
   margin-top: 1.5rem;
 }
 
@@ -502,7 +513,7 @@ form .submit {
   cursor: pointer;
   transition: all 300ms;
   font-weight: 600;
-  font-size: .9rem;
+  font-size: 2vw;
 }
 
 form .cancel {
@@ -517,7 +528,7 @@ form .cancel {
   cursor: pointer;
   transition: all 300ms;
   font-weight: 600;
-  font-size: .9rem;
+  font-size: 2vw;
 }
 
 form .submit:hover {
@@ -661,10 +672,6 @@ form .submit:hover {
   }
 
   .twofa {
-    display: none;
-  }
-
-  .editing-avatar {
     display: none;
   }
 
