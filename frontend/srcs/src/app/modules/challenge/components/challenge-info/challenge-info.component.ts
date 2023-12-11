@@ -15,7 +15,7 @@ export class ChallengeInfoComponent implements OnInit {
     userId: '',
     username: '',
   }
-
+  theme = localStorage.getItem('theme') || 'dark';
   private cachedUsers = inject(UsersCache);
   private apiService = inject(ApiService);
 

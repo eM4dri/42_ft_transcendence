@@ -6,6 +6,7 @@ import {
 } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { AuthService } from 'src/app/services';
+import { ChallengeService } from 'src/app/services/challenge.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -17,7 +18,8 @@ export class NavbarComponent {
   constructor(
     private readonly router: Router,
     public readonly appComponent: AppComponent,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly challengeService: ChallengeService
   ) { }
 
   title: string = 'Clash of Pong';
@@ -84,6 +86,7 @@ export class NavbarComponent {
       this.appComponent.theme = 'light';
     }
     localStorage.setItem('theme', this.appComponent.theme);
+    this.challengeService.sendThemeSub(this.appComponent.theme);
   }
 
   public isAdmin() {

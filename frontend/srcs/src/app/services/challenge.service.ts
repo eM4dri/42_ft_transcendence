@@ -57,5 +57,13 @@ export class ChallengeService {
     return this.challengingUserIdSub.asObservable();
   }  
 
+  private themeSub = new Subject<string>();
+  sendThemeSub(theme: string) {
+      this.themeSub.next(theme);
+  }
+  getThemeSub() {
+    return this.themeSub.asObservable();
+  }  
+
 }
 

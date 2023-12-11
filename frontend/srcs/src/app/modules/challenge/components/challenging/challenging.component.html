@@ -1,10 +1,10 @@
-<div class="whole-thing">
-    <h3 style="text-align: center; font-size: 50px;"><font color="white">Challenging...</font></h3>
+<div [ngClass]="theme" class="whole-thing">
+    <h3 style="text-align: center; font-size: 50px;">Challenging...</h3>
     <div class="user-info" style="align-items:center; display: flex; flex-direction: column;">
         <app-shared-avatar [avatar]="user.avatar" [picturesize]="15" width="150px" height="150px" style="height:150px; width:150px;">
         </app-shared-avatar>
         <span class="username" style="font-size: 30px;">
-            <font color="white">&#64;{{ user.username }}</font>
+            {{ user.username }}
         </span>
         <div class="challenge-buttons" style="align-items: center; display:flex;">
             <button (click)="cancelChallenge()" class="cancelbutton" style="margin: 20px">Cancel</button>

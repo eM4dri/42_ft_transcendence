@@ -8,7 +8,8 @@
 .whole-thing {
     display: flex;
     flex-direction: column;
-    background-color: #242430;
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
     border-radius: 15px;
     vertical-align: middle;
     padding: 50px;
@@ -25,15 +26,15 @@
 
 button.acceptbutton {
     position: relative;
-    background-color: #302F3F;
+    background-color:  var(--bg-secondary);
     border-radius: 50vh;
-    box-shadow: #242430 0px 4px 0px 0px;
+    box-shadow: var(--bg-primary) 0px 4px 0px 0px;
     padding: 5px;
     background-repeat: no-repeat;
     box-sizing: border-box;
     width: 154px;
     height: 80px;
-    color: #fff;
+    color: var(--text-primary);
     border: none;
     font-size: 25px;
     transition: all .3s ease-in-out;
@@ -64,15 +65,15 @@ button.acceptbutton:hover::before {
 
 button.rejectbutton {
       position: relative;
-      background-color: #302F3F;
+      background-color:  var(--bg-secondary);
       border-radius: 50vh;
-      box-shadow: #242430 0px 4px 0px 0px;
+      box-shadow: var(--bg-primary) 0px 4px 0px 0px;
       padding: 5px;
       background-repeat: no-repeat;
       box-sizing: border-box;
       width: 154px;
       height: 80px;
-      color: #fff;
+      color: var(--text-primary);
       border: none;
       font-size: 25px;
       transition: all .3s ease-in-out;

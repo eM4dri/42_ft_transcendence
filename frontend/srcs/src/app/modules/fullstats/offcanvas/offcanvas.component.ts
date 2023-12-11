@@ -3,6 +3,7 @@ import { BaseComponent } from 'src/app/modules';
 import { ApiService, AuthService } from 'src/app/services';
 import { FullStats } from 'src/app/models';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { ChallengeService } from 'src/app/services/challenge.service';
 
 
 @Component({
@@ -12,6 +13,7 @@ import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 })
 export class OffCanvasFullStatsComponent extends BaseComponent<FullStats, {}, {}, {}> implements OnInit {
   private offcanvasService = inject(NgbOffcanvas);
+  private challengeService = inject(ChallengeService);
   dts: FullStats = {
     "userId": "",
     "login": "",
@@ -27,7 +29,7 @@ export class OffCanvasFullStatsComponent extends BaseComponent<FullStats, {}, {}
     "total": 0,
   }
   @ViewChild('content') contentTemplate!: TemplateRef<any>;
-
+  theme = localStorage.getItem('theme') || 'dark';
   constructor(
     private readonly authService: AuthService,
     private api: ApiService<FullStats>,) {
@@ -41,6 +43,9 @@ export class OffCanvasFullStatsComponent extends BaseComponent<FullStats, {}, {}
   }
 
   ngOnInit(): void {
+    this.challengeService.getThemeSub().subscribe(theme=>{
+      this.theme = theme;
+    })
   }
 
   open_offcanvas_fullstats(id: string) {

@@ -1,3 +1,7 @@
+.offcanvas-container{
+  background-color: var(--bg-primary);
+}
+
 .offcanvas-header{
   color: var(--text-secondary);
   background-color: var(--bg-primary);
@@ -18,7 +22,6 @@
 
 .card-img-top{
   background: var(--bg-primary);
-  //background: red;
 }
 
 .card-body{

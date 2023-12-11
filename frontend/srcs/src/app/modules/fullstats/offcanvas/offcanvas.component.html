@@ -1,36 +1,38 @@
 <ng-template #content let-offcanvas>
-	<div class="offcanvas-header">
-		<h4 class="offcanvas-title">{{dts.login}}</h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
-	</div>
-	<div class="offcanvas-body">
-		<div class="card justify-content-center" style="width: 23rem;">
-				<img src={{dts.avatar}} class="card-img-top" alt="...">
-			<div class="card-body">
-				<h4 class="card-title ">Pos: {{dts.position}}/{{dts.total}} <br> Points: {{dts.points}}</h4>
-			</div>
+	<div [ngClass]="theme" class="offcanvas-container">
+		<div class="offcanvas-header">
+			<h4 class="offcanvas-title">{{dts.login}}</h4>
+			<button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
 		</div>
-		<table class="table table-striped">
-			<tr>
-				<th scope="col"></th>
-				<th scope="col"></th>
-			</tr>
-			<tbody>
-			<tr>
-			<td>Wins</td><td>{{dts.gamesWin}}</td>
-			</tr>
-			<tr>
-			<td>Lose</td><td>{{dts.gamesLose}}</td>
-			</tr>
-			<tr>
-			<td>Ties</td><td>{{dts.gamesDraw}}</td>
-			</tr>
-			<tr>
-			<td>Goals Total</td><td>{{dts.goalsFavor - dts.goalsAgainst}}</td>
-			</tr>
-			</tbody>
+		<div class="offcanvas-body">
+			<div class="card justify-content-center" style="width: 23rem;">
+					<img src={{dts.avatar}} class="card-img-top" alt="...">
+				<div class="card-body">
+					<h4 class="card-title ">Pos: {{dts.position}}/{{dts.total}} <br> Points: {{dts.points}}</h4>
+				</div>
+			</div>
+			<table class="table table-striped">
+					<tr>
+						<th scope="col"></th>
+						<th scope="col"></th>
+					</tr>
+					<tbody>
+					<tr>
+					<td>Wins</td><td>{{dts.gamesWin}}</td>
+					</tr>
+					<tr>
+					<td>Lose</td><td>{{dts.gamesLose}}</td>
+					</tr>
+					<tr>
+					<td>Ties</td><td>{{dts.gamesDraw}}</td>
+					</tr>
+					<tr>
+					<td>Goals Total</td><td>{{dts.goalsFavor - dts.goalsAgainst}}</td>
+					</tr>
+					</tbody>
 			</table>
-		<div class="text-end">
+			<div class="text-end">
+			</div>
 		</div>
 	</div>
 </ng-template>

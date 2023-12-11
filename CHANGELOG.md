@@ -10,6 +10,7 @@ and this project adheres to
 ### Added
 - Red circle on avatar to show status busy on users playing
 - You can spectate and duel from friends and chat interface
+- Theme apearance works in canvas and modal
 
 ### Changed
 - Orbitron as default font
