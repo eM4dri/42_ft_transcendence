@@ -44,12 +44,12 @@ export class UsersCache {
       });
     });
     this.challengeService.usersStartPlaying().subscribe(gameUser => {
-      console.log('usersStartPlaying',gameUser);
       this._playingUserIds.set(gameUser.userId, gameUser.gameId);
     });
     this.challengeService.usersStopPlaying().subscribe(users => {
       users.forEach(user => {
-        this._blockedUserIds.delete(user);
+
+        this._playingUserIds.delete(user);
       });
     });
   }
