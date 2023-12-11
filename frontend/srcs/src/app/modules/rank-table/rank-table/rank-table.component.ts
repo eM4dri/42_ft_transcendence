@@ -19,6 +19,8 @@ export class RankTableComponent extends BaseComponent<rankData[], {}, {}, {}> im
   ranks: rankData[] = [];
   rank_ext: rankList[] = [];
   filterPost = "";
+  alternative = UriConstants.USER_AVATAR_DEFAULT;
+
   @ViewChild('childComponent', { static: true }) childComponent!: OffCanvasFullStatsComponent;
   constructor(
     private readonly authService: AuthService,
@@ -51,9 +53,14 @@ export class RankTableComponent extends BaseComponent<rankData[], {}, {}, {}> im
     // Llamar al método del componente hijo para abrir el offcanvas
     this.childComponent.openOffcanvas(id);
   }
+
   processError(error: any) {
     this.alertConfiguration('ERROR', error);
     this.openAlert();
     this.loading = true;
+  }
+
+  handleImageError(event: any) {
+    event.target.src = UriConstants.USER_AVATAR_DEFAULT;
   }
 }

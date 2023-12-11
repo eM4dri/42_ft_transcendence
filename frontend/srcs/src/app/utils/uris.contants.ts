@@ -30,4 +30,5 @@ export class UriConstants {
   public static readonly CHALLENGE = apiBasePath + '/challenge';
   public static readonly HISTORIC = apiBasePath + '/historic-games'
   public static readonly RANK = apiBasePath + '/stats/rank'
+  public static readonly FULL_STATS = apiBasePath + '/stats/list';
 }

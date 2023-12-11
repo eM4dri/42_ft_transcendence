@@ -3,8 +3,8 @@ import { BaseComponent } from 'src/app/modules';
 import { ApiService, AuthService } from 'src/app/services';
 import { FullStats } from 'src/app/models';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { UriConstants } from 'src/app/utils';
 import { ChallengeService } from 'src/app/services/challenge.service';
-
 
 @Component({
   selector: 'app-full-rank',
@@ -43,14 +43,14 @@ export class OffCanvasFullStatsComponent extends BaseComponent<FullStats, {}, {}
   }
 
   ngOnInit(): void {
-    this.challengeService.getThemeSub().subscribe(theme=>{
+    this.challengeService.getThemeSub().subscribe(theme => {
       this.theme = theme;
     })
   }
 
   open_offcanvas_fullstats(id: string) {
     this.getService({
-      url: `http://localhost:3000/stats/list/${id}`
+      url: `${UriConstants.FULL_STATS}/${id}`
     }).subscribe({
       next: (response) => {
         this.dts = response.response
