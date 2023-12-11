@@ -11,6 +11,9 @@ and this project adheres to
 - Red circle on avatar to show status busy on users playing
 - You can spectate and duel from friends and chat interface
 
+### Changed
+- Orbitron as default font
+
 ## 2023-12-10 - jvacaris
 - **Fontend tweaks:** Delete channel button, channel usernames, new favicon.
 - GameId shared with the list of playing players. 

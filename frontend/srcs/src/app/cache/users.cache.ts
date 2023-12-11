@@ -107,19 +107,9 @@ export class UsersCache {
   }
 
   getLiveGameId(userId: string): number {
-    // let gameId:number = -42;
-    // if (this._playingUserIds.has(userId)){
-    //   gameId = this._playingUserIds.get(userId)!;
-    // }
-    
-    const gameId = this.isUserPlaying(userId) ? this._playingUserIds.get(userId)! : -42;
-    console.log('getLiveGameId', this.isUserPlaying(userId));
-    console.log('getLiveGameId', this._playingUserIds.get(userId));
-    return gameId;
+    return this.isUserPlaying(userId) ? this._playingUserIds.get(userId)! : -42;
   }
-  // getUser(userId: string): User | undefined {
-  //   return this._cachedUsers.get(userId) || undefined;
-  // }
+
   getUser(userId: string): User {
     const item: string | null = localStorage.getItem(userId);
     if (item !== null) {
