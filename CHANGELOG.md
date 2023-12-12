@@ -8,9 +8,9 @@ and this project adheres to
 
 ## 2023-12-12 - emadriga
 ### Changed
-- Unifiying front look & feel for chat/channel rows
+- Unifying front look & feel for chat/channel rows
 - Improve navbar display for tablet and phones
-- Make enphasis on strong actions like ban/mute & kick
+- Make emphasis on strong actions like ban/mute & kick
 
 ### Fixed
 - WS connecting issues while a connected client is not authorized
