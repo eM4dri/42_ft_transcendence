@@ -27,6 +27,9 @@ export class BlockService {
     async blockUser(userId_blocker: string, userId_blocked: string)
     : Promise <{ userId_blocker: String, userId_blocked: String }> {
         try {
+            // if (userId_blocker === userId_blocked) {
+            //     throw new HttpException({ response: 'You can\'t block yourself!' }, HttpStatus.BAD_REQUEST)
+            // }
             const response = await this.prisma.blockedList.create({
                 data: {
                     userId_blocker: userId_blocker,
@@ -44,6 +47,11 @@ export class BlockService {
                     throw new HttpException(
                         { response:'User is already blocked' },
                         HttpStatus.CONFLICT,
+                    );
+                } else if (error.code == 'P2003') {
+                    throw new HttpException(
+                        { response:'User not found' },
+                        HttpStatus.NOT_FOUND,
                     );
                 }
             }
@@ -67,7 +75,7 @@ export class BlockService {
             if (error instanceof PrismaClientKnownRequestError) {
                 if (error.code === 'P2025') {
                   throw new HttpException(
-                    {response:  'Not Found'},
+                    {response:  'User not found in block list'},
                     HttpStatus.NOT_FOUND,);
                 }
               }

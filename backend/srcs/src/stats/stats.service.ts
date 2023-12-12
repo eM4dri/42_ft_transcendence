@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, BadRequestException, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { Update_statsDto, ResponseStatsDto } from "./dto";
 import { stats_user } from "@prisma/client";
@@ -16,20 +16,20 @@ export class StatsService {
   constructor(private prisma: PrismaService) { }
 
   async getUserStats(UserId: string): Promise<stats_user> {
-    return await this.prisma.stats_user.findUnique({
-      where: {
-        userId: UserId,
-      },
-    });
-  }
-
-  async getFullUserStats(UserId: string): Promise<datas> {
-
     const user_stats = await this.prisma.stats_user.findUnique({
       where: {
         userId: UserId,
       },
     });
+    if (!user_stats) {
+      throw new HttpException({ response: "User stats not found" }, HttpStatus.NOT_FOUND)
+    }
+    return user_stats;
+  }
+
+  async getFullUserStats(UserId: string): Promise<datas> {
+
+    const user_stats = await this.getUserStats(UserId);
     const nameavat = await this.prisma.user.findUnique({
       where: {
         userId: UserId,
@@ -81,19 +81,30 @@ export class StatsService {
 
   async get_rank(UserId: string): Promise<{ pos: number, total: number }> {
     type response = { userId: string, points: number }
-    return this.prisma.stats_user.findMany({
-      select: {
-        userId: true,
-        points: true
-      },
-      orderBy: {
-        points: 'desc',
-      },
-    }).then((data: response[]): { pos: number, total: number } => {
-      let position: number = data.map(e => e.userId).indexOf(UserId) + 1;
-      let total: number = data.length;
-      return { pos: position, total: total }
-    });
+    try {
+      const data: response[] = await this.prisma.stats_user.findMany({
+        select: {
+          userId: true,
+          points: true
+        },
+        orderBy: {
+          points: 'desc',
+        },
+      });
+  
+      const userIndex: number = data.map(e => e.userId).indexOf(UserId);
+  
+      if (userIndex === -1) {
+        throw new HttpException({ response: 'User not found' }, HttpStatus.NOT_FOUND);
+      }
+  
+      const position: number = userIndex + 1;
+      const total: number = data.length;
+  
+      return { pos: position, total: total };
+    } catch (error) {
+      throw new HttpException({ response: 'User not found' }, HttpStatus.NOT_FOUND);
+    }
   }
 
   async get_rank_list(): Promise<any> {

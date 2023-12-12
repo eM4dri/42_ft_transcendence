@@ -66,7 +66,7 @@ export class UserFriendsController {
     description: "Friend added correctly",
   })
   new(@GetUser('id') uuid: string, @Body() dto: FriendDto) {
-    this.userFriendsService.newFriend(uuid, dto.friendId);
+    return this.userFriendsService.newFriend(uuid, dto.friendId);
   }
 
   @Delete()
@@ -81,7 +81,7 @@ export class UserFriendsController {
     description: "Friend deleted correctly",
   })
   delete(@GetUser('id') uuid: string, @Body() dto: FriendDto) {
-    this.userFriendsService.deleteFriend(uuid, dto.friendId);
+    return this.userFriendsService.deleteFriend(uuid, dto.friendId);
   }
 
 }

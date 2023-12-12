@@ -1,4 +1,4 @@
-import { ForbiddenException,  Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {  MuteChannelUserDto, CreateChannelPassDto, ResponseChannelUserDto } from '../dto';
 import { ChannelUser } from '@prisma/client';
@@ -6,6 +6,8 @@ import * as argon from 'argon2';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { plainToInstance } from 'class-transformer';
 import { ResponseUserMinDto } from 'src/user/dto';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+
 
 export enum ChannelRol {
     USER,
@@ -123,6 +125,13 @@ export class ChannelAdminService {
             });
             return channelUser;
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -135,6 +144,13 @@ export class ChannelAdminService {
             });
             return channelUser;
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -151,6 +167,13 @@ export class ChannelAdminService {
             this.eventEmitter.emit('channel_user_leaves', channelUser);
             return channelUser;
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -163,6 +186,13 @@ export class ChannelAdminService {
             });
             return channelUser;
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -176,6 +206,13 @@ export class ChannelAdminService {
             this.eventEmitter.emit('update_channel_user', channelUser);
             return channelUser;
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -189,6 +226,13 @@ export class ChannelAdminService {
             this.eventEmitter.emit('update_channel_user', channelUser);
             return channelUser;
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -204,6 +248,13 @@ export class ChannelAdminService {
             this.eventEmitter.emit('channel_user_leaves', channelUser);
             return channelUser;
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }

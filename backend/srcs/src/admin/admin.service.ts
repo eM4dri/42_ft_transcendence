@@ -23,6 +23,9 @@ export class AdminService {
         const user = await this.prisma.user.findUnique({
             where: { userId },
           });
+          if (!user) {
+            throw new HttpException({ response: 'User not found' }, HttpStatus.NOT_FOUND    )
+          }
         return user.role === Role.User;
     }
 
@@ -88,6 +91,9 @@ export class AdminService {
             const bannedListEntry = await this.prisma.bannedList.findFirst({
                 where : { userId }
             })
+            if (!bannedListEntry) {
+                throw new HttpException({ response: 'Banned list entry not found' }, HttpStatus.NOT_FOUND);
+            }
             // Porque aqui no basta con pasarle el userId, se empeña en pedirme
             // el id de la columna. Que sí, que puede parecer que tenga sentido, pero
             // Es que está el campo userId marcado como unique, entonces no lo entiendo.
@@ -112,6 +118,9 @@ export class AdminService {
             const user = await this.prisma.user.findUnique({
                 where: { userId },
             });
+            if (!user) {
+                throw new HttpException({ response: 'User does not exist' }, HttpStatus.NOT_FOUND)
+            }
             let newRole = Role.Owner;
             if (user.role === Role.User) {
                 newRole = Role.Admin;
@@ -143,6 +152,9 @@ export class AdminService {
             const user = await this.prisma.user.findUnique({
                 where: { userId },
             });
+            if (!user) {
+                throw new HttpException({ response: 'User does not exist' }, HttpStatus.NOT_FOUND)
+            }
             let newRole = Role.User;
             if (user.role === Role.Owner) {
                 newRole = Role.Admin;

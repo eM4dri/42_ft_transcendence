@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Response, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
@@ -47,13 +47,16 @@ export class UserFriendsService {
   async newFriend(uuid: string, friendUuid: string) {
     // save the new friend in the db
     try {
+      // if (uuid === friendUuid) {
+      //   throw new HttpException({ response: 'You can\'t be your own friend!' }, HttpStatus.BAD_REQUEST)
+      // }
       await this.prisma.friendsList.create({
           data: {
             userId_adding: uuid,
             userId_added: friendUuid,
           },
       });
-  } catch (error) {
+    } catch (error) {
       if (
           error instanceof
           PrismaClientKnownRequestError
@@ -61,7 +64,12 @@ export class UserFriendsService {
           if (error.code === 'P2002') {
             throw new HttpException(
               {response:  'Friend relation already exists'},
-              HttpStatus.CONFLICT,
+              HttpStatus.BAD_REQUEST,
+            );
+          } else if (error.code === 'P2003') {
+            throw new HttpException(
+              {response:  'User not found'},
+              HttpStatus.NOT_FOUND,
             );
           }
       }
@@ -71,21 +79,23 @@ export class UserFriendsService {
 
   async deleteFriend(uuid: string, friendUuid: string) {
     try {
-      await this.prisma.friendsList.deleteMany({
-        where: {
+    await this.prisma.friendsList.delete({
+      where : {
+        friend_pair : {
           userId_adding: uuid,
           userId_added: friendUuid,
-        },
-      });
+        }
+      }
+    });
     } catch (error) {
       if (
         error instanceof
         PrismaClientKnownRequestError
       ) {
-        if (error.code === 'P2002') {
+        if (error.code === 'P2025') {
           throw new HttpException(
-            {response:  'Friend relation already exists'},
-            HttpStatus.CONFLICT,
+            {response:  'User not found in friends list'},
+            HttpStatus.NOT_FOUND,
           );
         }
     }

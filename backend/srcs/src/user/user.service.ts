@@ -11,10 +11,16 @@ import { plainToInstance } from 'class-transformer';
 export class UserService {
   constructor(private prisma: PrismaService) { }
 
-  getByUserId(userId: string) {
-    return this.prisma.user.findUnique({
+  async getByUserId(userId: string) {
+    const user = await this.prisma.user.findUnique({
       where: { userId },
     });
+    if (!user) {
+      throw new HttpException({ response:'User not found' },
+        HttpStatus.NOT_FOUND,
+      )
+    }
+    return user;
   }
 
   all() {
@@ -120,14 +126,15 @@ export class UserService {
             {response:  'Username already in use'},
             HttpStatus.CONFLICT,
           );
+        } else if (error.code === "P2025") {
+          throw new HttpException(
+            {response:  'User not found'},
+            HttpStatus.CONFLICT,
+          );
         }
       }
       throw error;
     }
-  }
-
-  partialUpdate() {
-    return "Update user partially!";
   }
 
   delete() {

@@ -182,8 +182,7 @@ export class ChatService {
           chatUserIdListener: currentChat.find(x=>x.userId===dto.listenerId)? currentChat.find(x=>x.userId===dto.listenerId).chatUserId : undefined
         }
     } catch (error) {
-      //handle errors if needed
-      throw error;
+      throw new HttpException({ response: 'Some id not found' }, HttpStatus.NOT_FOUND);
     }
   }
 
