@@ -1,4 +1,4 @@
-<div *ngIf="channelUsers.size">
+<div *ngIf="channelUsers.size" class="app-administration-channel-management-users">
     <div *ngFor="let u of channelUsers | keyvalue" >
         <div *ngIf="u.value.user"
               class="channelUser-row"

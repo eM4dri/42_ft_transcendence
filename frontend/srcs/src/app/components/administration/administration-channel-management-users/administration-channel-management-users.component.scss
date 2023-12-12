@@ -20,7 +20,11 @@
 
 
 button.red-box {
-	position: relative;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	margin-top: 110px;
+	margin-bottom: 20px;
 	background-color: #302F3F;
 	border-radius: 50vh;
 	box-shadow: #242430 0px 4px 0px 0px;
@@ -38,7 +42,7 @@ button.red-box {
 	overflow: hidden;
     box-shadow: 0 0 25px rgb(255,0,0);
   }
-  
+
 button.red-box::before {
 	content: "";
 	background: rgb(2,0,36);
@@ -52,12 +56,14 @@ button.red-box::before {
 	transition: width 700ms ease-in-out;
 	display: inline-block;
   }
-  
+
 button.red-box:hover::before {
 	width: 100%;
   }
 
-
+.app-administration-channel-management-users {
+	position: relative;
+}
 
 //   .red-box {
 //     display: flex;
