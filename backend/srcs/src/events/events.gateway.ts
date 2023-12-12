@@ -49,26 +49,32 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
 
     async handleConnection(socket: Socket) {
         try {
-            const user = await this.authService.isAuthorized(socket);
-            socket.broadcast.emit('user_connects', user.sub);
-            this.socketsIdMap.set(user.sub, socket.id);
-            this.socketsMap.set(user.sub, socket);
+            const { token } = socket.handshake.auth;
+            if (token){
+                const user = await this.authService.isAuthorized(socket);
+                socket.broadcast.emit('user_connects', user.sub);
+                this.socketsIdMap.set(user.sub, socket.id);
+                this.socketsMap.set(user.sub, socket);
+            }
+            else {
+                socket.disconnect();
+            }
         } catch (error) {
             // TODO handle WS errors conections
             console.log('TODO handle WS errors conections')
         }
-
-        // const { token } = socket.handshake.auth;
     }
 
     async handleDisconnect(socket: Socket) {
-        // const { token } = socket.handshake.auth;
         try {
-            const user = await this.authService.isAuthorized(socket);
-            this.socketsIdMap.delete(user.sub);
-            this.socketsMap.delete(user.sub);
-            this.server.sockets.emit('user_disconnects', user.sub);
-            this.eventEmitter.emit('disconnectChallenges',user.sub);
+            const { token } = socket.handshake.auth;
+            if (token){
+                const user = await this.authService.isAuthorized(socket);
+                this.socketsIdMap.delete(user.sub);
+                this.socketsMap.delete(user.sub);
+                this.server.sockets.emit('user_disconnects', user.sub);
+                this.eventEmitter.emit('disconnectChallenges',user.sub);
+            }
         } catch (error) {
             // TODO handle WS errors conections
             console.log('TODO handle WS errors conections')

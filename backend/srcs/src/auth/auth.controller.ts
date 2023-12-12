@@ -32,8 +32,7 @@ export class AuthController {
     @Req() req: Request,
     @GetUser() user42: ResponseIntraUserDto,
     @Res() res: Response,
-  ) {
-    console.log('FORTYTWO_CLIENT_URL_CALLBACK',user42);
+  ) { 
     const isBanned = await this.authService.isBanned(user42.userId);
     let navigate :string = ''; 
     if (isBanned) {

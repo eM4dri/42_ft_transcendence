@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## 2023-12-12 - emadriga
+### Fixed
+- WS connecting issues while a connected client is not authorized
+- When users logout now the info is really broadcasted to clients, so they no longer see them connected
+
 ## 2023-12-11 - emadriga
 ### Added
 - Red circle on avatar to show status busy on users playing

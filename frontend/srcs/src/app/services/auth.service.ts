@@ -5,7 +5,7 @@ import { AuthModel } from '../models/core/auth.model';
 import { CookieService } from 'ngx-cookie-service';
 import { CookieConstants } from '../utils';
 import { Role } from '../models';
-import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -16,7 +16,6 @@ export class AuthService {
   // roleAs: string = 'USER';
   constructor(
     private readonly cookieService : CookieService,
-    private router: Router
   ) { }
 
   saveToSession(key: string, value: string){
@@ -55,7 +54,7 @@ export class AuthService {
   logOut(){
     this.cookieService.delete(CookieConstants.USER_TOKEN);
     this.cookieService.delete(CookieConstants.REFRESH_TOKEN);
-    this.router.navigate(['/login']);
+    window.location.href = `${environment.webUrl}/login`;
   }
 
   refreshTokens(){

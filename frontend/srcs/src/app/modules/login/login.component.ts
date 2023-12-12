@@ -4,7 +4,6 @@ import { CookieConstants, UriConstants } from 'src/app/utils';
 import { CookieService } from 'ngx-cookie-service';
 import { BaseComponent } from '../shared';
 import { ApiService } from 'src/app/services';
-import { Router } from '@angular/router';
 
 export interface PostTokens {
   accessToken: string; 
@@ -24,7 +23,6 @@ export class LoginComponent extends BaseComponent<{},PostTokens> {
   constructor(
     private readonly api: ApiService<{},PostTokens>,
     private readonly cookieService: CookieService,
-    private router: Router
   ){ 
     super(api);
     this.tfaId = this.cookieService.get(CookieConstants.TFA_TOKEN);
@@ -46,7 +44,7 @@ export class LoginComponent extends BaseComponent<{},PostTokens> {
           this.cookieService.set(CookieConstants.REFRESH_TOKEN, refreshToken);
           this.cookieService.delete(CookieConstants.TFA_TOKEN);
           this.cookieService.delete(CookieConstants.UNAUTHORIZED_TOKEN);
-          this.router.navigate(['/home']);
+          window.location.href = `${environment.webUrl}/home`;
         },
         error: error => {
           this.alertConfiguration('ERROR', error);
