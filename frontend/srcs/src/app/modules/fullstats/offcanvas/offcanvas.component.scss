@@ -3,11 +3,6 @@
   height: 100vh;
 }
 
-.offcanvas-header{
-  color: var(--text-secondary);
-  background-color: var(--bg-primary);
-  width:fit-content;
-}
 
 .offcanvas-body{
   color: var(--text-primary);
@@ -27,7 +22,42 @@
   background: var(--bg-primary);
 }
 
+.offcanvas-position {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+
 .card-body{
   color: var(--text-secondary);
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-secondary); 
+}
+
+.card-medals{
+  font-size: 2.8rem;
+}
+
+.my-offcanvas-header {
+  display: flex;
+  justify-content: space-evenly;
+  max-width: calc(90vw);
+  align-items: center;
+  color: var(--text-secondary);
+  background-color: var(--bg-primary);
+}
+
+.bi{
+  font-size: 2rem;
+  &:hover {
+    color: var(--icon-secondary);
+  }
+}
+
+.icon-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.my-offcanvas-tittle{
+  font-size: 2rem;
 }

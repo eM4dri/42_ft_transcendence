@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SpectateComponent } from './spectate.component';
-import { ResultCardComponent, ResultCardLocalComponent, ResultCardVisitorComponent } from 'src/app/components';
+import { ResultCardComponent, ResultCardPlayerComponent } from 'src/app/components';
 import { SharedAvatarModule } from '../shared';
 
 
@@ -9,8 +9,7 @@ import { SharedAvatarModule } from '../shared';
 @NgModule({
   declarations: [
     SpectateComponent,
-    ResultCardLocalComponent,
-    ResultCardVisitorComponent,
+    ResultCardPlayerComponent,
     ResultCardComponent,
   ],
   imports: [

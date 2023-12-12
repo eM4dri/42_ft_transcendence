@@ -12,11 +12,11 @@ import { ChannelsCache } from 'src/app/cache';
   templateUrl: './channel-sidebar.component.html',
   styleUrls: ['./channel-sidebar.component.scss']
 })
-export class ChannelSidebarComponent extends BaseComponent<Channel, {}> implements OnChanges {
+export class ChannelSidebarComponent extends BaseComponent<Channel, {}, {}, {}> implements OnChanges {
   @Input() joinedChannels!: Map< string, Channel >;
 
   constructor(
-    private readonly api: ApiService<Channel, {}>,
+    private readonly api: ApiService<Channel, {}, {}, {}>,
     private readonly chatComponent: ChatComponent,
     private readonly modalService: NgbModal,
     private readonly channelsCache: ChannelsCache
@@ -126,7 +126,15 @@ export class ChannelSidebarComponent extends BaseComponent<Channel, {}> implemen
   leaveChannel(channel: Channel, event: Event) {
     event.stopPropagation();
     const channelUserId: string = this.channelsCache.getMyChannelUser(channel.channelId)!.channelUserId;
-    this.patch({ url: `${UriConstants.CHANNEL}/leave/${channelUserId}`});
+    this.patchService({ 
+      url: `${UriConstants.CHANNEL}/leave/${channelUserId}`
+    }).subscribe({
+      error: error => {
+        this.alertConfiguration('ERROR', error);
+        this.openAlert();
+        this.loading = false;
+      },
+    });
   }
 
 }
