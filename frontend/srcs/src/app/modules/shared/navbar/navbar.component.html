@@ -37,7 +37,7 @@
             </a>
         </li>
 
-        <li class="nav-item" [ngClass]="{ 'active': selectedNavItem === 'history' }">
+        <li class="nav-item phone-screen-width" [ngClass]="{ 'active': selectedNavItem === 'history' }">
             <a (click)="goToHistory()" class="nav-link">
                 <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="space-station-moon-alt"
                     role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
@@ -73,7 +73,7 @@
             </a>
         </li>
 
-        <li class="nav-item" [ngClass]="{ 'active': selectedNavItem === 'profile' }">
+        <li class="nav-item phone-screen-width" [ngClass]="{ 'active': selectedNavItem === 'profile' }">
             <a (click)="goToProfile()" class="nav-link">
                 <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="robot" role="img"
                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
@@ -91,7 +91,7 @@
         </li>
 
 
-        <li class="nav-item" [ngClass]="{ 'active': selectedNavItem === 'live' }">
+        <li class="nav-item tablet-screen-width" [ngClass]="{ 'active': selectedNavItem === 'live' }">
             <a (click)="openSpectate()" class="nav-link">
                 <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="robot" role="img"
                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -131,7 +131,7 @@
         </li>
 
 
-        <li *ngIf="isAdmin()" class="nav-item" [ngClass]="{ 'active': selectedNavItem === 'chat' }">
+        <li *ngIf="isAdmin()" class="nav-item tablet-screen-width" [ngClass]="{ 'active': selectedNavItem === 'chat' }">
             <a (click)="openAdministration()" class="nav-link">
                 <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="robot" role="img"
                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
@@ -152,7 +152,7 @@
                 <span class="link-text">Administration</span>
             </a>
         </li>
-        <li class="nav-item" id="themeButton">
+        <li class="nav-item tablet-screen-width" id="themeButton">
             <a class="nav-link" (click)="changeVisibility()">
                 <svg *ngIf="this.appComponent.theme === 'light'"  class="theme-icon" id="lightIcon"
                     aria-hidden="true" focusable="false" data-prefix="fad" data-icon="moon-stars" role="img"

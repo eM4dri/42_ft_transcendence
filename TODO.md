@@ -37,6 +37,7 @@ response: {
 - [x] Modal triggered/opened on ws call
 - [x] Modal answer ws to cancell chanllenge
 - [x] Modal answer ws to accept chanllenge
+- [] Emit my userchannel
 
 - [] Use truncate pipe or avoid limitless username
 

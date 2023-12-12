@@ -97,6 +97,14 @@
     transform: rotate(-180deg);
   }
   
+  /* Really small screens */
+  @media only screen and (max-width: 600px) {
+    .phone-screen-width{
+      display: none;
+      visibility: hidden;
+    }
+  }
+
   /* Small screens */
   @media only screen and (max-width: 809px) {
     .site-navbar {
@@ -107,7 +115,12 @@
       border-right-style: none;
       border-top-color: var(--icon-secondary);
     }
-  
+
+    .tablet-screen-width{
+      display: none;
+      visibility: hidden;
+    }
+
     .logo {
       display: none;
     }

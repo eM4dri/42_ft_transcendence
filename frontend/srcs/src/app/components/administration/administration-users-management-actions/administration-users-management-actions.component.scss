@@ -10,3 +10,10 @@
   justify-content: space-between;
   gap: 0.5rem;
 }
+
+.danger {
+  color: var(--icon-danger);
+  &:hover {
+    color: var(--icon-danger-dark);
+  }
+}

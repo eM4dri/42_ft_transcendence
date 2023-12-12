@@ -122,7 +122,8 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
     }
   }
 
-  challengeUserid(userId: string){
+  challengeUserid(userId: string, event: Event) {
+    event.stopPropagation();
     this.apiService.getService({
         url: `${UriConstants.CHALLENGE}/${userId}`,
       }).subscribe({
@@ -145,7 +146,8 @@ export class ChatSidebarComponent  extends BaseComponent<User> implements OnInit
     return this.cachedUsers.isUserPlaying(userId);
   }
 
-  spectateGame(userId: string){
+  spectateGame(userId: string, event: Event) {
+    event.stopPropagation();
     const gameId = this.cachedUsers.getLiveGameId(userId);
 
     const navigationExtras: NavigationExtras = {

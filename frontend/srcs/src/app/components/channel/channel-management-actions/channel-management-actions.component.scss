@@ -51,3 +51,10 @@
   border-color: #3898EC;
   outline: none;
 }
+
+.danger {
+  color: var(--icon-danger);
+  &:hover {
+    color: var(--icon-danger-dark);
+  }
+}

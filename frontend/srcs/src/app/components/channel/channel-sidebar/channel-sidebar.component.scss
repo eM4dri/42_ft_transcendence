@@ -70,19 +70,22 @@ input[type="text"] {
   outline: none;
 }
 
-
-.channel-container {
+.channel-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  max-width: calc(90vw);
+  align-items: center;
 }
 
-.channelicon {
-  width: 20px;
-  align-self:self-end;
-  height: 30px;
-  max-width: calc(90vw);
+.bi{
+  font-size: 2rem;
   &:hover {
-    transform: scale(1.1);
+    color: var(--icon-secondary);
   }
+}
+
+.icon-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
 }

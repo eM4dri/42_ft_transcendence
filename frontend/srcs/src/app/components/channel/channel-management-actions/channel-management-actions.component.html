@@ -31,7 +31,7 @@
             @if (userChannel.isBanned){
                 <i class="bi bi-person-check" pTooltip="unban" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('unban')"></i>
             } @else {
-                <i class="bi bi-person-slash" pTooltip="ban" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('ban')"></i>
+                <i class="bi bi-person-slash danger" pTooltip="ban" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('ban')"></i>
             }
         } @else {
             <i class="bi bi-person-slash" style="visibility: hidden;"></i>
@@ -48,7 +48,7 @@
         }
         <!-- Kick -->
         @if (userChannel.leaveAt === null && !userChannel.isAdmin && !userChannel.isOwner) {
-            <i class="bi bi-person-x" pTooltip="kick" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('kick')"></i>
+            <i class="bi bi-person-x danger" pTooltip="kick" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('kick')"></i>
         } @else {
             <i class="bi bi-person-x" style="visibility: hidden;"></i>
         }

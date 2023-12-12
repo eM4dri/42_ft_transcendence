@@ -6,8 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
 ## 2023-12-12 - emadriga
+### Changed
+- Unifiying front look & feel for chat/channel rows
+- Improve navbar display for tablet and phones
+- Make enphasis on strong actions like ban/mute & kick
+
 ### Fixed
 - WS connecting issues while a connected client is not authorized
 - When users logout now the info is really broadcasted to clients, so they no longer see them connected

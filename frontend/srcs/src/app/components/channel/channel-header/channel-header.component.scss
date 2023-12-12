@@ -1,19 +1,19 @@
-.channel-header {
+  .channel-header {
     display: flex;
     justify-content: space-between;
+    max-width: calc(90vw);
     align-items: center;
   }
   
-  .channelicons {
+  .bi{
+    font-size: 2rem;
+    &:hover {
+      color: var(--icon-secondary);
+    }
+  }
+  
+  .icon-actions {
     display: flex;
     justify-content: space-between;
-    gap: 0.2rem;
-    align-items: flex-end;
-  }
-  .channelicon {
-    width: 30px;
-    height: 30px;
-    &:hover {
-        transform: scale(1.1);
-    }
+    gap: 0.5rem;
   }

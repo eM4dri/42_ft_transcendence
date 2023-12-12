@@ -21,16 +21,15 @@
             } 
         } @else {
             @for (user of currentUsers; track user[0]) {
-                <div class="chat-header" [class.selected]="isCurrentChat(user[0])">
+                <div class="chat-header" [class.selected]="isCurrentChat(user[0])" (click)="loadChat(user[0])">
                     <app-chat-info
                         [user]="user[1]"
-                        (click)="loadChat(user[0])"
                     ></app-chat-info>
                     <div class="icon-actions">
                         @if (canSpectate(user[1].userId)) {
-                            <i class="bi bi-eye" pTooltip="Spectate" placeholder="Left" (click)="spectateGame(user[1].userId)"></i>
+                            <i class="bi bi-eye" pTooltip="Spectate" placeholder="Left" (click)="spectateGame(user[1].userId, $event)"></i>
                         } @else if (isOnline(user[1].userId)) {
-                            <i class="bi bi-joystick" pTooltip="Challenge" placeholder="Left" (click)="challengeUserid(user[1].userId)"></i>
+                            <i class="bi bi-joystick" pTooltip="Challenge" placeholder="Left" (click)="challengeUserid(user[1].userId, $event)"></i>
                         } 
                     </div>
                 </div>

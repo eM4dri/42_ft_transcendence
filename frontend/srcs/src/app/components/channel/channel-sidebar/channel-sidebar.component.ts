@@ -118,8 +118,15 @@ export class ChannelSidebarComponent extends BaseComponent<Channel, {}> implemen
     this.chatComponent.manageChannel();
   }
 
-  manageChannel(channel: Channel) {
+  manageChannel(channel: Channel, event: Event) {
+    event.stopPropagation();
     this.chatComponent.manageChannel(channel);
+  }
+
+  leaveChannel(channel: Channel, event: Event) {
+    event.stopPropagation();
+    const channelUserId: string = this.channelsCache.getMyChannelUser(channel.channelId)!.channelUserId;
+    this.patch({ url: `${UriConstants.CHANNEL}/leave/${channelUserId}`});
   }
 
 }

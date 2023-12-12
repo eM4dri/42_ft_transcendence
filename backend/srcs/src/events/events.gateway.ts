@@ -103,7 +103,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
     subscribeCreatedChannel(channel: ResponseChannelDto, channelUser: ResponseChannelUserDto) {
         const socket = this.socketsMap.get(channelUser.userId);
         this.server.to(socket.id).emit('joined_channels', [channel]);
-        console.log('susbcribe_created_channel',channelUser, socket.id);
         this._loadUserChannel(channelUser.channelId, channelUser.userId, socket);
     }
 
