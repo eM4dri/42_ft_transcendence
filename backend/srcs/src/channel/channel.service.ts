@@ -154,6 +154,9 @@ export class ChannelService {
             const channel = await this.prisma.channel.findUnique({
                 where: { channelId: dto.channelId }
             });
+            if (!channel) {
+                throw new NotFoundException({response:  'Not Found'});
+            }
             if (channel.password !== null)  {
                 const pwMatches = await argon.verify( channel.password, dto.password);
                 if (pwMatches === false) {
@@ -214,6 +217,13 @@ export class ChannelService {
             this.eventEmitter.emit('channel_user_leaves', channelUser);
             return channelUser;
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -239,6 +249,13 @@ export class ChannelService {
                  }
             });
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -289,6 +306,9 @@ export class ChannelService {
             const channel = await this.prisma.channel.findFirst({
                 where: { channelId: channelId }
             });
+            if (!channel) {
+                throw new NotFoundException({response: 'Not found'});
+            }
             if (dto.currentPassword) {
                 const same = await argon.verify(channel.password, dto.currentPassword);
                 if (!same) {

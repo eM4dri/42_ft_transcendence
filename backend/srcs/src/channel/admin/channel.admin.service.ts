@@ -278,6 +278,13 @@ export class ChannelAdminService {
                 throw new ForbiddenException({ response: 'Forbidden'});
             }
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -292,6 +299,13 @@ export class ChannelAdminService {
                 throw new ForbiddenException({ response: 'Forbidden'});
             }
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -306,6 +320,13 @@ export class ChannelAdminService {
                 throw new ForbiddenException({ response: 'Forbidden'});
             }
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -320,6 +341,13 @@ export class ChannelAdminService {
                 throw new ForbiddenException({ response: 'Forbidden'});
             }
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -334,6 +362,13 @@ export class ChannelAdminService {
                 throw new ForbiddenException({ response: 'Forbidden'});
             }
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -348,6 +383,13 @@ export class ChannelAdminService {
                 throw new ForbiddenException({ response: 'Forbidden'});
             }
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -362,6 +404,13 @@ export class ChannelAdminService {
                 throw new ForbiddenException({ response: 'Forbidden'});
             }
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
@@ -379,6 +428,13 @@ export class ChannelAdminService {
             });
             return channel;
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  throw new HttpException(
+                    {response:  'Channel user does not exist'},
+                    HttpStatus.NOT_FOUND);
+                }
+            }
             throw (error);
         }
     }
