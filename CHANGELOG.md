@@ -16,6 +16,7 @@ and this project adheres to
 - Unifying front look & feel for chat/channel rows
 - Improve navbar display for tablet and phones
 - Make emphasis on strong actions like ban/mute & kick
+- Improve spectate module
 
 ### Fixed
 - WS connecting issues while a connected client is not authorized

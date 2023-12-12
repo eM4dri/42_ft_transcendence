@@ -1,14 +1,23 @@
 <ng-template #content let-offcanvas>
 	<div [ngClass]="theme" class="offcanvas-container">
-		<div class="offcanvas-header">
-			<h4 class="offcanvas-title">{{dts.login}}</h4>
-			<button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+		<div class="my-offcanvas-header">
+			<div class="my-offcanvas-tittle" >{{dts.login}}</div>
+			<div class="icon-actions">
+				<i class="bi bi-x-square" pTooltip="Close" (click)="offcanvas.dismiss('Cross click')"></i>
+			</div>
 		</div>
 		<div class="offcanvas-body">
 			<div class="card justify-content-center" style="width: 23rem;">
 					<img src={{dts.avatar}} class="card-img-top" alt="...">
-				<div class="card-body">
-					<h4 class="card-title ">Pos: {{dts.position}}/{{dts.total}} <br> Points: {{dts.points}}</h4>
+				<div class="offcanvas-position">
+					<div class="card-body">
+						<h4 class="card-title ">Pos: {{dts.position}}/{{dts.total}} <br> Points: {{dts.points}}</h4>
+					</div>
+					<div class="card-body card-medals">
+						@if( dts.position === 1) { 🥇
+						} @else if(dts.position === 2){ 🥈
+						} @else if(dts.position === 3){ 🥉 }
+					</div>
 				</div>
 			</div>
 			<table class="table table-striped">
