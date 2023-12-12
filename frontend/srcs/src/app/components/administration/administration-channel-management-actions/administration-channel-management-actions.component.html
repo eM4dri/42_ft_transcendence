@@ -18,9 +18,9 @@
         <!-- Gestion de permisos (de canal) -->
         @if (!userChannel.isBanned){
             @if (userChannel.isAdmin) {
-                <i class="bi bi-person-down" pTooltip="demote" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('demote')"></i>
+                <i class="bi bi-person-down" pTooltip="Demote" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('demote')"></i>
             } @else {
-                <i class="bi bi-person-up" pTooltip="promote" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('promote')"></i>
+                <i class="bi bi-person-up" pTooltip="Promote" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('promote')"></i>
             }
         } @else {
             <i class="bi bi-person-up" style="visibility: hidden;" ></i>
@@ -28,9 +28,9 @@
         <!-- Baneos (de canal) -->
         @if (!userChannel.isAdmin && !userChannel.isOwner) {
             @if (userChannel.isBanned){
-                <i class="bi bi-person-check" pTooltip="unban" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('unban')"></i>
+                <i class="bi bi-person-check" pTooltip="Unban" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('unban')"></i>
             } @else {
-                <i class="bi bi-person-slash danger" pTooltip="ban" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('ban')"></i>
+                <i class="bi bi-person-slash danger" pTooltip="Ban" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('ban')"></i>
             }
         } @else {
             <i class="bi bi-person-slash" style="visibility: hidden;"></i>
@@ -38,16 +38,16 @@
         <!-- Muteos -->
         @if (!userChannel.isBanned && !userChannel.isAdmin){
             @if (isMuted(userChannel)) {
-                <i class="bi bi-mic" pTooltip="unmute" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('unmute')"></i>
+                <i class="bi bi-mic" pTooltip="Unmute" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('unmute')"></i>
             } @else {
-                <i class="bi bi-mic-mute" pTooltip="mute" tooltipPosition="bottom" placeholder="Bottom" (click)="open(content)"></i>
+                <i class="bi bi-mic-mute" pTooltip="Mute" tooltipPosition="bottom" placeholder="Bottom" (click)="open(content)"></i>
             }
         } @else {
             <i class="bi bi-mic" style="visibility: hidden;"></i>
         }
         <!-- Kick -->
         @if (userChannel.leaveAt === null && !userChannel.isAdmin && !userChannel.isOwner) {
-            <i class="bi bi-person-x danger" pTooltip="kick" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('kick')"></i>
+            <i class="bi bi-person-x danger" pTooltip="Kick" tooltipPosition="bottom" placeholder="Bottom" (click)="patchUser('kick')"></i>
         } @else {
             <i class="bi bi-person-x" style="visibility: hidden;"></i>
         }

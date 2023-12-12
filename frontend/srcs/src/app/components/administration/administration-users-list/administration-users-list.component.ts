@@ -43,14 +43,14 @@ export class AdminstrationUsersListComponent extends BaseComponent<UserExtended>
   // para que se muestren los usuarios de db.
   async ngOnInit() : Promise<void>{
     console.log("ngOnInit del user-list-component");
-    console.log("Este es el input del bato",this.userSearchInput);
+    console.log("User's input",this.userSearchInput);
     await this.updateUsers();
   }
 
   // Esto no se bien bien por qué se hace. Lo dejo así y ya veremos
   async ngOnChanges(changes: SimpleChanges) : Promise<void> {
     console.log("ngOnChanges del user-list-component");
-    console.log("Este es el input del bato",this.userSearchInput);
+    console.log("User's input",this.userSearchInput);
     await this.updateUsers();
   }
 

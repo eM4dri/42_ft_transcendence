@@ -297,6 +297,11 @@
     transform: rotateX(0deg) rotateY(5deg) rotateZ(0deg);
   }
 
+  .tr-15:hover ~ #card {
+    transition: 125ms ease-in-out;
+    transform: rotateX(0deg) rotateY(10deg) rotateZ(0deg);
+  }
+
   .tr-16:hover ~ #card {
     transition: 125ms ease-in-out;
     transform: rotateX(-10deg) rotateY(-10deg) rotateZ(0deg);
@@ -366,7 +371,7 @@
     left: 15%;
     width: 5%;
     height: 10%;
-    border-radius: 50%;
+    border-radius: 50vh;
     background-color: rgb(20, 20, 20);
     border: none;
     font-weight: 600;
@@ -391,7 +396,7 @@
 
   .edit-button:hover {
     width: 10%;
-    border-radius: 45%;
+    border-radius: 45vh;
     transition-duration: 0.5s;
     background-color: rgb(72, 69, 255);
     align-items: center;

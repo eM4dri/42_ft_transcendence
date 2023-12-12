@@ -61,6 +61,8 @@ backgroundborderimg.src = "assets/fieldborder.svg"
 var backgroundmiddleimg = new Image();
 backgroundmiddleimg.src = "assets/fieldmiddle.svg"
 
+var gameResulted = false;
+
 @Component({
 	selector: 'app-game',
 	templateUrl: './game.component.html',
@@ -115,6 +117,7 @@ export class GameComponent implements AfterViewInit, OnDestroy
 			this.allsubscriptions.push(
 			this.gameService.listeningToGameResult().subscribe(result => {
 				gameresult = result;
+				gameResulted = true;
 
 			}));
 
@@ -123,6 +126,7 @@ export class GameComponent implements AfterViewInit, OnDestroy
 				areyoublue = _areyoublue;
 				introtime = 3000;
 				gameresult = {yourscore: 0, theirscore: 0, prev_points: 0, earned_points: 0, are_you_blue: false};
+				gameResulted = false;
 			}));
 		}
 		ngOnDestroy(): void {
@@ -230,10 +234,10 @@ export class GameComponent implements AfterViewInit, OnDestroy
 		this.context.font = "810px monospace";
 		
 		this.context.fillStyle = `rgb(50, 50, 255, 0.2)`
-		this.context.fillText(this.gameClass.bluescore.toString(), 500, 700);
+		this.context.fillText(this.gameClass.bluescore.toString(), 500, 710);
 		
 		this.context.fillStyle = `rgb(255, 50, 50, 0.2)`
-		this.context.fillText(this.gameClass.redscore.toString(), 1500, 700);
+		this.context.fillText(this.gameClass.redscore.toString(), 1500, 710);
 		
 
 		//*		Time left
@@ -503,7 +507,7 @@ export class GameComponent implements AfterViewInit, OnDestroy
 					this.context.fillStyle = "rgb(128, 0, 255, 1)";
 			}
 			this.context.font = "200px monospace";
-			if (gameresult)
+			if (gameResulted)
 			{
 
 				if (gameresult.yourscore > gameresult.theirscore)

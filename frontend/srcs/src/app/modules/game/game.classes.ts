@@ -22,6 +22,7 @@ export class Ball
 	radius: number = 5;		// 5% of the field.
 	passedLimit: boolean = false;
 	opacity: number = 1;
+	speed_boost: number = 0;
 	invis_len: number = 0
 	just_collided: boolean = false;
 }

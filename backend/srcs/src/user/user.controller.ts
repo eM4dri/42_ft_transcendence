@@ -73,11 +73,11 @@ export class UserController {
 
   @Post()
   @ApiOperation({
-    description: "Crea un usuario",
+    description: "Create a user",
   })
   @ApiBody({
     type: CreateUserDto,
-    description: "Crea un usuario CreateUserDto",
+    description: "Create a user CreateUserDto",
     examples: {
       example1: {
         value: {
@@ -113,7 +113,7 @@ export class UserController {
 
   @Patch(':uuid')
   @ApiOperation({
-    description: "Modifica un usuario",
+    description: "Edit a user",
   })
   @ApiParam({
     name: "uuid",
@@ -124,7 +124,7 @@ export class UserController {
   })
   @ApiBody({
     type: PatchUserDto,
-    description: "Modifica un usuario PatchUserDto",
+    description: "Edit a user PatchUserDto",
     examples: {
       example1: {
         value: {

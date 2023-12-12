@@ -74,6 +74,16 @@ export class ChallengeService {
         this.eventEmitter.emit('usersStopPlaying', userIds);
     }
 
+    @OnEvent('addUserIdsWaiting')
+    addUserIdsWaiting(userId: string){
+        this._usersIdOnChallenge.set(userId, 'ToBeDetermined');
+    }
+
+    @OnEvent('deleteUserIdsWaiting')
+    deleteUserIdsWaiting(userId: string){
+        this._removeUserIdFromChallenging(userId);
+    }
+
     private _getUserIds(challengerUserId: string, challengedUserId: string): string[] {
         const challenged = this._usersIdOnChallenge.get(challengerUserId);
         const challenger = this._usersIdOnChallenge.get(challengedUserId);

@@ -27,6 +27,6 @@ if [ -f "$ENV" ]; then
 
   echo "environment.ts generado exitosamente."
 else
-  echo "El archivo .env no existe en la raíz del proyecto."
+  echo "The .env file doesn't exist at the project's root."
 fi
 

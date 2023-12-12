@@ -58,7 +58,7 @@ export class TfaService {
       });
 
       if (isValid) {
-        return res.status(HttpStatus.OK).json({ response: 'Código de autenticación válido' });
+        return res.status(HttpStatus.OK).json({ response: 'Valid Authentication code' });
       } else {
         return  res.status(HttpStatus.UNAUTHORIZED).json({ response: 'Unauthorized'});
       }

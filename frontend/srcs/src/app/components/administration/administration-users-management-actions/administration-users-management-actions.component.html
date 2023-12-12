@@ -2,7 +2,7 @@
     @if(!isThisMyself()) {
         @if (userIsAdmin() || userIsOwner()) {
             <i class="bi bi-person-down"
-                pTooltip="demote"
+                pTooltip="Demote"
                 tooltipPosition="bottom"
                 placeholder="Bottom"
                 (click)="patchUser('demote')"
@@ -12,7 +12,7 @@
         }
         @if (!userIsOwner() && !userExtended.isBanned) {
             <i class="bi bi-person-up"
-                pTooltip="promote"
+                pTooltip="Promote"
                 tooltipPosition="bottom"
                 placeholder="Bottom"
                 (click)="patchUser('promote')"
@@ -23,14 +23,14 @@
         @if (!userIsAdmin() && !userIsOwner()) {
             @if (userExtended.isBanned){
                 <i class="bi bi-person-check"
-                    pTooltip="unban"
+                    pTooltip="Unban"
                     tooltipPosition="bottom"
                     placeholder="Bottom"
                     (click)="patchUser('unban')"
                 ></i>
             } @else {
                 <i class="bi bi-person-slash danger"
-                    pTooltip="ban"
+                    pTooltip="Ban"
                     tooltipPosition="bottom"
                     placeholder="Bottom"
                     (click)="patchUser('ban')"

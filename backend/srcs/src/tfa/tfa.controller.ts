@@ -21,10 +21,10 @@ export class TfaController {
 
 
   @Post('validate')
-  @ApiOperation({ description: 'Validar código de autenticación de dos factores' })
+  @ApiOperation({ description: 'Validate 2FA code' })
   @ApiBody({
     type: ValidateDto,
-    description: 'Código de autenticación de dos factores y userid',
+    description: '2FA code and userid',
   })
 
   async validarCodigoTFA(@Body() body: ValidateDto, @Res() res: any) {

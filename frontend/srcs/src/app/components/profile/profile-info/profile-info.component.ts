@@ -94,7 +94,7 @@ export class ProfileInfoComponent extends BaseComponent<string> implements OnIni
         this.qrCode = res;
       },
       error: () => {
-          this.processError('Error retrieving qr code');
+          this.processError('Error retrieving QR code');
       },
     });
   }
@@ -255,7 +255,7 @@ export class ProfileInfoComponent extends BaseComponent<string> implements OnIni
 
   private checkFormErrors(dto: PatchUserDto): boolean {
     if (Object.values(dto).filter(value => value !== undefined).length < 1) {
-      this.processError('Istert at least one element to the form');
+      this.processError('Introduce at least one element to the form');
       return true;
     } else if (dto.username && dto.username.length > 10) {
       this.processError('Username must be less than 10 characters long');

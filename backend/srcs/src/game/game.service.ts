@@ -37,11 +37,12 @@ export class Ball
 	x: number = 100;		//	← 0  |  200 →
 	y: number = 50;			//	↑ 0  |  100 ↓
 	speed: number = ball_normal_speed;		
-	angle: number = 60;		// -90 ↑  |  0 ⭤  |  90 ↓ (0's direction gets decided by the parameter below. Don't let the angle be >= 90 || <= -90)
+	angle: number = (Math.random() - 0.5) * 120;		// -90 ↑  |  0 ⭤  |  90 ↓ (0's direction gets decided by the parameter below. Don't let the angle be >= 90 || <= -90)
 	direction: number = -1;	//  -1 ←  |  1 →
 	radius: number = 5;		// 5% of the field.
 	passedLimit: boolean = false;
 	opacity: number = 1;
+	speed_boost: number = 0;
 	invis_len: number = 0;
 	just_collided: boolean = false;
 }
@@ -128,7 +129,7 @@ class GameZIP
 	bluepaddle: Paddle;
 	redscore: number = 0;
 	bluescore: number = 0;
-	gametime: number = 120000;	// Time in ms
+	gametime: number = 60000;	// Time in ms
 	modsenabled: boolean;
 	status: number = gameStatus.pregame;
 	waitEnd: number = 6000;
@@ -348,23 +349,24 @@ export class GameService {
 			
 			if (value.status == gameStatus.game)	//?		Ongoing game
 			{
-				value.ball.x += value.ball.speed * Math.cos(value.ball.angle * Math.PI / 180) * value.ball.direction;	//?	Calculating new position for this frame
-				value.ball.y += value.ball.speed * Math.sin(value.ball.angle * Math.PI / 180);
+				value.ball.x += (value.ball.speed + value.ball.speed_boost) * Math.cos(value.ball.angle * Math.PI / 180) * value.ball.direction;	//?	Calculating new position for this frame
+				value.ball.y += (value.ball.speed + value.ball.speed_boost) * Math.sin(value.ball.angle * Math.PI / 180);
 				value.gametime -= refreshRate;
 				if (value.ball.y - ball_radius <= 5 || value.ball.y + ball_radius >= 95)
 				{
 					//?		Bounced with a wall
 					value.ball.just_collided = true;
 					value.ball.angle *= -1; 
+					value.ball.speed += 0.025;
 					if (value.ball.y + value.ball.speed * Math.sin(value.ball.angle * Math.PI / 180) - ball_radius <= 5)
 						value.ball.y = 5 + ball_radius;
 					else if (value.ball.y + value.ball.speed * Math.sin(value.ball.angle * Math.PI / 180) + ball_radius >= 95)
 						value.ball.y = 95 - ball_radius;
 				}
 				//*		vvv  Power-Up Applications  vvv
-				if (value.ball.speed > ball_normal_speed)
+				if (value.ball.speed_boost > 0)
 				{
-					value.ball.speed -= 0.01;
+					value.ball.speed_boost -= 0.01;
 				}
 				if (value.ball.invis_len > 0)
 				{
@@ -388,7 +390,7 @@ export class GameService {
 					{
 						if (value.powerup.type == 1)
 						{
-							value.ball.speed = ball_normal_speed * 3;
+							value.ball.speed_boost = value.ball.speed * 2.5;
 						}
 						else if (value.powerup.type == 2)
 						{
@@ -423,6 +425,7 @@ export class GameService {
 						value.ball.direction = 1;
 						value.ball.passedLimit = false;
 						value.ball.angle = 50 * ((value.ball.y - value.bluepaddle.y) / (value.bluepaddle.radius))
+						value.ball.speed += 0.1;
 						if (value.ball.angle > 80)
 							value.ball.angle = 80;
 						else if (value.ball.angle < -80)
@@ -442,6 +445,11 @@ export class GameService {
 						value.ball.direction = -1;
 						value.ball.passedLimit = false;
 						value.ball.angle = 50 * ((value.ball.y - value.redpaddle.y) / (value.redpaddle.radius))
+						value.ball.speed += 0.1;
+						if (value.ball.angle > 80)
+							value.ball.angle = 80;
+						else if (value.ball.angle < -80)
+							value.ball.angle = -80;
 					}
 					else		//?		The ball didn't touch the paddle so scoring is now unavoidable.
 					{
@@ -461,6 +469,7 @@ export class GameService {
 					else
 						value.ball.direction = 1;
 					value.ball.speed = ball_normal_speed;
+					value.ball.speed_boost = 0;
 					value.ball.invis_len = 0;
 					value.ball.opacity = 1;
 					value.powerup.visible = false;
@@ -481,6 +490,7 @@ export class GameService {
 					else
 						value.ball.direction = 1;
 					value.ball.speed = ball_normal_speed;
+					value.ball.speed_boost = 0;
 					value.ball.invis_len = 0;
 					value.ball.opacity = 1;
 					value.powerup.visible = false;

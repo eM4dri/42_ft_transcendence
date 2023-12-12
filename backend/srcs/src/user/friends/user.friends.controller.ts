@@ -56,7 +56,7 @@ export class UserFriendsController {
 
   @Post()
   @ApiOperation({
-    description: "Añade un amigo",
+    description: "Add a friend",
   })
   @ApiBody({
     type: FriendDto
@@ -71,7 +71,7 @@ export class UserFriendsController {
 
   @Delete()
   @ApiOperation({
-    description: "Borra un amigo",
+    description: "Delete a friend",
   })
   @ApiBody({
     type: FriendDto

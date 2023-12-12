@@ -91,7 +91,7 @@ export class ApiService<GET = {}, POST = {}, PUT = {}, PATCH = {}, DELETE = {}> 
   }
 
   handleError(error: HttpErrorResponse) {
-    return throwError(() => error.error.response || 'Ocurrió un error');
+    return throwError(() => error.error.response || 'An error occurred');
   }
 
 

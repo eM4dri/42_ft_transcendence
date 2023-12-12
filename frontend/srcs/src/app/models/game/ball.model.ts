@@ -7,6 +7,7 @@ export type Ball = {
 	radius: number,		// 5% of the field.
 	passedLimit: boolean,
 	opacity: number,
+	speed_boost: number,
 	invis_len: number,
 	just_collided: boolean
 }

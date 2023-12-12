@@ -21,7 +21,7 @@ import { EventsModule } from 'src/events/events.module';
 import { UserService } from 'src/user/user.service';
 import { stats_user } from "@prisma/client";
 import { StatsService } from '../stats/stats.service'
-import { OnEvent } from '@nestjs/event-emitter';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 
 var paddle_normal_speed: number = 1.25;	//! To change the default paddle speed
 
@@ -32,7 +32,12 @@ var paddle_normal_speed: number = 1.25;	//! To change the default paddle speed
 @UseGuards(WsGuard)
 @Injectable()
 export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
-	constructor(private readonly gameService: GameService, private readonly userService: UserService, private statsService: StatsService)
+	constructor(
+		private readonly gameService: GameService, 
+		private readonly userService: UserService, 
+		private statsService: StatsService, 
+		private eventEmitter: EventEmitter2
+		)
 	{
 
 	}
@@ -113,25 +118,22 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 	
 	@SubscribeMessage('matchmaking')
 	async listenForMatchmaking(@GetUser() user: JwtPayload, @ConnectedSocket() socket : Socket, @MessageBody() ismodded: boolean) {
+
 		if (!ismodded)
 		{
 			if (!this.matchmaking_queue.has(user.sub))
 			{
+				this.eventEmitter.emit('addUserIdsWaiting', user.sub);
 				this.matchmaking_queue.set(user.sub, socket);
-				//console.log(">>>>>>>>", user.sub, "\x1b[0;32mJOINED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
 			}
-			// else
-				//console.log(">>>", user.sub, "\x1b[0;33mWAS ALREADY HERE\x1b[0m <<<", this.matchmaking_queue.size)
 		}
 		else
 		{
 			if (!this.modded_matchmaking_queue.has(user.sub))
 			{
+				this.eventEmitter.emit('addUserIdsWaiting', user.sub);
 				this.modded_matchmaking_queue.set(user.sub, socket);
-				//console.log(">>>>>>>>", user.sub, "\x1b[0;32mJOINED\x1b[0m <<<<<<<<", this.modded_matchmaking_queue.size)
 			}
-			// else
-				//console.log(">>>", user.sub, "\x1b[0;33mWAS ALREADY HERE\x1b[0m <<<", this.modded_matchmaking_queue.size)
 		}
 		if (!ismodded && this.matchmaking_queue.size >= 2)
 		{
@@ -188,13 +190,11 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 
 	@SubscribeMessage('wannawatch')
 	listenForWannaWatch(@ConnectedSocket() socket: Socket, @MessageBody() gameid: number) {
-		//console.log(">>>>>>>> Someone \x1b[0;34mWANNA WATCH\x1b[0m", gameid, "<<<<<<<<")
 		if (this.allgames.has(gameid))
 		{
 			socket.join(this.allgames.get(gameid).room);
 			this.allgames.get(gameid).spectators++;
 			this.allcurrentspectators.set(socket, this.allgames.get(gameid).room);
-			//console.log(">>>>> Someone joined room ", this.allgames.get(gameid).room, " <<<<<")
 		}
 		else
 		{
@@ -208,20 +208,16 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		if (this.matchmaking_queue.has(user.sub))
 		{
 			this.matchmaking_queue.delete(user.sub);
-			//console.log(">>>>>>>>", user.sub, "\x1b[0;31mCANCELED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
 		}
 		else if (this.modded_matchmaking_queue.has(user.sub))
 		{
 			this.modded_matchmaking_queue.delete(user.sub);
-			//console.log(">>>>>>>>", user.sub, "\x1b[0;31mCANCELED\x1b[0m <<<<<<<<", this.matchmaking_queue.size)
 		}
-		// else
-			//console.log(">>>>>>", user.sub, "\x1b[0;33mNOT CANCELED\x1b[0m <<<<<<", this.matchmaking_queue.size)
+		this.eventEmitter.emit('deleteUserIdsWaiting', user.sub);
 	}
 
 	@SubscribeMessage('getgamelist')
 	listenForGetGameList(@ConnectedSocket() socket : Socket){
-		//console.log(">>> SENDING GAMELIST...")
 		socket.emit('gamelist', new GameList(this.allgames))
 		socket.join("all_spectators")
 		let userid_list = []
@@ -241,14 +237,11 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		this.allgames.forEach((value: Game, key: number) => {
 			if (value.blueid == user.sub)
 			{
-				//?		Do we want to allow the same match in multiple windows?
-//				value.bluesocket.leave(value.room);
 				socket.join(value.room);
 				value.bluesocket = socket;
 			}
 			else if (value.redid == user.sub)
 			{
-//				value.redsocket.leave(value.room);
 				socket.join(value.room);
 				value.redsocket = socket;
 			}

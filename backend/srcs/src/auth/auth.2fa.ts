@@ -12,8 +12,8 @@ export class TwoFA {
     const otp = speakeasy.totp({
       secret: secret,
       encoding: "base64",
-      label: 'Nombre de la aplicación',
-      issuer: 'Nombre de la empresa',
+      label: 'Application name',
+      issuer: 'Company name',
     });
     return otp;
   }
