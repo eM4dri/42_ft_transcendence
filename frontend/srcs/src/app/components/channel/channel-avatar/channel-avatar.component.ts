@@ -11,7 +11,7 @@ export class ChannelAvatarComponent {
   @Input() channel!: Channel;
 
   handleImageError(event: any){
-    event.target.src =  UriConstants.CHANNEL_AVATAR_DEFAULT;
+    event.target.src =  'assets/channel-default.svg';
   }
 }
 

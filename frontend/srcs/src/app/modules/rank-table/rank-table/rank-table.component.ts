@@ -19,7 +19,7 @@ export class RankTableComponent extends BaseComponent<rankData[], {}, {}, {}> im
   ranks: rankData[] = [];
   rank_ext: rankList[] = [];
   filterPost = "";
-  alternative = UriConstants.USER_AVATAR_DEFAULT;
+  alternative = "assets/user-default.svg";
 
   @ViewChild('childComponent', { static: true }) childComponent!: OffCanvasFullStatsComponent;
   constructor(
@@ -61,6 +61,6 @@ export class RankTableComponent extends BaseComponent<rankData[], {}, {}, {}> im
   }
 
   handleImageError(event: any) {
-    event.target.src = UriConstants.USER_AVATAR_DEFAULT;
+    event.target.src = "assets/user-default.svg";
   }
 }

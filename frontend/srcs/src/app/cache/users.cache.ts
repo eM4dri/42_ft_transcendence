@@ -123,7 +123,7 @@ export class UsersCache {
   }
 
   getUserImage(userId: string): string {
-    return this.getUser(userId)?.avatar || UriConstants.USER_AVATAR_DEFAULT;
+    return this.getUser(userId)?.avatar || "assets/user-default.svg";
   }
 
   getUsername(userId: string): string {

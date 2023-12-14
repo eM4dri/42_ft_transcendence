@@ -20,7 +20,7 @@ export class ProfileAvatarComponent {
   }
 
   handleImageError(event: any){
-    event.target.src =  UriConstants.USER_AVATAR_DEFAULT;
+    event.target.src =  "assets/user-default.svg";
   }
 
 }

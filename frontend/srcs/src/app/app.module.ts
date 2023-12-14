@@ -52,7 +52,6 @@ import {
 import { DateMutations } from './utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TagModule } from 'primeng/tag';
-import { SplitButtonModule } from 'primeng/splitbutton';
 import { ProfileInfoComponent } from './components/profile/profile-info/profile-info.component';
 import { UserAvatarEditorComponent } from './components/avatar/user-avatar-editor/user-avatar-editor.component';
 import { OtherProfileComponent } from './modules/profile/other-profile.component/other-profile.component';
@@ -124,7 +123,6 @@ const config: SocketIoConfig = { url: environment.apiUrl };
     SpectateModule,
     BrowserAnimationsModule,
     TagModule,
-    SplitButtonModule,
     TooltipModule,
     RankTableModule,
     ChallengeModule,
