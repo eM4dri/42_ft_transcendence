@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-12-15 - emadriga
+### Changed
+- Too many request limit of 42Api handled
+
 ## 2023-12-14 - emadriga
 ### Changed
 - Upgrade front packages
