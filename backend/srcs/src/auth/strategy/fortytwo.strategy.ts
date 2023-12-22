@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import {
   Strategy,
@@ -10,7 +10,6 @@ import { CreateUserDto } from 'src/user/dto';
 import { ResponseIntraUserDto } from '../dto';
 import { plainToInstance } from 'class-transformer';
 import { UserConstants } from 'src/utils/user.constants';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class FortyTwoStrategy extends PassportStrategy(
@@ -35,39 +34,28 @@ export class FortyTwoStrategy extends PassportStrategy(
     profile: Profile,
     cb: VerifyCallBack,
   ): Promise<any> {
-    try {
-      request.session.accessToken = accessToken;
-      const userEmail = profile.emails[0].value;
-      let userdb: ResponseIntraUserDto = plainToInstance(ResponseIntraUserDto,await this.userService.getByEmail(
-        userEmail,
+    request.session.accessToken = accessToken;
+    const userEmail = profile.emails[0].value;
+    let userdb: ResponseIntraUserDto = plainToInstance(ResponseIntraUserDto,await this.userService.getByEmail(
+      userEmail,
+    ));
+    if (!userdb) {
+      const id: number = +profile.id;
+      const newUser: CreateUserDto = {
+        id: id,
+        username: profile.username,
+        email: userEmail,
+        url: `${UserConstants.INTRA_URL}/${profile.username}`,
+        firstName: profile.name.givenName,
+        lastName:
+          profile.name.familyName.split(' ')[0],
+        twofa: false,
+      };
+      userdb = plainToInstance(ResponseIntraUserDto, await this.userService.new(
+        newUser,
       ));
-      if (!userdb) {
-        const id: number = +profile.id;
-        const newUser: CreateUserDto = {
-          id: id,
-          username: profile.username,
-          email: userEmail,
-          url: `${UserConstants.INTRA_URL}/${profile.username}`,
-          firstName: profile.name.givenName,
-          lastName:
-            profile.name.familyName.split(' ')[0],
-          twofa: false,
-        };
-        userdb = plainToInstance(ResponseIntraUserDto, await this.userService.new(
-          newUser,
-        ));
-        userdb.isNew = true;
-        return cb(null, userdb);
-      }
-  } catch (error) {
-    if (error instanceof PrismaClientKnownRequestError) {
-        if (error.code == 'P2002') {
-            throw new ConflictException(
-                { response:'Username already in use' },
-            );
-        }
+      userdb.isNew = true;
     }
-    throw (error);
-  }
+    return cb(null, userdb);
   }
 }

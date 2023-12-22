@@ -57,6 +57,11 @@ export class AuthService {
     window.location.href = `${environment.webUrl}/login`;
   }
 
+  banLogOut(){
+    this.cookieService.set(CookieConstants.UNAUTHORIZED_TOKEN,this.readFromCookie(CookieConstants.USER_TOKEN).sub);
+    this.logOut();
+  }
+
   refreshTokens(){
     this.cookieService.delete(CookieConstants.USER_TOKEN);
   }

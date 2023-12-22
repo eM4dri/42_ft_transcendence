@@ -52,16 +52,22 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
             const { token } = socket.handshake.auth;
             if (token){
                 const user = await this.authService.isAuthorized(socket);
-                socket.broadcast.emit('user_connects', user.sub);
-                this.socketsIdMap.set(user.sub, socket.id);
-                this.socketsMap.set(user.sub, socket);
+                if (this.socketsMap.has(user.sub)){
+                    this._userBanned(user.sub);
+                    this.server.to(socket.id).emit('user_banned', user.sub)
+                    this.socketsIdMap.delete(user.sub);
+                    this.socketsMap.delete(user.sub);
+                } else {
+                    socket.broadcast.emit('user_connects', user.sub);
+                    this.socketsIdMap.set(user.sub, socket.id);
+                    this.socketsMap.set(user.sub, socket);
+                }
             }
             else {
                 socket.disconnect();
             }
         } catch (error) {
             // TODO handle WS errors conections
-            console.log('TODO handle WS errors conections')
         }
     }
 
@@ -77,7 +83,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
             }
         } catch (error) {
             // TODO handle WS errors conections
-            console.log('TODO handle WS errors conections')
         }
     }
 
@@ -120,7 +125,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect  
 
     @SubscribeMessage('typing')
     listenFortypingMessages(@MessageBody() message: string) {
-        console.log('someone is typing');
     }
 
     private async _usersConnected(userId: string,usersSocket: string) {

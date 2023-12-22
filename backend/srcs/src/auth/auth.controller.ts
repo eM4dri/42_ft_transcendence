@@ -55,23 +55,23 @@ export class AuthController {
     res.redirect(`http://${hostName}:${process.env.WEB_PORT}${navigate}`);
   }
 
-  @Get(`${process.env.FAKE_LOGIN_URL}/:username`)
-  async loginImpostor(
-    @Req() req: Request,
-    @Param("username") username: string,
-    @Res() res: Response,
-  ) {
-    const tfaUserId: string = await this.fakeAuthService.tfaNeeded(username);
-    if (tfaUserId === undefined){
-      const { accessToken, refreshToken } = await this.fakeAuthService.fakeLogin(username);
-      res.cookie(TokenConstants.USER_TOKEN, accessToken);
-      res.cookie(TokenConstants.REFRESH_TOKEN, refreshToken);
-    } else {
-      res.cookie(TokenConstants.TFA_TOKEN, tfaUserId);
-    }
-    const hostName = new URL(`http://${req.headers['host']}`).hostname;
-    res.redirect(`http://${hostName}:${process.env.WEB_PORT}`);
-  }
+  // @Get(`${process.env.FAKE_LOGIN_URL}/:username`)
+  // async loginImpostor(
+  //   @Req() req: Request,
+  //   @Param("username") username: string,
+  //   @Res() res: Response,
+  // ) {
+  //   const tfaUserId: string = await this.fakeAuthService.tfaNeeded(username);
+  //   if (tfaUserId === undefined){
+  //     const { accessToken, refreshToken } = await this.fakeAuthService.fakeLogin(username);
+  //     res.cookie(TokenConstants.USER_TOKEN, accessToken);
+  //     res.cookie(TokenConstants.REFRESH_TOKEN, refreshToken);
+  //   } else {
+  //     res.cookie(TokenConstants.TFA_TOKEN, tfaUserId);
+  //   }
+  //   const hostName = new URL(`http://${req.headers['host']}`).hostname;
+  //   res.redirect(`http://${hostName}:${process.env.WEB_PORT}`);
+  // }
 
   @Get('refresh')
   @UseGuards(RefreshGuard)

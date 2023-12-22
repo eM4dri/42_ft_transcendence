@@ -55,7 +55,6 @@ export class AdministrationUsersManagementActionsComponent
     }
 
     processError(error: any){
-        // console.log('ERROR!',error);
         this.alertConfiguration('ERROR', error);
         this.openAlert();
         this.loading = true;

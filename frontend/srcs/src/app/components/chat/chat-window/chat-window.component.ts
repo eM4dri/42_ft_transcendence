@@ -95,7 +95,6 @@ export class ChatWindowComponent extends BaseComponent<{},PostMessage> implement
             data: { chatId: this.chat.chatId, message: this.inputValue, listenerId: this.chat.chatUserId }
           }).subscribe({
             next: data => {
-            //  console.log(data.response);
             },
             error: error => {
               this.alertConfiguration('ERROR', error);
@@ -132,13 +131,11 @@ export class ChatWindowComponent extends BaseComponent<{},PostMessage> implement
 
   //TODO start & stopTyping
   public startTyping() {
-    console.log('startTyping');
     this.counter++;
     if (this.counter === 1)  this.chatService.sendTyping(this.inputValue);
   }
 
   public stopTyping() {
-    console.log('stopTyping');
     this.counter = 0;
     this.chatService.sendTyping(false);
   }

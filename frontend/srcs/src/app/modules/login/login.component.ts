@@ -30,29 +30,30 @@ export class LoginComponent extends BaseComponent<{},PostTokens> {
   }
 
   login(){
-    if (this.tfaId===''){
-      this.cookieService.delete(CookieConstants.UNAUTHORIZED_TOKEN);
-      window.location.href = environment.loginUrl;
-    }else {
-      this.createService({
-        url: `${UriConstants.VALID_TFA}`,
-        data: { token: this.tfaToken, userid: this.tfaId }
-      }).subscribe({
-        next: data => {
-          const { accessToken, refreshToken }  = data.response;
-          this.cookieService.set(CookieConstants.USER_TOKEN, accessToken);
-          this.cookieService.set(CookieConstants.REFRESH_TOKEN, refreshToken);
-          this.cookieService.delete(CookieConstants.TFA_TOKEN);
-          this.cookieService.delete(CookieConstants.UNAUTHORIZED_TOKEN);
-          window.location.href = `${environment.webUrl}/home`;
-        },
-        error: error => {
-          this.alertConfiguration('ERROR', error);
-          this.openAlert();
-          this.loading = false;
-        },
-      });
+    if (this.unAthorizedToken === '') {
+      if (this.tfaId===''){
+        // this.cookieService.delete(CookieConstants.UNAUTHORIZED_TOKEN);
+        window.location.href = environment.loginUrl;
+      } else {
+        this.createService({
+          url: `${UriConstants.VALID_TFA}`,
+          data: { token: this.tfaToken, userid: this.tfaId }
+        }).subscribe({
+          next: data => {
+            const { accessToken, refreshToken }  = data.response;
+            this.cookieService.set(CookieConstants.USER_TOKEN, accessToken);
+            this.cookieService.set(CookieConstants.REFRESH_TOKEN, refreshToken);
+            this.cookieService.delete(CookieConstants.TFA_TOKEN);
+            this.cookieService.delete(CookieConstants.UNAUTHORIZED_TOKEN);
+            window.location.href = `${environment.webUrl}/home`;
+          },
+          error: error => {
+            this.alertConfiguration('ERROR', error);
+            this.openAlert();
+            this.loading = false;
+          },
+        });
+      }
     }
   }
-
 }

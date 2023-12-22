@@ -81,7 +81,7 @@ export class Game
 	bluescore: number = 0;
 	bluesocket: Socket;
 	redsocket: Socket;
-	gametime: number = 60000;	// Time in ms
+	gametime: number = 42000;	// Time in ms
 	modsenabled: boolean;
 	prev_blue_stats: stats_user;
 	prev_red_stats: stats_user;
@@ -97,9 +97,7 @@ export class Game
 		this.room = _room;
 		this.waitEnd = _waitEnd;
 		this.bluesocket = _bluesocket;
-//		console.log(this.bluesocket)
 		this.redsocket = _redsocket;
-//		console.log(this.bluesocket)
 		this.redpaddle = new Paddle;
 		this.bluepaddle = new Paddle;
 		this.ball = new Ball;
@@ -129,7 +127,7 @@ class GameZIP
 	bluepaddle: Paddle;
 	redscore: number = 0;
 	bluescore: number = 0;
-	gametime: number = 60000;	// Time in ms
+	gametime: number = 42000;	// Time in ms
 	modsenabled: boolean;
 	status: number = gameStatus.pregame;
 	waitEnd: number = 6000;
@@ -421,7 +419,6 @@ export class GameService {
 				{
 					if (value.bluepaddle.y - value.bluepaddle.radius <= value.ball.y + value.ball.radius && value.bluepaddle.y + value.bluepaddle.radius >= value.ball.y - value.ball.radius)
 					{
-						// console.log("🔷 BOUNCE BLUE 🔷")
 						value.ball.direction = 1;
 						value.ball.passedLimit = false;
 						value.ball.angle = 50 * ((value.ball.y - value.bluepaddle.y) / (value.bluepaddle.radius))
@@ -441,7 +438,6 @@ export class GameService {
 				{
 					if (value.redpaddle.y - value.redpaddle.radius <= value.ball.y + value.ball.radius && value.redpaddle.y + value.redpaddle.radius >= value.ball.y - value.ball.radius)
 					{
-						// console.log("♦️ BOUNCE RED ♦️")		//?		Ball touched the paddle
 						value.ball.direction = -1;
 						value.ball.passedLimit = false;
 						value.ball.angle = 50 * ((value.ball.y - value.redpaddle.y) / (value.redpaddle.radius))
@@ -458,7 +454,6 @@ export class GameService {
 				}
 				else if (value.ball.x - ball_radius <= 0)	//?	Red scored on blue's side
 				{
-					// console.log("❤️❤️❤️ GOAAAALLLL ❤️❤️❤️")
 					value.status = gameStatus.goalanimation_red;
 					value.redscore += 1;
 					value.waitEnd = current_time + 2000;
@@ -479,7 +474,6 @@ export class GameService {
 				}
 				else if (value.ball.x + ball_radius >= 200)	//?	Blue scored on red's side
 				{
-					// console.log("💙💙💙 GOAAAALLLL 💙💙💙")
 					value.status = gameStatus.goalanimation_blue;
 					value.bluescore += 1;
 					value.waitEnd = current_time + 2000;
@@ -510,28 +504,12 @@ export class GameService {
 			
 			if (value.gametime <= 0)	//?		Game ended from timeout.
 			{
-				// console.log("🏁 🏁 TIME'S UP: Game Ended 🏁 🏁")
 				value.status = gameStatus.postgame;
 				value.waitEnd = current_time + 500;
 			}
-			// console.log("🟦", value.bluepaddle.y, "(", value.bluepaddle.direction, ")   |   🟥", value.redpaddle.y, "(", value.redpaddle.direction, ")")
-			// console.log("🟠", value.ball.x, value.ball.y, value.ball.angle, value.ball.direction)
-			// console.log("GAME STATUS:", value.status, " |  Time Left:", Math.round(value.gametime / 1000))
-////			if (value.status != gameStatus.gameout)
 			server.to(value.room).emit('statusUpdate', new GameZIP(value))	//?		Sending the status of the game to the clients to update their info.
 			
 		});
 		return (this.allgames)
 	}
 }
-
-// /goinfre/jvacaris/TRANSCENDENCE/backend/srcs/src/game/game.service.ts:80
-//     allgames.forEach((value: Game, key: number) =>
-//            ^
-// TypeError: Cannot read properties of undefined (reading 'post_historic_game')
-//     at /goinfre/jvacaris/TRANSCENDENCE/backend/srcs/src/game/game.service.ts:129:20
-//     at Map.forEach (<anonymous>)
-//     at GameService.mainLoop (/goinfre/jvacaris/TRANSCENDENCE/backend/srcs/src/game/game.service.ts:80:12)
-//     at Timeout._onTimeout (/goinfre/jvacaris/TRANSCENDENCE/backend/srcs/src/game/game.gateway.ts:38:37)
-//     at listOnTimeout (node:internal/timers:573:17)
-//     at processTimers (node:internal/timers:514:7)

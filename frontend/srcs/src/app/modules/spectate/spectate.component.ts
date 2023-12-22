@@ -53,7 +53,6 @@ export class SpectateComponent implements OnInit{
 	ngOnInit(): void
 	{
     this.pongTVService.listeningToGameList().subscribe(gamelist => {
-      console.log('this.pongTVService.listeningToGameList()',gamelist);
       if (this.games.length > 0)
         this.games = []
       gamelist.finalist.forEach((game) => {
@@ -67,7 +66,6 @@ export class SpectateComponent implements OnInit{
     });
 
     this.pongTVService.listeningToGameListUpdate().subscribe(gameitem => {
-      console.log('this.pongTVService.listeningToGameListUpdate()',gameitem);
       this.games.forEach((game) => {
         if (game.gameId == gameitem.gameid.toString())
         {
@@ -83,9 +81,6 @@ export class SpectateComponent implements OnInit{
     });
 
     this.pongTVService.listeningToCacheUpdate().subscribe(gameitem => {
-      console.log(' this.pongTVService.listeningToCacheUpdate()',gameitem);
-      console.log("cacheupdate")
-      console.log(gameitem)
       this.games.forEach((game) => {
         gameitem.forEach((db_userlist) => {
           if (game.user1.userId == db_userlist.userId)
@@ -104,7 +99,6 @@ export class SpectateComponent implements OnInit{
       });
     });
     this.getGameList()
-		console.log("HI :D")
 	}
 
 	getGameList()

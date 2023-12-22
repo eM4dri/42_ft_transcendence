@@ -19,22 +19,18 @@ export const ErrorApiInterceptor = (request: HttpRequest<unknown>, next: HttpHan
 	return next(request).pipe(
 		catchError((error: HttpErrorResponse) => {
 			if (error.status == HttpStatusCode.Unauthorized) {
-				console.log('****INICIANDO REFRESH TOKEN****');
 				refreshTokenManageService.isRefreshing = true;
 
 				return appService.refreshToken().pipe(
 					finalize(() => (refreshTokenManageService.isRefreshing = false)),
 					concatMap((response) => {
-						console.log(response);
 						refreshTokenManageService.updateTokens(response.accessToken, response.refreshToken);
 
-						console.log('****TOKEN ACTUALIZADO****');
 
 						const requestClone = refreshTokenManageService.addTokenHeader(request);
 						return next(requestClone);
 					}),
 					catchError(() => {
-						console.log('*******ERROR EN EL REFRESH TOKEN********');
 						router.navigateByUrl('/');
 						return EMPTY;
 					})

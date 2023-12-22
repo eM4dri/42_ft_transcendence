@@ -14,28 +14,20 @@ export class PongTVService {
   ) { }
 
   getGameList() {
-    console.log("BYE")
     this.mysocket.emit('getgamelist');
   }
 
-/*  listeningToGameList() {
-    console.log(">> Gamelist received")
-    return this.mysocket.fromEvent<{ data: Map<number, Game> }>('gamelist').pipe(map((data) => data));
-  }*/
 
 
   listeningToGameList() {
-    console.log(">> Gamelist received")
     return this.mysocket.fromEvent<GameList>('gamelist').pipe(map((data) => data));
   }
 
   listeningToGameListUpdate() {
-    console.log(">> Gamelist update received")
     return this.mysocket.fromEvent<GameItem>('gameupdate').pipe(map((data) => data));
   }
   
   listeningToCacheUpdate() {
-    console.log(">> Cache list received")
     return this.mysocket.fromEvent<User[]>('individual_users_to_cache').pipe(map((data) => data));
   }
 

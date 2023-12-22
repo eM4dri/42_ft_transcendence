@@ -57,8 +57,6 @@ export class ChatComponent implements OnInit, OnChanges, OnDestroy {
     ngOnInit(): void {
         this.chatsAvailables = this.cachedChats.getChatsAvailables();
         this.joinedChannels = this.cachedChannels.getJoinedChannels();
-        console.log('this.chatsAvailables',this.chatsAvailables);
-        console.log('this.joinedChannels',this.joinedChannels); 
         this.chatsAvailables = this.cachedChats.getChatsAvailables();
         this.subscriptions.push(
             this.cachedChats.getChatsAvailablesSub().subscribe((data) => {
@@ -89,8 +87,6 @@ export class ChatComponent implements OnInit, OnChanges, OnDestroy {
     ngOnChanges(changes: SimpleChanges): void {
         this.chatsAvailables = this.cachedChats.getChatsAvailables();
         this.joinedChannels = this.cachedChannels.getJoinedChannels();
-        console.log('this.chatsAvailables 2',this.chatsAvailables);
-        console.log('this.joinedChannels 2',this.joinedChannels); 
     }
 
     ngOnDestroy(): void {

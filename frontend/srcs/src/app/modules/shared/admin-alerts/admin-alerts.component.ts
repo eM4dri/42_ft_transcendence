@@ -29,8 +29,7 @@ export class AdminAlertsComponent implements OnInit {
   ngOnInit(): void {
     
     this.adminService.userBanned().subscribe(userId => {
-      this.authService.logOut();
-
+      this.authService.banLogOut();
     });
     this.adminService.userPromoted().subscribe(userId => {
       this.refreshToken(AdminAlertsConstants.PROMOTED);

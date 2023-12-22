@@ -37,7 +37,6 @@ export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},Ch
     }
 
     muteUntillDate(){
-        console.log('muteUntillDate', this.mutedUntill);
         for (const modal of this.modalReference){
             modal.close();
           }
@@ -83,7 +82,6 @@ export class ChannelManagementActionsComponent extends BaseComponent<{},{},{},Ch
     }
 
     processError(error: any){
-        // console.log('ERROR!',error);
         this.alertConfiguration('ERROR', error);
         this.openAlert();
         this.loading = true;

@@ -26,6 +26,7 @@ declare global {
       WEB_PORT: string;
       WEB_URL: string;
       FAKE_LOGIN_URL: string;
+      STATIC_IMAGES_VOLUME_PATH: string;
     }
   }
 }

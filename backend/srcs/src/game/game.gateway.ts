@@ -66,10 +66,6 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 				value.redpaddle.direction = (message == 0 ? 0 : message / Math.abs(message)) * paddle_normal_speed;
 			}
 		})
-//		const newpaddle: Paddle = this.allgames.get(100000).bluepaddle;
-////		console.log(user.sub, 'is pressing a key. (', message, ")");
-//		this.allgames.get(100000).bluepaddle.direction = message;	//TODO  This is temporary. Need to find the game and player that's being affected!!
-//		this.server.emit("HelloSignal", newpaddle).
 	}
 
 	@SubscribeMessage('disconnectedFromGame')
@@ -81,7 +77,6 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		this.matchmaking_queue.forEach((value: Socket, key: string) => {
 			if (socket == value)
 			{
-				//console.log(">>>>>", key, "\x1b[0;31mDISCONNECTED\x1b[0m <<<<<", this.matchmaking_queue.size)
 				this.matchmaking_queue.delete(key);
 				return ;
 			}
@@ -89,7 +84,6 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		this.modded_matchmaking_queue.forEach((value: Socket, key: string) => {
 			if (socket == value)
 			{
-				//console.log(">>>>>", key, "\x1b[0;31mDISCONNECTED\x1b[0m <<<<<", this.modded_matchmaking_queue.size)
 				this.modded_matchmaking_queue.delete(key);
 				return ;
 			}
@@ -98,7 +92,6 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
 		this.allspectators.forEach((value: Socket) => {
 			if (socket == value)
 			{
-				//console.log(">>>>> Spectator #", idx, "\x1b[0;31mDISCONNECTED\x1b[0m <<<<<")
 				delete(this.allspectators[idx]);
 				return ;
 			}
@@ -273,8 +266,6 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
     private async _usersToCacheIndividual(socket: Socket, usersId: string[]) {
 		if (usersId.length > 1)
 		{
-			//console.log(usersId)
-			//const users = await this.userService.getUsers(usersId);
 			const users = await this.userService.getUsers(usersId);
 			socket.emit('individual_users_to_cache', users);
 		}
@@ -283,8 +274,6 @@ export class GameGateway   implements OnGatewayInit, OnGatewayDisconnect {
     private async _usersToCacheIndividual_byRoom(roomname: string, usersId: string[]) {
 		if (usersId.length > 1)
 		{
-			//console.log(usersId)
-			//const users = await this.userService.getUsers(usersId);
 			const users = await this.userService.getUsers(usersId);
 			this.server.to(roomname).emit('individual_users_to_cache', users);
 		}

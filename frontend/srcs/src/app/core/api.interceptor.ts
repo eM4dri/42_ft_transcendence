@@ -20,7 +20,6 @@ export const ApiInterceptor = (request: HttpRequest<unknown>, next: HttpHandlerF
 	}
 
 	if (refreshTokenManageService.isRefreshing) {
-		console.log('****REFRESH TOKEN EN PROCESO, SE CANCELA LA PETICION****');
 		return EMPTY;
 	}
 

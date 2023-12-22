@@ -40,7 +40,6 @@ export class AdministrationChannelManagementActionsComponent extends BaseCompone
     }
 
     muteUntillDate(){
-        console.log('muteUntillDate', this.mutedUntill);
         for (const modal of this.modalReference){
             modal.close();
           }
@@ -86,7 +85,6 @@ export class AdministrationChannelManagementActionsComponent extends BaseCompone
     }
 
     processError(error: any){
-        // console.log('ERROR!',error);
         this.alertConfiguration('ERROR', error);
         this.openAlert();
         this.loading = true;
