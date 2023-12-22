@@ -8,7 +8,7 @@ and this project adheres to
 
 ## 2023-12-22 - emadriga
 ### Changed
-- Improve error handling of fortytwo strategy
+- Improve error handling of fortytwo guard
 - Improve nav-bar animation 
 
 ## 2023-12-15 - emadriga

@@ -37,6 +37,9 @@
     filter: grayscale(100%) opacity(0.7);
     transition: var(--transition-speed);
   }
+  .nav-link > span{
+    transition: var(--transition-speed);
+  }
   
   .nav-link:hover {
     filter: grayscale(0%) opacity(1);
@@ -147,8 +150,16 @@
       width: 16rem;
     }
   
-    .site-navbar:hover .link-text {
+    .link-text {
       display: inline;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .site-navbar:hover .link-text {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity var(--transition-speed) ease-in-out, visibility 0s linear 0.1s;
     }
   
     .site-navbar:hover .logo svg
@@ -168,11 +179,7 @@
       top: 0;
       width: 16rem;
       height: 100vh;
-    }
-  
-    .site-navbar:hover .link-text {
-      display: inline;
-    }
+    }  
   
     .site-navbar:hover .logo svg
     {
