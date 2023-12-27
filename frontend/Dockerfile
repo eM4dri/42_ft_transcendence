@@ -1,5 +1,6 @@
 # Phase 1: Build the Angular application
-FROM node:18-alpine as build
+
+FROM node:21-alpine as build
 
 ARG HOST FORTYTWO_CLIENT_URL API_PORT STATIC_IMAGES_URL WEB_PORT
 
