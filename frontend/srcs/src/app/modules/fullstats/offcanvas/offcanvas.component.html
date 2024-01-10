@@ -14,9 +14,13 @@
 						<h4 class="card-title ">Pos: {{dts.position}}/{{dts.total}} <br> Points: {{dts.points}}</h4>
 					</div>
 					<div class="card-body card-medals">
-						@if( dts.position === 1) { 🥇
+						<!-- @if( dts.position === 1) { 🥇
 						} @else if(dts.position === 2){ 🥈
-						} @else if(dts.position === 3){ 🥉 }
+						} @else if(dts.position === 3){ 🥉 } -->
+
+						@if( dts.position === 1) { <img src="assets/medal-gold.svg"/>
+					} @else if(dts.position === 2){ <img src="assets/medal-silver.svg"/>
+					} @else if(dts.position === 3){ <img src="assets/medal-bronze.svg"/> }
 					</div>
 				</div>
 			</div>

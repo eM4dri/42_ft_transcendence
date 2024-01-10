@@ -23,9 +23,9 @@
         <tr *ngFor="let rank of rank_ext | filter:filterPost; let i = index;" (click)="abrirOffcanvas(rank.userId)">
             <td scope="row">{{ rank.position + 1 }}</td>
             <td scope="rox">
-                @if( rank.position === 0) { 🥇
-                } @else if(rank.position === 1){ 🥈
-                } @else if(rank.position === 2){ 🥉 }
+                @if( rank.position === 0) { <img class="me-2" style="width: 29px" src="assets/medal-gold.svg"/>
+                } @else if(rank.position === 1){ <img class="me-2" style="width: 29px" src="assets/medal-silver.svg"/>
+                } @else if(rank.position === 2){ <img class="me-2" style="width: 29px" src="assets/medal-bronze.svg"/> }
                 <img src={{rank.avatar}} class="me-2" style="width: 25px" (error)="handleImageError($event)" />
                 {{rank.login}}
             </td>
