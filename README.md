@@ -15,8 +15,9 @@
 
 A set of dockerized applications to serve at localhost:80
 
--   Front end: Angular + Bootstrap
+-   Front end: Angular + Bootstrap runing on nginx
 -   Back end: NestJS + Prisma + Socket.io + JWT + Swagger
 -   Database: PostgreSQL
--   Web server: nginx
--
+-   Static images: nginx to serve static files (like uploaded images), to low Back end offloading this jobs to this webserv, in accordance with high availability practices (decoupling jobs)
+-   Adminer: available as a separated container to ease database administration and review
+-   Portainer: available as a separated container to ease docker containers administration and review
