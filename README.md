@@ -9,6 +9,7 @@
 
 -
 
+https://em4dri.github.io/42_ft_transcendence/media/demo.webm
 
 [Click here to view the webm video](https://em4dri.github.io/42_ft_transcendence/media/demo.webm)
 
