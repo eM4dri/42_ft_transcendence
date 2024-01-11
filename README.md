@@ -11,6 +11,13 @@
 
 https://em4dri.github.io/42_ft_transcendence/media/demo.webm
 
+![Demo](https://em4dri.github.io/42_ft_transcendence/media/demo.webm)
+
+[![Video](https://em4dri.github.io/42_ft_transcendence/media/branch_struct.png)](https://em4dri.github.io/42_ft_transcendence/media/demo.webm)
+
+https://em4dri.github.io/42_ft_transcendence/media/demo.webm
+images/branch_struct.png
+
 [Click here to view the webm video](https://em4dri.github.io/42_ft_transcendence/media/demo.webm)
 
 https://github.com/yeta1990/ft_transcendence/assets/65416560/2f7e15a3-ec85-425d-9250-5454dfcb0800
