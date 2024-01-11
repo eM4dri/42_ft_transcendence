@@ -14,5 +14,7 @@ COPY srcs/. .
 
 RUN chmod +x run.sh
 
-CMD ["/bin/sh", "run.sh"]
+# CMD ["/bin/sh", "run.sh"]
+
+CMD ["tail", "-f", "/dev/null"]
 

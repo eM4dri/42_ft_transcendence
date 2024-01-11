@@ -18,7 +18,7 @@ Every temporary branch (Hotfix, Release, Feature) should start with its path to 
 
 In order to keep our repo clean, everyone should be responsible to remove temporary removable branches (Hotfix, Feature) on github (Is not a hard remove), once its aren't necessary (again every remove is retrievable)
 
-<img width="1919" alt="Working with branches" src="images/branch_struct.png">
+<img width="1919" alt="Working with branches" src="media/branch_struct.png">
 
 ### Instaling Node.js on 42
 The best way to install Node.js on 42 mac pcs is through  Node Version Manager .

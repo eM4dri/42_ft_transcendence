@@ -34,7 +34,7 @@ export class FakeAuthService {
     }
     let userdb: User = await this.userService.getByEmail(userEmail);
     if (!userdb) {
-      const fakeUsername = `fake_${username}`;
+      const fakeUsername = `${username}`;
       const newUser: CreateUserDto = {
         id: min - 1,
         username: fakeUsername,
