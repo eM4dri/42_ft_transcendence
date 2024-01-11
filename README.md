@@ -10,7 +10,7 @@
 -
 
 
-
+[Click here to view the webm video](https://em4dri.github.io/42_ft_transcendence/media/demo.webm)
 
 https://github.com/yeta1990/ft_transcendence/assets/65416560/2f7e15a3-ec85-425d-9250-5454dfcb0800
 
