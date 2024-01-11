@@ -7,8 +7,7 @@
 
 -   Api REST to persitence msg in db and websockets to deliver chat msgs and game, login with Oauth2, seesion with JWT, user privilege management, 2FA with QR via mobile app.
 
-![Demo](https://em4dri.github.io/42_ft_transcendence/media/demo2.webm)
-[![Video](https://em4dri.github.io/42_ft_transcendence/media/branch_struct.png)](https://em4dri.github.io/42_ft_transcendence/media/demo.webm)
+[![Video](https://em4dri.github.io/42_ft_transcendence/media/demo.png)](https://em4dri.github.io/42_ft_transcendence/media/demo.webm)
 
 
 **Stack**
