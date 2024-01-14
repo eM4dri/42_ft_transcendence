@@ -1,6 +1,6 @@
 **Overview**
 ============
--   Web app to play Pong online against other players: challenges, ranking, ladder, different game modes and power ups.
+-   SPA with a playable multiplayer online pong game: challenges, ranking, ladder, different game modes and power ups.
 
 -   Chat with persistence in db, private & group messages, friends, mute etc.
 
