@@ -9,6 +9,8 @@ and this project adheres to
 ## 2023-01-14 - emadriga
 ### Changed
 - Move md files to docs directory
+- Move scripts to scripts directory
+
 
 ## 2023-01-10 - emadriga
 ### Added

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Ruta al archivo .env
-ENV=".env"
+ENV="../.env"
 
 # Verifica si el archivo .env existe
 if [ -f "$ENV" ]; then
