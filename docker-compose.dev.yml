@@ -1,12 +1,32 @@
 
 version: '3.8'
 services:
-  dev:
+  front:
+    user: "${UID}:${GID}"
+    tty: true
+    build:
+      context: ./frontend
+      args:
+        API_PORT: ${API_PORT}
+        WEB_PORT: ${WEB_PORT}
+        FORTYTWO_CLIENT_URL: ${FORTYTWO_CLIENT_URL}
+        STATIC_IMAGES_URL: ${STATIC_IMAGES_URL}
+        HOST: ${HOST}
+      dockerfile: Dockerfile.dev
+    container_name: web
+    networks:
+      - docker_network
+    volumes:
+      - ./frontend/srcs:/app/
+    ports:
+      - 4200:4200
+
+  back:
     user: "${UID}:${GID}"
     #    tty: true
     build:
       context: ./backend
-      dockerfile: dev-Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: api
     networks:
       - docker_network
@@ -26,6 +46,7 @@ services:
     volumes:
       - ./backend/srcs:/app
       - /app/node_modules
+
   db:
     image: postgres:15-alpine
     container_name: "${DB_HOST}"
@@ -45,6 +66,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  static_images:
+    image: nginx:latest
+    container_name: static_images
+    volumes:
+      - ./static_images/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./backend/srcs/static_images:/usr/share/nginx/html/static_images
+    ports:
+      - "8081:8081"
+
   adminer:
     image: adminer
     container_name: adminer
@@ -53,14 +84,19 @@ services:
     restart: on-failure
     ports:
       - 8080:8080
-  nginx:
-    image: nginx:latest
-    container_name: nginx_images
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    networks:
+      - docker_network
     volumes:
-      - ./static_images/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./backend/srcs/static_images:/usr/share/nginx/html/static_images
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PORTAINER_VOLUME_PATH}:/data
+    restart: unless-stopped
     ports:
-      - "8081:8081" 
+      - 9000:9000 # http
+      # - 9443:9443 # https
 
 networks:
   docker_network:

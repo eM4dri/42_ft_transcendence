@@ -8,7 +8,8 @@ and this project adheres to
 
 ## 2023-01-14 - emadriga
 ### Changed
-- update angular.json for prod
+- Rename dev Dockerfiles/docker-compose.yml
+- Update angular.json for prod
 - Move md files to docs directory
 - Move scripts to scripts directory
 - Remove unnecesary files
