@@ -1,23 +1,22 @@
 version: '3.8'
 services:
-
   front:
-    user: "${UID}:${GID}"
-    tty: true
     build:
       context: ./frontend
+      args:
+        API_PORT: ${API_PORT}
+        WEB_PORT: ${WEB_PORT}
+        FORTYTWO_CLIENT_URL: ${FORTYTWO_CLIENT_URL}
+        STATIC_IMAGES_URL: ${STATIC_IMAGES_URL}
+        HOST: ${HOST}
       dockerfile: Dockerfile
     container_name: web
     networks:
       - docker_network
-    volumes:
-      - ./frontend/srcs:/app/
     ports:
-      - 4200:4200
+      - "${WEB_PORT}:${WEB_PORT}"
 
   back:
-    user: "${UID}:${GID}"
-    #tty: true
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -25,7 +24,9 @@ services:
     networks:
       - docker_network
     ports:
-      - 3000:3000
+      - "${API_PORT}:${API_PORT}"
+    volumes:
+      - ${STATIC_IMAGES_VOLUME_PATH}:/app/static_images
     env_file:
       .env
     depends_on:
@@ -53,40 +54,41 @@ services:
     volumes:
       - ${DB_VOLUME_PATH}:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: ["CMD", "pg_isready", "-U", "xd", "-d", "xd"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  adminer:
-    image: adminer
-    container_name: adminer
-    networks:
-      - docker_network
-    restart: on-failure
-    ports:
-      - 8080:8080
-
-  portainer:
-    image: portainer/portainer-ce:latest
-    container_name: portainer
-    networks:
-      - docker_network
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${PORTAINER_VOLUME_PATH}:/data
-    restart: unless-stopped
-    ports:
-      - 9000:9000 # http
-      # - 9443:9443 # https
-
-  nginx:
+  static_images:
     image: nginx:latest
+    container_name: static_images
     volumes:
       - ./static_images/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./backend/srcs/static_images:/usr/share/nginx/html/static_images
+      - ${STATIC_IMAGES_VOLUME_PATH}:/usr/share/nginx/html/static_images
     ports:
-      - "8081:8081" 
+      - "${STATIC_IMAGES_PORT}:${STATIC_IMAGES_PORT}"
+
+  # adminer:
+  #   image: adminer
+  #   container_name: adminer
+  #   networks:
+  #     - docker_network
+  #   restart: on-failure
+  #   ports:
+  #     - 8080:8080
+
+  # portainer:
+  #   image: portainer/portainer-ce:latest
+  #   container_name: portainer
+  #   networks:
+  #     - docker_network
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - ${PORTAINER_VOLUME_PATH}:/data
+  #   restart: unless-stopped
+  #   ports:
+  #     - 9000:9000 # http
+  #     # - 9443:9443 # https
 
 networks:
   docker_network:
