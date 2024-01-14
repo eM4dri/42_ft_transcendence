@@ -10,7 +10,7 @@ and this project adheres to
 ### Changed
 - Move md files to docs directory
 - Move scripts to scripts directory
-
+- Remove unnecesary files
 
 ## 2023-01-10 - emadriga
 ### Added
