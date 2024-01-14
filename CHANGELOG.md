@@ -9,6 +9,7 @@ and this project adheres to
 ## 2023-01-14 - emadriga
 ### Added
 - Dockerfile front prod
+- docker-compose.yml prod
 
 ### Changed
 - Rename dev Dockerfiles/docker-compose.yml
