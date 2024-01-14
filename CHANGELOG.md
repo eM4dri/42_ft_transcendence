@@ -13,6 +13,8 @@ and this project adheres to
 - Move md files to docs directory
 - Move scripts to scripts directory
 - Remove unnecesary files
+### Fixed
+- Known users had login problems on strategy
 
 ## 2023-01-10 - emadriga
 ### Added

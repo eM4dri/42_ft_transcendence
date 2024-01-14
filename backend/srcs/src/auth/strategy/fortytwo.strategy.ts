@@ -57,8 +57,8 @@ export class FortyTwoStrategy extends PassportStrategy(
           newUser,
         ));
         userdb.isNew = true;
-        return cb(null, userdb);
       }
+      return cb(null, userdb);
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
         if (error.code == 'P2002') {
