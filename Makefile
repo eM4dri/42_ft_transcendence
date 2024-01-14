@@ -2,7 +2,7 @@
 
 # Define el archivo docker-compose.yml que se utilizará
 PRO_COMPOSE_FILE = docker-compose.yml
-DEV_COMPOSE_FILE = dev-compose.yml
+DEV_COMPOSE_FILE = docker-compose.dev.yml
 SCRIPTS_FOLDER = ./scripts/
 
 # En linux, estos parametros son necesarios porque lo dice Google.
@@ -14,8 +14,9 @@ GID := $(shell id -g)
 endif
 
 # Regla para iniciar los contenedores en segundo plano
-up: generate_front_enviroment
-	UID=${UID} GID=${GID} docker-compose -f $(PRO_COMPOSE_FILE) up -d
+up:
+	# UID=${UID} GID=${GID} docker-compose -f $(PRO_COMPOSE_FILE) up -d
+	GID=${GID} docker-compose -f $(PRO_COMPOSE_FILE) up -d
 	@echo "lista de servicios levantados"
 	@docker-compose -f $(DEV_COMPOSE_FILE) ps --services
 
@@ -39,7 +40,8 @@ dev-list-services:
 	docker-compose -f $(DEV_COMPOSE_FILE) ps --services
 
 dev-up:
-	UID=${UID} GID=${GID} docker-compose -f $(DEV_COMPOSE_FILE) up -d
+	# UID=${UID} GID=${GID} docker-compose -f $(DEV_COMPOSE_FILE) up -d
+	GID=${GID} docker-compose -f $(DEV_COMPOSE_FILE) up -d
 	@echo "lista de servicios levantados"
 	@docker-compose -f $(DEV_COMPOSE_FILE) ps --services
 
@@ -53,7 +55,7 @@ dev-exec:
 	docker-compose -f $(DEV_COMPOSE_FILE) exec $(service) $(cmd)
 
 front-up:
-	docker-compose -f $(PRO_COMPOSE_FILE) up -d front 
+	docker-compose -f $(PRO_COMPOSE_FILE) up -d front
 
 front-down:
 	docker-compose -f $(PRO_COMPOSE_FILE) stop front
@@ -68,9 +70,6 @@ prune: down dev-down
 	docker system prune -af
 	docker volume prune -f
 	docker network prune -af
-
-generate_users:
-	bash generate_user.sh $(num)
 
 help:
 	@echo "Uso del Makefile para gestionar Docker Compose:"
