@@ -7,12 +7,16 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## 2023-01-14 - emadriga
+### Added
+- Dockerfile front prod
+
 ### Changed
 - Rename dev Dockerfiles/docker-compose.yml
 - Update angular.json for prod
 - Move md files to docs directory
 - Move scripts to scripts directory
 - Remove unnecesary files
+
 ### Fixed
 - Known users had login problems on strategy
 
