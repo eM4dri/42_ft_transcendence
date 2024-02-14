@@ -26,7 +26,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --watchAll --no-cache --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -66,7 +66,7 @@
     "@types/cookie-parser": "^1.4.4",
     "@types/express": "^4.17.20",
     "@types/express-session": "^1.17.7",
-    "@types/jest": "^29.5.2",
+    "@types/jest": "^29.5.12",
     "@types/multer": "^1.4.9",
     "@types/node": "^20.5.6",
     "@types/passport-jwt": "^3.0.9",
@@ -78,6 +78,7 @@
     "eslint-plugin-prettier": "^5.0.0",
     "jest": "^29.5.0",
     "node-scp": "^0.0.23",
+    "pactum": "^3.6.0",
     "prettier": "^3.0.0",
     "prisma": "^5.2.0",
     "source-map-support": "^0.5.21",
