@@ -8,6 +8,11 @@ and this project adheres to
 
 ## 2023-01-14 - emadriga
 ### Added
+- PactumJs for e2e backend test
+- e2e testing on back user chat
+
+## 2023-01-14 - emadriga
+### Added
 - Dockerfile front prod
 - docker-compose.yml prod
 
