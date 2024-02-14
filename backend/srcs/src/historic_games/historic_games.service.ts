@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from "src/prisma/prisma.service";
+import { PrismaService } from "../prisma/prisma.service";
 import { Historic_GameDto, ResponseHistoricGamesUserDto } from './dto';
 import { historical_games } from "@prisma/client";
 import { plainToInstance } from 'class-transformer';

@@ -18,8 +18,8 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 import { CreateUserDto, PatchUserDto } from "./dto";
-import { JwtGuard } from "src/auth/guard";
-import { GetUser } from 'src/auth/decorator';
+import { JwtGuard } from "../auth/guard";
+import { GetUser } from '../auth/decorator';
 
 @Controller("user")
 @ApiTags("user")

@@ -1,5 +1,5 @@
 import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { TwoFA } from '../auth/auth.2fa'
 import * as QRCode from 'qrcode';
 import * as speakeasy from 'speakeasy';

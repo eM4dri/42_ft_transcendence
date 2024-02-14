@@ -1,12 +1,12 @@
 import { Body, Controller, Get, Delete, Param, ParseUUIDPipe, Patch, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { GetUser } from 'src/auth/decorator';
-import { JwtGuard } from 'src/auth/guard';
+import { GetUser } from '../auth/decorator';
+import { JwtGuard } from '../auth/guard';
 import { MuteChannelUserDto, CreateChannelPassDto } from '../channel/dto';
 import { ChannelAdminService } from '../channel/admin/channel.admin.service';
-import { RoleguardGuard } from 'src/auth/roleguard/roleguard.guard';
-import { Roles } from 'src/auth/decorator/roles.decorator';
-import { Role } from 'src/auth/role.enum';
+import { RoleguardGuard } from '../auth/roleguard/roleguard.guard';
+import { Roles } from '../auth/decorator/roles.decorator';
+import { Role } from '../auth/role.enum';
 import { AdminService } from './admin.service';
 
 // No confundir admin/channel con channel/admin.

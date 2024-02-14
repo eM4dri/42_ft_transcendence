@@ -6,10 +6,10 @@ import {
   VerifyCallBack,
 } from 'passport-42';
 import { UserService } from '../../user/user.service';
-import { CreateUserDto } from 'src/user/dto';
+import { CreateUserDto } from '../../user/dto/createUser.dto';
 import { ResponseIntraUserDto } from '../dto';
 import { plainToInstance } from 'class-transformer';
-import { UserConstants } from 'src/utils/user.constants';
+import { UserConstants } from '../../utils/user.constants';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 @Injectable()

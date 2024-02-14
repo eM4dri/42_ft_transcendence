@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { GetUser } from 'src/auth/decorator';
-import { JwtGuard } from 'src/auth/guard';
+import { GetUser } from '../../auth/decorator';
+import { JwtGuard } from '../../auth/guard';
 import { MuteChannelUserDto, CreateChannelPassDto } from '../dto';
 import { ChannelAdminService } from './channel.admin.service';
 

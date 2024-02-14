@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { JwtPayload } from './strategy';
 import { User } from '@prisma/client';
-import { UserService } from 'src/user/user.service';
-import { CreateUserDto } from 'src/user/dto';
+import { UserService } from '../user/user.service';
+import { CreateUserDto } from '../user/dto';
 import { AuthService } from './auth.service';
-import { UserConstants } from 'src/utils/user.constants';
+import { UserConstants } from '../utils/user.constants';
 
 @Injectable()
 export class FakeAuthService {

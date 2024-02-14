@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags, ApiBody } from '@nestjs/swagger';
-import { GetUser } from "src/auth/decorator";
+import { GetUser } from "../auth/decorator";
 import { User } from "@prisma/client"
-import { JwtGuard } from "src/auth/guard";
+import { JwtGuard } from "../auth/guard";
 import { TfaService } from './tfa.service';
 import { ValidateDto } from "./dto";
 

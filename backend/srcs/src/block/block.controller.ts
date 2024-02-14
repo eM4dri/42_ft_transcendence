@@ -12,8 +12,8 @@ import {
     ApiOperation,
     ApiTags,
   } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/guard';
-import { GetUser } from 'src/auth/decorator';
+import { JwtGuard } from '../auth/guard';
+import { GetUser } from '../auth/decorator';
 import { BlockService } from './block.service';
 import { BlockedUserDto } from './dto/blockedUser.dto';
 

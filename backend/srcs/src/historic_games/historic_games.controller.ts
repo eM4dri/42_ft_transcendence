@@ -7,7 +7,7 @@ import {
   Query,
   UseGuards
 } from '@nestjs/common';
-import { JwtGuard } from "src/auth/guard";
+import { JwtGuard } from "../auth/guard";
 import {
   ApiBearerAuth,
   ApiOperation,

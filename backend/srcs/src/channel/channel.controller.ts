@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags, ApiParam } from '@nestjs/swagger';
-import { GetUser } from 'src/auth/decorator';
+import { GetUser } from '../auth/decorator';
 import { User } from '@prisma/client';
-import { JwtGuard } from 'src/auth/guard';
+import { JwtGuard } from '../auth/guard';
 import { ChannelService } from './channel.service';
 import { CreateChannelDto, CreateChannelMessageDto, JoinChannelDto } from './dto';
 import { UpdateChannelDto } from './dto/updateChannel.dto';

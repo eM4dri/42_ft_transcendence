@@ -9,16 +9,16 @@ import {
 	WebSocketServer,
 	} from '@nestjs/websockets';
 import { Injectable, UseGuards } from '@nestjs/common';
-import { WsGuard } from 'src/auth/guard';
-import { GameService } from 'src/game/game.service';
-import { JwtPayload } from 'src/auth/strategy';
-import { GetUser } from 'src/auth/decorator';
+import { WsGuard } from '../auth/guard';
+import { GameService } from '../game/game.service';
+import { JwtPayload } from '../auth/strategy';
+import { GetUser } from '../auth/decorator';
 import { Game } from './game.service'
 import { Paddle } from './game.service'
 import { Ball } from './game.service'
 import { Socket, Server } from 'socket.io';
-import { EventsModule } from 'src/events/events.module';
-import { UserService } from 'src/user/user.service';
+import { EventsModule } from '../events/events.module';
+import { UserService } from '../user/user.service';
 import { stats_user } from "@prisma/client";
 import { StatsService } from '../stats/stats.service'
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';

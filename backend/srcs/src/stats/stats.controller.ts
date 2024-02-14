@@ -11,7 +11,7 @@ import {
   Param
 } from "@nestjs/common";
 
-import { JwtGuard } from "src/auth/guard";
+import { JwtGuard } from "../auth/guard";
 import {
   ApiBearerAuth,
   ApiBody,
@@ -22,7 +22,7 @@ import {
 } from "@nestjs/swagger";
 import { StatsService } from "./stats.service";
 import { Update_statsDto } from "./dto";
-import { GetUser } from "src/auth/decorator";
+import { GetUser } from "../auth/decorator";
 import { stats_user } from "@prisma/client";
 
 @Controller("stats")
