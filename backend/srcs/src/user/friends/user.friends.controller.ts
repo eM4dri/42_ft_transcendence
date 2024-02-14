@@ -16,8 +16,8 @@ import {
   ApiResponse,
   ApiTags,
 } from "@nestjs/swagger";
-import { JwtGuard } from "src/auth/guard";
-import { GetUser } from 'src/auth/decorator';
+import { JwtGuard } from "../../auth/guard";
+import { GetUser } from '../../auth/decorator';
 import { FriendDto } from "../dto";
 
 @Controller("userFriends")

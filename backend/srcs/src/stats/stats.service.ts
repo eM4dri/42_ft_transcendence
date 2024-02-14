@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, BadRequestException, Injectable } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
+import { PrismaService } from "../prisma/prisma.service";
 import { Update_statsDto, ResponseStatsDto } from "./dto";
 import { stats_user } from "@prisma/client";
 import { plainToInstance } from 'class-transformer';

@@ -5,9 +5,9 @@ import { AuthService } from "./auth.service";
 import { ApiExcludeController } from "@nestjs/swagger";
 import { GetUser } from "./decorator";
 import { FakeAuthService } from "./fake.auth.service";
-import { TokenConstants } from "src/utils";
-import { ValidateDto } from "src/tfa/dto";
-import { TfaService } from "src/tfa/tfa.service";
+import { TokenConstants } from "../utils";
+import { ValidateDto } from "../tfa/dto";
+import { TfaService } from "../tfa/tfa.service";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { ResponseIntraUserDto } from "./dto";
 

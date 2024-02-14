@@ -15,8 +15,8 @@ import {
     ApiTags,
     ApiConsumes,
   } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/guard';
-import { GetUser } from 'src/auth/decorator';
+import { JwtGuard } from '../auth/guard';
+import { GetUser } from '../auth/decorator';
 import { ProfileImagesService } from './profile_images.service';
 import {
   userFileUploadDto,

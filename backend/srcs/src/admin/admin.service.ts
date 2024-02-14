@@ -1,9 +1,9 @@
 import { Injectable,  NotFoundException, HttpException, HttpStatus, ForbiddenException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { Role } from 'src/auth/role.enum';
+import { Role } from '../auth/role.enum';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { ChannelService } from 'src/channel/channel.service';
+import { ChannelService } from '../channel/channel.service';
 
 
 @Injectable()

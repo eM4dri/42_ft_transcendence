@@ -6,7 +6,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import { Server, Socket } from 'socket.io';
 import { WsResponse, WebSocketServer } from '@nestjs/websockets';
 import { StatsService } from '../stats/stats.service'
-import { Update_statsDto } from 'src/stats/dto';
+import { Update_statsDto } from '../stats/dto';
 import { stat } from 'fs';
 import { stats_user } from "@prisma/client";
 import { EventEmitter2 } from '@nestjs/event-emitter';

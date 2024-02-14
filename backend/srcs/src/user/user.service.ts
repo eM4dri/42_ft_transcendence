@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { CreateUserDto, ResponseUserMinDto } from "./dto";
-import { PrismaService } from "src/prisma/prisma.service";
+import { PrismaService } from "../prisma/prisma.service";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Role } from "../auth/role.enum";
-import { AvatarConstants } from "src/utils/avatar.contants";
+import { AvatarConstants } from "../utils/avatar.contants";
 import { PatchUserDto } from "./dto/patchUser.dto";
 import { plainToInstance } from 'class-transformer';
 

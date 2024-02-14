@@ -1,11 +1,11 @@
 import { ForbiddenException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import {  MuteChannelUserDto, CreateChannelPassDto, ResponseChannelUserDto } from '../dto';
 import { ChannelUser } from '@prisma/client';
 import * as argon from 'argon2';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { plainToInstance } from 'class-transformer';
-import { ResponseUserMinDto } from 'src/user/dto';
+import { ResponseUserMinDto } from '../../user/dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 

@@ -1,12 +1,12 @@
 import { BadRequestException, ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateChannelDto, CreateChannelMessageDto, JoinChannelDto, ResponseChannelDto, ResponseChannelUserDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import * as argon from 'argon2';
 import { ChannelAdminService, ChannelRol } from './admin/channel.admin.service';
 import { plainToInstance } from 'class-transformer';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { AvatarConstants } from 'src/utils/avatar.contants';
+import { AvatarConstants } from '../utils/avatar.contants';
 import { UpdateChannelDto } from './dto/updateChannel.dto';
 
 @Injectable()

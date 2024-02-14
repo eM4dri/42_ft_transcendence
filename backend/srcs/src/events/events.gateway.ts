@@ -8,21 +8,21 @@ import {
     WebSocketServer,
     } from '@nestjs/websockets';
     import { Server, Socket } from 'socket.io';
-import { ChatService } from 'src/chat/chat.service';
-import { BlockService } from 'src/block/block.service';
+import { ChatService } from '../chat/chat.service';
+import { BlockService } from '../block/block.service';
 import { Injectable, UseGuards } from '@nestjs/common';
-import {  WsGuard } from 'src/auth/guard';
-import { GetUser } from 'src/auth/decorator';
-import { AuthService } from 'src/auth/auth.service';
-import { JwtPayload } from 'src/auth/strategy';
+import {  WsGuard } from '../auth/guard';
+import { GetUser } from '../auth/decorator';
+import { AuthService } from '../auth/auth.service';
+import { JwtPayload } from '../auth/strategy';
 import { ChatUserMessage } from '@prisma/client';
-import { ChannelService } from 'src/channel/channel.service';
-import { CreateChannelMessageDto, ResponseChannelDto, ResponseChannelUserDto } from 'src/channel/dto';
-import { UserService } from 'src/user/user.service';
+import { ChannelService } from '../channel/channel.service';
+import { CreateChannelMessageDto, ResponseChannelDto, ResponseChannelUserDto } from '../channel/dto';
+import { UserService } from '../user/user.service';
 import { ChannelUser } from '@prisma/client';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
-import { UserFriendsService } from 'src/user/friends/user.friends.service';
-import { ResponseUserMinDto } from 'src/user/dto';
+import { UserFriendsService } from '../user/friends/user.friends.service';
+import { ResponseUserMinDto } from '../user/dto';
 
 // https://www.makeuseof.com/build-real-time-chat-api-using-websockets-nestjs/
 @WebSocketGateway({
