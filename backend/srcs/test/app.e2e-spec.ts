@@ -31,7 +31,7 @@ describe('App e2e', () => {
   afterAll(() => {
     app.close();
   });
-
+  const unkownUUID: string = '00000000-0000-0000-0000-000000000000';
   describe('Auth', () => {
     const dto: string = 'login';
     describe('FakeLogin', () => {
@@ -161,10 +161,9 @@ describe('App e2e', () => {
         .expectStatus(400)
       });
       it('Should get invalid Not found ', () => {
-        const userId: string = '00000000-0000-0000-0000-000000000000';
         return pactum
         .spec()
-        .get(`/user/${userId}`)
+        .get(`/user/${unkownUUID}`)
         .withHeaders({
           Authorization: 'Bearer $S{accessToken}'
         })
@@ -283,7 +282,7 @@ describe('App e2e', () => {
           })
           .withBody({
             ...chatMessageDto,
-            chatId: '00000000-0000-0000-0000-000000000000'
+            chatId: unkownUUID
           })
           .expectStatus(404);
       });
@@ -318,7 +317,7 @@ describe('App e2e', () => {
       it('Should get no messages an unexitant chatId',() => {
         return pactum
           .spec()
-          .get(`/chat/00000000-0000-0000-0000-000000000000`)
+          .get(`/chat/${unkownUUID}`)
           .withHeaders({
             Authorization: 'Bearer $S{accessToken}'
           })
@@ -363,10 +362,22 @@ describe('App e2e', () => {
             Authorization: 'Bearer $S{accessToken}'
           })
           .withBody({
-            chatMessageId: '00000000-0000-0000-0000-000000000000',
+            chatMessageId: unkownUUID,
             message: "Unkown chatMessageId should not be edited",
           })
           .expectStatus(404);
+      });
+      it('Shouldn\'t be edit chat message whithout mesage bad request',() => {
+        return pactum
+          .spec()
+          .put(`/chat/message`)
+          .withHeaders({
+            Authorization: 'Bearer $S{accessToken}'
+          })
+          .withBody({
+            chatMessageId: editMessage1Dto.chatMessageId,
+          })
+          .expectStatus(400);
       });
     });
     describe('Delete chat message', () => {
