@@ -22,16 +22,19 @@ describe('App e2e', () => {
       }),
     );
     await app.init();
-    await app.listen(3000);
+    await app.listen(process.env.API_PORT);
 
     prisma = app.get<PrismaService>(PrismaService);
     await prisma.cleanDb();
-    pactum.request.setBaseUrl('http://localhost:3000');
+    pactum.request.setBaseUrl(process.env.API_URL);
   });
   afterAll(() => {
     app.close();
   });
   const unkownUUID: string = '00000000-0000-0000-0000-000000000000';
+  const authHeader = {
+    Authorization : 'Bearer $S{accessToken}'
+  } 
   describe('Auth', () => {
     const dto: string = 'login';
     describe('FakeLogin', () => {
@@ -77,9 +80,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .get(`/user/myUser`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .stores('myUserId','userId')
           .expectStatus(200)
           .expect(ctx => {
@@ -93,9 +94,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .post(`/user`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .withBody(dto)
           .stores('userId','userId')
           .expectStatus(201)          
@@ -109,9 +108,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .post(`/user`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .withBody(dto)
           .expectStatus(409)
           ;
@@ -122,9 +119,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .get(`/user/all`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .expectStatus(200)
           .expect(ctx => {
             expect(ctx.res.json).toHaveProperty('response[0].username','login');
@@ -246,9 +241,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .post(`/chat/message`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .withBody(chatMessageDto)
           .stores('chatId','response.chatId')
           .stores('chatMessage1Id','response.message.chatMessageId')
@@ -261,9 +254,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .post(`/chat/message`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .withBody({
             ...chatMessageDto,
             chatId
@@ -277,9 +268,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .post(`/chat/message`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .withBody({
             ...chatMessageDto,
             chatId: unkownUUID
@@ -292,9 +281,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .get(`/chat`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .expectStatus(200)
           .expectJsonLike('[0].chatId', chatId)
           .expectJsonLike('[0].userId', chatMessageDto.listenerId);
@@ -305,9 +292,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .get(`/chat/${chatId}`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .expectStatus(200)
           .expectJsonLike('[0].message', chatMessageDto.message)
           .expectJsonLike('[1].message', chatMessageDto.message)
@@ -318,9 +303,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .get(`/chat/${unkownUUID}`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .expectStatus(200)
           .expectBody([])
       });
@@ -330,9 +313,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .put(`/chat/message`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .withBody({
             ...editMessage1Dto
           })
@@ -344,9 +325,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .put(`/chat/message`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .withBody({
             ...editMessage2Dto
           })
@@ -358,9 +337,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .put(`/chat/message`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .withBody({
             chatMessageId: unkownUUID,
             message: "Unkown chatMessageId should not be edited",
@@ -371,9 +348,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .put(`/chat/message`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .withBody({
             chatMessageId: editMessage1Dto.chatMessageId,
           })
@@ -385,9 +360,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .delete(`/chat/message/${editMessage1Dto.chatMessageId}`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .expectStatus(200)
           .expectJsonLike('chatMessageId', editMessage1Dto.chatMessageId)
           .expectJsonLike('message', editMessage1Dto.message)
@@ -396,9 +369,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .delete(`/chat/message/${editMessage1Dto.chatMessageId}`)
-          .withHeaders({
-            Authorization: 'Bearer $S{accessToken}'
-          })
+          .withHeaders({...authHeader})
           .expectStatus(404)
           .expectJson({
             "response": "Not Found"
@@ -407,7 +378,70 @@ describe('App e2e', () => {
     });
   });
 
-  
+  describe('Channel', () => {
+    const publicChannelDto = {
+      channelName: "publicChannel"
+    }
+    const privateChannelDto = {
+      channelName: "privateChannel",
+      password: "P4ssw0rd!"
+    }
+    // const channelMessageDto = {
+    //   listenerId: '$S{userId}',
+    //   message: "Hi! this is the FIRST message",
+    // };
+    // const publicChannelId: string= '$S{publicChannelId}';
+    // const privateChannelId: string= '$S{privateChannelId}';
+    // const editMessage1Dto = {
+    //   channelMessageId: '$S{channelMessage1Id}',
+    //   message: "Hi! this is the FIRST message edited",
+    // }
+    // const editMessage2Dto = {
+    //   channelMessageId: '$S{channelMessage2Id}',
+    //   message: "Hi! this is the SECOND message edited",
+    // }
+    describe('Create Channel', () => { 
+      it('Should be created public channel',() => {
+        return pactum
+          .spec()
+          .post(`/channel`)
+          .withHeaders({...authHeader})
+          .withBody({ ...publicChannelDto })
+          .stores('publicChannelId','response.channel.channelId')
+          .expectStatus(201)
+
+          .expectJsonLike('response.channel.channelName', publicChannelDto.channelName)
+          .expectJsonLike('response.channel.createdBy', '$S{myUserId}')
+
+          .expectJsonLike('response.channelUser.userId', '$S{myUserId}')
+          .expectJsonLike('response.channelUser.isAdmin', true)
+          .expectJsonLike('response.channelUser.isOwner', true)
+          .expectJsonLike('response.channelUser.isBanned', false)
+          .expectJsonLike('response.channelUser.mutedUntill', null)
+          .expectJsonLike('response.channelUser.leaveAt', null)
+      });
+      it('Should be created private channel',() => {
+          return pactum
+          .spec()
+          .post(`/channel`)
+          .withHeaders({...authHeader})
+          .withBody({...privateChannelDto})
+          .stores('privateChannelId','response.channelId')
+          .expectStatus(201)
+
+          .expectJsonLike('response.channel.channelName', privateChannelDto.channelName)
+          .expectJsonLike('response.channel.createdBy', '$S{myUserId}')
+
+          .expectJsonLike('response.channelUser.userId', '$S{myUserId}')
+          .expectJsonLike('response.channelUser.isAdmin', true)
+          .expectJsonLike('response.channelUser.isOwner', true)
+          .expectJsonLike('response.channelUser.isBanned', false)
+          .expectJsonLike('response.channelUser.mutedUntill', null)
+          .expectJsonLike('response.channelUser.leaveAt', null)
+      });
+    });
+    
+  });
 
 
 });
