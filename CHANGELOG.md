@@ -10,6 +10,7 @@ and this project adheres to
 ## 2023-01-15 - emadriga
 ### Added
 - Added `docker-compose.test.yml` and `Dockerfile.test` to set up an environment to test backend e2e against database
+- e2e test channel
   
 ### Changed
 - Remove outdated Makefile
